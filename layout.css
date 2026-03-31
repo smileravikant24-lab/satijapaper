@@ -41,6 +41,8 @@
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
+  /* Isse side-phisalna (overflow) band ho jayega */
+  overflow-x: hidden; 
 }
 .page.active { display: block; animation: pgIn 0.55s var(--transition); }
 @keyframes pgIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
@@ -49,11 +51,10 @@
 .full-width-section {
   width: 100vw !important;
   position: relative !important;
-  left: 50% !important;
-  right: 50% !important;
-  margin-left: -50vw !important;
-  margin-right: -50vw !important;
-  transform: none !important; /* Transform hata kar margin use karna zyada stable hai */
+  /* Ye formula scrollbar ke gap ko automatically minus kar deta hai */
+  left: calc(-50vw + 50%) !important;
+  margin: 0 !important;
+  transform: none !important;
   max-width: 100vw !important;
   box-sizing: border-box;
 }
