@@ -132,8 +132,19 @@ showSlides();
 // === VIDEO POPUP ===
 function openVideoPopup(src) {
   var p = document.getElementById('videoPopup');
-  document.getElementById('videoPopupContent').innerHTML = '<video src="' + src + '" style="width:100%;height:100%;background:#000;" controls autoplay></video>';
-  p.style.display = 'flex'; document.body.style.overflow = 'hidden';
+  var content = document.getElementById('videoPopupContent');
+  
+  // Check karein ki link YouTube ka hai ya normal file ka
+  if (src.includes('youtube.com') || src.includes('youtu.be')) {
+    // YouTube ke liye iframe generator
+    content.innerHTML = '<iframe src="' + src + '?autoplay=1" style="width:100%;height:100%;border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+  } else {
+    // Normal MP4 files (jaise doublea.mp4) ke liye purana tarika
+    content.innerHTML = '<video src="' + src + '" style="width:100%;height:100%;background:#000;" controls autoplay></video>';
+  }
+  
+  p.style.display = 'flex'; 
+  document.body.style.overflow = 'hidden';
 }
 function closeVideoPopup(e) {
   if (e.target.id === 'videoPopup' || e.target.classList.contains('video-popup-close')) {
