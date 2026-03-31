@@ -175,18 +175,14 @@ h1 .accent { color: var(--crimson); font-style: italic; }
 }
 
 /* ===== BRAND MARQUEE BAR ===== */
-.brand-bar {
+.brand-bar, .brand-video-section {
   background: var(--cream);
-  padding: 48px 5vw; margin-top: 80px;
+  padding: 48px 5vw;
+  margin-top: 80px;
   text-align: center;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  transition: background 0.4s, border-color 0.4s;
-  /* Full-width breakout */
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Inka apna breakout hata diya taaki sirf .full-width-section kaam kare */
 }
 .brand-bar-title {
   letter-spacing: 4px; font-size: 10px;
