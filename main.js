@@ -4,14 +4,6 @@ window.addEventListener('load', function () {
   setTimeout(function () { document.getElementById('pageLoader').style.display = 'none'; }, 1400);
 });
 
-// === DARK MODE ===
-function toggleDarkMode() {
-  var h = document.documentElement;
-  h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  localStorage.setItem('theme', h.getAttribute('data-theme'));
-}
-(function () { var s = localStorage.getItem('theme'); if (s) document.documentElement.setAttribute('data-theme', s); })();
-
 // === SCROLL TOP & NAV SHRINK ===
 window.addEventListener('scroll', function () {
   var b = document.getElementById('scrollTopBtn');
