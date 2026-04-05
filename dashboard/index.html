@@ -41,7 +41,6 @@
             height: 100vh;
         }
 
-        /* LOGIN SCREEN */
         .login-overlay {
             position: fixed;
             inset: 0;
@@ -129,7 +128,6 @@
         }
         .toggle-password:hover { color:rgba(255,255,255,0.6); }
 
-        /* APP LAYOUT */
         .app-container { display:none; height:100vh; }
         .app-container.visible { display:flex; }
 
@@ -174,7 +172,7 @@
         }
         .sidebar-logout-btn:hover { color:var(--danger); background:rgba(239,68,68,0.1); }
 
-        /* MAIN */
+       
         .main-content { flex:1; padding:0; overflow-y:auto; display:flex; flex-direction:column; }
         .header-area {
             display:flex; justify-content:space-between; align-items:center;
@@ -193,7 +191,7 @@
 
         .content-area { padding:24px 32px 60px; flex:1; }
 
-        /* CARDS */
+       
         .grid-container { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:20px; }
         .card {
             background:var(--bg-card); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow-sm);
@@ -251,7 +249,7 @@
         .empty-state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-muted); }
         .empty-state i { font-size:36px; margin-bottom:12px; display:block; }
 
-        /* ADMIN PANEL */
+      
         .admin-panel { display:none; }
         .admin-panel.visible { display:block; }
         .admin-header-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
@@ -291,7 +289,7 @@
         .tbl-action-btn.edit { color:var(--accent); }
         .tbl-action-btn.delete { color:var(--danger); }
 
-        /* MODAL */
+        
         .modal-overlay {
             position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
             z-index:5000; display:none; align-items:center; justify-content:center;
@@ -491,7 +489,7 @@
 
 <script>
 const database = [
-    { cat:"Sales", name:"Order to Delivery FMS", pc:"Ms. Preksha", solver:"Mukesh", exec:"Khushi", links:{ fms:"https://docs.google.com/spreadsheets/d/1cslnSAWMZ9udGjXwleG5tou3CEIULIk-lgylt-M9qEk/edit?usp=sharing", form:"https://forms.gle/fAJ5GdKvQsKqDKik8", video:"https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing", videoBCI:"https://youtu.be/PI_hErtw5hg" }},
+    { cat:"Sales", name:"Order to Delivery FMS", pc:"Ms. Preksha", solver:"Mukesh", exec:"Khushi", links:{ fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419", form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec", videoBCI:"https://youtu.be/PI_hErtw5hg" }},
     { cat:"Sales", name:"Follow Up Calls", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Neha", links:{ sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing" }},
     { cat:"Sales", name:"Double A Order Form", pc:"-", solver:"-", exec:"Mukesh", links:{ form:"https://script.google.com/macros/s/AKfycby6egRY9Iwv8VZbkApHOfzTQJGuohimxqz08QuJ1La3kO1pC1XNAK8CYiEeKxgoWci-/exec", sheet:"https://docs.google.com/spreadsheets/d/1SoeYZrERSmUEiaLyIOh0aMduacbeAnVTrkif2RJfcPs/edit?usp=sharing" }},
     { cat:"Sales", name:"Next Day Market Plan", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Rishabh / Pawan", links:{ form:"https://forms.gle/ufmi4wL7CGjXPcxg8", sheet:"https://docs.google.com/spreadsheets/d/1wZGQ7IgaOzEPzcf_PLLinVgZc7UDtAubgEsjh-tVVUk/edit?usp=sharing" }},
@@ -501,10 +499,10 @@ const database = [
     { cat:"Sales", name:"DA Distributor Checklist", pc:"-", solver:"-", exec:"-", links:{ form:"https://forms.gle/uAC3jHJkJRKkWhzD9", sheet:"https://docs.google.com/spreadsheets/d/1qUq8t-ny3jYw8Sr5EX1o8JPwTZTABq-84u3WZmqZiGA/edit?gid=1524564798#gid=1524564798" }},
     { cat:"Sales", name:"New Client Form", pc:"-", solver:"-", exec:"-", links:{ form:"https://docs.google.com/forms/d/e/1FAIpQLSfU9Dwr2262k9KE_MvSwCi1p4E1ZeR0i315rFv80DiMDpaF3A/viewform", sheet:"https://docs.google.com/spreadsheets/d/18lJ6aOS8bC273oooq63vGzd1Dk829BnYurhjzAUVbSA/edit?usp=sharing" }},
     { cat:"Purchase", name:"Purchase FMS", pc:"Ms. Preksha", solver:"Neha / Pranav", exec:"Khushi", links:{ fms:"https://docs.google.com/spreadsheets/d/1jh6kl51lLByIf6frhfsJts572vfgx6J7eilL3AlFqu4/edit?usp=sharing", form:"https://docs.google.com/forms/d/e/1FAIpQLSf43faF1YxitkNKPGSWmz44J9HNayP01ZoANoTamKD4S4gUNw/viewform", video:"https://drive.google.com/file/d/1fWolylWij-qPSDPB8UNTTFFV4oO75_U_/view?usp=sharing", videoBCI:"https://youtu.be/PI_hErtw5hg" }},
-    { cat:"Purchase", name:"IMS (Inventory System)", pc:"Ms. Neha", solver:"Mukesh / Pranav", exec:"Khushi", links:{ sheet:"https://docs.google.com/spreadsheets/d/1cKZJ08hxWIeJqh4g4P6IsYrXFNvWJBYEP-JDBkT8-BU/edit?usp=sharing", video:"#" }},
+    { cat:"Purchase", name:"IMS (Inventory System)", pc:"Ms. Neha", solver:"Mukesh / Pranav", exec:"Khushi", links:{form:"https://forms.gle/dpEsQFHrE7Gffh466", sheet:"https://docs.google.com/spreadsheets/d/1cKZJ08hxWIeJqh4g4P6IsYrXFNvWJBYEP-JDBkT8-BU/edit?usp=sharing", video:"https://youtu.be/N1Rs7-0gW5c" }},
     { cat:"Purchase", name:"WMS", pc:"Mukesh Shukla", solver:"Ravi Kant Kumar", exec:"-", links:{ form:"https://script.google.com/macros/s/AKfycbxzCtHADDcT-bIi8SRnRQM1bQ-hhw_6spl8expIqQOMdT9a7emYE0l1aDaOLFgorIb4qg/exec", sheet:"https://docs.google.com/spreadsheets/d/12rNRfz9Mh6CeXD4t5Sy8ltb8_8P2J-dPgw9RN5JkPvU/edit?gid=1140645635#gid=1140645635" }},
-    { cat:"Management", name:"Ultimate Checklist", pc:"Ms. Preksha", solver:"Neha / Pranav", exec:"Khushi", links:{ check:"https://docs.google.com/spreadsheets/d/13rPNxd-pR2IFitoZQwTYdjeJlC7qKprgtAPYHmJFfA0/edit?gid=2092959791#gid=2092959791", video:"#", dashEmp:"https://lookerstudio.google.com/reporting/867783ed-3310-433d-af65-215a8637dc1c", dashPC:"https://lookerstudio.google.com/reporting/47123040-143d-40e6-accd-ca979d4821f8" }},
-    { cat:"Management", name:"Delegation Sheet", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Neha", links:{ form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbwkZJdwMiyW3RRXrd5xUxZUoiWuqarz7Gm-f-xUgywpZdpAYMeR35uCykCCm9HHXXEJsg/exec", sheet:"https://docs.google.com/spreadsheets/d/1wlNnew6xsTyKubBaiGh_AjFf9WURcyI_ChsRHI3PfJU/edit?usp=sharing", video:"#" }},
+    { cat:"Management", name:"Ultimate Checklist", pc:"Ms. Preksha", solver:"Neha / Pranav", exec:"Khushi", links:{ check:"https://docs.google.com/spreadsheets/d/1CjiaW5EuDdyUtzLcM-3lg7Omp47Uc94PxtdNkd8X7cM/edit?gid=2123213379#gid=2123213379", video:"https://youtu.be/b3CDW57r7hA", dashEmp:"https://lookerstudio.google.com/reporting/867783ed-3310-433d-af65-215a8637dc1c", dashPC:"https://lookerstudio.google.com/reporting/47123040-143d-40e6-accd-ca979d4821f8" }},
+    { cat:"Management", name:"Delegation Sheet", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Neha", links:{ form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbwkZJdwMiyW3RRXrd5xUxZUoiWuqarz7Gm-f-xUgywpZdpAYMeR35uCykCCm9HHXXEJsg/exec", sheet:"https://docs.google.com/spreadsheets/d/1wlNnew6xsTyKubBaiGh_AjFf9WURcyI_ChsRHI3PfJU/edit?usp=sharing", video:"https://youtu.be/zTtmwX-8N5c" }},
     { cat:"Management", name:"To Do (MIS)", pc:"Ms. Neha", solver:"Khushi / Pranav", exec:"Neha / Khushi", links:{ form:"https://forms.gle/RZk3BaqF2RR4dRWZA", sheet:"https://docs.google.com/spreadsheets/d/1E1-RY6Q8v3DQDgvlzGL8y7-DBrQccNA8A7yOer3oElM/edit?usp=sharing" }},
     { cat:"Management", name:"To Do (EA)", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Neha / Pranav", links:{ form:"https://forms.gle/aJkEUVAkXSM2zar4A", sheet:"https://docs.google.com/spreadsheets/d/1JI2j-2pZVqv0cfbLv_xK5GtIPOzHn1FRSWdHNOIR3eQ/edit?usp=sharing" }},
     { cat:"Management", name:"MIS Score", pc:"-", solver:"-", exec:"-", links:{ sheet:"https://docs.google.com/spreadsheets/d/1a_mXf1x6CBuzYdzY0CMNPXq9jb96FVL9nPfOJCi8zgc/edit?gid=0#gid=0" }},
@@ -513,12 +511,12 @@ const database = [
     { cat:"HR", name:"Leave Application", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"All Staff", links:{ form:"https://script.google.com/macros/s/AKfycbwKtJQgfy1WE6Mc5wiWYNwIUteS1zfXRFucJBYMIB2FTQ4BNFPg6yErKhePrlNBNMkA/exec", sheet:"https://docs.google.com/spreadsheets/d/1NUSbZQKqtCzC14M6uGWj2aQg32TW375FHsPdrWOBquY/edit?usp=sharing" }},
     { cat:"HR", name:"Office Chores Form", pc:"Ms. Neha", solver:"Neha / Pranav", exec:"Rashmi", links:{ form:"https://script.google.com/macros/s/AKfycbwN-zMYqEPGy4IdgXHMxcsIwndpKLzib7hGqRxIx_j4pdy-V7xAHn10RYq2aM2HOzZ3/exec", sheet:"https://docs.google.com/spreadsheets/d/1o3j9B0UAE_AywprE7SV2hRtXscYyVXivDDVok2otPEM/edit?usp=sharing" }},
     { cat:"HR", name:"Attendances Sheet", pc:"Neha / Preksha", solver:"Neha / Pranav", exec:"All Staff", links:{ form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec", sheet:"https://docs.google.com/spreadsheets/d/179U4qy_lPVOV4HtmNHoGfnNy_TgWHhzhxg0Ip-2sR2k/edit?gid=0#gid=0", admin:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec?page=admin" }},
-    { cat:"HR", name:"Courier Form", pc:"Neha", solver:"Neha / Pranav", exec:"Indresh", links:{ fms:"https://docs.google.com/spreadsheets/d/1ZRwM0Q5QkP5iq4Agl0Lbf6h1yP741IQackJxOWyXygo/edit?gid=663292535#gid=663292535", form:"https://forms.gle/J3EWN4MahPJpjKKk9", sheet:"https://docs.google.com/spreadsheets/d/1bnpKrFc_A4PgAwiardXChTcZD8ZSwbZYgafXUhViGVw/edit?gid=249094348#gid=249094348" }},
+    { cat:"HR", name:"Courier FMS", pc:"Neha", solver:"Neha / Pranav", exec:"Indresh", links:{ fms:"https://docs.google.com/spreadsheets/d/1oxxIzERQ5DGgh9QsapS9sefu8_-Y8Z9_7QNHJF9cks8/edit?gid=760114361#gid=760114361", form:"https://forms.gle/BRZFSt6MmUMbUogZ6", sheet:"https://docs.google.com/spreadsheets/d/1bnpKrFc_A4PgAwiardXChTcZD8ZSwbZYgafXUhViGVw/edit?gid=249094348#gid=249094348" }},
     { cat:"Finance", name:"Petrol/Rider Form", pc:"Neha / Mukesh", solver:"Neha / Pranav", exec:"Sonu, Pawan...", links:{ form:"https://forms.gle/DicXKSdhGBVBnBDL8", sheet:"https://docs.google.com/spreadsheets/d/1fSytJSS3zc2QhpIaMFLKawRBW-taOvd0TJd0l6K9fFQ/edit?gid=1674675112#gid=1674675112" }},
-    { cat:"Finance", name:"Cheque Payment", pc:"Neha / Mukesh", solver:"Mukesh", exec:"Indresh", links:{ fms:"https://docs.google.com/spreadsheets/d/19fCfOMSL01Aus4ARsqBypJX6E84C-97K2VdWrWdjnEw/edit?gid=1179407366#gid=1179407366", form:"https://forms.gle/fMsLF2CqQ9TiZrjM9", sheet:"https://docs.google.com/spreadsheets/d/1Bh0Dp8aIi5NXi2f65eIMmR66rWxR8xdQtab9-_-_GR4/edit?gid=839455092#gid=839455092" }},
+    { cat:"Finance", name:"Cheque Payment", pc:"Neha / Mukesh", solver:"Mukesh", exec:"Indresh", links:{ fms:"https://docs.google.com/spreadsheets/d/1O-d1HUIXLrqZceHw46RXHS08Kv0S89GLLvyBd4Rf1xg/edit?gid=183137054#gid=183137054", form:"https://forms.gle/bzgaZgtAhdPExPLS6", sheet:"https://docs.google.com/spreadsheets/d/1Bh0Dp8aIi5NXi2f65eIMmR66rWxR8xdQtab9-_-_GR4/edit?gid=839455092#gid=839455092" }},
     { cat:"Finance", name:"Company Payment", pc:"-", solver:"-", exec:"-", links:{ fms:"https://docs.google.com/spreadsheets/d/1-ZUlJxpqd93Nh-PdK1mdVY3KduNLJwZ4JBR56TlZGQY/edit?gid=663292535#gid=663292535", form:"https://docs.google.com/forms/d/e/1FAIpQLSc0R2QBTK4py8MJdzQClkMs4iRRQBBEg3jYGnkWp0nzRMwGZg/viewform" }},
-    { cat:"Finance", name:"GP Sheet", pc:"-", solver:"-", exec:"-", links:{ sheet:"https://docs.google.com/spreadsheets/d/16bnDUJdnrWDt24XL6OsEq4zc9xKuvZWIei_3DNtX3uU/edit?gid=679674956#gid=679674956", gpDash:"https://lookerstudio.google.com/reporting/94f5e168-9d41-4c8e-b36d-e609187a8902" }},
-    { cat:"Finance", name:"Daily Expense", pc:"-", solver:"-", exec:"-", links:{ form:"https://script.google.com/macros/s/AKfycbxiO0v47ZzSgNV9UMpHwekICJUHRPPBm-kqEQeFwqXfbiobE2z8iuGfdl37nPatEqlBqQ/exec", sheet:"https://docs.google.com/spreadsheets/d/1RDUARTmaJA3VrjwNF2wTzCubmYMfsIxURQOVxJTHiJs/edit?gid=0#gid=0" }}
+    { cat:"Finance", name:"GP Sheet", pc:"-", solver:"-", exec:"-", links:{ sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0", gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec" }},
+    { cat:"Finance", name:"Daily Expense", pc:"-", solver:"-", exec:"-", links:{ form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec", sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0" }}
 ];
 
 /* AUTH SYSTEM */
