@@ -22,7 +22,7 @@ nav.scrolled .brand-name-nav { font-size: 1.6rem; }
 }
 .brand-name-nav {
   font-family: 'Times New Roman', Times, serif;
-  font-size: 2rem; font-weight: 700;
+  font-size: 2.2rem; font-weight: 800;
   color: var(--emerald); letter-spacing: 2px;
   text-transform: uppercase;
   transition: all 0.4s ease;
