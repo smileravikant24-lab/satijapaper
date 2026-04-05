@@ -84,9 +84,13 @@
   min-height: 70vh;
 }
 h1 {
-  font-size: 3.2rem; font-weight: 800;
-  margin: 14px 0 24px; line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: 3.2rem; 
+  font-weight: 700;
+  margin: 14px 0 20px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-family: 'Outfit', sans-serif; 
+  color: var(--text);
 }
 h1 .accent { color: var(--crimson); font-style: normal; }
 .hero-section p {
