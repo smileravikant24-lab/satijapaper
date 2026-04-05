@@ -63,8 +63,8 @@
 .subtitle {
   display: inline-block;
   color: var(--gold);
-  font-weight: 600; letter-spacing: 2.5px;
-  font-size: 11px; text-transform: uppercase;
+  font-weight: 700; letter-spacing: 3px;
+  font-size: 15px; text-transform: uppercase;
   margin-bottom: 12px;
   position: relative; padding-left: 36px;
   text-decoration: none;
