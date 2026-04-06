@@ -41,7 +41,7 @@
         .login-card{position:relative;width:420px;background:rgba(255,255,255,.03);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:48px 40px;animation:cardUp .6s var(--ease);}
         @keyframes cardUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
         .login-brand{text-align:center;margin-bottom:36px;}
-        .login-brand-icon{width:72px;height:72px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:26px;color:#fff;box-shadow:0 8px 32px rgba(0,102,255,.3);}
+        .login-logo{width:80px;height:80px;border-radius:18px;object-fit:contain;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);background:rgba(255,255,255,.05);padding:4px;}
         .login-brand h1{font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1.5px;}
         .login-brand-url{font-size:11px;color:var(--accent-light);margin-top:4px;letter-spacing:.5px;}
         .login-brand-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px;font-weight:600;}
@@ -70,8 +70,7 @@
         .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
         .sidebar::-webkit-scrollbar{width:0;}
         .brand-box{padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
-        .brand-logo-wrap{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,102,255,.25);}
-        .brand-logo-wrap i{font-size:22px;color:#fff;}
+        .brand-logo{width:60px;height:60px;border-radius:50%;object-fit:contain;padding:3px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
         .brand-text{color:#fff;font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:1.5px;margin-top:4px;}
         .brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8;}
         .brand-url:hover{opacity:1;text-decoration:underline;}
@@ -207,7 +206,8 @@
     <div class="login-bg"></div>
     <div class="login-card">
         <div class="login-brand">
-            <div class="login-brand-icon"><i class="fas fa-scroll"></i></div>
+            <!-- ✏️ CHANGE YOUR LOGIN LOGO HERE — Replace the src="" URL below with your own logo URL or base64 -->
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAYABfYDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAECBwgDBQYECf/EAFAQAAIBAwMDAgQDBQUFBAgCCwABAgMEEQUGIQcSMUFRCBNhcSKBkRQyobHBFSNC0eEWM1JikiRDU3IXJkRUY4Lw8SU0NnODk6IYNTdV0sL/xAAcAQEAAgMBAQEAAAAAAAAAAAAAAQIDBAUGBwj/xAAuEQEAAgICAgICAgICAgMBAQEAAQIDEQQhBTESQRNRBiIUFTJhIzNCUnEkgTT/2gAMAwEAAhEDEQA/ANywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Satija Paper" class="login-logo">
             <h1>SATIJA PAPER</h1>
             <div class="login-brand-url">www.satijapaper.com</div>
             <div class="login-brand-sub">System Master — Process Dashboard</div>
@@ -233,7 +233,8 @@
 <div class="app-container" id="appContainer">
     <div class="sidebar">
         <div class="brand-box">
-            <div class="brand-logo-wrap"><i class="fas fa-scroll"></i></div>
+            <!-- ✏️ CHANGE YOUR SIDEBAR LOGO HERE — Replace the src="" URL below with your own logo URL or base64 -->
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAYABfYDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAECBwgDBQYECf/EAFAQAAIBAwMDAgQDBQUFBAgCCwABAgMEEQUGIQcSMUFRCBNhcSKBkRQyobHBFSNC0eEWM1JikiRDU3IXJkRUY4Lw8SU0NnODk6IYNTdV0sL/xAAcAQEAAgMBAQEAAAAAAAAAAAAAAQIDBAUGBwj/xAAuEQEAAgICAgICAgICAgMBAQEAAQIDEQQhBTESQRNRBiIUFTJhIzNCUnEkgTT/2gAMAwEAAhEDEQA/ANywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" alt="Satija Paper" class="brand-logo">
             <div class="brand-text">SATIJA PAPER</div>
             <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
         </div>
