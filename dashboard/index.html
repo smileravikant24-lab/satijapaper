@@ -592,6 +592,11 @@ async function deleteUserAct(id) {
 (async function () {
     const s = getSess();
     if (s && s.token) {
+        // Show a clean "restoring session" state while we verify with server
+        const card = document.querySelector('.login-card');
+        if (card) {
+            card.innerHTML = '<div style="text-align:center;color:#fff;padding:20px;"><i class="fas fa-circle-notch fa-spin" style="font-size:32px;color:var(--accent-light);margin-bottom:16px;display:block;"></i><div style="font-size:14px;font-weight:700;letter-spacing:.5px;">Restoring your session...</div><div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;">Just a moment</div></div>';
+        }
         const r = await api('whoami').catch(() => null);
         if (r && r.ok && r.user) {
             setSess({ token: s.token, user: r.user });
@@ -599,6 +604,9 @@ async function deleteUserAct(id) {
             return;
         }
         clearSess();
+        // Session invalid — reload page to restore the original login form
+        location.reload();
+        return;
     }
     document.getElementById('loginOverlay').classList.remove('hidden');
 })();
