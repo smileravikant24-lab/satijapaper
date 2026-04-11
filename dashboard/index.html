@@ -34,7 +34,6 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;}
 
-        /* ── LOGIN ── */
         .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a 0%,#0f1f38 50%,#070e1a 100%);transition:opacity .5s,visibility .5s;}
         .login-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;}
         .login-bg{position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(0,102,255,.08),transparent 55%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.06),transparent 50%);animation:bgPulse 12s ease-in-out infinite alternate;}
@@ -62,12 +61,8 @@
         .login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;align-items:center;gap:7px;}
         .login-error.show{display:flex;}
         .toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px;}
-
-        /* ── APP LAYOUT ── */
         .app-container{display:none;height:100vh;}
         .app-container.visible{display:flex;}
-
-        /* ── SIDEBAR ── */
         .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
         .sidebar::-webkit-scrollbar{width:0;}
         .brand-box{padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
@@ -76,23 +71,19 @@
         .brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8;}
         .brand-url:hover{opacity:1;text-decoration:underline;}
         .sidebar-label{padding:18px 22px 6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,.22);}
-
         .menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;position:relative;}
         .menu-btn i{width:18px;text-align:center;font-size:13px;transition:.2s;}
         .menu-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85);}
         .menu-btn.active{background:rgba(0,102,255,.12);color:var(--accent-light);border-left-color:var(--accent-light);}
         .menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:22px;text-align:center;}
         .menu-btn.active .count-badge{background:rgba(0,102,255,.2);color:var(--accent-light);}
-
         .sidebar-user{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
         .sidebar-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;}
         .sidebar-uinfo{flex:1;min-width:0;}
         .sidebar-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .sidebar-urole{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
         .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;padding:6px;border-radius:8px;transition:.2s;}
-        .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08);}
-
-        /* ── MAIN ── */
+        .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08);
         .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;}
         .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
         .page-title{font-size:18px;font-weight:800;color:var(--text);}
@@ -101,10 +92,7 @@
         .search-box{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:10px;width:100%;outline:0;transition:.25s var(--ease);font-size:12.5px;font-family:inherit;background:var(--bg);}
         .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow);}
         .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;}
-
-        .content{padding:22px 28px 60px;flex:1;}
-
-        /* ── CARDS ── */
+        .content{padding:22px 28px 60px;flex:1;
         .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
         .card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.25s var(--ease);animation:fadeUp .4s var(--ease) both;position:relative;overflow:hidden;}
         .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
@@ -136,8 +124,6 @@
         .lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;font-size:8px;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:700;letter-spacing:.3px;}
         .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
         .empty-state i{font-size:32px;margin-bottom:10px;display:block;opacity:.5;}
-
-        /* ── ADMIN PANEL ── */
         .admin-panel{display:none;}
         .admin-panel.visible{display:block;}
         .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
@@ -158,8 +144,6 @@
         .tbl-act{background:0;border:0;cursor:pointer;padding:5px 7px;border-radius:6px;transition:.2s;font-size:13px;}
         .tbl-act:hover{background:var(--bg);}
         .tbl-act.edit{color:var(--accent);} .tbl-act.delete{color:var(--danger);}
-
-        /* ── MODAL ── */
         .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center;}
         .modal-bg.show{display:flex;}
         .modal-box{background:#fff;border-radius:18px;width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .3s var(--ease);}
@@ -201,13 +185,10 @@
     </style>
 </head>
 <body>
-
-<!-- ═══ LOGIN ═══ -->
 <div class="login-overlay" id="loginOverlay">
     <div class="login-bg"></div>
     <div class="login-card">
         <div class="login-brand">
-            <!-- ✏️ CHANGE YOUR LOGIN LOGO HERE — Replace the src="" URL below with your own logo URL or base64 -->
             <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
             <h1>SATIJA PAPER</h1>
             <div class="login-brand-url">www.satijapaper.com</div>
@@ -229,17 +210,13 @@
         <button class="login-btn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i></button>
     </div>
 </div>
-
-<!-- ═══ APP ═══ -->
 <div class="app-container" id="appContainer">
     <div class="sidebar">
         <div class="brand-box">
-            <!-- ✏️ CHANGE YOUR SIDEBAR LOGO HERE — Replace the src="" URL below with your own logo URL or base64 -->
             <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="brand-logo">
             <div class="brand-text">SATIJA PAPER</div>
             <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
         </div>
-
         <div class="sidebar-label">Navigation</div>
         <button class="menu-btn active" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
         <button class="menu-btn" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
@@ -247,7 +224,6 @@
         <button class="menu-btn" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
         <button class="menu-btn" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
         <button class="menu-btn" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
-
         <div class="sidebar-label">My System</div>
         <button class="menu-btn" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
         <button class="menu-btn" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
@@ -290,7 +266,7 @@
         <div class="modal-foot"><button class="mbtn pri" onclick="submitChangePass()">Set Password &amp; Continue</button></div>
     </div>
 </div>
-<!-- ═══ MODAL ═══ -->
+
 <div class="modal-bg" id="userModal">
     <div class="modal-box">
         <div class="modal-head"><h3 id="modalTitle">Add New User</h3><button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button></div>
@@ -321,7 +297,6 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbzTisWDO_xMxIVH9lY9yA9XQiR3ZF0rCV9F9Sj-Rx0jXf4PE81qtU760y-2utCBwtTLPw/exec";
 const SS = "satija_session";
  
-/* ══ DATABASE (processes — not sensitive, safe to keep client-side) ══ */
 const DB = [
 {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
 {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
@@ -352,7 +327,7 @@ const DB = [
 {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
  
-/* ══ API HELPER ══ */
+
 async function api(action, payload) {
     payload = payload || {};
     payload.action = action;
@@ -372,7 +347,6 @@ async function api(action, payload) {
     }
 }
  
-/* ══ SESSION (only stores token + own user info) ══ */
 function getSess() { const s = localStorage.getItem(SS); return s ? JSON.parse(s) : null; }
 function setSess(o) { localStorage.setItem(SS, JSON.stringify(o)); }
 function clearSess() { localStorage.removeItem(SS); }
@@ -421,7 +395,7 @@ function handleLogout() {
     curView = 'cards';
 }
  
-/* ══ FORCE PASSWORD CHANGE ══ */
+
 function showChangePassModal() { document.getElementById('changePassModal').classList.add('show'); }
 async function submitChangePass() {
     const np = document.getElementById('newPass').value;
@@ -530,7 +504,7 @@ function runFilter() {
     renderCards(filtered);
 }
  
-/* ══ ADMIN ══ */
+
 let cachedUsers = [];
 async function showAdmin(el) {
     if (!curUser || curUser.role !== 'Admin') return;
@@ -615,7 +589,6 @@ async function deleteUserAct(id) {
     await loadUsers();
 }
  
-/* ══ INIT ══ */
 (async function () {
     const s = getSess();
     if (s && s.token) {
