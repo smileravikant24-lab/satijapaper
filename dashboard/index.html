@@ -278,7 +278,18 @@
         </div>
     </div>
 </div>
-
+<div class="modal-bg" id="changePassModal">
+    <div class="modal-box" style="width:420px;">
+        <div class="modal-head"><h3><i class="fas fa-key" style="color:var(--accent);margin-right:8px;"></i>Set Your Password</h3></div>
+        <div class="modal-body">
+            <p style="font-size:12px;color:var(--text-2);margin-bottom:16px;">For security, you must set a new password before continuing.</p>
+            <div class="mf"><label>New Password</label><input type="password" id="newPass" placeholder="At least 6 characters"></div>
+            <div class="mf"><label>Confirm Password</label><input type="password" id="confirmPass" placeholder="Re-type password"></div>
+            <div id="changePassErr" style="display:none;background:#ffe8ea;color:#b91c1c;padding:10px;border-radius:8px;font-size:12px;margin-bottom:10px;"></div>
+        </div>
+        <div class="modal-foot"><button class="mbtn pri" onclick="submitChangePass()">Set Password &amp; Continue</button></div>
+    </div>
+</div>
 <!-- ═══ MODAL ═══ -->
 <div class="modal-bg" id="userModal">
     <div class="modal-box">
@@ -306,12 +317,12 @@
 </div>
 
 <script>
-    /* ══ SECURITY: DISABLE RIGHT CLICK ══ */
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-}, false);
-/* ══ DATABASE ══ */
-const DB=[
+
+const API_URL = "https://script.google.com/macros/s/AKfycbzTisWDO_xMxIVH9lY9yA9XQiR3ZF0rCV9F9Sj-Rx0jXf4PE81qtU760y-2utCBwtTLPw/exec";
+const SS = "satija_session";
+ 
+/* ══ DATABASE (processes — not sensitive, safe to keep client-side) ══ */
+const DB = [
 {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
 {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
 {cat:"Sales",name:"Double A Order Form",pc:"-",solver:"-",exec:"Mukesh",links:{form:"https://script.google.com/macros/s/AKfycby6egRY9Iwv8VZbkApHOfzTQJGuohimxqz08QuJ1La3kO1pC1XNAK8CYiEeKxgoWci-/exec",sheet:"https://docs.google.com/spreadsheets/d/1SoeYZrERSmUEiaLyIOh0aMduacbeAnVTrkif2RJfcPs/edit?usp=sharing"}},
@@ -340,186 +351,286 @@ const DB=[
 {cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0",gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec"}},
 {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
-
-/* ══ AUTH ══ */
-const SK="satija_users",SS="satija_session";
-const defUsers=[
-{id:"u1",name:"Admin",username:"admin",password:"admin@123",role:"Admin",deptAccess:["All"],processAccess:[]},
-{id:"u2",name:"Neha",username:"neha",password:"neha@123",role:"Employee",deptAccess:["Sales","HR","Management"],processAccess:[]},
-{id:"u3",name:"Khushi",username:"khushi",password:"khushi@123",role:"Employee",deptAccess:["Sales","Purchase"],processAccess:[]},
-{id:"u4",name:"Mukesh",username:"mukesh",password:"mukesh@123",role:"Employee",deptAccess:["Sales","Purchase","Finance"],processAccess:[]},
-{id:"u5",name:"Preksha",username:"preksha",password:"preksha@123",role:"Admin",deptAccess:["All"],processAccess:[]}
-];
-function getUsers(){const s=localStorage.getItem(SK);if(!s){localStorage.setItem(SK,JSON.stringify(defUsers));return[...defUsers];}return JSON.parse(s);}
-function saveUsers(u){localStorage.setItem(SK,JSON.stringify(u));}
-function getSess(){const s=localStorage.getItem(SS);return s?JSON.parse(s):null;}
-function setSess(u){localStorage.setItem(SS,JSON.stringify(u));}
-function clearSess(){localStorage.removeItem(SS);}
-
-let loginRole="Employee";
-function setLoginRole(r){loginRole=r;document.getElementById('tabEmployee').classList.toggle('active',r==='Employee');document.getElementById('tabAdmin').classList.toggle('active',r==='Admin');document.getElementById('loginError').classList.remove('show');}
-function togglePwd(){const i=document.getElementById('loginPass'),ic=document.getElementById('pwdEye');if(i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}else{i.type='password';ic.className='fas fa-eye';}}
-
-function handleLogin(){
-    const u=document.getElementById('loginUser').value.trim().toLowerCase(),p=document.getElementById('loginPass').value;
-    const err=document.getElementById('loginError'),msg=document.getElementById('loginErrorMsg');
-    if(!u||!p){msg.textContent="Please enter both username and password.";err.classList.add('show');return;}
-    const users=getUsers(),found=users.find(x=>x.username.toLowerCase()===u&&x.password===p);
-    if(!found){msg.textContent="Invalid username or password.";err.classList.add('show');return;}
-    if(found.role!==loginRole){msg.textContent=`This account is ${found.role}, not ${loginRole}.`;err.classList.add('show');return;}
-    err.classList.remove('show');setSess(found);enterApp(found);
+ 
+/* ══ API HELPER ══ */
+async function api(action, payload) {
+    payload = payload || {};
+    payload.action = action;
+    const sess = getSess();
+    if (sess && sess.token) payload.token = sess.token;
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            redirect: "follow",
+            // text/plain avoids CORS preflight — works from GitHub Pages
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+        return await res.json();
+    } catch (e) {
+        return { ok: false, error: "Network error: " + e.message };
+    }
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!document.getElementById('loginOverlay').classList.contains('hidden'))handleLogin();});
-
-function handleLogout(){clearSess();document.getElementById('appContainer').classList.remove('visible');document.getElementById('loginOverlay').classList.remove('hidden');document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';document.getElementById('loginError').classList.remove('show');curView='cards';}
-
-let curUser=null,curCat='All',curView='cards';
-
-function enterApp(user){
-    curUser=user;
+ 
+/* ══ SESSION (only stores token + own user info) ══ */
+function getSess() { const s = localStorage.getItem(SS); return s ? JSON.parse(s) : null; }
+function setSess(o) { localStorage.setItem(SS, JSON.stringify(o)); }
+function clearSess() { localStorage.removeItem(SS); }
+ 
+let loginRole = "Employee";
+function setLoginRole(r) {
+    loginRole = r;
+    document.getElementById('tabEmployee').classList.toggle('active', r === 'Employee');
+    document.getElementById('tabAdmin').classList.toggle('active', r === 'Admin');
+    document.getElementById('loginError').classList.remove('show');
+}
+function togglePwd() {
+    const i = document.getElementById('loginPass'), ic = document.getElementById('pwdEye');
+    if (i.type === 'password') { i.type = 'text'; ic.className = 'fas fa-eye-slash'; }
+    else { i.type = 'password'; ic.className = 'fas fa-eye'; }
+}
+ 
+async function handleLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    const err = document.getElementById('loginError'), msg = document.getElementById('loginErrorMsg');
+    if (!u || !p) { msg.textContent = "Please enter username and password."; err.classList.add('show'); return; }
+    const btn = document.querySelector('.login-btn');
+    btn.disabled = true; btn.innerHTML = 'Signing in...';
+    const r = await api('login', { username: u, password: p });
+    btn.disabled = false; btn.innerHTML = 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i>';
+    if (!r.ok) { msg.textContent = r.error || "Login failed."; err.classList.add('show'); return; }
+    if (r.user.role !== loginRole) { msg.textContent = `This account is ${r.user.role}, not ${loginRole}.`; err.classList.add('show'); return; }
+    err.classList.remove('show');
+    setSess({ token: r.token, user: r.user });
+    if (r.user.mustChangePass) { showChangePassModal(); return; }
+    enterApp(r.user);
+}
+ 
+document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !document.getElementById('loginOverlay').classList.contains('hidden')) handleLogin();
+});
+ 
+function handleLogout() {
+    clearSess();
+    document.getElementById('appContainer').classList.remove('visible');
+    document.getElementById('loginOverlay').classList.remove('hidden');
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginError').classList.remove('show');
+    curView = 'cards';
+}
+ 
+/* ══ FORCE PASSWORD CHANGE ══ */
+function showChangePassModal() { document.getElementById('changePassModal').classList.add('show'); }
+async function submitChangePass() {
+    const np = document.getElementById('newPass').value;
+    const cp = document.getElementById('confirmPass').value;
+    const e = document.getElementById('changePassErr');
+    if (np.length < 6) { e.textContent = "Password must be at least 6 characters."; e.style.display = 'block'; return; }
+    if (np !== cp) { e.textContent = "Passwords do not match."; e.style.display = 'block'; return; }
+    const r = await api('changePass', { newPassword: np });
+    if (!r.ok) { e.textContent = r.error || "Failed to change password."; e.style.display = 'block'; return; }
+    const sess = getSess(); sess.user.mustChangePass = false; setSess(sess);
+    document.getElementById('changePassModal').classList.remove('show');
+    enterApp(sess.user);
+}
+ 
+let curUser = null, curCat = 'All', curView = 'cards';
+ 
+function enterApp(user) {
+    curUser = user;
     document.getElementById('loginOverlay').classList.add('hidden');
     document.getElementById('appContainer').classList.add('visible');
-    document.getElementById('sAvatar').textContent=user.name.charAt(0).toUpperCase();
-    document.getElementById('sName').textContent=user.name;
-    document.getElementById('sRole').textContent=user.role;
-    const isA=user.role==='Admin';
-    document.getElementById('adminNavLabel').style.display=isA?'':'none';
-    document.getElementById('adminNavBtn').style.display=isA?'':'none';
-    curCat='All';curView='cards';
+    document.getElementById('sAvatar').textContent = user.name.charAt(0).toUpperCase();
+    document.getElementById('sName').textContent = user.name;
+    document.getElementById('sRole').textContent = user.role;
+    const isA = user.role === 'Admin';
+    document.getElementById('adminNavLabel').style.display = isA ? '' : 'none';
+    document.getElementById('adminNavBtn').style.display = isA ? '' : 'none';
+    curCat = 'All'; curView = 'cards';
     setActive(document.querySelector('.menu-btn'));
     updateCounts();
     runFilter();
 }
-
-function hasDept(u,c){if(!u)return false;if(u.role==='Admin')return true;if(u.deptAccess.includes('All'))return true;return u.deptAccess.includes(c);}
-function hasProc(u,n){if(!u)return false;if(u.role==='Admin')return true;if(!u.processAccess||!u.processAccess.length)return true;return u.processAccess.includes(n);}
-
-function getCatClass(c){if(c==='My System')return 'My';return c;}
-function getCatLabel(c){if(c==='My System')return 'My System';return c;}
-
-function updateCounts(){
-    const cats={All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
-    DB.forEach(d=>{cats.All++;if(cats[d.cat]!==undefined)cats[d.cat]++;});
-    document.getElementById('cntAll').textContent=cats.All;
-    document.getElementById('cntSales').textContent=cats.Sales;
-    document.getElementById('cntPurchase').textContent=cats.Purchase;
-    document.getElementById('cntManagement').textContent=cats.Management;
-    document.getElementById('cntHR').textContent=cats.HR;
-    document.getElementById('cntFinance').textContent=cats.Finance;
-    document.getElementById('cntSupport').textContent=cats.Support;
-    document.getElementById('cntMy').textContent=cats['My System'];
+ 
+function hasDept(u, c) { if (!u) return false; if (u.role === 'Admin') return true; if (u.deptAccess.includes('All')) return true; return u.deptAccess.includes(c); }
+function hasProc(u, n) { if (!u) return false; if (u.role === 'Admin') return true; if (!u.processAccess || !u.processAccess.length) return true; return u.processAccess.includes(n); }
+ 
+function getCatClass(c) { if (c === 'My System') return 'My'; return c; }
+function getCatLabel(c) { if (c === 'My System') return 'My System'; return c; }
+ 
+function updateCounts() {
+    const cats = { All: 0, Sales: 0, Purchase: 0, Management: 0, HR: 0, Finance: 0, Support: 0, 'My System': 0 };
+    DB.forEach(d => { cats.All++; if (cats[d.cat] !== undefined) cats[d.cat]++; });
+    document.getElementById('cntAll').textContent = cats.All;
+    document.getElementById('cntSales').textContent = cats.Sales;
+    document.getElementById('cntPurchase').textContent = cats.Purchase;
+    document.getElementById('cntManagement').textContent = cats.Management;
+    document.getElementById('cntHR').textContent = cats.HR;
+    document.getElementById('cntFinance').textContent = cats.Finance;
+    document.getElementById('cntSupport').textContent = cats.Support;
+    document.getElementById('cntMy').textContent = cats['My System'];
 }
-
-const box=document.getElementById('cardBox'),hdr=document.getElementById('pageHeader');
-
-function renderCards(data){
-    box.innerHTML="";
-    if(!data.length){box.innerHTML=`<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>`;return;}
-    data.forEach((it,i)=>{
-        const ok=hasDept(curUser,it.cat)&&hasProc(curUser,it.name);
-        const dc=ok?'':' disabled-link';
-        const mb=(url,cls,ico,lbl)=>{
-            if(!url)return'';
-            return `<a href="${ok?url:'#'}" ${ok?'target="_blank"':''} class="btn ${cls}${dc}" ${!ok?'onclick="return false;"':''}><i class="${ico}"></i> ${lbl}${!ok?'<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>':''}</a>`;
+ 
+const box = document.getElementById('cardBox'), hdr = document.getElementById('pageHeader');
+ 
+function renderCards(data) {
+    box.innerHTML = "";
+    if (!data.length) { box.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>`; return; }
+    data.forEach((it, i) => {
+        const ok = hasDept(curUser, it.cat) && hasProc(curUser, it.name);
+        const dc = ok ? '' : ' disabled-link';
+        const mb = (url, cls, ico, lbl) => {
+            if (!url) return '';
+            return `<a href="${ok ? url : '#'}" ${ok ? 'target="_blank"' : ''} class="btn ${cls}${dc}" ${!ok ? 'onclick="return false;"' : ''}><i class="${ico}"></i> ${lbl}${!ok ? '<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>' : ''}</a>`;
         };
-        let btns='';
-        btns+=mb(it.links.fms,'btn-fms','fas fa-table-cells','FMS');
-        btns+=mb(it.links.form,'btn-form','fab fa-google-drive','Form');
-        btns+=mb(it.links.sheet,'btn-sheet','fas fa-file-spreadsheet','Sheet');
-        btns+=mb(it.links.check,'btn-check','fas fa-square-check','Checklist');
-        btns+=mb(it.links.video,'btn-video','fas fa-circle-play','Training');
-        btns+=mb(it.links.videoBCI,'btn-video','fas fa-circle-play','Training (BCI)');
-        btns+=mb(it.links.dashEmp,'btn-dash','fas fa-chart-pie','Emp Dashboard');
-        btns+=mb(it.links.dashPC,'btn-dash','fas fa-chart-line','PC Dashboard');
-        btns+=mb(it.links.admin,'btn-admin','fas fa-user-gear','Admin Panel');
-        btns+=mb(it.links.gpDash,'btn-gp','fas fa-chart-column','GP Dashboard');
-        if(!btns)btns='<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;">No Links</div>';
-        let badges='';
-        if(it.pc&&it.pc!=="-")badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
-        if(it.solver&&it.solver!=="-")badges+=`<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
-        if(it.exec&&it.exec!=="-")badges+=`<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
-        const cc=getCatClass(it.cat);
-        box.innerHTML+=`<div class="card cat-${cc}" style="animation-delay:${i*.03}s;${!ok?'opacity:.5;':''}"><span class="card-tag tag-${cc}">${getCatLabel(it.cat)}</span><h3>${it.name}</h3><div class="people">${badges}</div><div class="actions">${btns}</div></div>`;
+        let btns = '';
+        btns += mb(it.links.fms, 'btn-fms', 'fas fa-table-cells', 'FMS');
+        btns += mb(it.links.form, 'btn-form', 'fab fa-google-drive', 'Form');
+        btns += mb(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'Sheet');
+        btns += mb(it.links.check, 'btn-check', 'fas fa-square-check', 'Checklist');
+        btns += mb(it.links.video, 'btn-video', 'fas fa-circle-play', 'Training');
+        btns += mb(it.links.videoBCI, 'btn-video', 'fas fa-circle-play', 'Training (BCI)');
+        btns += mb(it.links.dashEmp, 'btn-dash', 'fas fa-chart-pie', 'Emp Dashboard');
+        btns += mb(it.links.dashPC, 'btn-dash', 'fas fa-chart-line', 'PC Dashboard');
+        btns += mb(it.links.admin, 'btn-admin', 'fas fa-user-gear', 'Admin Panel');
+        btns += mb(it.links.gpDash, 'btn-gp', 'fas fa-chart-column', 'GP Dashboard');
+        if (!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;">No Links</div>';
+        let badges = '';
+        if (it.pc && it.pc !== "-") badges += `<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
+        if (it.solver && it.solver !== "-") badges += `<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
+        if (it.exec && it.exec !== "-") badges += `<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+        const cc = getCatClass(it.cat);
+        box.innerHTML += `<div class="card cat-${cc}" style="animation-delay:${i * .03}s;${!ok ? 'opacity:.5;' : ''}"><span class="card-tag tag-${cc}">${getCatLabel(it.cat)}</span><h3>${it.name}</h3><div class="people">${badges}</div><div class="actions">${btns}</div></div>`;
     });
 }
-
-function setActive(el){document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');}
-
-function filterCat(cat,el){
-    curCat=cat;curView='cards';setActive(el);
-    const labels={All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
-    hdr.innerText=labels[cat]||cat;
-    box.style.display='';
+ 
+function setActive(el) { document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); if (el) el.classList.add('active'); }
+ 
+function filterCat(cat, el) {
+    curCat = cat; curView = 'cards'; setActive(el);
+    const labels = { All: 'All Processes', Sales: 'Sales & CRM', Purchase: 'Purchase & Inventory', Management: 'Management (MIS)', HR: 'HR & Admin', Finance: 'Finance & Accounts', Support: 'Help & Support', 'My System': 'Google Site' };
+    hdr.innerText = labels[cat] || cat;
+    box.style.display = '';
     document.getElementById('adminPanel').classList.remove('visible');
-    document.getElementById('searchWrap').style.display='';
+    document.getElementById('searchWrap').style.display = '';
     runFilter();
 }
-
-function searchCards(){runFilter();}
-function runFilter(){
-    const raw=document.getElementById('searchInput').value.toLowerCase();
-    const terms=raw.split(" ").filter(t=>t.trim());
-    const filtered=DB.filter(it=>{
-        const mc=curCat==='All'||it.cat===curCat;
-        const txt=`${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
-        return mc&&terms.every(t=>txt.includes(t));
+ 
+function searchCards() { runFilter(); }
+function runFilter() {
+    const raw = document.getElementById('searchInput').value.toLowerCase();
+    const terms = raw.split(" ").filter(t => t.trim());
+    const filtered = DB.filter(it => {
+        const mc = curCat === 'All' || it.cat === curCat;
+        const txt = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
+        return mc && terms.every(t => txt.includes(t));
     });
     renderCards(filtered);
 }
-
+ 
 /* ══ ADMIN ══ */
-function showAdmin(el){
-    if(!curUser||curUser.role!=='Admin')return;
-    curView='admin';setActive(el);hdr.innerText='User Management';
-    box.style.display='none';document.getElementById('adminPanel').classList.add('visible');document.getElementById('searchWrap').style.display='none';
+let cachedUsers = [];
+async function showAdmin(el) {
+    if (!curUser || curUser.role !== 'Admin') return;
+    curView = 'admin'; setActive(el); hdr.innerText = 'User Management';
+    box.style.display = 'none';
+    document.getElementById('adminPanel').classList.add('visible');
+    document.getElementById('searchWrap').style.display = 'none';
+    await loadUsers();
+}
+async function loadUsers() {
+    const r = await api('listUsers');
+    if (!r.ok) { alert(r.error || 'Failed to load users'); return; }
+    cachedUsers = r.users;
     renderTable();
 }
-function renderTable(){
-    const users=getUsers(),tb=document.getElementById('tblBody');tb.innerHTML='';
-    users.forEach(u=>{
-        const dp=u.deptAccess.map(d=>`<span class="ap ap-${d}">${d==='Management'?'MIS':d}</span>`).join('');
-        const pp=(u.processAccess&&u.processAccess.length)?u.processAccess.map(p=>`<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', '):'<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
-        tb.innerHTML+=`<tr><td><strong>${u.username}</strong></td><td>${u.name}</td><td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td><td><div class="access-pills">${dp}</div></td><td>${pp}</td><td><button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>${u.id!==curUser.id?`<button class="tbl-act delete" onclick="deleteUser('${u.id}')" title="Delete"><i class="fas fa-trash-can"></i></button>`:''}</td></tr>`;
+function renderTable() {
+    const tb = document.getElementById('tblBody'); tb.innerHTML = '';
+    cachedUsers.forEach(u => {
+        const dp = u.deptAccess.map(d => `<span class="ap ap-${d}">${d === 'Management' ? 'MIS' : d}</span>`).join('');
+        const pp = (u.processAccess && u.processAccess.length) ? u.processAccess.map(p => `<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', ') : '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
+        tb.innerHTML += `<tr><td><strong>${u.username}</strong></td><td>${u.name}</td><td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td><td><div class="access-pills">${dp}</div></td><td>${pp}</td><td><button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>${u.id !== curUser.id ? `<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete"><i class="fas fa-trash-can"></i></button>` : ''}</td></tr>`;
     });
 }
-
-function openModal(uid){
-    document.getElementById('editUserId').value='';
-    document.getElementById('mName').value='';document.getElementById('mUser').value='';document.getElementById('mPass').value='';
-    document.getElementById('mRole').value='Employee';document.getElementById('modalTitle').textContent='Add New User';
-    document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{p.classList.remove('checked');p.querySelector('input').checked=false;});
+ 
+function openModal(uid) {
+    document.getElementById('editUserId').value = '';
+    document.getElementById('mName').value = '';
+    document.getElementById('mUser').value = '';
+    document.getElementById('mPass').value = '';
+    document.getElementById('mPass').placeholder = 'Enter password';
+    document.getElementById('mRole').value = 'Employee';
+    document.getElementById('modalTitle').textContent = 'Add New User';
+    document.querySelectorAll('#deptChks .chk-pill').forEach(p => { p.classList.remove('checked'); p.querySelector('input').checked = false; });
     buildProcList();
-    if(uid){
-        const u=getUsers().find(x=>x.id===uid);
-        if(u){document.getElementById('editUserId').value=u.id;document.getElementById('mName').value=u.name;document.getElementById('mUser').value=u.username;document.getElementById('mPass').value=u.password;document.getElementById('mRole').value=u.role;document.getElementById('modalTitle').textContent='Edit User';
-        document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(u.deptAccess.includes(p.dataset.val)){p.classList.add('checked');p.querySelector('input').checked=true;}});
-        if(u.processAccess&&u.processAccess.length)document.querySelectorAll('#procList input[type=checkbox]').forEach(cb=>{if(u.processAccess.includes(cb.value))cb.checked=true;});}
+    if (uid) {
+        const u = cachedUsers.find(x => x.id === uid);
+        if (u) {
+            document.getElementById('editUserId').value = u.id;
+            document.getElementById('mName').value = u.name;
+            document.getElementById('mUser').value = u.username;
+            document.getElementById('mPass').placeholder = '(leave blank to keep current)';
+            document.getElementById('mRole').value = u.role;
+            document.getElementById('modalTitle').textContent = 'Edit User';
+            document.querySelectorAll('#deptChks .chk-pill').forEach(p => { if (u.deptAccess.includes(p.dataset.val)) { p.classList.add('checked'); p.querySelector('input').checked = true; } });
+            if (u.processAccess && u.processAccess.length) document.querySelectorAll('#procList input[type=checkbox]').forEach(cb => { if (u.processAccess.includes(cb.value)) cb.checked = true; });
+        }
     }
-    onRoleChange();document.getElementById('userModal').classList.add('show');
+    onRoleChange();
+    document.getElementById('userModal').classList.add('show');
 }
-function editUser(id){openModal(id);}
-function closeModal(){document.getElementById('userModal').classList.remove('show');}
-function onRoleChange(){const r=document.getElementById('mRole').value;document.getElementById('deptField').style.display=r==='Admin'?'none':'';document.getElementById('procField').style.display=r==='Admin'?'none':'';}
-function toggleChk(el){setTimeout(()=>{const cb=el.querySelector('input');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);if(el.dataset.val==='All'&&cb.checked)document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(p.dataset.val!=='All'){p.classList.remove('checked');p.querySelector('input').checked=false;}});else if(el.dataset.val!=='All'&&cb.checked){const a=document.querySelector('#deptChks .chk-pill[data-val="All"]');a.classList.remove('checked');a.querySelector('input').checked=false;}},0);}
-function buildProcList(){const el=document.getElementById('procList');el.innerHTML='';DB.forEach(it=>{el.innerHTML+=`<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`;});}
-
-function saveUser(){
-    const id=document.getElementById('editUserId').value,name=document.getElementById('mName').value.trim();
-    const username=document.getElementById('mUser').value.trim().toLowerCase(),password=document.getElementById('mPass').value,role=document.getElementById('mRole').value;
-    if(!name||!username||!password){alert('Fill all required fields.');return;}
-    let deptAccess=[];
-    if(role==='Admin')deptAccess=['All'];
-    else{document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));if(!deptAccess.length){alert('Select at least one department.');return;}}
-    let processAccess=[];document.querySelectorAll('#procList input:checked').forEach(cb=>processAccess.push(cb.value));
-    const users=getUsers();if(users.find(u=>u.username.toLowerCase()===username&&u.id!==id)){alert('Username already exists.');return;}
-    if(id){const idx=users.findIndex(u=>u.id===id);if(idx!==-1){users[idx]={...users[idx],name,username,password,role,deptAccess,processAccess};if(curUser.id===id){curUser=users[idx];setSess(curUser);document.getElementById('sAvatar').textContent=name.charAt(0).toUpperCase();document.getElementById('sName').textContent=name;document.getElementById('sRole').textContent=role;}}}
-    else users.push({id:'u'+Date.now(),name,username,password,role,deptAccess,processAccess});
-    saveUsers(users);closeModal();renderTable();
+function editUser(id) { openModal(id); }
+function closeModal() { document.getElementById('userModal').classList.remove('show'); }
+function onRoleChange() { const r = document.getElementById('mRole').value; document.getElementById('deptField').style.display = r === 'Admin' ? 'none' : ''; document.getElementById('procField').style.display = r === 'Admin' ? 'none' : ''; }
+function toggleChk(el) { setTimeout(() => { const cb = el.querySelector('input'); cb.checked = !cb.checked; el.classList.toggle('checked', cb.checked); if (el.dataset.val === 'All' && cb.checked) document.querySelectorAll('#deptChks .chk-pill').forEach(p => { if (p.dataset.val !== 'All') { p.classList.remove('checked'); p.querySelector('input').checked = false; } }); else if (el.dataset.val !== 'All' && cb.checked) { const a = document.querySelector('#deptChks .chk-pill[data-val="All"]'); a.classList.remove('checked'); a.querySelector('input').checked = false; } }, 0); }
+function buildProcList() { const el = document.getElementById('procList'); el.innerHTML = ''; DB.forEach(it => { el.innerHTML += `<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`; }); }
+ 
+async function saveUser() {
+    const id = document.getElementById('editUserId').value;
+    const name = document.getElementById('mName').value.trim();
+    const username = document.getElementById('mUser').value.trim().toLowerCase();
+    const password = document.getElementById('mPass').value;
+    const role = document.getElementById('mRole').value;
+    if (!name || !username) { alert('Fill all required fields.'); return; }
+    if (!id && !password) { alert('Password is required for new users.'); return; }
+    let deptAccess = [];
+    if (role === 'Admin') deptAccess = ['All'];
+    else { document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p => deptAccess.push(p.dataset.val)); if (!deptAccess.length) { alert('Select at least one department.'); return; } }
+    let processAccess = [];
+    document.querySelectorAll('#procList input:checked').forEach(cb => processAccess.push(cb.value));
+    const payload = { id, name, username, role, deptAccess, processAccess };
+    if (password) payload.password = password;
+    const r = await api('saveUser', { user: payload });
+    if (!r.ok) { alert(r.error || 'Save failed'); return; }
+    closeModal();
+    await loadUsers();
 }
-function deleteUser(id){if(!confirm('Delete this user?'))return;saveUsers(getUsers().filter(u=>u.id!==id));renderTable();}
-
+ 
+async function deleteUserAct(id) {
+    if (!confirm('Delete this user?')) return;
+    const r = await api('deleteUser', { id });
+    if (!r.ok) { alert(r.error || 'Delete failed'); return; }
+    await loadUsers();
+}
+ 
 /* ══ INIT ══ */
-(function(){const s=getSess();if(s){const u=getUsers().find(x=>x.id===s.id&&x.password===s.password);if(u){enterApp(u);return;}}document.getElementById('loginOverlay').classList.remove('hidden');})();
+(async function () {
+    const s = getSess();
+    if (s && s.token) {
+        // Validate token by trying a lightweight call
+        const r = await api('listUsers').catch(() => null);
+        if (r && (r.ok || r.error === 'Admin only')) {
+            // token is valid
+            enterApp(s.user);
+            return;
+        }
+        clearSess();
+    }
+    document.getElementById('loginOverlay').classList.remove('hidden');
+})();
 </script>
+ 
 </body>
 </html>
