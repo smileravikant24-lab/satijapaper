@@ -145,7 +145,73 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-state{text-align:center;color:#fff;padding:40px}
 .loading-state .spinner{margin-bottom:16px}
-@media(max-width:768px){.sidebar{display:none}.header-bar{padding:10px 14px}.content{padding:14px}.grid{grid-template-columns:1fr}.login-card{width:92%;padding:28px 20px}.search-wrap{width:180px}}
+
+.mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:20px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:8px}
+.mobile-menu-btn:hover{background:var(--bg)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:998;backdrop-filter:blur(2px)}
+.sidebar-overlay.show{display:block;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:1024px){
+  :root{--sidebar-w:240px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .content{padding:18px 20px 60px}
+  .header-bar{padding:12px 20px}
+  .search-wrap{width:220px}
+}
+
+@media(max-width:768px){
+  .mobile-menu-btn{display:inline-block}
+  .sidebar{position:fixed;left:-280px;top:0;bottom:0;z-index:999;width:280px;transition:left .3s var(--ease);box-shadow:4px 0 24px rgba(0,0,0,.2)}
+  .sidebar.open{left:0}
+  .header-bar{padding:12px 14px;gap:8px}
+  .page-title{font-size:15px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .header-right{flex-shrink:0}
+  .search-wrap{width:auto}
+  .search-box{width:38px;padding:9px;transition:width .3s var(--ease);cursor:pointer}
+  .search-box:focus{width:200px;padding:9px 14px 9px 36px;cursor:text}
+  .search-icon{pointer-events:none}
+  .content{padding:14px 12px 80px}
+  .grid{grid-template-columns:1fr;gap:12px}
+  .card{padding:16px}
+  .card h3{font-size:14px}
+  .actions{grid-template-columns:repeat(2,1fr);gap:6px}
+  .btn{font-size:10.5px;padding:8px 4px}
+  .login-card{width:92%;padding:32px 24px;border-radius:20px}
+  .login-logo{width:64px;height:64px}
+  .login-brand h1{font-size:20px}
+  .login-input{padding:14px 14px 14px 42px;font-size:14px}
+  .login-btn{padding:14px;font-size:14px}
+  .modal-box{width:94%;border-radius:16px;max-height:88vh}
+  .modal-body{padding:18px}
+  .chk-group{gap:6px}
+  .chk-pill{font-size:11.5px;padding:8px 12px}
+  .proc-list{grid-template-columns:1fr}
+  .admin-top{flex-direction:column;align-items:stretch;gap:12px}
+  .add-btn{justify-content:center}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl{min-width:600px}
+  .tbl th,.tbl td{padding:10px 12px;font-size:11.5px}
+  .badge{font-size:10.5px;padding:5px 9px}
+  .role-l{font-size:8.5px}
+}
+
+
+@media(max-width:400px){
+  .login-card{padding:24px 18px}
+  .login-brand{margin-bottom:24px}
+  .actions{grid-template-columns:1fr}
+  .header-bar{padding:10px 12px}
+  .page-title{font-size:14px}
+}
+
+
+@media(hover:none){
+  .menu-btn{padding:14px 22px}
+  .btn{min-height:36px}
+  .sidebar-logout{padding:10px;font-size:17px}
+  .tbl-act{padding:8px 10px;font-size:15px}
+}
 </style>
 </head>
 <body>
@@ -210,8 +276,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
   <div class="main-content">
     <div class="header-bar">
+      <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
       <h2 class="page-title" id="pageHeader">All Processes</h2>
-      <div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div>
+      <div class="header-right"><div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div></div>
     </div>
     <div class="content">
       <div class="grid" id="cardBox"></div>
@@ -223,6 +290,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
   </div>
 </div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
@@ -248,6 +316,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
+<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -285,7 +354,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-const ADMIN_EMAIL_FALLBACK = "smileravikant24@gmail.com"; // change to YOUR admin email
+const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com"; 
 
 const DB = [
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
@@ -340,7 +409,7 @@ async function handleLogin(){
   setLoginLoading(true);
   try{
     await window.fbFns.signIn(window.fbAuth, e, p);
-   
+    
   }catch(err){
     setLoginLoading(false);
     let msg = "Login failed.";
@@ -366,7 +435,7 @@ async function forgotPass(){
 
 async function handleLogout(){
   await window.fbFns.signOut(window.fbAuth);
- 
+
 }
 
 document.addEventListener('keydown', e => {
@@ -394,7 +463,7 @@ async function loadProfile(fbUser){
       processAccess: Array.isArray(d.processAccess) ? d.processAccess : []
     };
   }
- 
+  // Auto-create profile for first login
   const isFirstAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
   const profile = {
     email: fbUser.email.toLowerCase(),
@@ -483,7 +552,20 @@ function renderCards(data){
 
 function setActive(el){document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');}
 
+function toggleSidebar(){
+  const sb=document.querySelector('.sidebar'), ov=$('sidebarOverlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function closeSidebarMobile(){
+  if(window.innerWidth<=768){
+    document.querySelector('.sidebar').classList.remove('open');
+    $('sidebarOverlay').classList.remove('show');
+  }
+}
+
 function filterCat(cat,el){
+  closeSidebarMobile();
   curCat=cat;curView='cards';setActive(el);
   const labels={All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
   hdr().innerText=labels[cat]||cat;
@@ -504,9 +586,9 @@ function runFilter(){
   renderCards(filtered);
 }
 
-
 async function showAdmin(el){
   if(!curUser||curUser.role!=='Admin')return;
+  closeSidebarMobile();
   curView='admin';setActive(el);hdr().innerText='User Management';
   box().style.display='none';
   $('adminPanel').classList.add('visible');
@@ -597,7 +679,6 @@ async function deleteUserAct(id){
   catch(e){alert('Delete failed: '+e.message);}
 }
 
-
 window.addEventListener('firebaseReady', () => {
   $('loginForm').style.display='none';
   $('loadingState').style.display='';
@@ -619,7 +700,7 @@ window.addEventListener('firebaseReady', () => {
 });
 
 
-window.handleLogin=handleLogin;window.handleLogout=handleLogout;window.togglePwd=togglePwd;window.forgotPass=forgotPass;
+window.toggleSidebar=toggleSidebar;window.handleLogin=handleLogin;window.handleLogout=handleLogout;window.togglePwd=togglePwd;window.forgotPass=forgotPass;
 window.filterCat=filterCat;window.runFilter=runFilter;window.showAdmin=showAdmin;
 window.openModal=openModal;window.closeModal=closeModal;window.editUser=editUser;window.deleteUserAct=deleteUserAct;
 window.onRoleChange=onRoleChange;window.toggleChk=toggleChk;window.saveUser=saveUser;
