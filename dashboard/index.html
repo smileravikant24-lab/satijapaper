@@ -414,7 +414,6 @@ function setLoginLoading(on) {
         ? '<i class="fas fa-circle-notch fa-spin" style="margin-right:6px;"></i>Signing in...'
         : 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i>';
 }
-
 async function handleLogin() {
     clearLoginError();
     const u = document.getElementById('loginUser').value.trim();
@@ -431,22 +430,26 @@ async function handleLogin() {
         return;
     }
 
+    // Defensive: ensure arrays (in case backend returns strings)
+    if (typeof r.user.deptAccess === 'string')    { try { r.user.deptAccess = JSON.parse(r.user.deptAccess); } catch(e){ r.user.deptAccess = []; } }
+    if (typeof r.user.processAccess === 'string') { try { r.user.processAccess = JSON.parse(r.user.processAccess); } catch(e){ r.user.processAccess = []; } }
+    if (!Array.isArray(r.user.deptAccess))    r.user.deptAccess = [];
+    if (!Array.isArray(r.user.processAccess)) r.user.processAccess = [];
+
     setSess({ token: r.token, user: r.user });
 
     if (r.user.mustChangePass) {
         showChangePassModal();
         return;
     }
-    enterApp(r.user);
-}
-
-// Enter key triggers login
-document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-        const overlay = document.getElementById('loginOverlay');
-        if (!overlay.classList.contains('hidden')) handleLogin();
+    
+    try {
+        enterApp(r.user);
+    } catch(err) {
+        showLoginError("Error loading app: " + err.message);
+        console.error(err);
     }
-});
+}
 
 function handleLogout() {
     clearSess();
