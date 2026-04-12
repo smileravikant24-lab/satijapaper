@@ -1,321 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satija Paper - System Master</title>
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0c1a2b;
-            --primary-light: #162d4a;
-            --accent: #0066ff;
-            --accent-light: #4d94ff;
-            --accent-glow: rgba(0, 102, 255, 0.12);
-            --bg: #f4f6f9;
-            --bg-card: #ffffff;
-            --sidebar-w: 264px;
-            --text: #0f1d2e;
-            --text-2: #5a6a7e;
-            --text-3: #94a3b8;
-            --border: #e4e8ee;
-            --ok: #00c48c;
-            --warn: #f5a623;
-            --danger: #ff4757;
-            --purple: #7c3aed;
-            --r: 12px;
-            --shadow-s: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow-m: 0 4px 16px rgba(0,0,0,0.06);
-            --shadow-l: 0 16px 48px rgba(0,0,0,0.1);
-            --ease: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;}
-
-        /* ── LOGIN ── */
-        .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a 0%,#0f1f38 50%,#070e1a 100%);}
-        .login-overlay.hidden{display:none;}
-        .login-bg{position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(0,102,255,.08),transparent 55%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.06),transparent 50%);animation:bgPulse 12s ease-in-out infinite alternate;}
-        @keyframes bgPulse{0%{opacity:.5}100%{opacity:1}}
-        .login-card{position:relative;width:420px;background:rgba(255,255,255,.03);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:48px 40px;animation:cardUp .6s var(--ease);}
-        @keyframes cardUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
-        .login-brand{text-align:center;margin-bottom:36px;}
-        .login-logo{width:80px;height:80px;border-radius:18px;object-fit:contain;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);background:rgba(255,255,255,.05);padding:4px;}
-        .login-brand h1{font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1.5px;}
-        .login-brand-url{font-size:11px;color:var(--accent-light);margin-top:4px;letter-spacing:.5px;}
-        .login-brand-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px;font-weight:600;}
-        .login-role-tabs{display:flex;gap:6px;margin-bottom:28px;background:rgba(255,255,255,.05);border-radius:14px;padding:4px;}
-        .login-role-tab{flex:1;padding:12px;border:none;background:0;color:rgba(255,255,255,.45);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:11px;transition:.25s var(--ease);display:flex;align-items:center;justify-content:center;gap:7px;}
-        .login-role-tab.active{background:var(--accent);color:#fff;box-shadow:0 4px 18px rgba(0,102,255,.35);}
-        .login-role-tab:hover:not(.active){color:rgba(255,255,255,.7);background:rgba(255,255,255,.07);}
-        .login-field{margin-bottom:18px;}
-        .login-field label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:7px;text-transform:uppercase;letter-spacing:.8px;}
-        .login-input-wrap{position:relative;}
-        .login-input-wrap>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.2);font-size:14px;}
-        .login-input{width:100%;padding:13px 16px 13px 44px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;font-size:13.5px;font-family:inherit;outline:0;transition:.25s var(--ease);}
-        .login-input::placeholder{color:rgba(255,255,255,.2);}
-        .login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.06);box-shadow:0 0 0 3px rgba(0,102,255,.12);}
-        .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#4338ca);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:8px;}
-        .login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.35);}
-        .login-btn:disabled{opacity:.7;cursor:not-allowed;}
-        .login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;align-items:center;gap:7px;}
-        .login-error.show{display:flex;}
-        .toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px;}
-        .restore-state{text-align:center;color:#fff;padding:20px;}
-        .restore-state i{font-size:32px;color:var(--accent-light);margin-bottom:16px;display:block;}
-        .restore-state .rt{font-size:14px;font-weight:700;letter-spacing:.5px;}
-        .restore-state .rs{font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;}
-
-        /* ── APP ── */
-        .app-container{display:none;height:100vh;}
-        .app-container.visible{display:flex;}
-        .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
-        .sidebar::-webkit-scrollbar{width:0;}
-        .brand-box{padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px;}
-        .brand-logo{width:60px;height:60px;border-radius:50%;object-fit:contain;padding:3px;box-shadow:0 4px 20px rgba(0,0,0,.2);}
-        .brand-text{color:#fff;font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:1.5px;margin-top:4px;}
-        .brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8;}
-        .brand-url:hover{opacity:1;text-decoration:underline;}
-        .sidebar-label{padding:18px 22px 6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,.22);}
-        .menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;position:relative;width:100%;}
-        .menu-btn i{width:18px;text-align:center;font-size:13px;transition:.2s;}
-        .menu-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85);}
-        .menu-btn.active{background:rgba(0,102,255,.12);color:var(--accent-light);border-left-color:var(--accent-light);}
-        .menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:22px;text-align:center;}
-        .menu-btn.active .count-badge{background:rgba(0,102,255,.2);color:var(--accent-light);}
-        .sidebar-user{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
-        .sidebar-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;}
-        .sidebar-uinfo{flex:1;min-width:0;}
-        .sidebar-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-        .sidebar-urole{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
-        .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;padding:6px;border-radius:8px;transition:.2s;}
-        .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08);}
-        .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;}
-        .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
-        .page-title{font-size:18px;font-weight:800;color:var(--text);}
-        .header-right{display:flex;align-items:center;gap:14px;}
-        .search-wrap{position:relative;width:260px;}
-        .search-box{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:10px;width:100%;outline:0;transition:.25s var(--ease);font-size:12.5px;font-family:inherit;background:var(--bg);}
-        .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow);}
-        .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;}
-        .content{padding:22px 28px 60px;flex:1;}
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;}
-        .card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.25s var(--ease);animation:fadeUp .4s var(--ease) both;position:relative;overflow:hidden;}
-        .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-        .card.cat-Sales::before{background:linear-gradient(90deg,#0066ff,#4d94ff);}
-        .card.cat-Purchase::before{background:linear-gradient(90deg,#00c48c,#66e0bb);}
-        .card.cat-Management::before{background:linear-gradient(90deg,#f5a623,#ffc870);}
-        .card.cat-HR::before{background:linear-gradient(90deg,#7c3aed,#a78bfa);}
-        .card.cat-Finance::before{background:linear-gradient(90deg,#ff4757,#ff8a96);}
-        .card.cat-Support::before{background:linear-gradient(90deg,#06b6d4,#67e8f9);}
-        .card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc);}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-        .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);}
-        .card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px;}
-        .tag-Sales{background:#e8f0ff;color:#0052cc;}.tag-Purchase{background:#e6faf3;color:#00795c;}.tag-Management{background:#fff5e0;color:#8a5d00;}.tag-HR{background:#f3e8ff;color:#5b21b6;}.tag-Finance{background:#ffe8ea;color:#c41432;}.tag-Support{background:#e0f7fa;color:#0277bd;}.tag-My{background:#f0e6ff;color:#6d28d9;}
-        .card h3{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.3;}
-        .people{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-        .role-g{display:flex;flex-direction:column;gap:2px;}
-        .role-l{font-size:8px;text-transform:uppercase;color:var(--text-3);font-weight:800;letter-spacing:.6px;margin-left:2px;}
-        .badge{padding:4px 9px;border-radius:6px;background:var(--bg);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;}
-        .badge i{font-size:10px;}
-        .b-pc{border-left:3px solid var(--purple);}.b-pc i{color:var(--purple);}
-        .b-sv{border-left:3px solid var(--warn);}.b-sv i{color:var(--warn);}
-        .b-ex{border-left:3px solid var(--ok);}.b-ex i{color:var(--ok);}
-        .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:auto;}
-        .btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;transition:.2s var(--ease);font-family:inherit;position:relative;}
-        .btn:hover{filter:brightness(.92);transform:translateY(-1px);}
-        .btn-fms{background:#e8f0ff;color:#0052cc;}.btn-form{background:#f3e8ff;color:#5b21b6;}.btn-sheet{background:#e6faf3;color:#00795c;}.btn-check{background:#fff0e0;color:#8a4500;}.btn-video{background:#ffe8ea;color:#b91c1c;}.btn-dash{background:#e0f2fe;color:#0369a1;}.btn-admin{background:#fef3c7;color:#92400e;}.btn-gp{background:#ede9fe;color:#5b21b6;}
-        .btn.disabled-link{opacity:.3;pointer-events:none;cursor:not-allowed;}
-        .lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;font-size:8px;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:700;letter-spacing:.3px;}
-        .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
-        .empty-state i{font-size:32px;margin-bottom:10px;display:block;opacity:.5;}
-        .admin-panel{display:none;}
-        .admin-panel.visible{display:block;}
-        .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
-        .admin-top h3{font-size:17px;font-weight:800;}
-        .add-btn{padding:10px 20px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.25s var(--ease);}
-        .add-btn:hover{background:#0052cc;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,102,255,.25);}
-        .tbl-wrap{background:var(--bg-card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-s);}
-        .tbl{width:100%;border-collapse:collapse;}
-        .tbl th{background:var(--bg);padding:11px 16px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-2);border-bottom:1px solid var(--border);}
-        .tbl td{padding:12px 16px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text);}
-        .tbl tr:last-child td{border-bottom:0;}
-        .tbl tr:hover td{background:#f8fafc;}
-        .role-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;}
-        .role-pill.admin{background:#ffe8ea;color:#b91c1c;}.role-pill.employee{background:#e8f0ff;color:#0052cc;}
-        .access-pills{display:flex;flex-wrap:wrap;gap:3px;}
-        .ap{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;}
-        .ap-Sales{background:#e8f0ff;color:#0052cc;}.ap-Purchase{background:#e6faf3;color:#00795c;}.ap-Management{background:#fff5e0;color:#8a5d00;}.ap-HR{background:#f3e8ff;color:#5b21b6;}.ap-Finance{background:#ffe8ea;color:#c41432;}.ap-All{background:var(--primary);color:#fff;}
-        .tbl-act{background:0;border:0;cursor:pointer;padding:5px 7px;border-radius:6px;transition:.2s;font-size:13px;}
-        .tbl-act:hover{background:var(--bg);}
-        .tbl-act.edit{color:var(--accent);}.tbl-act.delete{color:var(--danger);}
-        .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center;}
-        .modal-bg.show{display:flex;}
-        .modal-box{background:#fff;border-radius:18px;width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .3s var(--ease);}
-        @keyframes modalUp{from{transform:translateY(16px) scale(.97);opacity:0}to{transform:none;opacity:1}}
-        .modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);}
-        .modal-head h3{font-size:16px;font-weight:800;}
-        .modal-x{background:0;border:0;font-size:16px;color:var(--text-3);cursor:pointer;padding:4px 8px;border-radius:8px;transition:.2s;}
-        .modal-x:hover{background:var(--bg);color:var(--text);}
-        .modal-body{padding:22px;}
-        .mf{margin-bottom:16px;}
-        .mf label{display:block;font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
-        .mf input,.mf select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:0;transition:.25s;background:#fff;}
-        .mf input:focus,.mf select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
-        .chk-group{display:flex;flex-wrap:wrap;gap:7px;}
-        .chk-pill{display:flex;align-items:center;gap:5px;padding:7px 13px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:.2s;font-size:12px;font-weight:600;user-select:none;}
-        .chk-pill:hover{border-color:var(--accent);background:var(--accent-glow);}
-        .chk-pill.checked{background:var(--accent);color:#fff;border-color:var(--accent);}
-        .chk-pill input{display:none;}
-        .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
-        .mbtn{padding:9px 20px;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.2s;}
-        .mbtn.sec{background:var(--bg);color:var(--text-2);}.mbtn.sec:hover{background:#e2e8f0;}
-        .mbtn.pri{background:var(--accent);color:#fff;}.mbtn.pri:hover{background:#0052cc;}
-        .proc-section{margin-top:4px;}
-        .proc-section summary{cursor:pointer;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;padding:5px 0;user-select:none;}
-        .proc-section summary:hover{color:var(--accent);}
-        .proc-list{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;max-height:200px;overflow-y:auto;padding:3px;}
-        .proc-item{display:flex;align-items:center;gap:5px;font-size:11px;padding:5px 7px;border-radius:6px;cursor:pointer;transition:.2s;}
-        .proc-item:hover{background:var(--bg);}
-        .proc-item input{accent-color:var(--accent);}
-
-        @media(max-width:768px){
-            .sidebar{display:none;}
-            .header-bar{padding:10px 14px;}
-            .content{padding:14px;}
-            .grid{grid-template-columns:1fr;}
-            .login-card{width:92%;padding:28px 20px;}
-            .search-wrap{width:180px;}
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satija Paper - System Master</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0c1a2b;--accent:#0066ff;--accent-light:#4d94ff;--accent-glow:rgba(0,102,255,.12);--bg:#f4f6f9;--bg-card:#fff;--sidebar-w:264px;--text:#0f1d2e;--text-2:#5a6a7e;--text-3:#94a3b8;--border:#e4e8ee;--ok:#00c48c;--warn:#f5a623;--danger:#ff4757;--purple:#7c3aed;--r:12px;--shadow-s:0 1px 3px rgba(0,0,0,.04);--shadow-m:0 4px 16px rgba(0,0,0,.06);--shadow-l:0 16px 48px rgba(0,0,0,.1);--ease:cubic-bezier(.4,0,.2,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
+.login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a,#0f1f38 50%,#070e1a)}
+.login-overlay.hidden{display:none}
+.login-bg{position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(0,102,255,.08),transparent 55%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.06),transparent 50%);animation:bgPulse 12s ease-in-out infinite alternate}
+@keyframes bgPulse{0%{opacity:.5}100%{opacity:1}}
+.login-card{position:relative;width:420px;background:rgba(255,255,255,.03);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:48px 40px;animation:cardUp .6s var(--ease)}
+@keyframes cardUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.login-brand{text-align:center;margin-bottom:36px}
+.login-logo{width:80px;height:80px;border-radius:18px;object-fit:contain;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);background:rgba(255,255,255,.05);padding:4px}
+.login-brand h1{font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1.5px}
+.login-brand-url{font-size:11px;color:var(--accent-light);margin-top:4px;letter-spacing:.5px}
+.login-brand-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px;font-weight:600}
+.login-field{margin-bottom:18px}
+.login-field label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:7px;text-transform:uppercase;letter-spacing:.8px}
+.login-input-wrap{position:relative}
+.login-input-wrap>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.2);font-size:14px}
+.login-input{width:100%;padding:13px 16px 13px 44px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;font-size:13.5px;font-family:inherit;outline:0;transition:.25s var(--ease)}
+.login-input::placeholder{color:rgba(255,255,255,.2)}
+.login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.06);box-shadow:0 0 0 3px rgba(0,102,255,.12)}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#4338ca);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:8px}
+.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.35)}
+.login-btn:disabled{opacity:.7;cursor:not-allowed}
+.login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;align-items:center;gap:7px}
+.login-error.show{display:flex}
+.toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px}
+.app-container{display:none;height:100vh}
+.app-container.visible{display:flex}
+.sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:0}
+.brand-box{padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px}
+.brand-logo{width:60px;height:60px;border-radius:50%;object-fit:contain;padding:3px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+.brand-text{color:#fff;font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:1.5px;margin-top:4px}
+.brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8}
+.sidebar-label{padding:18px 22px 6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,.22)}
+.menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;width:100%}
+.menu-btn i{width:18px;text-align:center;font-size:13px}
+.menu-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85)}
+.menu-btn.active{background:rgba(0,102,255,.12);color:var(--accent-light);border-left-color:var(--accent-light)}
+.menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:22px;text-align:center}
+.menu-btn.active .count-badge{background:rgba(0,102,255,.2);color:var(--accent-light)}
+.sidebar-user{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
+.sidebar-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.sidebar-uinfo{flex:1;min-width:0}
+.sidebar-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-urole{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;padding:6px;border-radius:8px;transition:.2s}
+.sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08)}
+.main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto}
+.header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.page-title{font-size:18px;font-weight:800}
+.search-wrap{position:relative;width:260px}
+.search-box{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:10px;width:100%;outline:0;transition:.25s var(--ease);font-size:12.5px;font-family:inherit;background:var(--bg)}
+.search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px}
+.content{padding:22px 28px 60px;flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.25s var(--ease);animation:fadeUp .4s var(--ease) both;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.card.cat-Sales::before{background:linear-gradient(90deg,#0066ff,#4d94ff)}
+.card.cat-Purchase::before{background:linear-gradient(90deg,#00c48c,#66e0bb)}
+.card.cat-Management::before{background:linear-gradient(90deg,#f5a623,#ffc870)}
+.card.cat-HR::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.card.cat-Finance::before{background:linear-gradient(90deg,#ff4757,#ff8a96)}
+.card.cat-Support::before{background:linear-gradient(90deg,#06b6d4,#67e8f9)}
+.card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m)}
+.card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px}
+.tag-Sales{background:#e8f0ff;color:#0052cc}.tag-Purchase{background:#e6faf3;color:#00795c}.tag-Management{background:#fff5e0;color:#8a5d00}.tag-HR{background:#f3e8ff;color:#5b21b6}.tag-Finance{background:#ffe8ea;color:#c41432}.tag-Support{background:#e0f7fa;color:#0277bd}.tag-My{background:#f0e6ff;color:#6d28d9}
+.card h3{font-size:15px;font-weight:800;margin-bottom:12px;line-height:1.3}
+.people{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.role-g{display:flex;flex-direction:column;gap:2px}
+.role-l{font-size:8px;text-transform:uppercase;color:var(--text-3);font-weight:800;letter-spacing:.6px;margin-left:2px}
+.badge{padding:4px 9px;border-radius:6px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600}
+.badge i{font-size:10px}
+.b-pc{border-left:3px solid var(--purple)}.b-pc i{color:var(--purple)}
+.b-sv{border-left:3px solid var(--warn)}.b-sv i{color:var(--warn)}
+.b-ex{border-left:3px solid var(--ok)}.b-ex i{color:var(--ok)}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:auto}
+.btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;transition:.2s var(--ease);font-family:inherit;position:relative}
+.btn:hover{filter:brightness(.92);transform:translateY(-1px)}
+.btn-fms{background:#e8f0ff;color:#0052cc}.btn-form{background:#f3e8ff;color:#5b21b6}.btn-sheet{background:#e6faf3;color:#00795c}.btn-check{background:#fff0e0;color:#8a4500}.btn-video{background:#ffe8ea;color:#b91c1c}.btn-dash{background:#e0f2fe;color:#0369a1}.btn-admin{background:#fef3c7;color:#92400e}.btn-gp{background:#ede9fe;color:#5b21b6}
+.btn.disabled-link{opacity:.3;pointer-events:none;cursor:not-allowed}
+.lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;font-size:8px;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:700}
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3)}
+.empty-state i{font-size:32px;margin-bottom:10px;display:block;opacity:.5}
+.admin-panel{display:none}.admin-panel.visible{display:block}
+.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.admin-top h3{font-size:17px;font-weight:800}
+.add-btn{padding:10px 20px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.25s var(--ease)}
+.add-btn:hover{background:#0052cc;transform:translateY(-1px)}
+.tbl-wrap{background:var(--bg-card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-s)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{background:var(--bg);padding:11px 16px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-2);border-bottom:1px solid var(--border)}
+.tbl td{padding:12px 16px;font-size:12px;border-bottom:1px solid var(--border)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tr:hover td{background:#f8fafc}
+.role-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase}
+.role-pill.admin{background:#ffe8ea;color:#b91c1c}.role-pill.employee{background:#e8f0ff;color:#0052cc}
+.access-pills{display:flex;flex-wrap:wrap;gap:3px}
+.ap{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700}
+.ap-Sales{background:#e8f0ff;color:#0052cc}.ap-Purchase{background:#e6faf3;color:#00795c}.ap-Management{background:#fff5e0;color:#8a5d00}.ap-HR{background:#f3e8ff;color:#5b21b6}.ap-Finance{background:#ffe8ea;color:#c41432}.ap-All{background:var(--primary);color:#fff}
+.tbl-act{background:0;border:0;cursor:pointer;padding:5px 7px;border-radius:6px;font-size:13px}
+.tbl-act:hover{background:var(--bg)}
+.tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal-box{background:#fff;border-radius:18px;width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .3s var(--ease)}
+@keyframes modalUp{from{transform:translateY(16px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border)}
+.modal-head h3{font-size:16px;font-weight:800}
+.modal-x{background:0;border:0;font-size:16px;color:var(--text-3);cursor:pointer;padding:4px 8px;border-radius:8px}
+.modal-x:hover{background:var(--bg);color:var(--text)}
+.modal-body{padding:22px}
+.mf{margin-bottom:16px}
+.mf label{display:block;font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:5px;text-transform:uppercase}
+.mf input,.mf select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:0;background:#fff}
+.mf input:focus,.mf select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.chk-group{display:flex;flex-wrap:wrap;gap:7px}
+.chk-pill{display:flex;align-items:center;gap:5px;padding:7px 13px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;user-select:none}
+.chk-pill:hover{border-color:var(--accent);background:var(--accent-glow)}
+.chk-pill.checked{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chk-pill input{display:none}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.mbtn{padding:9px 20px;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:0}
+.mbtn.sec{background:var(--bg);color:var(--text-2)}.mbtn.sec:hover{background:#e2e8f0}
+.mbtn.pri{background:var(--accent);color:#fff}.mbtn.pri:hover{background:#0052cc}
+.proc-section summary{cursor:pointer;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;padding:5px 0;user-select:none}
+.proc-list{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;max-height:200px;overflow-y:auto;padding:3px}
+.proc-item{display:flex;align-items:center;gap:5px;font-size:11px;padding:5px 7px;border-radius:6px;cursor:pointer}
+.proc-item:hover{background:var(--bg)}
+.spinner{display:inline-block;width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state{text-align:center;color:#fff;padding:40px}
+.loading-state .spinner{margin-bottom:16px}
+@media(max-width:768px){.sidebar{display:none}.header-bar{padding:10px 14px}.content{padding:14px}.grid{grid-template-columns:1fr}.login-card{width:92%;padding:28px 20px}.search-wrap{width:180px}}
+</style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="login-overlay hidden" id="loginOverlay">
-    <div class="login-bg"></div>
-    <div class="login-card" id="loginCard">
-        <div id="loginForm">
-            <div class="login-brand">
-                <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
-                <h1>SATIJA PAPER</h1>
-                <div class="login-brand-url">www.satijapaper.com</div>
-                <div class="login-brand-sub">System Master — Process Dashboard</div>
-            </div>
-            <div class="login-role-tabs">
-                <button class="login-role-tab active" id="tabEmployee" onclick="setLoginRole('Employee')"><i class="fas fa-user"></i> Employee</button>
-                <button class="login-role-tab" id="tabAdmin" onclick="setLoginRole('Admin')"><i class="fas fa-shield-halved"></i> Admin</button>
-            </div>
-            <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
-            <div class="login-field">
-                <label>Username</label>
-                <div class="login-input-wrap"><i class="fas fa-user"></i><input type="text" class="login-input" id="loginUser" placeholder="Enter your username" autocomplete="off"></div>
-            </div>
-            <div class="login-field">
-                <label>Password</label>
-                <div class="login-input-wrap">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" class="login-input" id="loginPass" placeholder="Enter your password">
-                    <button class="toggle-password" type="button" onclick="togglePwd()"><i class="fas fa-eye" id="pwdEye"></i></button>
-                </div>
-            </div>
-            <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i></button>
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div id="loginForm">
+      <div class="login-brand">
+        <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
+        <h1>SATIJA PAPER</h1>
+        <div class="login-brand-url">www.satijapaper.com</div>
+        <div class="login-brand-sub">System Master — Process Dashboard</div>
+      </div>
+      <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
+      <div class="login-field">
+        <label>Email</label>
+        <div class="login-input-wrap"><i class="fas fa-envelope"></i><input type="email" class="login-input" id="loginUser" placeholder="your@email.com" autocomplete="username"></div>
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <div class="login-input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" class="login-input" id="loginPass" placeholder="Enter your password" autocomplete="current-password">
+          <button class="toggle-password" type="button" onclick="togglePwd()"><i class="fas fa-eye" id="pwdEye"></i></button>
         </div>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px"></i></button>
+      <div style="text-align:center;margin-top:14px"><a href="#" onclick="forgotPass();return false" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none">Forgot password?</a></div>
     </div>
+    <div id="loadingState" class="loading-state" style="display:none">
+      <div class="spinner"></div>
+      <div style="font-size:13px;font-weight:700">Checking session...</div>
+    </div>
+  </div>
 </div>
 
-<!-- APP -->
 <div class="app-container" id="appContainer">
-    <div class="sidebar">
-        <div class="brand-box">
-            <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="brand-logo">
-            <div class="brand-text">SATIJA PAPER</div>
-            <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
-        </div>
-        <div class="sidebar-label">Navigation</div>
-        <button class="menu-btn active" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
-        <button class="menu-btn" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
-        <button class="menu-btn" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory <span class="count-badge" id="cntPurchase">0</span></button>
-        <button class="menu-btn" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
-        <button class="menu-btn" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
-        <button class="menu-btn" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
-        <div class="sidebar-label">My System</div>
-        <button class="menu-btn" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
-        <button class="menu-btn" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
-        <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
-        <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
-        <div class="sidebar-user">
-            <div class="sidebar-avatar" id="sAvatar">A</div>
-            <div class="sidebar-uinfo"><div class="sidebar-uname" id="sName">Admin</div><div class="sidebar-urole" id="sRole">Admin</div></div>
-            <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
-        </div>
+  <div class="sidebar">
+    <div class="brand-box">
+      <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="brand-logo">
+      <div class="brand-text">SATIJA PAPER</div>
+      <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
     </div>
-    <div class="main-content">
-        <div class="header-bar">
-            <h2 class="page-title" id="pageHeader">All Processes</h2>
-            <div class="header-right">
-                <div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div>
-            </div>
-        </div>
-        <div class="content">
-            <div class="grid" id="cardBox"></div>
-            <div class="admin-panel" id="adminPanel">
-                <div class="admin-top"><h3><i class="fas fa-users-gear" style="margin-right:7px;color:var(--accent);"></i>User Management</h3><button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button></div>
-                <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Username</th><th>Display Name</th><th>Role</th><th>Dept Access</th><th>Process Access</th><th style="width:85px">Actions</th></tr></thead><tbody id="tblBody"></tbody></table></div>
-            </div>
-        </div>
+    <div class="sidebar-label">Navigation</div>
+    <button class="menu-btn active" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
+    <button class="menu-btn" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
+    <button class="menu-btn" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory <span class="count-badge" id="cntPurchase">0</span></button>
+    <button class="menu-btn" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
+    <button class="menu-btn" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
+    <button class="menu-btn" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
+    <div class="sidebar-label">My System</div>
+    <button class="menu-btn" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
+    <button class="menu-btn" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
+    <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
+    <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sAvatar">A</div>
+      <div class="sidebar-uinfo"><div class="sidebar-uname" id="sName">Admin</div><div class="sidebar-urole" id="sRole">Admin</div></div>
+      <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
     </div>
+  </div>
+  <div class="main-content">
+    <div class="header-bar">
+      <h2 class="page-title" id="pageHeader">All Processes</h2>
+      <div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div>
+    </div>
+    <div class="content">
+      <div class="grid" id="cardBox"></div>
+      <div class="admin-panel" id="adminPanel">
+        <div class="admin-top"><h3><i class="fas fa-users-gear" style="margin-right:7px;color:var(--accent)"></i>User Management</h3><button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button></div>
+        <div style="background:#fff5e0;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12px;margin-bottom:16px"><i class="fas fa-info-circle" style="margin-right:6px"></i>New users: account creation must be done in <a href="https://console.firebase.google.com" target="_blank" style="color:#8a5d00;font-weight:700">Firebase Console</a>. Here you assign their role &amp; access.</div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Role</th><th>Dept Access</th><th>Process Access</th><th style="width:85px">Actions</th></tr></thead><tbody id="tblBody"></tbody></table></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- CHANGE PASS MODAL -->
-<div class="modal-bg" id="changePassModal">
-    <div class="modal-box" style="width:420px;">
-        <div class="modal-head"><h3><i class="fas fa-key" style="color:var(--accent);margin-right:8px;"></i>Set Your Password</h3></div>
-        <div class="modal-body">
-            <p style="font-size:12px;color:var(--text-2);margin-bottom:16px;">For security, you must set a new password before continuing.</p>
-            <div class="mf"><label>New Password</label><input type="password" id="newPass" placeholder="At least 6 characters"></div>
-            <div class="mf"><label>Confirm Password</label><input type="password" id="confirmPass" placeholder="Re-type password"></div>
-            <div id="changePassErr" style="display:none;background:#ffe8ea;color:#b91c1c;padding:10px;border-radius:8px;font-size:12px;margin-bottom:10px;"></div>
-        </div>
-        <div class="modal-foot"><button class="mbtn pri" onclick="submitChangePass()">Set Password &amp; Continue</button></div>
-    </div>
-</div>
-
-<!-- USER MODAL -->
 <div class="modal-bg" id="userModal">
-    <div class="modal-box">
-        <div class="modal-head"><h3 id="modalTitle">Add New User</h3><button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button></div>
-        <div class="modal-body">
-            <input type="hidden" id="editUserId">
-            <div class="mf"><label>Display Name</label><input type="text" id="mName" placeholder="e.g. Neha Sharma"></div>
-            <div class="mf"><label>Username</label><input type="text" id="mUser" placeholder="e.g. neha"></div>
-            <div class="mf"><label>Password</label><input type="text" id="mPass" placeholder="Enter password"></div>
-            <div class="mf"><label>Role</label><select id="mRole" onchange="onRoleChange()"><option value="Employee">Employee</option><option value="Admin">Admin</option></select></div>
-            <div class="mf" id="deptField"><label>Department Access</label>
-                <div class="chk-group" id="deptChks">
-                    <label class="chk-pill" data-val="All" onclick="toggleChk(this)"><input type="checkbox" value="All"> All Depts</label>
-                    <label class="chk-pill" data-val="Sales" onclick="toggleChk(this)"><input type="checkbox" value="Sales"> Sales</label>
-                    <label class="chk-pill" data-val="Purchase" onclick="toggleChk(this)"><input type="checkbox" value="Purchase"> Purchase</label>
-                    <label class="chk-pill" data-val="Management" onclick="toggleChk(this)"><input type="checkbox" value="Management"> MIS</label>
-                    <label class="chk-pill" data-val="HR" onclick="toggleChk(this)"><input type="checkbox" value="HR"> HR</label>
-                    <label class="chk-pill" data-val="Finance" onclick="toggleChk(this)"><input type="checkbox" value="Finance"> Finance</label>
-                </div>
-            </div>
-            <div class="mf" id="procField"><details class="proc-section"><summary>Fine-grained Process Access (Optional)</summary><div class="proc-list" id="procList"></div></details></div>
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle">Add / Edit User Profile</h3><button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button></div>
+    <div class="modal-body">
+      <input type="hidden" id="editUserId">
+      <div class="mf"><label>Display Name</label><input type="text" id="mName" placeholder="e.g. Neha Sharma"></div>
+      <div class="mf"><label>Email (must match Firebase Auth)</label><input type="email" id="mUser" placeholder="user@example.com"></div>
+      <div class="mf"><label>Role</label><select id="mRole" onchange="onRoleChange()"><option value="Employee">Employee</option><option value="Admin">Admin</option></select></div>
+      <div class="mf" id="deptField"><label>Department Access</label>
+        <div class="chk-group" id="deptChks">
+          <label class="chk-pill" data-val="All" onclick="toggleChk(this)"><input type="checkbox" value="All"> All Depts</label>
+          <label class="chk-pill" data-val="Sales" onclick="toggleChk(this)"><input type="checkbox" value="Sales"> Sales</label>
+          <label class="chk-pill" data-val="Purchase" onclick="toggleChk(this)"><input type="checkbox" value="Purchase"> Purchase</label>
+          <label class="chk-pill" data-val="Management" onclick="toggleChk(this)"><input type="checkbox" value="Management"> MIS</label>
+          <label class="chk-pill" data-val="HR" onclick="toggleChk(this)"><input type="checkbox" value="HR"> HR</label>
+          <label class="chk-pill" data-val="Finance" onclick="toggleChk(this)"><input type="checkbox" value="Finance"> Finance</label>
         </div>
-        <div class="modal-foot"><button class="mbtn sec" onclick="closeModal()">Cancel</button><button class="mbtn pri" onclick="saveUser()">Save User</button></div>
+      </div>
+      <div class="mf" id="procField"><details class="proc-section"><summary>Fine-grained Process Access (Optional)</summary><div class="proc-list" id="procList"></div></details></div>
     </div>
+    <div class="modal-foot"><button class="mbtn sec" onclick="closeModal()">Cancel</button><button class="mbtn pri" onclick="saveUser()">Save</button></div>
+  </div>
 </div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBxt4HtZm03WQzQD7mMNOyIQr-KxAHBaO8",
+  authDomain: "sp-dashboard-1e9c8.firebaseapp.com",
+  projectId: "sp-dashboard-1e9c8",
+  storageBucket: "sp-dashboard-1e9c8.firebasestorage.app",
+  messagingSenderId: "347959572660",
+  appId: "1:347959572660:web:72c16e7289d63bcaff3fe1",
+  measurementId: "G-M2J2R2KZS7"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Expose to window for non-module code
+window.fbAuth = auth;
+window.fbDb = db;
+window.fbFns = {
+  signIn: signInWithEmailAndPassword,
+  signOut: signOut,
+  onAuth: onAuthStateChanged,
+  resetPass: sendPasswordResetEmail,
+  doc, getDoc, setDoc, deleteDoc, collection, getDocs
+};
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
-const API_URL = "https://script.google.com/macros/s/AKfycbzuaYLlql9aLSsxnFXpF2xt54YKOYpxOhtKImKdE8LdPbEYKZbfLY632aP3nLLAjZ3b/exec";
-const SS_KEY  = "satija_session";
+const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
 
-// ─── PROCESS DATA ─────────────────────────────────────────────────────────────
 const DB = [
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
   {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
@@ -346,427 +318,307 @@ const DB = [
   {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
 
-// ─── SESSION HELPERS ───────────────────────────────────────────────────────────
-function getSess()       { try { const s = localStorage.getItem(SS_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
-function setSess(o)      { localStorage.setItem(SS_KEY, JSON.stringify(o)); }
-function clearSess()     { localStorage.removeItem(SS_KEY); }
+let curUser = null, curCat = 'All', curView = 'cards', cachedUsers = [];
 
+const $ = id => document.getElementById(id);
 
-async function api(action, payload) {
-    const body = Object.assign({ action }, payload || {});
-    const sess = getSess();
-    if (sess && sess.token) body.token = sess.token;
-    
-    const url = API_URL + '?payload=' + encodeURIComponent(JSON.stringify(body));
-    
-    try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
-        
-        const res = await fetch(url, {
-            method: "GET",
-            signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-        
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const text = await res.text();
-        try {
-            return JSON.parse(text);
-        } catch(pe) {
-            return { ok: false, error: "Invalid response from server" };
-        }
-    } catch (e) {
-        if (e.name === 'AbortError') return { ok: false, error: "Request timed out. Try again." };
-        return { ok: false, error: "Network error: " + e.message };
-    }
+function showLoginError(m){ $('loginErrorMsg').textContent = m; $('loginError').classList.add('show'); }
+function clearLoginError(){ $('loginError').classList.remove('show'); }
+function setLoginLoading(on){
+  const b=$('loginBtn'); b.disabled=on;
+  b.innerHTML = on ? '<i class="fas fa-circle-notch fa-spin"></i> Signing in...' : 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px"></i>';
+}
+function togglePwd(){
+  const i=$('loginPass'),ic=$('pwdEye');
+  if(i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}
+  else{i.type='password';ic.className='fas fa-eye';}
 }
 
-// ─── LOGIN STATE ───────────────────────────────────────────────────────────────
-let loginRole = "Employee";
-
-function setLoginRole(r) {
-    loginRole = r;
-    document.getElementById('tabEmployee').classList.toggle('active', r === 'Employee');
-    document.getElementById('tabAdmin').classList.toggle('active', r === 'Admin');
-    clearLoginError();
-}
-
-function togglePwd() {
-    const i = document.getElementById('loginPass'), ic = document.getElementById('pwdEye');
-    if (i.type === 'password') { i.type = 'text'; ic.className = 'fas fa-eye-slash'; }
-    else { i.type = 'password'; ic.className = 'fas fa-eye'; }
-}
-
-function showLoginError(msg) {
-    const err = document.getElementById('loginError');
-    document.getElementById('loginErrorMsg').textContent = msg;
-    err.classList.add('show');
-}
-function clearLoginError() {
-    document.getElementById('loginError').classList.remove('show');
-}
-
-function setLoginLoading(on) {
-    const btn = document.getElementById('loginBtn');
-    btn.disabled = on;
-    btn.innerHTML = on
-        ? '<i class="fas fa-circle-notch fa-spin" style="margin-right:6px;"></i>Signing in...'
-        : 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i>';
-}
-async function handleLogin() {
-    clearLoginError();
-    const u = document.getElementById('loginUser').value.trim();
-    const p = document.getElementById('loginPass').value;
-    if (!u || !p) { showLoginError("Please enter username and password."); return; }
-
-    setLoginLoading(true);
-    const r = await api('login', { username: u, password: p });
+async function handleLogin(){
+  clearLoginError();
+  const e=$('loginUser').value.trim(), p=$('loginPass').value;
+  if(!e||!p){showLoginError("Enter email and password.");return;}
+  setLoginLoading(true);
+  try{
+    await window.fbFns.signIn(window.fbAuth, e, p);
+    // onAuthStateChanged will handle UI transition
+  }catch(err){
     setLoginLoading(false);
-
-    if (!r.ok) { showLoginError(r.error || "Login failed."); return; }
-    if (r.user.role !== loginRole) {
-        showLoginError(`This account is "${r.user.role}" — please select the correct role tab.`);
-        return;
-    }
-
-    // Defensive: ensure arrays (in case backend returns strings)
-    if (typeof r.user.deptAccess === 'string')    { try { r.user.deptAccess = JSON.parse(r.user.deptAccess); } catch(e){ r.user.deptAccess = []; } }
-    if (typeof r.user.processAccess === 'string') { try { r.user.processAccess = JSON.parse(r.user.processAccess); } catch(e){ r.user.processAccess = []; } }
-    if (!Array.isArray(r.user.deptAccess))    r.user.deptAccess = [];
-    if (!Array.isArray(r.user.processAccess)) r.user.processAccess = [];
-
-    setSess({ token: r.token, user: r.user });
-
-    if (r.user.mustChangePass) {
-        showChangePassModal();
-        return;
-    }
-    
-    try {
-        enterApp(r.user);
-    } catch(err) {
-        showLoginError("Error loading app: " + err.message);
-        console.error(err);
-    }
+    let msg = "Login failed.";
+    if(err.code==='auth/invalid-credential'||err.code==='auth/wrong-password'||err.code==='auth/user-not-found') msg="Invalid email or password.";
+    else if(err.code==='auth/too-many-requests') msg="Too many attempts. Try later.";
+    else if(err.code==='auth/network-request-failed') msg="Network error. Check internet.";
+    else msg = err.message;
+    showLoginError(msg);
+  }
 }
 
-function handleLogout() {
-    clearSess();
-    document.getElementById('appContainer').classList.remove('visible');
-    document.getElementById('loginUser').value = '';
-    document.getElementById('loginPass').value = '';
-    clearLoginError();
-    curView = 'cards';
-    document.getElementById('loginOverlay').classList.remove('hidden');
+async function forgotPass(){
+  const e=$('loginUser').value.trim();
+  if(!e){showLoginError("Enter your email first, then click Forgot Password.");return;}
+  try{
+    await window.fbFns.resetPass(window.fbAuth, e);
+    showLoginError("Reset email sent! Check your inbox.");
+    $('loginError').style.background='rgba(0,196,140,.1)';
+    $('loginError').style.borderColor='rgba(0,196,140,.3)';
+    $('loginError').style.color='#86efac';
+  }catch(err){showLoginError(err.message);}
 }
 
-// ─── CHANGE PASSWORD ───────────────────────────────────────────────────────────
-function showChangePassModal() { document.getElementById('changePassModal').classList.add('show'); }
-
-async function submitChangePass() {
-    const np = document.getElementById('newPass').value;
-    const cp = document.getElementById('confirmPass').value;
-    const e  = document.getElementById('changePassErr');
-    e.style.display = 'none';
-    if (np.length < 6) { e.textContent = "Password must be at least 6 characters."; e.style.display = 'block'; return; }
-    if (np !== cp)     { e.textContent = "Passwords do not match."; e.style.display = 'block'; return; }
-    const r = await api('changePass', { newPassword: np });
-    if (!r.ok) { e.textContent = r.error || "Failed to change password."; e.style.display = 'block'; return; }
-    const sess = getSess(); sess.user.mustChangePass = false; setSess(sess);
-    document.getElementById('changePassModal').classList.remove('show');
-    enterApp(sess.user);
+async function handleLogout(){
+  await window.fbFns.signOut(window.fbAuth);
+  // onAuthStateChanged handles UI
 }
 
-// ─── APP ENTRY ─────────────────────────────────────────────────────────────────
-let curUser = null, curCat = 'All', curView = 'cards';
+document.addEventListener('keydown', e => {
+  if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin();
+});
 
-function enterApp(user) {
-    curUser = user;
-    document.getElementById('loginOverlay').classList.add('hidden');
-    document.getElementById('appContainer').classList.add('visible');
-    document.getElementById('sAvatar').textContent = user.name.charAt(0).toUpperCase();
-    document.getElementById('sName').textContent = user.name;
-    document.getElementById('sRole').textContent = user.role;
-    const isA = user.role === 'Admin';
-    document.getElementById('adminNavLabel').style.display = isA ? '' : 'none';
-    document.getElementById('adminNavBtn').style.display   = isA ? '' : 'none';
-    curCat = 'All'; curView = 'cards';
-    setActive(document.querySelector('.menu-btn'));
-    updateCounts();
-    setTimeout(() => runFilter(), 50);
+// ─── PROFILE LOAD ─────────────────────────────────────────
+async function loadProfile(fbUser){
+  const ref = window.fbFns.doc(window.fbDb, 'users', fbUser.uid);
+  const snap = await window.fbFns.getDoc(ref);
+  if(snap.exists()){
+    const d = snap.data();
+    return {
+      id: fbUser.uid,
+      email: fbUser.email,
+      name: d.name || fbUser.email.split('@')[0],
+      role: d.role || 'Employee',
+      deptAccess: Array.isArray(d.deptAccess) ? d.deptAccess : [],
+      processAccess: Array.isArray(d.processAccess) ? d.processAccess : []
+    };
+  }
+  // Auto-create profile for first login
+  const isFirstAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
+  const profile = {
+    name: fbUser.email.split('@')[0],
+    role: isFirstAdmin ? 'Admin' : 'Employee',
+    deptAccess: isFirstAdmin ? ['All'] : [],
+    processAccess: []
+  };
+  await window.fbFns.setDoc(ref, profile);
+  return { id: fbUser.uid, email: fbUser.email, ...profile };
 }
 
-// ─── ACCESS HELPERS ────────────────────────────────────────────────────────────
-function hasDept(u, c) {
-    if (!u) return false;
-    if (u.role === 'Admin') return true;
-    if (u.deptAccess.includes('All')) return true;
-    return u.deptAccess.includes(c);
-}
-function hasProc(u, n) {
-    if (!u) return false;
-    if (u.role === 'Admin') return true;
-    if (!u.processAccess || !u.processAccess.length) return true;
-    return u.processAccess.includes(n);
-}
-
-// ─── CARD RENDERING ────────────────────────────────────────────────────────────
-function getCatClass(c) { return c === 'My System' ? 'My' : c; }
-
-function updateCounts() {
-    const cats = { All:0, Sales:0, Purchase:0, Management:0, HR:0, Finance:0, Support:0, 'My System':0 };
-    DB.forEach(d => { cats.All++; if (cats[d.cat] !== undefined) cats[d.cat]++; });
-    document.getElementById('cntAll').textContent        = cats.All;
-    document.getElementById('cntSales').textContent      = cats.Sales;
-    document.getElementById('cntPurchase').textContent   = cats.Purchase;
-    document.getElementById('cntManagement').textContent = cats.Management;
-    document.getElementById('cntHR').textContent         = cats.HR;
-    document.getElementById('cntFinance').textContent    = cats.Finance;
-    document.getElementById('cntSupport').textContent    = cats.Support;
-    document.getElementById('cntMy').textContent         = cats['My System'];
+function enterApp(user){
+  curUser = user;
+  $('loginOverlay').classList.add('hidden');
+  $('appContainer').classList.add('visible');
+  $('sAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
+  $('sName').textContent = user.name;
+  $('sRole').textContent = user.role;
+  const isA = user.role==='Admin';
+  $('adminNavLabel').style.display = isA?'':'none';
+  $('adminNavBtn').style.display = isA?'':'none';
+  curCat='All'; curView='cards';
+  setActive(document.querySelector('.menu-btn'));
+  updateCounts();
+  runFilter();
 }
 
-const box = document.getElementById('cardBox');
-const hdr = document.getElementById('pageHeader');
+function showLoginScreen(){
+  curUser = null;
+  $('appContainer').classList.remove('visible');
+  $('loginOverlay').classList.remove('hidden');
+  $('loginForm').style.display='';
+  $('loadingState').style.display='none';
+  $('loginUser').value=''; $('loginPass').value='';
+  setLoginLoading(false);
+  clearLoginError();
+}
 
-function renderCards(data) {
-    box.innerHTML = "";
-    if (!data.length) {
-        box.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>`;
-        return;
-    }
-    data.forEach((it, i) => {
-        const ok = hasDept(curUser, it.cat) && hasProc(curUser, it.name);
-        const dc = ok ? '' : ' disabled-link';
-        const mb = (url, cls, ico, lbl) => {
-            if (!url) return '';
-            return `<a href="${ok ? url : '#'}" ${ok ? 'target="_blank"' : ''} class="btn ${cls}${dc}" ${!ok ? 'onclick="return false;"' : ''}>
-                <i class="${ico}"></i> ${lbl}
-                ${!ok ? '<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>' : ''}
-            </a>`;
-        };
-        let btns = '';
-        btns += mb(it.links.fms,      'btn-fms',   'fas fa-table-cells',   'FMS');
-        btns += mb(it.links.form,     'btn-form',  'fab fa-google-drive',  'Form');
-        btns += mb(it.links.sheet,    'btn-sheet', 'fas fa-file-spreadsheet','Sheet');
-        btns += mb(it.links.check,    'btn-check', 'fas fa-square-check',  'Checklist');
-        btns += mb(it.links.video,    'btn-video', 'fas fa-circle-play',   'Training');
-        btns += mb(it.links.videoBCI, 'btn-video', 'fas fa-circle-play',   'Training (BCI)');
-        btns += mb(it.links.dashEmp,  'btn-dash',  'fas fa-chart-pie',     'Emp Dashboard');
-        btns += mb(it.links.dashPC,   'btn-dash',  'fas fa-chart-line',    'PC Dashboard');
-        btns += mb(it.links.admin,    'btn-admin', 'fas fa-user-gear',     'Admin Panel');
-        btns += mb(it.links.gpDash,   'btn-gp',    'fas fa-chart-column',  'GP Dashboard');
-        if (!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;">No Links</div>';
+// ─── ACCESS HELPERS ───────────────────────────────────────
+function hasDept(u,c){if(!u)return false;if(u.role==='Admin')return true;if(u.deptAccess.includes('All'))return true;return u.deptAccess.includes(c);}
+function hasProc(u,n){if(!u)return false;if(u.role==='Admin')return true;if(!u.processAccess||!u.processAccess.length)return true;return u.processAccess.includes(n);}
+function getCatClass(c){return c==='My System'?'My':c;}
 
-        let badges = '';
-        if (it.pc     && it.pc     !== "-") badges += `<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
-        if (it.solver && it.solver !== "-") badges += `<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
-        if (it.exec   && it.exec   !== "-") badges += `<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+function updateCounts(){
+  const c={All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
+  DB.forEach(d=>{c.All++;if(c[d.cat]!==undefined)c[d.cat]++;});
+  $('cntAll').textContent=c.All;$('cntSales').textContent=c.Sales;$('cntPurchase').textContent=c.Purchase;
+  $('cntManagement').textContent=c.Management;$('cntHR').textContent=c.HR;$('cntFinance').textContent=c.Finance;
+  $('cntSupport').textContent=c.Support;$('cntMy').textContent=c['My System'];
+}
 
-        const cc = getCatClass(it.cat);
-        box.innerHTML += `<div class="card cat-${cc}" style="animation-delay:${i*.03}s;${!ok?'opacity:.5;':''}">
-            <span class="card-tag tag-${cc}">${it.cat}</span>
-            <h3>${it.name}</h3>
-            <div class="people">${badges}</div>
-            <div class="actions">${btns}</div>
-        </div>`;
+const box=()=>$('cardBox'), hdr=()=>$('pageHeader');
+
+function renderCards(data){
+  const b=box(); b.innerHTML='';
+  if(!data.length){b.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';return;}
+  data.forEach((it,i)=>{
+    const ok=hasDept(curUser,it.cat)&&hasProc(curUser,it.name);
+    const dc=ok?'':' disabled-link';
+    const mb=(url,cls,ico,lbl)=>{
+      if(!url)return'';
+      return `<a href="${ok?url:'#'}" ${ok?'target="_blank"':''} class="btn ${cls}${dc}" ${!ok?'onclick="return false;"':''}><i class="${ico}"></i> ${lbl}${!ok?'<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>':''}</a>`;
+    };
+    let btns='';
+    btns+=mb(it.links.fms,'btn-fms','fas fa-table-cells','FMS');
+    btns+=mb(it.links.form,'btn-form','fab fa-google-drive','Form');
+    btns+=mb(it.links.sheet,'btn-sheet','fas fa-file-spreadsheet','Sheet');
+    btns+=mb(it.links.check,'btn-check','fas fa-square-check','Checklist');
+    btns+=mb(it.links.video,'btn-video','fas fa-circle-play','Training');
+    btns+=mb(it.links.videoBCI,'btn-video','fas fa-circle-play','Training (BCI)');
+    btns+=mb(it.links.dashEmp,'btn-dash','fas fa-chart-pie','Emp Dashboard');
+    btns+=mb(it.links.dashPC,'btn-dash','fas fa-chart-line','PC Dashboard');
+    btns+=mb(it.links.admin,'btn-admin','fas fa-user-gear','Admin Panel');
+    btns+=mb(it.links.gpDash,'btn-gp','fas fa-chart-column','GP Dashboard');
+    if(!btns)btns='<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px">No Links</div>';
+    let badges='';
+    if(it.pc&&it.pc!=='-')badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
+    if(it.solver&&it.solver!=='-')badges+=`<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
+    if(it.exec&&it.exec!=='-')badges+=`<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+    const cc=getCatClass(it.cat);
+    b.innerHTML+=`<div class="card cat-${cc}" style="animation-delay:${i*.03}s;${!ok?'opacity:.5;':''}"><span class="card-tag tag-${cc}">${it.cat}</span><h3>${it.name}</h3><div class="people">${badges}</div><div class="actions">${btns}</div></div>`;
+  });
+}
+
+function setActive(el){document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');}
+
+function filterCat(cat,el){
+  curCat=cat;curView='cards';setActive(el);
+  const labels={All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
+  hdr().innerText=labels[cat]||cat;
+  box().style.display='';
+  $('adminPanel').classList.remove('visible');
+  $('searchWrap').style.display='';
+  runFilter();
+}
+
+function runFilter(){
+  const raw=$('searchInput').value.toLowerCase();
+  const terms=raw.split(' ').filter(t=>t.trim());
+  const filtered=DB.filter(it=>{
+    const mc=curCat==='All'||it.cat===curCat;
+    const txt=`${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
+    return mc&&terms.every(t=>txt.includes(t));
+  });
+  renderCards(filtered);
+}
+
+// ─── ADMIN PANEL (Firestore) ──────────────────────────────
+async function showAdmin(el){
+  if(!curUser||curUser.role!=='Admin')return;
+  curView='admin';setActive(el);hdr().innerText='User Management';
+  box().style.display='none';
+  $('adminPanel').classList.add('visible');
+  $('searchWrap').style.display='none';
+  await loadUsers();
+}
+
+async function loadUsers(){
+  try{
+    const snap = await window.fbFns.getDocs(window.fbFns.collection(window.fbDb,'users'));
+    cachedUsers = [];
+    snap.forEach(d=>{
+      const x=d.data();
+      cachedUsers.push({
+        id:d.id,
+        email:x.email||'(no email saved)',
+        name:x.name||'',
+        role:x.role||'Employee',
+        deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[],
+        processAccess:Array.isArray(x.processAccess)?x.processAccess:[]
+      });
     });
-}
-
-function setActive(el) {
-    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-    if (el) el.classList.add('active');
-}
-
-function filterCat(cat, el) {
-    curCat = cat; curView = 'cards'; setActive(el);
-    const labels = { All:'All Processes', Sales:'Sales & CRM', Purchase:'Purchase & Inventory', Management:'Management (MIS)', HR:'HR & Admin', Finance:'Finance & Accounts', Support:'Help & Support', 'My System':'Google Site' };
-    hdr.innerText = labels[cat] || cat;
-    box.style.display = '';
-    document.getElementById('adminPanel').classList.remove('visible');
-    document.getElementById('searchWrap').style.display = '';
-    runFilter();
-}
-
-function runFilter() {
-    const raw   = document.getElementById('searchInput').value.toLowerCase();
-    const terms = raw.split(" ").filter(t => t.trim());
-    const filtered = DB.filter(it => {
-        const mc  = curCat === 'All' || it.cat === curCat;
-        const txt = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
-        return mc && terms.every(t => txt.includes(t));
-    });
-    renderCards(filtered);
-}
-
-// ─── ADMIN PANEL ───────────────────────────────────────────────────────────────
-let cachedUsers = [];
-
-async function showAdmin(el) {
-    if (!curUser || curUser.role !== 'Admin') return;
-    curView = 'admin'; setActive(el); hdr.innerText = 'User Management';
-    box.style.display = 'none';
-    document.getElementById('adminPanel').classList.add('visible');
-    document.getElementById('searchWrap').style.display = 'none';
-    await loadUsers();
-}
-
-async function loadUsers() {
-    const r = await api('listUsers');
-    if (!r.ok) { alert(r.error || 'Failed to load users'); return; }
-    cachedUsers = r.users;
     renderTable();
+  }catch(e){alert('Failed to load users: '+e.message);}
 }
 
-function renderTable() {
-    const tb = document.getElementById('tblBody'); tb.innerHTML = '';
-    cachedUsers.forEach(u => {
-        const dp = u.deptAccess.map(d => `<span class="ap ap-${d}">${d === 'Management' ? 'MIS' : d}</span>`).join('');
-        const pp = (u.processAccess && u.processAccess.length)
-            ? u.processAccess.map(p => `<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', ')
-            : '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
-        tb.innerHTML += `<tr>
-            <td><strong>${u.username}</strong></td>
-            <td>${u.name}</td>
-            <td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td>
-            <td><div class="access-pills">${dp}</div></td>
-            <td>${pp}</td>
-            <td>
-                <button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>
-                ${u.id !== curUser.id ? `<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete"><i class="fas fa-trash-can"></i></button>` : ''}
-            </td>
-        </tr>`;
-    });
+function renderTable(){
+  const tb=$('tblBody');tb.innerHTML='';
+  cachedUsers.forEach(u=>{
+    const dp=u.deptAccess.map(d=>`<span class="ap ap-${d}">${d==='Management'?'MIS':d}</span>`).join('');
+    const pp=(u.processAccess&&u.processAccess.length)?u.processAccess.map(p=>`<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', '):'<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
+    tb.innerHTML+=`<tr><td><strong>${u.email}</strong></td><td>${u.name}</td><td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td><td><div class="access-pills">${dp}</div></td><td>${pp}</td><td><button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>${u.id!==curUser.id?`<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete profile"><i class="fas fa-trash-can"></i></button>`:''}</td></tr>`;
+  });
 }
 
-function openModal(uid) {
-    document.getElementById('editUserId').value = '';
-    document.getElementById('mName').value  = '';
-    document.getElementById('mUser').value  = '';
-    document.getElementById('mPass').value  = '';
-    document.getElementById('mPass').placeholder = 'Enter password';
-    document.getElementById('mRole').value  = 'Employee';
-    document.getElementById('modalTitle').textContent = 'Add New User';
-    document.querySelectorAll('#deptChks .chk-pill').forEach(p => { p.classList.remove('checked'); p.querySelector('input').checked = false; });
-    buildProcList();
-    if (uid) {
-        const u = cachedUsers.find(x => x.id === uid);
-        if (u) {
-            document.getElementById('editUserId').value = u.id;
-            document.getElementById('mName').value  = u.name;
-            document.getElementById('mUser').value  = u.username;
-            document.getElementById('mPass').placeholder = '(leave blank to keep current)';
-            document.getElementById('mRole').value  = u.role;
-            document.getElementById('modalTitle').textContent = 'Edit User';
-            document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
-                if (u.deptAccess.includes(p.dataset.val)) { p.classList.add('checked'); p.querySelector('input').checked = true; }
-            });
-            if (u.processAccess && u.processAccess.length) {
-                document.querySelectorAll('#procList input[type=checkbox]').forEach(cb => {
-                    if (u.processAccess.includes(cb.value)) cb.checked = true;
-                });
-            }
-        }
+function openModal(uid){
+  $('editUserId').value='';$('mName').value='';$('mUser').value='';$('mRole').value='Employee';
+  $('modalTitle').textContent='Add User Profile';
+  document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{p.classList.remove('checked');p.querySelector('input').checked=false;});
+  buildProcList();
+  if(uid){
+    const u=cachedUsers.find(x=>x.id===uid);
+    if(u){
+      $('editUserId').value=u.id;$('mName').value=u.name;$('mUser').value=u.email;$('mRole').value=u.role;
+      $('modalTitle').textContent='Edit User Profile';
+      document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(u.deptAccess.includes(p.dataset.val)){p.classList.add('checked');p.querySelector('input').checked=true;}});
+      if(u.processAccess&&u.processAccess.length){document.querySelectorAll('#procList input[type=checkbox]').forEach(cb=>{if(u.processAccess.includes(cb.value))cb.checked=true;});}
     }
-    onRoleChange();
-    document.getElementById('userModal').classList.add('show');
+  }
+  onRoleChange();$('userModal').classList.add('show');
 }
-function editUser(id) { openModal(id); }
-function closeModal() { document.getElementById('userModal').classList.remove('show'); }
-
-function onRoleChange() {
-    const r = document.getElementById('mRole').value;
-    document.getElementById('deptField').style.display = r === 'Admin' ? 'none' : '';
-    document.getElementById('procField').style.display = r === 'Admin' ? 'none' : '';
+function editUser(id){openModal(id);}
+function closeModal(){$('userModal').classList.remove('show');}
+function onRoleChange(){const r=$('mRole').value;$('deptField').style.display=r==='Admin'?'none':'';$('procField').style.display=r==='Admin'?'none':'';}
+function toggleChk(el){
+  setTimeout(()=>{
+    const cb=el.querySelector('input');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);
+    if(el.dataset.val==='All'&&cb.checked){document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(p.dataset.val!=='All'){p.classList.remove('checked');p.querySelector('input').checked=false;}});}
+    else if(el.dataset.val!=='All'&&cb.checked){const a=document.querySelector('#deptChks .chk-pill[data-val="All"]');a.classList.remove('checked');a.querySelector('input').checked=false;}
+  },0);
 }
+function buildProcList(){const el=$('procList');el.innerHTML='';DB.forEach(it=>{el.innerHTML+=`<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`;});}
 
-function toggleChk(el) {
-    setTimeout(() => {
-        const cb = el.querySelector('input');
-        cb.checked = !cb.checked;
-        el.classList.toggle('checked', cb.checked);
-        if (el.dataset.val === 'All' && cb.checked) {
-            document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
-                if (p.dataset.val !== 'All') { p.classList.remove('checked'); p.querySelector('input').checked = false; }
-            });
-        } else if (el.dataset.val !== 'All' && cb.checked) {
-            const a = document.querySelector('#deptChks .chk-pill[data-val="All"]');
-            a.classList.remove('checked'); a.querySelector('input').checked = false;
-        }
-    }, 0);
-}
-
-function buildProcList() {
-    const el = document.getElementById('procList');
-    el.innerHTML = '';
-    DB.forEach(it => { el.innerHTML += `<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`; });
-}
-
-async function saveUser() {
-    const id       = document.getElementById('editUserId').value;
-    const name     = document.getElementById('mName').value.trim();
-    const username = document.getElementById('mUser').value.trim().toLowerCase();
-    const password = document.getElementById('mPass').value;
-    const role     = document.getElementById('mRole').value;
-    if (!name || !username) { alert('Fill all required fields.'); return; }
-    if (!id && !password)   { alert('Password is required for new users.'); return; }
-    let deptAccess = [];
-    if (role === 'Admin') deptAccess = ['All'];
-    else {
-        document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p => deptAccess.push(p.dataset.val));
-        if (!deptAccess.length) { alert('Select at least one department.'); return; }
+async function saveUser(){
+  const id=$('editUserId').value;
+  const name=$('mName').value.trim();
+  const email=$('mUser').value.trim().toLowerCase();
+  const role=$('mRole').value;
+  if(!name||!email){alert('Fill name and email.');return;}
+  let deptAccess=[];
+  if(role==='Admin')deptAccess=['All'];
+  else{document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));if(!deptAccess.length){alert('Select at least one department.');return;}}
+  let processAccess=[];
+  document.querySelectorAll('#procList input:checked').forEach(cb=>processAccess.push(cb.value));
+  try{
+    if(id){
+      await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',id),{name,email,role,deptAccess,processAccess},{merge:true});
+    }else{
+      // For new profile, we need a doc ID. Use email as fallback ID (user must login to get real UID-mapped doc)
+      alert('Note: User must first sign up in Firebase Console with this email. Profile will auto-link on their first login.\n\nFor now, a profile placeholder will be saved using email as ID.');
+      const safeId = 'pending_' + email.replace(/[^a-z0-9]/g,'_');
+      await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',safeId),{name,email,role,deptAccess,processAccess,pending:true});
     }
-    let processAccess = [];
-    document.querySelectorAll('#procList input:checked').forEach(cb => processAccess.push(cb.value));
-    const payload = { id, name, username, role, deptAccess, processAccess };
-    if (password) payload.password = password;
-    const r = await api('saveUser', { user: payload });
-    if (!r.ok) { alert(r.error || 'Save failed'); return; }
-    closeModal();
-    await loadUsers();
+    closeModal();await loadUsers();
+  }catch(e){alert('Save failed: '+e.message);}
 }
 
-async function deleteUserAct(id) {
-    if (!confirm('Delete this user?')) return;
-    const r = await api('deleteUser', { id });
-    if (!r.ok) { alert(r.error || 'Delete failed'); return; }
-    await loadUsers();
+async function deleteUserAct(id){
+  if(!confirm('Delete this user profile? (Their Firebase Auth account stays — delete that from Firebase Console separately.)'))return;
+  try{await window.fbFns.deleteDoc(window.fbFns.doc(window.fbDb,'users',id));await loadUsers();}
+  catch(e){alert('Delete failed: '+e.message);}
 }
 
-
-function showLoginForm() {
-    clearSess();
-    document.getElementById('loginForm').style.display = '';
-    document.getElementById('loginOverlay').classList.remove('hidden');
-}
-(async function initApp() {
-    const overlay = document.getElementById('loginOverlay');
-    const sess = getSess();
-
-    // No session → show login immediately, no waiting
-    if (!sess || !sess.token) {
-        overlay.classList.remove('hidden');
-        return;
+// ─── INIT: wait for Firebase, then watch auth state ───────
+window.addEventListener('firebaseReady', () => {
+  $('loginForm').style.display='none';
+  $('loadingState').style.display='';
+  
+  window.fbFns.onAuth(window.fbAuth, async (fbUser) => {
+    if(fbUser){
+      try{
+        const profile = await loadProfile(fbUser);
+        enterApp(profile);
+      }catch(e){
+        console.error(e);
+        showLoginError('Profile load failed: '+e.message);
+        showLoginScreen();
+      }
+    }else{
+      showLoginScreen();
     }
+  });
+});
 
-    // Session exists → show login form visible while verifying in background
-    overlay.classList.remove('hidden');
-    
-    try {
-        const r = await api('whoami');
-        if (r && r.ok && r.user) {
-            setSess({ token: sess.token, user: r.user });
-            overlay.classList.add('hidden');
-            enterApp(r.user);
-        } else {
-            // Invalid session → just show login, clear stale session
-            clearSess();
-        }
-    } catch(e) {
-        clearSess();
-    }
-})();
+// Expose for inline onclick
+window.handleLogin=handleLogin;window.handleLogout=handleLogout;window.togglePwd=togglePwd;window.forgotPass=forgotPass;
+window.filterCat=filterCat;window.runFilter=runFilter;window.showAdmin=showAdmin;
+window.openModal=openModal;window.closeModal=closeModal;window.editUser=editUser;window.deleteUserAct=deleteUserAct;
+window.onRoleChange=onRoleChange;window.toggleChk=toggleChk;window.saveUser=saveUser;
 </script>
 </body>
 </html>
