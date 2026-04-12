@@ -217,7 +217,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="grid" id="cardBox"></div>
       <div class="admin-panel" id="adminPanel">
         <div class="admin-top"><h3><i class="fas fa-users-gear" style="margin-right:7px;color:var(--accent)"></i>User Management</h3><button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button></div>
-        <div style="background:#fff5e0;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12px;margin-bottom:16px"><i class="fas fa-info-circle" style="margin-right:6px"></i>New users: account creation must be done in <a href="https://console.firebase.google.com" target="_blank" style="color:#8a5d00;font-weight:700">Firebase Console</a>. Here you assign their role &amp; access.</div>
+        <div style="background:#fff5e0;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12px;margin-bottom:16px"><i class="fas fa-info-circle" style="margin-right:6px"></i><strong>New user workflow:</strong> 1) Click "Add User" below — set name, email & access. 2) Open <a href="https://console.firebase.google.com" target="_blank" style="color:#8a5d00;font-weight:700">Firebase Console</a> → Authentication → add user with the SAME email & a password. 3) Share credentials with them.</div>
         <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Role</th><th>Dept Access</th><th>Process Access</th><th style="width:85px">Actions</th></tr></thead><tbody id="tblBody"></tbody></table></div>
       </div>
     </div>
@@ -248,7 +248,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -272,7 +271,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Expose to window for non-module code
+
 window.fbAuth = auth;
 window.fbDb = db;
 window.fbFns = {
@@ -286,7 +285,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
+const ADMIN_EMAIL_FALLBACK = "smileravikant24@gmail.com"; // change to YOUR admin email
 
 const DB = [
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
@@ -341,7 +340,7 @@ async function handleLogin(){
   setLoginLoading(true);
   try{
     await window.fbFns.signIn(window.fbAuth, e, p);
-    // onAuthStateChanged will handle UI transition
+   
   }catch(err){
     setLoginLoading(false);
     let msg = "Login failed.";
@@ -367,21 +366,27 @@ async function forgotPass(){
 
 async function handleLogout(){
   await window.fbFns.signOut(window.fbAuth);
-  // onAuthStateChanged handles UI
+ 
 }
 
 document.addEventListener('keydown', e => {
   if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin();
 });
 
-// ─── PROFILE LOAD ─────────────────────────────────────────
+
+function emailToId(email){ return email.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
+
 async function loadProfile(fbUser){
-  const ref = window.fbFns.doc(window.fbDb, 'users', fbUser.uid);
+  const emailId = emailToId(fbUser.email);
+  const ref = window.fbFns.doc(window.fbDb, 'users', emailId);
   const snap = await window.fbFns.getDoc(ref);
   if(snap.exists()){
     const d = snap.data();
+    // Update uid link if missing
+    if(!d.uid){ try{ await window.fbFns.setDoc(ref,{uid:fbUser.uid},{merge:true}); }catch(e){} }
     return {
-      id: fbUser.uid,
+      id: emailId,
+      uid: fbUser.uid,
       email: fbUser.email,
       name: d.name || fbUser.email.split('@')[0],
       role: d.role || 'Employee',
@@ -389,16 +394,18 @@ async function loadProfile(fbUser){
       processAccess: Array.isArray(d.processAccess) ? d.processAccess : []
     };
   }
-  // Auto-create profile for first login
+ 
   const isFirstAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
   const profile = {
+    email: fbUser.email.toLowerCase(),
+    uid: fbUser.uid,
     name: fbUser.email.split('@')[0],
     role: isFirstAdmin ? 'Admin' : 'Employee',
     deptAccess: isFirstAdmin ? ['All'] : [],
     processAccess: []
   };
   await window.fbFns.setDoc(ref, profile);
-  return { id: fbUser.uid, email: fbUser.email, ...profile };
+  return { id: emailId, ...profile };
 }
 
 function enterApp(user){
@@ -428,7 +435,7 @@ function showLoginScreen(){
   clearLoginError();
 }
 
-// ─── ACCESS HELPERS ───────────────────────────────────────
+
 function hasDept(u,c){if(!u)return false;if(u.role==='Admin')return true;if(u.deptAccess.includes('All'))return true;return u.deptAccess.includes(c);}
 function hasProc(u,n){if(!u)return false;if(u.role==='Admin')return true;if(!u.processAccess||!u.processAccess.length)return true;return u.processAccess.includes(n);}
 function getCatClass(c){return c==='My System'?'My':c;}
@@ -497,7 +504,7 @@ function runFilter(){
   renderCards(filtered);
 }
 
-// ─── ADMIN PANEL (Firestore) ──────────────────────────────
+
 async function showAdmin(el){
   if(!curUser||curUser.role!=='Admin')return;
   curView='admin';setActive(el);hdr().innerText='User Management';
@@ -575,13 +582,10 @@ async function saveUser(){
   let processAccess=[];
   document.querySelectorAll('#procList input:checked').forEach(cb=>processAccess.push(cb.value));
   try{
-    if(id){
-      await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',id),{name,email,role,deptAccess,processAccess},{merge:true});
-    }else{
-      // For new profile, we need a doc ID. Use email as fallback ID (user must login to get real UID-mapped doc)
-      alert('Note: User must first sign up in Firebase Console with this email. Profile will auto-link on their first login.\n\nFor now, a profile placeholder will be saved using email as ID.');
-      const safeId = 'pending_' + email.replace(/[^a-z0-9]/g,'_');
-      await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',safeId),{name,email,role,deptAccess,processAccess,pending:true});
+    const docId = id || emailToId(email);
+    await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',docId),{name,email,role,deptAccess,processAccess},{merge:true});
+    if(!id){
+      alert('✅ Profile saved!\n\nNext step: Go to Firebase Console > Authentication > Add user with the SAME email ('+email+') and a password. Share credentials with the user — their access is already configured.');
     }
     closeModal();await loadUsers();
   }catch(e){alert('Save failed: '+e.message);}
@@ -593,7 +597,7 @@ async function deleteUserAct(id){
   catch(e){alert('Delete failed: '+e.message);}
 }
 
-// ─── INIT: wait for Firebase, then watch auth state ───────
+
 window.addEventListener('firebaseReady', () => {
   $('loginForm').style.display='none';
   $('loadingState').style.display='';
@@ -614,7 +618,7 @@ window.addEventListener('firebaseReady', () => {
   });
 });
 
-// Expose for inline onclick
+
 window.handleLogin=handleLogin;window.handleLogout=handleLogout;window.togglePwd=togglePwd;window.forgotPass=forgotPass;
 window.filterCat=filterCat;window.runFilter=runFilter;window.showAdmin=showAdmin;
 window.openModal=openModal;window.closeModal=closeModal;window.editUser=editUser;window.deleteUserAct=deleteUserAct;
