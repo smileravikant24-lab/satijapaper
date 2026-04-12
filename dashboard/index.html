@@ -357,16 +357,14 @@ async function api(action, payload) {
     const sess = getSess();
     if (sess && sess.token) body.token = sess.token;
     
-    const formData = new URLSearchParams();
-    formData.append('payload', JSON.stringify(body));
+    const url = API_URL + '?payload=' + encodeURIComponent(JSON.stringify(body));
     
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000);
         
-        const res = await fetch(API_URL, {
-            method: "POST",
-            body: formData,
+        const res = await fetch(url, {
+            method: "GET",
             signal: controller.signal
         });
         clearTimeout(timeoutId);
