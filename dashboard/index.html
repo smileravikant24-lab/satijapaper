@@ -494,7 +494,7 @@ function enterApp(user) {
     curCat = 'All'; curView = 'cards';
     setActive(document.querySelector('.menu-btn'));
     updateCounts();
-    runFilter();
+    setTimeout(() => runFilter(), 50);
 }
 
 // ─── ACCESS HELPERS ────────────────────────────────────────────────────────────
