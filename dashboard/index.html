@@ -33,9 +33,8 @@
         }
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;}
-
-        .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a 0%,#0f1f38 50%,#070e1a 100%);transition:opacity .5s,visibility .5s;}
-        .login-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+        .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a 0%,#0f1f38 50%,#070e1a 100%);}
+        .login-overlay.hidden{display:none;}
         .login-bg{position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(0,102,255,.08),transparent 55%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.06),transparent 50%);animation:bgPulse 12s ease-in-out infinite alternate;}
         @keyframes bgPulse{0%{opacity:.5}100%{opacity:1}}
         .login-card{position:relative;width:420px;background:rgba(255,255,255,.03);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:48px 40px;animation:cardUp .6s var(--ease);}
@@ -57,10 +56,15 @@
         .login-input::placeholder{color:rgba(255,255,255,.2);}
         .login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.06);box-shadow:0 0 0 3px rgba(0,102,255,.12);}
         .login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#4338ca);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:8px;}
-        .login-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.35);}
+        .login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.35);}
+        .login-btn:disabled{opacity:.7;cursor:not-allowed;}
         .login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;align-items:center;gap:7px;}
         .login-error.show{display:flex;}
         .toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px;}
+        .restore-state{text-align:center;color:#fff;padding:20px;}
+        .restore-state i{font-size:32px;color:var(--accent-light);margin-bottom:16px;display:block;}
+        .restore-state .rt{font-size:14px;font-weight:700;letter-spacing:.5px;}
+        .restore-state .rs{font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;}
         .app-container{display:none;height:100vh;}
         .app-container.visible{display:flex;}
         .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
@@ -71,7 +75,7 @@
         .brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8;}
         .brand-url:hover{opacity:1;text-decoration:underline;}
         .sidebar-label{padding:18px 22px 6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,.22);}
-        .menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;position:relative;}
+        .menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;position:relative;width:100%;}
         .menu-btn i{width:18px;text-align:center;font-size:13px;transition:.2s;}
         .menu-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85);}
         .menu-btn.active{background:rgba(0,102,255,.12);color:var(--accent-light);border-left-color:var(--accent-light);}
@@ -83,7 +87,7 @@
         .sidebar-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .sidebar-urole{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
         .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;padding:6px;border-radius:8px;transition:.2s;}
-       .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08);}
+        .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08);}
         .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;}
         .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
         .page-title{font-size:18px;font-weight:800;color:var(--text);}
@@ -106,20 +110,20 @@
         @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
         .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);}
         .card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px;}
-        .tag-Sales{background:#e8f0ff;color:#0052cc;} .tag-Purchase{background:#e6faf3;color:#00795c;} .tag-Management{background:#fff5e0;color:#8a5d00;} .tag-HR{background:#f3e8ff;color:#5b21b6;} .tag-Finance{background:#ffe8ea;color:#c41432;} .tag-Support{background:#e0f7fa;color:#0277bd;} .tag-My{background:#f0e6ff;color:#6d28d9;}
+        .tag-Sales{background:#e8f0ff;color:#0052cc;}.tag-Purchase{background:#e6faf3;color:#00795c;}.tag-Management{background:#fff5e0;color:#8a5d00;}.tag-HR{background:#f3e8ff;color:#5b21b6;}.tag-Finance{background:#ffe8ea;color:#c41432;}.tag-Support{background:#e0f7fa;color:#0277bd;}.tag-My{background:#f0e6ff;color:#6d28d9;}
         .card h3{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;line-height:1.3;}
         .people{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
         .role-g{display:flex;flex-direction:column;gap:2px;}
         .role-l{font-size:8px;text-transform:uppercase;color:var(--text-3);font-weight:800;letter-spacing:.6px;margin-left:2px;}
         .badge{padding:4px 9px;border-radius:6px;background:var(--bg);border:1px solid var(--border);color:var(--text);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;}
         .badge i{font-size:10px;}
-        .b-pc{border-left:3px solid var(--purple);} .b-pc i{color:var(--purple);}
-        .b-sv{border-left:3px solid var(--warn);} .b-sv i{color:var(--warn);}
-        .b-ex{border-left:3px solid var(--ok);} .b-ex i{color:var(--ok);}
+        .b-pc{border-left:3px solid var(--purple);}.b-pc i{color:var(--purple);}
+        .b-sv{border-left:3px solid var(--warn);}.b-sv i{color:var(--warn);}
+        .b-ex{border-left:3px solid var(--ok);}.b-ex i{color:var(--ok);}
         .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:auto;}
         .btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;transition:.2s var(--ease);font-family:inherit;position:relative;}
         .btn:hover{filter:brightness(.92);transform:translateY(-1px);}
-        .btn-fms{background:#e8f0ff;color:#0052cc;} .btn-form{background:#f3e8ff;color:#5b21b6;} .btn-sheet{background:#e6faf3;color:#00795c;} .btn-check{background:#fff0e0;color:#8a4500;} .btn-video{background:#ffe8ea;color:#b91c1c;} .btn-dash{background:#e0f2fe;color:#0369a1;} .btn-admin{background:#fef3c7;color:#92400e;} .btn-gp{background:#ede9fe;color:#5b21b6;}
+        .btn-fms{background:#e8f0ff;color:#0052cc;}.btn-form{background:#f3e8ff;color:#5b21b6;}.btn-sheet{background:#e6faf3;color:#00795c;}.btn-check{background:#fff0e0;color:#8a4500;}.btn-video{background:#ffe8ea;color:#b91c1c;}.btn-dash{background:#e0f2fe;color:#0369a1;}.btn-admin{background:#fef3c7;color:#92400e;}.btn-gp{background:#ede9fe;color:#5b21b6;}
         .btn.disabled-link{opacity:.3;pointer-events:none;cursor:not-allowed;}
         .lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;font-size:8px;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:700;letter-spacing:.3px;}
         .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
@@ -137,13 +141,13 @@
         .tbl tr:last-child td{border-bottom:0;}
         .tbl tr:hover td{background:#f8fafc;}
         .role-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;}
-        .role-pill.admin{background:#ffe8ea;color:#b91c1c;} .role-pill.employee{background:#e8f0ff;color:#0052cc;}
+        .role-pill.admin{background:#ffe8ea;color:#b91c1c;}.role-pill.employee{background:#e8f0ff;color:#0052cc;}
         .access-pills{display:flex;flex-wrap:wrap;gap:3px;}
         .ap{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;}
-        .ap-Sales{background:#e8f0ff;color:#0052cc;} .ap-Purchase{background:#e6faf3;color:#00795c;} .ap-Management{background:#fff5e0;color:#8a5d00;} .ap-HR{background:#f3e8ff;color:#5b21b6;} .ap-Finance{background:#ffe8ea;color:#c41432;} .ap-All{background:var(--primary);color:#fff;}
+        .ap-Sales{background:#e8f0ff;color:#0052cc;}.ap-Purchase{background:#e6faf3;color:#00795c;}.ap-Management{background:#fff5e0;color:#8a5d00;}.ap-HR{background:#f3e8ff;color:#5b21b6;}.ap-Finance{background:#ffe8ea;color:#c41432;}.ap-All{background:var(--primary);color:#fff;}
         .tbl-act{background:0;border:0;cursor:pointer;padding:5px 7px;border-radius:6px;transition:.2s;font-size:13px;}
         .tbl-act:hover{background:var(--bg);}
-        .tbl-act.edit{color:var(--accent);} .tbl-act.delete{color:var(--danger);}
+        .tbl-act.edit{color:var(--accent);}.tbl-act.delete{color:var(--danger);}
         .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center;}
         .modal-bg.show{display:flex;}
         .modal-box{background:#fff;border-radius:18px;width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .3s var(--ease);}
@@ -164,8 +168,8 @@
         .chk-pill input{display:none;}
         .modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
         .mbtn{padding:9px 20px;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.2s;}
-        .mbtn.sec{background:var(--bg);color:var(--text-2);} .mbtn.sec:hover{background:#e2e8f0;}
-        .mbtn.pri{background:var(--accent);color:#fff;} .mbtn.pri:hover{background:#0052cc;}
+        .mbtn.sec{background:var(--bg);color:var(--text-2);}.mbtn.sec:hover{background:#e2e8f0;}
+        .mbtn.pri{background:var(--accent);color:#fff;}.mbtn.pri:hover{background:#0052cc;}
         .proc-section{margin-top:4px;}
         .proc-section summary{cursor:pointer;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;padding:5px 0;user-select:none;}
         .proc-section summary:hover{color:var(--accent);}
@@ -185,31 +189,41 @@
     </style>
 </head>
 <body>
-<div class="login-overlay" id="loginOverlay">
+
+<!-- LOGIN -->
+<div class="login-overlay hidden" id="loginOverlay">
     <div class="login-bg"></div>
-    <div class="login-card">
-        <div class="login-brand">
-            <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
-            <h1>SATIJA PAPER</h1>
-            <div class="login-brand-url">www.satijapaper.com</div>
-            <div class="login-brand-sub">System Master — Process Dashboard</div>
+    <div class="login-card" id="loginCard">
+        <div id="loginForm">
+            <div class="login-brand">
+                <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
+                <h1>SATIJA PAPER</h1>
+                <div class="login-brand-url">www.satijapaper.com</div>
+                <div class="login-brand-sub">System Master — Process Dashboard</div>
+            </div>
+            <div class="login-role-tabs">
+                <button class="login-role-tab active" id="tabEmployee" onclick="setLoginRole('Employee')"><i class="fas fa-user"></i> Employee</button>
+                <button class="login-role-tab" id="tabAdmin" onclick="setLoginRole('Admin')"><i class="fas fa-shield-halved"></i> Admin</button>
+            </div>
+            <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
+            <div class="login-field">
+                <label>Username</label>
+                <div class="login-input-wrap"><i class="fas fa-user"></i><input type="text" class="login-input" id="loginUser" placeholder="Enter your username" autocomplete="off"></div>
+            </div>
+            <div class="login-field">
+                <label>Password</label>
+                <div class="login-input-wrap">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="login-input" id="loginPass" placeholder="Enter your password">
+                    <button class="toggle-password" type="button" onclick="togglePwd()"><i class="fas fa-eye" id="pwdEye"></i></button>
+                </div>
+            </div>
+            <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i></button>
         </div>
-        <div class="login-role-tabs">
-            <button class="login-role-tab active" onclick="setLoginRole('Employee')" id="tabEmployee"><i class="fas fa-user"></i> Employee</button>
-            <button class="login-role-tab" onclick="setLoginRole('Admin')" id="tabAdmin"><i class="fas fa-shield-halved"></i> Admin</button>
-        </div>
-        <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
-        <div class="login-field">
-            <label>Username</label>
-            <div class="login-input-wrap"><i class="fas fa-user"></i><input type="text" class="login-input" id="loginUser" placeholder="Enter your username" autocomplete="off"></div>
-        </div>
-        <div class="login-field">
-            <label>Password</label>
-            <div class="login-input-wrap"><i class="fas fa-lock"></i><input type="password" class="login-input" id="loginPass" placeholder="Enter your password"><button class="toggle-password" onclick="togglePwd()" type="button"><i class="fas fa-eye" id="pwdEye"></i></button></div>
-        </div>
-        <button class="login-btn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i></button>
     </div>
 </div>
+
+<!-- APP -->
 <div class="app-container" id="appContainer">
     <div class="sidebar">
         <div class="brand-box">
@@ -227,22 +241,19 @@
         <div class="sidebar-label">My System</div>
         <button class="menu-btn" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
         <button class="menu-btn" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
-
         <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
         <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
-
         <div class="sidebar-user">
             <div class="sidebar-avatar" id="sAvatar">A</div>
             <div class="sidebar-uinfo"><div class="sidebar-uname" id="sName">Admin</div><div class="sidebar-urole" id="sRole">Admin</div></div>
             <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
         </div>
     </div>
-
     <div class="main-content">
         <div class="header-bar">
             <h2 class="page-title" id="pageHeader">All Processes</h2>
             <div class="header-right">
-                <div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" onkeyup="searchCards()"></div>
+                <div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div>
             </div>
         </div>
         <div class="content">
@@ -254,6 +265,8 @@
         </div>
     </div>
 </div>
+
+<!-- CHANGE PASS MODAL -->
 <div class="modal-bg" id="changePassModal">
     <div class="modal-box" style="width:420px;">
         <div class="modal-head"><h3><i class="fas fa-key" style="color:var(--accent);margin-right:8px;"></i>Set Your Password</h3></div>
@@ -267,6 +280,7 @@
     </div>
 </div>
 
+<!-- USER MODAL -->
 <div class="modal-bg" id="userModal">
     <div class="modal-box">
         <div class="modal-head"><h3 id="modalTitle">Add New User</h3><button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button></div>
@@ -295,123 +309,155 @@
 <script>
 
 const API_URL = "https://script.google.com/macros/s/AKfycbzuaYLlql9aLSsxnFXpF2xt54YKOYpxOhtKImKdE8LdPbEYKZbfLY632aP3nLLAjZ3b/exec";
-const SS = "satija_session";
- 
+const SS_KEY  = "satija_session";
+
+
 const DB = [
-{cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
-{cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
-{cat:"Sales",name:"Double A Order Form",pc:"-",solver:"-",exec:"Mukesh",links:{form:"https://script.google.com/macros/s/AKfycby6egRY9Iwv8VZbkApHOfzTQJGuohimxqz08QuJ1La3kO1pC1XNAK8CYiEeKxgoWci-/exec",sheet:"https://docs.google.com/spreadsheets/d/1SoeYZrERSmUEiaLyIOh0aMduacbeAnVTrkif2RJfcPs/edit?usp=sharing"}},
-{cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:"https://forms.gle/ufmi4wL7CGjXPcxg8",sheet:"https://docs.google.com/spreadsheets/d/1wZGQ7IgaOzEPzcf_PLLinVgZc7UDtAubgEsjh-tVVUk/edit?usp=sharing"}},
-{cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:"https://forms.gle/simx8cyQQBD5x4aj8",sheet:"https://docs.google.com/spreadsheets/d/1J0iqWAHLvAPrHMfKXGQRZmVhv7Y_N1bI_nJvVhkPlM4/edit?usp=sharing"}},
-{cat:"Sales",name:"DA Distributor Checklist",pc:"-",solver:"-",exec:"-",links:{form:"https://forms.gle/uAC3jHJkJRKkWhzD9",sheet:"https://docs.google.com/spreadsheets/d/1qUq8t-ny3jYw8Sr5EX1o8JPwTZTABq-84u3WZmqZiGA/edit?gid=1524564798#gid=1524564798"}},
-{cat:"Sales",name:"Price List",pc:"-",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:"https://docs.google.com/spreadsheets/d/1MNAJurPOo-gmx_0jOugi9-KBpvEXYaDm6ZiW02AY4qs/edit?usp=sharing"}},
-{cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1jh6kl51lLByIf6frhfsJts572vfgx6J7eilL3AlFqu4/edit?usp=sharing",form:"https://docs.google.com/forms/d/e/1FAIpQLSf43faF1YxitkNKPGSWmz44J9HNayP01ZoANoTamKD4S4gUNw/viewform",video:"https://drive.google.com/file/d/1fWolylWij-qPSDPB8UNTTFFV4oO75_U_/view?usp=sharing",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
-{cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:"https://forms.gle/dpEsQFHrE7Gffh466",sheet:"https://docs.google.com/spreadsheets/d/1cKZJ08hxWIeJqh4g4P6IsYrXFNvWJBYEP-JDBkT8-BU/edit?usp=sharing",video:"https://youtu.be/N1Rs7-0gW5c"}},
-{cat:"Purchase",name:"WMS",pc:"Mukesh Shukla",solver:"Ravi Kant Kumar",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbxzCtHADDcT-bIi8SRnRQM1bQ-hhw_6spl8expIqQOMdT9a7emYE0l1aDaOLFgorIb4qg/exec",sheet:"https://docs.google.com/spreadsheets/d/12rNRfz9Mh6CeXD4t5Sy8ltb8_8P2J-dPgw9RN5JkPvU/edit?gid=1140645635#gid=1140645635"}},
-{cat:"Management",name:"Ultimate Checklist",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{check:"https://docs.google.com/spreadsheets/d/1CjiaW5EuDdyUtzLcM-3lg7Omp47Uc94PxtdNkd8X7cM/edit?gid=2123213379#gid=2123213379",video:"https://youtu.be/b3CDW57r7hA",dashEmp:"https://lookerstudio.google.com/reporting/867783ed-3310-433d-af65-215a8637dc1c",dashPC:"https://lookerstudio.google.com/reporting/47123040-143d-40e6-accd-ca979d4821f8"}},
-{cat:"Management",name:"Delegation Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbwkZJdwMiyW3RRXrd5xUxZUoiWuqarz7Gm-f-xUgywpZdpAYMeR35uCykCCm9HHXXEJsg/exec",sheet:"https://docs.google.com/spreadsheets/d/1wlNnew6xsTyKubBaiGh_AjFf9WURcyI_ChsRHI3PfJU/edit?usp=sharing",video:"https://youtu.be/zTtmwX-8N5c"}},
-{cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:"https://forms.gle/RZk3BaqF2RR4dRWZA",sheet:"https://docs.google.com/spreadsheets/d/1E1-RY6Q8v3DQDgvlzGL8y7-DBrQccNA8A7yOer3oElM/edit?usp=sharing"}},
-{cat:"Management",name:"To Do (EA)",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha / Pranav",links:{form:"https://forms.gle/aJkEUVAkXSM2zar4A",sheet:"https://docs.google.com/spreadsheets/d/1JI2j-2pZVqv0cfbLv_xK5GtIPOzHn1FRSWdHNOIR3eQ/edit?usp=sharing"}},
-{cat:"Management",name:"MIS Score",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1a_mXf1x6CBuzYdzY0CMNPXq9jb96FVL9nPfOJCi8zgc/edit?gid=0#gid=0"}},
-{cat:"Management",name:"Dashboard of All FMS",pc:"-",solver:"-",exec:"-",links:{dashEmp:"https://lookerstudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9",dashPC:"https://lookerstudio.google.com/reporting/6072ed63-d184-4db1-b140-30ecba6fdc96"}},
-{cat:"Management",name:"FMS OF FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:"https://docs.google.com/spreadsheets/d/145fPQ-xJYiR9sceKh391kVoXPr3dwNThR73Ij0sih3c/edit?gid=663292535#gid=663292535",form:"https://forms.gle/CxsCmRZzeESiygMt9"}},
-{cat:"Support",name:"Help Ticket",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://forms.gle/1spYybVfM8C3a8bu9"}},
-{cat:"My System",name:"Google Site",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://sites.google.com/satijapaper.com/satija-paper/home",sheet:"https://docs.google.com/spreadsheets/d/1cILiWFTHeoJ5ELsw0HKr5UWfWne7TVgrGy5xdgseZWE/edit?gid=0#gid=0"}},
-{cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{form:"https://script.google.com/macros/s/AKfycbwN-zMYqEPGy4IdgXHMxcsIwndpKLzib7hGqRxIx_j4pdy-V7xAHn10RYq2aM2HOzZ3/exec",sheet:"https://docs.google.com/spreadsheets/d/1o3j9B0UAE_AywprE7SV2hRtXscYyVXivDDVok2otPEM/edit?usp=sharing"}},
-{cat:"HR",name:"Attendances Sheet",pc:"Neha / Preksha",solver:"Neha / Pranav",exec:"All Staff",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec",sheet:"https://docs.google.com/spreadsheets/d/179U4qy_lPVOV4HtmNHoGfnNy_TgWHhzhxg0Ip-2sR2k/edit?gid=0#gid=0",admin:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec?page=admin"}},
-{cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1oxxIzERQ5DGgh9QsapS9sefu8_-Y8Z9_7QNHJF9cks8/edit?gid=760114361#gid=760114361",form:"https://forms.gle/BRZFSt6MmUMbUogZ6"}},
-{cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:"https://forms.gle/DicXKSdhGBVBnBDL8",sheet:"https://docs.google.com/spreadsheets/d/1fSytJSS3zc2QhpIaMFLKawRBW-taOvd0TJd0l6K9fFQ/edit?gid=1674675112#gid=1674675112"}},
-{cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1O-d1HUIXLrqZceHw46RXHS08Kv0S89GLLvyBd4Rf1xg/edit?gid=183137054#gid=183137054",form:"https://forms.gle/bzgaZgtAhdPExPLS6"}},
-{cat:"Finance",name:"Company Payment",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1-ZUlJxpqd93Nh-PdK1mdVY3KduNLJwZ4JBR56TlZGQY/edit?gid=663292535#gid=663292535",form:"https://docs.google.com/forms/d/e/1FAIpQLSc0R2QBTK4py8MJdzQClkMs4iRRQBBEg3jYGnkWp0nzRMwGZg/viewform"}},
-{cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0",gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec"}},
-{cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
+  {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
+  {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
+  {cat:"Sales",name:"Double A Order Form",pc:"-",solver:"-",exec:"Mukesh",links:{form:"https://script.google.com/macros/s/AKfycby6egRY9Iwv8VZbkApHOfzTQJGuohimxqz08QuJ1La3kO1pC1XNAK8CYiEeKxgoWci-/exec",sheet:"https://docs.google.com/spreadsheets/d/1SoeYZrERSmUEiaLyIOh0aMduacbeAnVTrkif2RJfcPs/edit?usp=sharing"}},
+  {cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:"https://forms.gle/ufmi4wL7CGjXPcxg8",sheet:"https://docs.google.com/spreadsheets/d/1wZGQ7IgaOzEPzcf_PLLinVgZc7UDtAubgEsjh-tVVUk/edit?usp=sharing"}},
+  {cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:"https://forms.gle/simx8cyQQBD5x4aj8",sheet:"https://docs.google.com/spreadsheets/d/1J0iqWAHLvAPrHMfKXGQRZmVhv7Y_N1bI_nJvVhkPlM4/edit?usp=sharing"}},
+  {cat:"Sales",name:"DA Distributor Checklist",pc:"-",solver:"-",exec:"-",links:{form:"https://forms.gle/uAC3jHJkJRKkWhzD9",sheet:"https://docs.google.com/spreadsheets/d/1qUq8t-ny3jYw8Sr5EX1o8JPwTZTABq-84u3WZmqZiGA/edit?gid=1524564798#gid=1524564798"}},
+  {cat:"Sales",name:"Price List",pc:"-",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:"https://docs.google.com/spreadsheets/d/1MNAJurPOo-gmx_0jOugi9-KBpvEXYaDm6ZiW02AY4qs/edit?usp=sharing"}},
+  {cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1jh6kl51lLByIf6frhfsJts572vfgx6J7eilL3AlFqu4/edit?usp=sharing",form:"https://docs.google.com/forms/d/e/1FAIpQLSf43faF1YxitkNKPGSWmz44J9HNayP01ZoANoTamKD4S4gUNw/viewform",video:"https://drive.google.com/file/d/1fWolylWij-qPSDPB8UNTTFFV4oO75_U_/view?usp=sharing",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
+  {cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:"https://forms.gle/dpEsQFHrE7Gffh466",sheet:"https://docs.google.com/spreadsheets/d/1cKZJ08hxWIeJqh4g4P6IsYrXFNvWJBYEP-JDBkT8-BU/edit?usp=sharing",video:"https://youtu.be/N1Rs7-0gW5c"}},
+  {cat:"Purchase",name:"WMS",pc:"Mukesh Shukla",solver:"Ravi Kant Kumar",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbxzCtHADDcT-bIi8SRnRQM1bQ-hhw_6spl8expIqQOMdT9a7emYE0l1aDaOLFgorIb4qg/exec",sheet:"https://docs.google.com/spreadsheets/d/12rNRfz9Mh6CeXD4t5Sy8ltb8_8P2J-dPgw9RN5JkPvU/edit?gid=1140645635#gid=1140645635"}},
+  {cat:"Management",name:"Ultimate Checklist",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{check:"https://docs.google.com/spreadsheets/d/1CjiaW5EuDdyUtzLcM-3lg7Omp47Uc94PxtdNkd8X7cM/edit?gid=2123213379#gid=2123213379",video:"https://youtu.be/b3CDW57r7hA",dashEmp:"https://lookerstudio.google.com/reporting/867783ed-3310-433d-af65-215a8637dc1c",dashPC:"https://lookerstudio.google.com/reporting/47123040-143d-40e6-accd-ca979d4821f8"}},
+  {cat:"Management",name:"Delegation Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbwkZJdwMiyW3RRXrd5xUxZUoiWuqarz7Gm-f-xUgywpZdpAYMeR35uCykCCm9HHXXEJsg/exec",sheet:"https://docs.google.com/spreadsheets/d/1wlNnew6xsTyKubBaiGh_AjFf9WURcyI_ChsRHI3PfJU/edit?usp=sharing",video:"https://youtu.be/zTtmwX-8N5c"}},
+  {cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:"https://forms.gle/RZk3BaqF2RR4dRWZA",sheet:"https://docs.google.com/spreadsheets/d/1E1-RY6Q8v3DQDgvlzGL8y7-DBrQccNA8A7yOer3oElM/edit?usp=sharing"}},
+  {cat:"Management",name:"To Do (EA)",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha / Pranav",links:{form:"https://forms.gle/aJkEUVAkXSM2zar4A",sheet:"https://docs.google.com/spreadsheets/d/1JI2j-2pZVqv0cfbLv_xK5GtIPOzHn1FRSWdHNOIR3eQ/edit?usp=sharing"}},
+  {cat:"Management",name:"MIS Score",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1a_mXf1x6CBuzYdzY0CMNPXq9jb96FVL9nPfOJCi8zgc/edit?gid=0#gid=0"}},
+  {cat:"Management",name:"Dashboard of All FMS",pc:"-",solver:"-",exec:"-",links:{dashEmp:"https://lookerstudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9",dashPC:"https://lookerstudio.google.com/reporting/6072ed63-d184-4db1-b140-30ecba6fdc96"}},
+  {cat:"Management",name:"FMS OF FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:"https://docs.google.com/spreadsheets/d/145fPQ-xJYiR9sceKh391kVoXPr3dwNThR73Ij0sih3c/edit?gid=663292535#gid=663292535",form:"https://forms.gle/CxsCmRZzeESiygMt9"}},
+  {cat:"Support",name:"Help Ticket",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://forms.gle/1spYybVfM8C3a8bu9"}},
+  {cat:"My System",name:"Google Site",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://sites.google.com/satijapaper.com/satija-paper/home",sheet:"https://docs.google.com/spreadsheets/d/1cILiWFTHeoJ5ELsw0HKr5UWfWne7TVgrGy5xdgseZWE/edit?gid=0#gid=0"}},
+  {cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{form:"https://script.google.com/macros/s/AKfycbwN-zMYqEPGy4IdgXHMxcsIwndpKLzib7hGqRxIx_j4pdy-V7xAHn10RYq2aM2HOzZ3/exec",sheet:"https://docs.google.com/spreadsheets/d/1o3j9B0UAE_AywprE7SV2hRtXscYyVXivDDVok2otPEM/edit?usp=sharing"}},
+  {cat:"HR",name:"Attendances Sheet",pc:"Neha / Preksha",solver:"Neha / Pranav",exec:"All Staff",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec",sheet:"https://docs.google.com/spreadsheets/d/179U4qy_lPVOV4HtmNHoGfnNy_TgWHhzhxg0Ip-2sR2k/edit?gid=0#gid=0",admin:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec?page=admin"}},
+  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1oxxIzERQ5DGgh9QsapS9sefu8_-Y8Z9_7QNHJF9cks8/edit?gid=760114361#gid=760114361",form:"https://forms.gle/BRZFSt6MmUMbUogZ6"}},
+  {cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:"https://forms.gle/DicXKSdhGBVBnBDL8",sheet:"https://docs.google.com/spreadsheets/d/1fSytJSS3zc2QhpIaMFLKawRBW-taOvd0TJd0l6K9fFQ/edit?gid=1674675112#gid=1674675112"}},
+  {cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1O-d1HUIXLrqZceHw46RXHS08Kv0S89GLLvyBd4Rf1xg/edit?gid=183137054#gid=183137054",form:"https://forms.gle/bzgaZgtAhdPExPLS6"}},
+  {cat:"Finance",name:"Company Payment",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1-ZUlJxpqd93Nh-PdK1mdVY3KduNLJwZ4JBR56TlZGQY/edit?gid=663292535#gid=663292535",form:"https://docs.google.com/forms/d/e/1FAIpQLSc0R2QBTK4py8MJdzQClkMs4iRRQBBEg3jYGnkWp0nzRMwGZg/viewform"}},
+  {cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0",gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec"}},
+  {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
- 
+
+function getSess()       { try { const s = localStorage.getItem(SS_KEY); return s ? JSON.parse(s) : null; } catch(e){ return null; } }
+function setSess(o)      { localStorage.setItem(SS_KEY, JSON.stringify(o)); }
+function clearSess()     { localStorage.removeItem(SS_KEY); }
 
 async function api(action, payload) {
-    payload = payload || {};
-    payload.action = action;
+    const body = Object.assign({ action }, payload || {});
     const sess = getSess();
-    if (sess && sess.token) payload.token = sess.token;
+    if (sess && sess.token) body.token = sess.token;
     try {
         const res = await fetch(API_URL, {
             method: "POST",
             redirect: "follow",
-            // text/plain avoids CORS preflight — works from GitHub Pages
             headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(body)
         });
+        if (!res.ok) throw new Error("HTTP " + res.status);
         return await res.json();
     } catch (e) {
         return { ok: false, error: "Network error: " + e.message };
     }
 }
- 
-function getSess() { const s = localStorage.getItem(SS); return s ? JSON.parse(s) : null; }
-function setSess(o) { localStorage.setItem(SS, JSON.stringify(o)); }
-function clearSess() { localStorage.removeItem(SS); }
- 
+
 let loginRole = "Employee";
+
 function setLoginRole(r) {
     loginRole = r;
     document.getElementById('tabEmployee').classList.toggle('active', r === 'Employee');
     document.getElementById('tabAdmin').classList.toggle('active', r === 'Admin');
-    document.getElementById('loginError').classList.remove('show');
+    clearLoginError();
 }
+
 function togglePwd() {
     const i = document.getElementById('loginPass'), ic = document.getElementById('pwdEye');
     if (i.type === 'password') { i.type = 'text'; ic.className = 'fas fa-eye-slash'; }
     else { i.type = 'password'; ic.className = 'fas fa-eye'; }
 }
- 
+
+function showLoginError(msg) {
+    const err = document.getElementById('loginError');
+    document.getElementById('loginErrorMsg').textContent = msg;
+    err.classList.add('show');
+}
+function clearLoginError() {
+    document.getElementById('loginError').classList.remove('show');
+}
+
+function setLoginLoading(on) {
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = on;
+    btn.innerHTML = on
+        ? '<i class="fas fa-circle-notch fa-spin" style="margin-right:6px;"></i>Signing in...'
+        : 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i>';
+}
+
 async function handleLogin() {
+    clearLoginError();
     const u = document.getElementById('loginUser').value.trim();
     const p = document.getElementById('loginPass').value;
-    const err = document.getElementById('loginError'), msg = document.getElementById('loginErrorMsg');
-    if (!u || !p) { msg.textContent = "Please enter username and password."; err.classList.add('show'); return; }
-    const btn = document.querySelector('.login-btn');
-    btn.disabled = true; btn.innerHTML = 'Signing in...';
+    if (!u || !p) { showLoginError("Please enter username and password."); return; }
+
+    setLoginLoading(true);
     const r = await api('login', { username: u, password: p });
-    btn.disabled = false; btn.innerHTML = 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px;"></i>';
-    if (!r.ok) { msg.textContent = r.error || "Login failed."; err.classList.add('show'); return; }
-    if (r.user.role !== loginRole) { msg.textContent = `This account is ${r.user.role}, not ${loginRole}.`; err.classList.add('show'); return; }
-    err.classList.remove('show');
+    setLoginLoading(false);
+
+    if (!r.ok) { showLoginError(r.error || "Login failed."); return; }
+    if (r.user.role !== loginRole) {
+        showLoginError(`This account is "${r.user.role}" — please select the correct role tab.`);
+        return;
+    }
+
     setSess({ token: r.token, user: r.user });
-    if (r.user.mustChangePass) { showChangePassModal(); return; }
+
+    if (r.user.mustChangePass) {
+        showChangePassModal();
+        return;
+    }
     enterApp(r.user);
 }
- 
+
+
 document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && !document.getElementById('loginOverlay').classList.contains('hidden')) handleLogin();
+    if (e.key === 'Enter') {
+        const overlay = document.getElementById('loginOverlay');
+        if (!overlay.classList.contains('hidden')) handleLogin();
+    }
 });
- 
+
 function handleLogout() {
     clearSess();
     document.getElementById('appContainer').classList.remove('visible');
-    document.getElementById('loginOverlay').classList.remove('hidden');
     document.getElementById('loginUser').value = '';
     document.getElementById('loginPass').value = '';
-    document.getElementById('loginError').classList.remove('show');
+    clearLoginError();
     curView = 'cards';
+    document.getElementById('loginOverlay').classList.remove('hidden');
 }
- 
 
 function showChangePassModal() { document.getElementById('changePassModal').classList.add('show'); }
+
 async function submitChangePass() {
     const np = document.getElementById('newPass').value;
     const cp = document.getElementById('confirmPass').value;
-    const e = document.getElementById('changePassErr');
+    const e  = document.getElementById('changePassErr');
+    e.style.display = 'none';
     if (np.length < 6) { e.textContent = "Password must be at least 6 characters."; e.style.display = 'block'; return; }
-    if (np !== cp) { e.textContent = "Passwords do not match."; e.style.display = 'block'; return; }
+    if (np !== cp)     { e.textContent = "Passwords do not match."; e.style.display = 'block'; return; }
     const r = await api('changePass', { newPassword: np });
     if (!r.ok) { e.textContent = r.error || "Failed to change password."; e.style.display = 'block'; return; }
     const sess = getSess(); sess.user.mustChangePass = false; setSess(sess);
     document.getElementById('changePassModal').classList.remove('show');
     enterApp(sess.user);
 }
- 
+
+
 let curUser = null, curCat = 'All', curView = 'cards';
- 
+
 function enterApp(user) {
     curUser = user;
     document.getElementById('loginOverlay').classList.add('hidden');
@@ -421,91 +467,117 @@ function enterApp(user) {
     document.getElementById('sRole').textContent = user.role;
     const isA = user.role === 'Admin';
     document.getElementById('adminNavLabel').style.display = isA ? '' : 'none';
-    document.getElementById('adminNavBtn').style.display = isA ? '' : 'none';
+    document.getElementById('adminNavBtn').style.display   = isA ? '' : 'none';
     curCat = 'All'; curView = 'cards';
     setActive(document.querySelector('.menu-btn'));
     updateCounts();
     runFilter();
 }
- 
-function hasDept(u, c) { if (!u) return false; if (u.role === 'Admin') return true; if (u.deptAccess.includes('All')) return true; return u.deptAccess.includes(c); }
-function hasProc(u, n) { if (!u) return false; if (u.role === 'Admin') return true; if (!u.processAccess || !u.processAccess.length) return true; return u.processAccess.includes(n); }
- 
-function getCatClass(c) { if (c === 'My System') return 'My'; return c; }
-function getCatLabel(c) { if (c === 'My System') return 'My System'; return c; }
- 
-function updateCounts() {
-    const cats = { All: 0, Sales: 0, Purchase: 0, Management: 0, HR: 0, Finance: 0, Support: 0, 'My System': 0 };
-    DB.forEach(d => { cats.All++; if (cats[d.cat] !== undefined) cats[d.cat]++; });
-    document.getElementById('cntAll').textContent = cats.All;
-    document.getElementById('cntSales').textContent = cats.Sales;
-    document.getElementById('cntPurchase').textContent = cats.Purchase;
-    document.getElementById('cntManagement').textContent = cats.Management;
-    document.getElementById('cntHR').textContent = cats.HR;
-    document.getElementById('cntFinance').textContent = cats.Finance;
-    document.getElementById('cntSupport').textContent = cats.Support;
-    document.getElementById('cntMy').textContent = cats['My System'];
+
+function hasDept(u, c) {
+    if (!u) return false;
+    if (u.role === 'Admin') return true;
+    if (u.deptAccess.includes('All')) return true;
+    return u.deptAccess.includes(c);
 }
- 
-const box = document.getElementById('cardBox'), hdr = document.getElementById('pageHeader');
- 
+function hasProc(u, n) {
+    if (!u) return false;
+    if (u.role === 'Admin') return true;
+    if (!u.processAccess || !u.processAccess.length) return true;
+    return u.processAccess.includes(n);
+}
+
+
+function getCatClass(c) { return c === 'My System' ? 'My' : c; }
+
+function updateCounts() {
+    const cats = { All:0, Sales:0, Purchase:0, Management:0, HR:0, Finance:0, Support:0, 'My System':0 };
+    DB.forEach(d => { cats.All++; if (cats[d.cat] !== undefined) cats[d.cat]++; });
+    document.getElementById('cntAll').textContent        = cats.All;
+    document.getElementById('cntSales').textContent      = cats.Sales;
+    document.getElementById('cntPurchase').textContent   = cats.Purchase;
+    document.getElementById('cntManagement').textContent = cats.Management;
+    document.getElementById('cntHR').textContent         = cats.HR;
+    document.getElementById('cntFinance').textContent    = cats.Finance;
+    document.getElementById('cntSupport').textContent    = cats.Support;
+    document.getElementById('cntMy').textContent         = cats['My System'];
+}
+
+const box = document.getElementById('cardBox');
+const hdr = document.getElementById('pageHeader');
+
 function renderCards(data) {
     box.innerHTML = "";
-    if (!data.length) { box.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>`; return; }
+    if (!data.length) {
+        box.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>`;
+        return;
+    }
     data.forEach((it, i) => {
         const ok = hasDept(curUser, it.cat) && hasProc(curUser, it.name);
         const dc = ok ? '' : ' disabled-link';
         const mb = (url, cls, ico, lbl) => {
             if (!url) return '';
-            return `<a href="${ok ? url : '#'}" ${ok ? 'target="_blank"' : ''} class="btn ${cls}${dc}" ${!ok ? 'onclick="return false;"' : ''}><i class="${ico}"></i> ${lbl}${!ok ? '<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>' : ''}</a>`;
+            return `<a href="${ok ? url : '#'}" ${ok ? 'target="_blank"' : ''} class="btn ${cls}${dc}" ${!ok ? 'onclick="return false;"' : ''}>
+                <i class="${ico}"></i> ${lbl}
+                ${!ok ? '<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>' : ''}
+            </a>`;
         };
         let btns = '';
-        btns += mb(it.links.fms, 'btn-fms', 'fas fa-table-cells', 'FMS');
-        btns += mb(it.links.form, 'btn-form', 'fab fa-google-drive', 'Form');
-        btns += mb(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'Sheet');
-        btns += mb(it.links.check, 'btn-check', 'fas fa-square-check', 'Checklist');
-        btns += mb(it.links.video, 'btn-video', 'fas fa-circle-play', 'Training');
-        btns += mb(it.links.videoBCI, 'btn-video', 'fas fa-circle-play', 'Training (BCI)');
-        btns += mb(it.links.dashEmp, 'btn-dash', 'fas fa-chart-pie', 'Emp Dashboard');
-        btns += mb(it.links.dashPC, 'btn-dash', 'fas fa-chart-line', 'PC Dashboard');
-        btns += mb(it.links.admin, 'btn-admin', 'fas fa-user-gear', 'Admin Panel');
-        btns += mb(it.links.gpDash, 'btn-gp', 'fas fa-chart-column', 'GP Dashboard');
+        btns += mb(it.links.fms,      'btn-fms',   'fas fa-table-cells',   'FMS');
+        btns += mb(it.links.form,     'btn-form',  'fab fa-google-drive',  'Form');
+        btns += mb(it.links.sheet,    'btn-sheet', 'fas fa-file-spreadsheet','Sheet');
+        btns += mb(it.links.check,    'btn-check', 'fas fa-square-check',  'Checklist');
+        btns += mb(it.links.video,    'btn-video', 'fas fa-circle-play',   'Training');
+        btns += mb(it.links.videoBCI, 'btn-video', 'fas fa-circle-play',   'Training (BCI)');
+        btns += mb(it.links.dashEmp,  'btn-dash',  'fas fa-chart-pie',     'Emp Dashboard');
+        btns += mb(it.links.dashPC,   'btn-dash',  'fas fa-chart-line',    'PC Dashboard');
+        btns += mb(it.links.admin,    'btn-admin', 'fas fa-user-gear',     'Admin Panel');
+        btns += mb(it.links.gpDash,   'btn-gp',    'fas fa-chart-column',  'GP Dashboard');
         if (!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;">No Links</div>';
+
         let badges = '';
-        if (it.pc && it.pc !== "-") badges += `<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
+        if (it.pc     && it.pc     !== "-") badges += `<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
         if (it.solver && it.solver !== "-") badges += `<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
-        if (it.exec && it.exec !== "-") badges += `<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+        if (it.exec   && it.exec   !== "-") badges += `<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+
         const cc = getCatClass(it.cat);
-        box.innerHTML += `<div class="card cat-${cc}" style="animation-delay:${i * .03}s;${!ok ? 'opacity:.5;' : ''}"><span class="card-tag tag-${cc}">${getCatLabel(it.cat)}</span><h3>${it.name}</h3><div class="people">${badges}</div><div class="actions">${btns}</div></div>`;
+        box.innerHTML += `<div class="card cat-${cc}" style="animation-delay:${i*.03}s;${!ok?'opacity:.5;':''}">
+            <span class="card-tag tag-${cc}">${it.cat}</span>
+            <h3>${it.name}</h3>
+            <div class="people">${badges}</div>
+            <div class="actions">${btns}</div>
+        </div>`;
     });
 }
- 
-function setActive(el) { document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active')); if (el) el.classList.add('active'); }
- 
+
+function setActive(el) {
+    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+}
+
 function filterCat(cat, el) {
     curCat = cat; curView = 'cards'; setActive(el);
-    const labels = { All: 'All Processes', Sales: 'Sales & CRM', Purchase: 'Purchase & Inventory', Management: 'Management (MIS)', HR: 'HR & Admin', Finance: 'Finance & Accounts', Support: 'Help & Support', 'My System': 'Google Site' };
+    const labels = { All:'All Processes', Sales:'Sales & CRM', Purchase:'Purchase & Inventory', Management:'Management (MIS)', HR:'HR & Admin', Finance:'Finance & Accounts', Support:'Help & Support', 'My System':'Google Site' };
     hdr.innerText = labels[cat] || cat;
     box.style.display = '';
     document.getElementById('adminPanel').classList.remove('visible');
     document.getElementById('searchWrap').style.display = '';
     runFilter();
 }
- 
-function searchCards() { runFilter(); }
+
 function runFilter() {
-    const raw = document.getElementById('searchInput').value.toLowerCase();
+    const raw   = document.getElementById('searchInput').value.toLowerCase();
     const terms = raw.split(" ").filter(t => t.trim());
     const filtered = DB.filter(it => {
-        const mc = curCat === 'All' || it.cat === curCat;
+        const mc  = curCat === 'All' || it.cat === curCat;
         const txt = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
         return mc && terms.every(t => txt.includes(t));
     });
     renderCards(filtered);
 }
- 
 
 let cachedUsers = [];
+
 async function showAdmin(el) {
     if (!curUser || curUser.role !== 'Admin') return;
     curView = 'admin'; setActive(el); hdr.innerText = 'User Management';
@@ -514,28 +586,42 @@ async function showAdmin(el) {
     document.getElementById('searchWrap').style.display = 'none';
     await loadUsers();
 }
+
 async function loadUsers() {
     const r = await api('listUsers');
     if (!r.ok) { alert(r.error || 'Failed to load users'); return; }
     cachedUsers = r.users;
     renderTable();
 }
+
 function renderTable() {
     const tb = document.getElementById('tblBody'); tb.innerHTML = '';
     cachedUsers.forEach(u => {
         const dp = u.deptAccess.map(d => `<span class="ap ap-${d}">${d === 'Management' ? 'MIS' : d}</span>`).join('');
-        const pp = (u.processAccess && u.processAccess.length) ? u.processAccess.map(p => `<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', ') : '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
-        tb.innerHTML += `<tr><td><strong>${u.username}</strong></td><td>${u.name}</td><td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td><td><div class="access-pills">${dp}</div></td><td>${pp}</td><td><button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>${u.id !== curUser.id ? `<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete"><i class="fas fa-trash-can"></i></button>` : ''}</td></tr>`;
+        const pp = (u.processAccess && u.processAccess.length)
+            ? u.processAccess.map(p => `<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', ')
+            : '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
+        tb.innerHTML += `<tr>
+            <td><strong>${u.username}</strong></td>
+            <td>${u.name}</td>
+            <td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td>
+            <td><div class="access-pills">${dp}</div></td>
+            <td>${pp}</td>
+            <td>
+                <button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>
+                ${u.id !== curUser.id ? `<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete"><i class="fas fa-trash-can"></i></button>` : ''}
+            </td>
+        </tr>`;
     });
 }
- 
+
 function openModal(uid) {
     document.getElementById('editUserId').value = '';
-    document.getElementById('mName').value = '';
-    document.getElementById('mUser').value = '';
-    document.getElementById('mPass').value = '';
+    document.getElementById('mName').value  = '';
+    document.getElementById('mUser').value  = '';
+    document.getElementById('mPass').value  = '';
     document.getElementById('mPass').placeholder = 'Enter password';
-    document.getElementById('mRole').value = 'Employee';
+    document.getElementById('mRole').value  = 'Employee';
     document.getElementById('modalTitle').textContent = 'Add New User';
     document.querySelectorAll('#deptChks .chk-pill').forEach(p => { p.classList.remove('checked'); p.querySelector('input').checked = false; });
     buildProcList();
@@ -543,13 +629,19 @@ function openModal(uid) {
         const u = cachedUsers.find(x => x.id === uid);
         if (u) {
             document.getElementById('editUserId').value = u.id;
-            document.getElementById('mName').value = u.name;
-            document.getElementById('mUser').value = u.username;
+            document.getElementById('mName').value  = u.name;
+            document.getElementById('mUser').value  = u.username;
             document.getElementById('mPass').placeholder = '(leave blank to keep current)';
-            document.getElementById('mRole').value = u.role;
+            document.getElementById('mRole').value  = u.role;
             document.getElementById('modalTitle').textContent = 'Edit User';
-            document.querySelectorAll('#deptChks .chk-pill').forEach(p => { if (u.deptAccess.includes(p.dataset.val)) { p.classList.add('checked'); p.querySelector('input').checked = true; } });
-            if (u.processAccess && u.processAccess.length) document.querySelectorAll('#procList input[type=checkbox]').forEach(cb => { if (u.processAccess.includes(cb.value)) cb.checked = true; });
+            document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
+                if (u.deptAccess.includes(p.dataset.val)) { p.classList.add('checked'); p.querySelector('input').checked = true; }
+            });
+            if (u.processAccess && u.processAccess.length) {
+                document.querySelectorAll('#procList input[type=checkbox]').forEach(cb => {
+                    if (u.processAccess.includes(cb.value)) cb.checked = true;
+                });
+            }
         }
     }
     onRoleChange();
@@ -557,21 +649,49 @@ function openModal(uid) {
 }
 function editUser(id) { openModal(id); }
 function closeModal() { document.getElementById('userModal').classList.remove('show'); }
-function onRoleChange() { const r = document.getElementById('mRole').value; document.getElementById('deptField').style.display = r === 'Admin' ? 'none' : ''; document.getElementById('procField').style.display = r === 'Admin' ? 'none' : ''; }
-function toggleChk(el) { setTimeout(() => { const cb = el.querySelector('input'); cb.checked = !cb.checked; el.classList.toggle('checked', cb.checked); if (el.dataset.val === 'All' && cb.checked) document.querySelectorAll('#deptChks .chk-pill').forEach(p => { if (p.dataset.val !== 'All') { p.classList.remove('checked'); p.querySelector('input').checked = false; } }); else if (el.dataset.val !== 'All' && cb.checked) { const a = document.querySelector('#deptChks .chk-pill[data-val="All"]'); a.classList.remove('checked'); a.querySelector('input').checked = false; } }, 0); }
-function buildProcList() { const el = document.getElementById('procList'); el.innerHTML = ''; DB.forEach(it => { el.innerHTML += `<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`; }); }
- 
+
+function onRoleChange() {
+    const r = document.getElementById('mRole').value;
+    document.getElementById('deptField').style.display = r === 'Admin' ? 'none' : '';
+    document.getElementById('procField').style.display = r === 'Admin' ? 'none' : '';
+}
+
+function toggleChk(el) {
+    setTimeout(() => {
+        const cb = el.querySelector('input');
+        cb.checked = !cb.checked;
+        el.classList.toggle('checked', cb.checked);
+        if (el.dataset.val === 'All' && cb.checked) {
+            document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
+                if (p.dataset.val !== 'All') { p.classList.remove('checked'); p.querySelector('input').checked = false; }
+            });
+        } else if (el.dataset.val !== 'All' && cb.checked) {
+            const a = document.querySelector('#deptChks .chk-pill[data-val="All"]');
+            a.classList.remove('checked'); a.querySelector('input').checked = false;
+        }
+    }, 0);
+}
+
+function buildProcList() {
+    const el = document.getElementById('procList');
+    el.innerHTML = '';
+    DB.forEach(it => { el.innerHTML += `<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`; });
+}
+
 async function saveUser() {
-    const id = document.getElementById('editUserId').value;
-    const name = document.getElementById('mName').value.trim();
+    const id       = document.getElementById('editUserId').value;
+    const name     = document.getElementById('mName').value.trim();
     const username = document.getElementById('mUser').value.trim().toLowerCase();
     const password = document.getElementById('mPass').value;
-    const role = document.getElementById('mRole').value;
+    const role     = document.getElementById('mRole').value;
     if (!name || !username) { alert('Fill all required fields.'); return; }
-    if (!id && !password) { alert('Password is required for new users.'); return; }
+    if (!id && !password)   { alert('Password is required for new users.'); return; }
     let deptAccess = [];
     if (role === 'Admin') deptAccess = ['All'];
-    else { document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p => deptAccess.push(p.dataset.val)); if (!deptAccess.length) { alert('Select at least one department.'); return; } }
+    else {
+        document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p => deptAccess.push(p.dataset.val));
+        if (!deptAccess.length) { alert('Select at least one department.'); return; }
+    }
     let processAccess = [];
     document.querySelectorAll('#procList input:checked').forEach(cb => processAccess.push(cb.value));
     const payload = { id, name, username, role, deptAccess, processAccess };
@@ -581,40 +701,43 @@ async function saveUser() {
     closeModal();
     await loadUsers();
 }
- 
+
 async function deleteUserAct(id) {
     if (!confirm('Delete this user?')) return;
     const r = await api('deleteUser', { id });
     if (!r.ok) { alert(r.error || 'Delete failed'); return; }
     await loadUsers();
 }
- 
-// Yeh poora block replace karo (bilkul end mein hai)
-(async function () {
-    const s = getSess();
-    if (s && s.token) {
-        const overlay = document.getElementById('loginOverlay');
-        const card = document.querySelector('.login-card');
-        const originalHTML = card.innerHTML; // pehle save karo
-        
-        card.innerHTML = '<div style="text-align:center;color:#fff;padding:20px;"><i class="fas fa-circle-notch fa-spin" style="font-size:32px;color:var(--accent-light);margin-bottom:16px;display:block;"></i><div style="font-size:14px;font-weight:700;letter-spacing:.5px;">Restoring your session...</div><div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;">Just a moment</div></div>';
-        
+
+(async function initApp() {
+    const overlay = document.getElementById('loginOverlay');
+    const loginFormEl = document.getElementById('loginForm');
+    const sess = getSess();
+
+    if (sess && sess.token) {
+        // Show spinner — hide the form temporarily
+        loginFormEl.style.display = 'none';
+        overlay.classList.remove('hidden');
+
         const r = await api('whoami').catch(() => null);
+
         if (r && r.ok && r.user) {
-            setSess({ token: s.token, user: r.user });
+            // Valid session — go straight to app
+            setSess({ token: sess.token, user: r.user });
+            overlay.classList.add('hidden');
             enterApp(r.user);
             return;
         }
-        
-        // Session invalid — clear karo aur form wapas dikhao, reload NAHI
+
+       
         clearSess();
-        card.innerHTML = originalHTML; // original form restore
+        loginFormEl.style.display = '';
         overlay.classList.remove('hidden');
         return;
     }
-    document.getElementById('loginOverlay').classList.remove('hidden');
+
+    overlay.classList.remove('hidden');
 })();
 </script>
- 
 </body>
 </html>
