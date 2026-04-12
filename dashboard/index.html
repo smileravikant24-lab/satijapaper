@@ -351,21 +351,35 @@ function getSess()       { try { const s = localStorage.getItem(SS_KEY); return 
 function setSess(o)      { localStorage.setItem(SS_KEY, JSON.stringify(o)); }
 function clearSess()     { localStorage.removeItem(SS_KEY); }
 
-// ─── API ───────────────────────────────────────────────────────────────────────
+
 async function api(action, payload) {
     const body = Object.assign({ action }, payload || {});
     const sess = getSess();
     if (sess && sess.token) body.token = sess.token;
+    
+    const formData = new URLSearchParams();
+    formData.append('payload', JSON.stringify(body));
+    
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        
         const res = await fetch(API_URL, {
             method: "POST",
-            redirect: "follow",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(body)
+            body: formData,
+            signal: controller.signal
         });
+        clearTimeout(timeoutId);
+        
         if (!res.ok) throw new Error("HTTP " + res.status);
-        return await res.json();
+        const text = await res.text();
+        try {
+            return JSON.parse(text);
+        } catch(pe) {
+            return { ok: false, error: "Invalid response from server" };
+        }
     } catch (e) {
+        if (e.name === 'AbortError') return { ok: false, error: "Request timed out. Try again." };
         return { ok: false, error: "Network error: " + e.message };
     }
 }
@@ -719,48 +733,37 @@ async function deleteUserAct(id) {
     await loadUsers();
 }
 
-// ─── SESSION RESTORE ON LOAD ───────────────────────────────────────────────────
+
 function showLoginForm() {
     clearSess();
     document.getElementById('loginForm').style.display = '';
     document.getElementById('loginOverlay').classList.remove('hidden');
 }
-
 (async function initApp() {
-    const overlay     = document.getElementById('loginOverlay');
-    const loginFormEl = document.getElementById('loginForm');
-    const sess        = getSess();
+    const overlay = document.getElementById('loginOverlay');
+    const sess = getSess();
 
+    // No session → show login immediately, no waiting
     if (!sess || !sess.token) {
         overlay.classList.remove('hidden');
         return;
     }
 
-    // Hide form, show spinner while verifying
-    loginFormEl.style.display = 'none';
+    // Session exists → show login form visible while verifying in background
     overlay.classList.remove('hidden');
-
-    // Timeout after 7s — agar API hang ho toh bhi form aa jaaye
-    let done = false;
-    const timer = setTimeout(() => {
-        if (!done) { done = true; showLoginForm(); }
-    }, 7000);
-
+    
     try {
         const r = await api('whoami');
-        if (!done) {
-            done = true;
-            clearTimeout(timer);
-            if (r && r.ok && r.user) {
-                setSess({ token: sess.token, user: r.user });
-                overlay.classList.add('hidden');
-                enterApp(r.user);
-            } else {
-                showLoginForm();
-            }
+        if (r && r.ok && r.user) {
+            setSess({ token: sess.token, user: r.user });
+            overlay.classList.add('hidden');
+            enterApp(r.user);
+        } else {
+            // Invalid session → just show login, clear stale session
+            clearSess();
         }
     } catch(e) {
-        if (!done) { done = true; clearTimeout(timer); showLoginForm(); }
+        clearSess();
     }
 })();
 </script>
