@@ -60,7 +60,7 @@ var RPL = {
   'mogra': { t: 'MOGRA', sub: 'Card & Invitation Paper', d: 'Premium card paper in Natural and White for wedding cards, invitations, and announcements. 145\u2013160 GSM with excellent stiffness.', v: ['Natural', 'White'], gsm: '145\u2013160 GSM', bright: null, u: ['Wedding cards', 'Invitations', 'Greeting cards', 'Premium stationery'], imgs: ['https://ruchirapapers.com/images/paper-showcase/mogra/mogra-01.jpg', 'https://ruchirapapers.com/images/paper-showcase/mogra/mogra-02.jpg', 'https://ruchirapapers.com/images/paper-showcase/mogra/mogra-03.jpg', 'https://ruchirapapers.com/images/paper-showcase/mogra/mogra-04.jpg', 'https://ruchirapapers.com/images/paper-showcase/mogra/mogra-05.jpg', 'https://ruchirapapers.com/images/paper-showcase/mogra/mogra-06.jpg'] },
   'rozana': { t: 'ROZANA', sub: 'Copier Paper \u2013 Economy Range', d: 'Economy copier for home, office, and multipurpose use. A4/A3 in 70\u201375 GSM with 88\u201390% brightness.', v: ['Economy Range', 'A4 / A3'], gsm: '70\u201375 GSM', bright: '88\u201390%', u: ['Home & office copier', 'Everyday printing', 'High volume photocopying', 'All printers'], imgs: ['https://ruchirapapers.com/images/paper-showcase/rozana/rozana-01.jpg', 'https://ruchirapapers.com/images/paper-showcase/rozana/rozana-02.jpg', 'https://ruchirapapers.com/images/paper-showcase/rozana/rozana-04.jpg'] },
   'tarang': { t: 'TARANG', sub: 'Executive Colour Range', d: 'Premium multipurpose coloured office paper in Yellow, Pink, Green, and Blue. A4 size, 75 GSM. Ideal for colour-coded documents, presentations, and professional printing.', v: ['Yellow A4 75 GSM', 'Pink A4 75 GSM', 'Green A4 75 GSM', 'Blue A4 75 GSM'], gsm: '75 GSM', bright: '+85\u201390%', u: ['Multipurpose office', 'Professional printing', 'Presentations', 'Colour-coded docs'], imgs: ['https://ruchirapapers.com/images/paper-showcase/tarang/tarang-01.jpg', 'https://ruchirapapers.com/images/paper-showcase/tarang/tarang-02.jpg', 'https://ruchirapapers.com/images/paper-showcase/tarang/tarang-03.jpg', 'https://ruchirapapers.com/images/paper-showcase/tarang/tarang-04.jpg', 'https://ruchirapapers.com/images/paper-showcase/tarang/tarang-06.jpg'] },
- 'kora': { 
+  'kora': { 
     t: 'KORA', 
     sub: 'Maplitho / Writing & Printing', 
     d: 'Premium maplitho paper for writing, printing, and publishing. Available in White and Cream Wove shades across a wide GSM range. Ideal for books, notebooks, textbooks, and commercial printing.', 
@@ -69,11 +69,11 @@ var RPL = {
     bright: '80–85%', 
     u: ['Books & publishing', 'Notebooks & registers', 'Commercial printing', 'Writing & stationery'], 
     imgs: [
-      'https://ruchirapapers.com/images/paper-showcase/kora/kora-01.jpg', 
+      'https://ruchirapapers.com/images/paper-showcase/kora/kora-01.jpg', // Yeh ream ki main image hai
       'https://ruchirapapers.com/images/paper-showcase/kora/kora-02.jpg', 
       'https://ruchirapapers.com/images/paper-showcase/kora/kora-03.jpg'
     ] 
-  }
+  },
 };
 
 function rplShowCatalog() {
