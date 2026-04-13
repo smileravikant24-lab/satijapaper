@@ -1,4 +1,4 @@
-// === REVIEWS ===
+// === REVIEWS === (UNCHANGED)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuO_0hINdaD8OQBo25d1FxyNQTNZ7lq_aE8UwV06dWzEhvHphz0Fi-sA9QPjs3shR4/exec";
 let selectedRating = 5;
 
@@ -51,8 +51,8 @@ if (reviewForm) {
 }
 setupStars(); updateStarUI(5); fetchReviews();
 
-// === ENQUIRY ===
-var ENQUIRY_URL = "https://script.google.com/macros/s/AKfycbzaCQWDYTNfuSWBoMM1rD1GCjPv_6PM0nOtUadOYVSghGZsuVYiwx0fJo5vIA3ANzdWrg/exec";
+var ENQUIRY_URL = "https://script.google.com/macros/s/AKfycbzjlijGXaELu2FYQZifc08hsEJk8fBBbuq7a7gnmifw6olnQS0hyzpIcXOVlC2k5Q4/exec";
+
 var ef = document.getElementById('enquiryForm');
 if (ef) {
   ef.addEventListener('submit', function (e) {
