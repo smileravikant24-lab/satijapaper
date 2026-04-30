@@ -309,7 +309,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <button class="menu-btn" id="navManagement" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
     <button class="menu-btn" id="navHR" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
     <button class="menu-btn" id="navFinance" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
-    <div class="sidebar-label">My System</div>
+    <div class="sidebar-label" id="mySystemLabel">My System</div>
     <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
     <button class="menu-btn" id="navMy" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
     <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
@@ -581,9 +581,26 @@ function enterApp(user){
   const isA = user.role === 'Admin';
   $('adminNavLabel').style.display = isA ? '' : 'none';
   $('adminNavBtn').style.display = isA ? '' : 'none';
-  curCat = 'All';
-  setActive($('navAll'));
-  updateCounts();
+  updateCounts(); // compute accessible counts first
+
+  // Auto-select the most relevant tab for this user
+  // If employee has access to exactly 1 dept category, go straight there
+  const accessibleTabs = ['Sales','Purchase','Management','HR','Finance','Support','My System']
+    .filter(cat => {
+      const count = DB.filter(d => canAccessProc(curUser, d) && d.cat === cat).length;
+      return count > 0;
+    });
+
+  if(curUser.role !== 'Admin' && accessibleTabs.length === 1){
+    const cat = accessibleTabs[0];
+    const navMap = {Sales:'navSales',Purchase:'navPurchase',Management:'navManagement',HR:'navHR',Finance:'navFinance',Support:'navSupport','My System':'navMy'};
+    curCat = cat;
+    setActive($(navMap[cat]));
+    $('pageHeader').innerText = {Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'}[cat] || cat;
+  } else {
+    curCat = 'All';
+    setActive($('navAll'));
+  }
   runFilter();
 }
 
@@ -647,11 +664,45 @@ function canAccessLink(u, procName, linkType){
 
 /* ====================== COUNTS ====================== */
 function updateCounts(){
+  const isAdmin = curUser && curUser.role === 'Admin';
   const c = {All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
-  DB.forEach(d=>{ c.All++; if(c[d.cat]!==undefined) c[d.cat]++; });
-  $('cntAll').textContent=c.All; $('cntSales').textContent=c.Sales; $('cntPurchase').textContent=c.Purchase;
-  $('cntManagement').textContent=c.Management; $('cntHR').textContent=c.HR; $('cntFinance').textContent=c.Finance;
-  $('cntSupport').textContent=c.Support; $('cntMy').textContent=c['My System'];
+  DB.forEach(d=>{ if(canAccessProc(curUser,d)){ c.All++; if(c[d.cat]!==undefined) c[d.cat]++; } });
+
+  // Map: cat key → {navId, cntId, labelId (if first in group)}
+  const tabs = [
+    {cat:'All',       nav:'navAll',        cnt:'cntAll'},
+    {cat:'Sales',     nav:'navSales',      cnt:'cntSales'},
+    {cat:'Purchase',  nav:'navPurchase',   cnt:'cntPurchase'},
+    {cat:'Management',nav:'navManagement', cnt:'cntManagement'},
+    {cat:'HR',        nav:'navHR',         cnt:'cntHR'},
+    {cat:'Finance',   nav:'navFinance',    cnt:'cntFinance'},
+    {cat:'Support',   nav:'navSupport',    cnt:'cntSupport'},
+    {cat:'My System', nav:'navMy',         cnt:'cntMy'},
+  ];
+
+  // Navigation label visibility tracking
+  let anyMainVisible = false, anyMyVisible = false;
+
+  tabs.forEach(t=>{
+    const count = c[t.cat] ?? 0;
+    const btn = $(t.nav);
+    if(!btn) return;
+    if(t.cnt) $(t.cnt).textContent = count;
+
+    // Admins always see everything; employees only see tabs with accessible processes
+    const visible = isAdmin || count > 0 || t.cat === 'All';
+    btn.style.display = visible ? '' : 'none';
+
+    if(['Sales','Purchase','Management','HR','Finance'].includes(t.cat) && visible) anyMainVisible = true;
+    if(['Support','My System'].includes(t.cat) && visible) anyMyVisible = true;
+  });
+
+  // Show/hide section labels
+  const navLabel = document.querySelector('.sidebar-label:first-of-type');
+  // We control via class-based approach — always show "Navigation" label
+  // Hide "My System" label if nothing under it is visible
+  const myLabel = document.getElementById('mySystemLabel');
+  if(myLabel) myLabel.style.display = anyMyVisible ? '' : 'none';
 }
 
 /* ====================== RENDER CARDS ====================== */
