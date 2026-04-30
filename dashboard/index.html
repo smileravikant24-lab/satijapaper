@@ -962,12 +962,12 @@ async function saveUser(){
 
   let deptAccess = [];
   let processAccess = [];
+  let linkAccess = {};
   if(role === 'Admin'){
     deptAccess = ['All'];
   } else {
     document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));
     if(!deptAccess.length){ showToast('Select at least one department for this employee.', 'err'); return; }
-    let linkAccess = {};
     document.querySelectorAll('#procListContainer .proc-master-cb:checked').forEach(cb=>{
       const pName = cb.value;
       processAccess.push(pName);
@@ -975,14 +975,13 @@ async function saveUser(){
       if(linkRow){
         const checkedLinks = [];
         linkRow.querySelectorAll('input[data-link]:checked').forEach(lcb=>checkedLinks.push(lcb.dataset.link));
-        const allLinks = linkRow.querySelectorAll('input[data-link]').length;
-        // If all links checked, don't store (means all access) — store only if partial
-        if(checkedLinks.length < allLinks && checkedLinks.length > 0){
+        const allLinkCount = linkRow.querySelectorAll('input[data-link]').length;
+        // Only store if partial access (not all links checked)
+        if(checkedLinks.length > 0 && checkedLinks.length < allLinkCount){
           linkAccess[pName] = checkedLinks;
         }
       }
     });
-    if(Object.keys(linkAccess).length === 0) linkAccess = {};
   }
 
   const saveBtn = document.querySelector('.modal-foot .mbtn.pri');
