@@ -18,8 +18,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
-
-/* ===== LOGIN ===== */
 .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0e1e38 55%,#050d1a)}
 .login-overlay.hidden{display:none}
 .login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 35%,rgba(0,102,255,.1),transparent 55%),radial-gradient(ellipse at 80% 65%,rgba(124,58,237,.07),transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(0,196,140,.05),transparent 40%)}
@@ -50,12 +48,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .loading-state{text-align:center;color:#fff;padding:40px}
 .spinner{display:inline-block;width:38px;height:38px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== APP ===== */
 .app-container{display:none;height:100vh}
 .app-container.visible{display:flex}
-
-/* ===== SIDEBAR ===== */
 .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease)}
 .sidebar::-webkit-scrollbar{width:0}
 .brand-box{padding:26px 22px 20px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px}
@@ -75,9 +69,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sidebar-uname{font-size:13px;font-weight:700;color:rgba(255,255,255,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sidebar-urole{font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
 .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:7px;border-radius:8px;transition:.2s;flex-shrink:0}
-.sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.1)}
-
-/* ===== MAIN ===== */
+.sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.1)
 .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
 .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:12px}
 .page-title{font-size:19px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -86,8 +78,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;pointer-events:none}
 .content{padding:22px 28px 60px;flex:1}
-
-/* ===== CARDS ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
 .card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.22s var(--ease);animation:fadeUp .38s var(--ease) both;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -121,8 +111,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .empty-state{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-3)}
 .empty-state i{font-size:36px;margin-bottom:12px;display:block;opacity:.4}
 .empty-state p{font-size:14px;font-weight:600}
-
-/* ===== ADMIN PANEL ===== */
 .admin-panel{display:none}.admin-panel.visible{display:block}
 .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .admin-top h3{font-size:18px;font-weight:800}
@@ -143,8 +131,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tbl-act:hover{background:var(--bg)}
 .tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
 .proc-badge{display:inline-block;font-size:9.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);padding:2px 6px;border-radius:5px;margin:1px}
-
-/* ===== MODAL ===== */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal-box{background:#fff;border-radius:18px;width:520px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .28s var(--ease)}
@@ -180,24 +166,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mbtn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.15s}
 .mbtn.sec{background:var(--bg);color:var(--text-2)}.mbtn.sec:hover{background:#e2e8f0}
 .mbtn.pri{background:var(--accent);color:#fff}.mbtn.pri:hover{background:#0052cc}
-
-/* Info box */
 .info-box{background:#fff8e8;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12.5px;margin-bottom:18px;line-height:1.6}
 .info-box a{color:#8a5d00;font-weight:700}
-
-/* Mobile */
 .mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:21px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:4px;flex-shrink:0}
 .mobile-menu-btn:hover{background:var(--bg)}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:998;backdrop-filter:blur(2px)}
 .sidebar-overlay.show{display:block;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .access-mode-note{background:rgba(0,102,255,.07);border:1px solid rgba(0,102,255,.15);color:#0052cc;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
-
-/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0c1a2b;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:.35s var(--ease);white-space:nowrap;box-shadow:var(--shadow-l)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-left:3px solid var(--ok)}.toast.err{border-left:3px solid var(--danger)}.toast.info{border-left:3px solid var(--accent)}
-
 @media(max-width:1024px){:root{--sidebar-w:250px}.grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.content{padding:18px 20px 60px}.header-bar{padding:12px 20px}.search-wrap{width:220px}}
 @media(max-width:768px){
   :root{--nav-font-size:14.5px}
@@ -223,8 +202,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 }
 @media(max-width:400px){.login-card{padding:24px 16px}.actions{grid-template-columns:1fr}.header-bar{padding:10px 10px}}
 @media(hover:none){.menu-btn{padding:14px 24px}.btn{min-height:36px}.tbl-act{padding:9px 11px;font-size:15px}}
-
-/* ===== PROC ROW (link-level access) ===== */
 .proc-row{margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.15s}
 .proc-row:hover{border-color:#c5d5ef}
 .proc-row-header{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#f8fafc}
@@ -244,7 +221,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .link-pill.btn-dash.link-checked{background:#0369a1;border-color:#0369a1;color:#fff!important}
 .link-pill.btn-admin.link-checked{background:#92400e;border-color:#92400e;color:#fff!important}
 .link-pill.btn-gp.link-checked{background:#5b21b6;border-color:#5b21b6;color:#fff!important}
-/* unchecked state colors */
 .link-pill.btn-fms{color:#0052cc}.link-pill.btn-form{color:#5b21b6}.link-pill.btn-sheet{color:#00795c}
 .link-pill.btn-check{color:#8a4500}.link-pill.btn-video{color:#b91c1c}.link-pill.btn-dash{color:#0369a1}
 .link-pill.btn-admin{color:#92400e}.link-pill.btn-gp{color:#5b21b6}
@@ -252,7 +228,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </head>
 <body>
 
-<!-- LOGIN -->
+
 <div class="login-overlay" id="loginOverlay">
   <div class="login-bg"></div>
   <div class="login-dots"></div>
@@ -291,10 +267,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<!-- TOAST -->
+
 <div class="toast" id="toast"></div>
 
-<!-- APP -->
+
 <div class="app-container" id="appContainer">
   <div class="sidebar" id="sidebar">
     <div class="brand-box">
@@ -302,7 +278,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="brand-text">SATIJA PAPER</div>
       <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
     </div>
-    <div class="sidebar-label">Navigation</div>
+    <div class="sidebar-label" id="navMainLabel">Navigation</div>
     <button class="menu-btn active" id="navAll" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
     <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
     <button class="menu-btn" id="navPurchase" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory <span class="count-badge" id="cntPurchase">0</span></button>
@@ -365,7 +341,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </div>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-<!-- USER MODAL -->
+
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
     <div class="modal-head">
@@ -420,7 +396,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
-<!-- Firebase SDK -->
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -447,7 +423,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-/* ====================== DATA ====================== */
+ 
 const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
 
 const DB = [
@@ -487,11 +463,11 @@ const DB = [
   {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
 
-/* ====================== STATE ====================== */
+ 
 let curUser = null, curCat = 'All', cachedUsers = [];
 const $ = id => document.getElementById(id);
 
-/* ====================== TOAST ====================== */
+ 
 let toastTimer;
 function showToast(msg, type='info'){
   const t = $('toast'); t.textContent = msg;
@@ -500,7 +476,7 @@ function showToast(msg, type='info'){
   toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 3200);
 }
 
-/* ====================== LOGIN ====================== */
+ 
 function showLoginError(m){ $('loginErrorMsg').textContent=m; $('loginError').classList.add('show'); $('loginSuccess').classList.remove('show'); }
 function showLoginSuccess(m){ $('loginSuccessMsg').textContent=m; $('loginSuccess').classList.add('show'); $('loginError').classList.remove('show'); }
 function clearLoginMessages(){ $('loginError').classList.remove('show'); $('loginSuccess').classList.remove('show'); }
@@ -520,7 +496,7 @@ async function handleLogin(){
   setLoginLoading(true);
   try{
     await window.fbFns.signIn(window.fbAuth, e, p);
-    // onAuth will handle the rest
+    
   }catch(err){
     setLoginLoading(false);
     const codes = { 'auth/invalid-credential':'Invalid email or password.', 'auth/wrong-password':'Invalid email or password.', 'auth/user-not-found':'No account found with this email.', 'auth/too-many-requests':'Too many attempts. Please wait and try again.', 'auth/network-request-failed':'Network error. Check your internet connection.', 'auth/invalid-email':'Invalid email format.' };
@@ -544,7 +520,7 @@ async function handleLogout(){
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin(); });
 
-/* ====================== PROFILE ====================== */
+ 
 function emailToId(email){ return email.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
 
 async function loadProfile(fbUser){
@@ -563,14 +539,14 @@ async function loadProfile(fbUser){
       linkAccess: (d.linkAccess && typeof d.linkAccess === 'object') ? d.linkAccess : {}
     };
   }
-  // Auto-create for first login
+ 
   const isAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
   const profile = { email:fbUser.email.toLowerCase(), uid:fbUser.uid, name:fbUser.email.split('@')[0], role:isAdmin?'Admin':'Employee', deptAccess:isAdmin?['All']:[], processAccess:[] };
   await window.fbFns.setDoc(ref, profile);
   return { id:emailId, ...profile };
 }
 
-/* ====================== APP ENTRY ====================== */
+ 
 function enterApp(user){
   curUser = user;
   $('loginOverlay').classList.add('hidden');
@@ -581,22 +557,24 @@ function enterApp(user){
   const isA = user.role === 'Admin';
   $('adminNavLabel').style.display = isA ? '' : 'none';
   $('adminNavBtn').style.display = isA ? '' : 'none';
-  updateCounts(); // compute accessible counts first
+  updateCounts();  
 
-  // Auto-select the most relevant tab for this user
-  // If employee has access to exactly 1 dept category, go straight there
+ 
   const accessibleTabs = ['Sales','Purchase','Management','HR','Finance','Support','My System']
     .filter(cat => {
       const count = DB.filter(d => canAccessProc(curUser, d) && d.cat === cat).length;
       return count > 0;
     });
 
-  if(curUser.role !== 'Admin' && accessibleTabs.length === 1){
+  const navMap = {Sales:'navSales',Purchase:'navPurchase',Management:'navManagement',HR:'navHR',Finance:'navFinance',Support:'navSupport','My System':'navMy'};
+  const labelMap = {Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
+
+  if(curUser.role !== 'Admin' && accessibleTabs.length <= 2){
+    
     const cat = accessibleTabs[0];
-    const navMap = {Sales:'navSales',Purchase:'navPurchase',Management:'navManagement',HR:'navHR',Finance:'navFinance',Support:'navSupport','My System':'navMy'};
     curCat = cat;
     setActive($(navMap[cat]));
-    $('pageHeader').innerText = {Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'}[cat] || cat;
+    $('pageHeader').innerText = labelMap[cat] || cat;
   } else {
     curCat = 'All';
     setActive($('navAll'));
@@ -614,23 +592,7 @@ function showLoginScreen(){
   setLoginLoading(false); clearLoginMessages();
 }
 
-/* ====================== ACCESS CONTROL ====================== */
-/**
- * RBAC Logic (v2):
- * Admin: full access to everything.
- * Employee:
- *   - deptAccess: which departments they can see ("All" = all depts)
- *   - processAccess: array of process names explicitly allowed.
- *     • If processAccess is NON-EMPTY → user can ONLY access those listed processes,
- *       and the dept restriction is BYPASSED for those processes (e.g. Pooja can access
- *       "Attendances Sheet" in HR even if her dept is only Sales — because it's explicitly listed).
- *     • If processAccess is EMPTY → user can access ALL processes within their deptAccess.
- *   - linkAccess: object { "ProcessName": ["form","sheet","fms",...] } — if set, only those
- *     link types are clickable for that process. If not set, all links of that process are accessible.
- * Support & My System cards: always visible to all employees (form link). Sheet in Help Ticket
- *   is admin-only.
- */
-
+ 
 function hasDeptAccess(u, cat){
   if(!u) return false;
   if(u.role === 'Admin') return true;
@@ -644,10 +606,10 @@ function canAccessProc(u, item){
   if(u.role === 'Admin') return true;
   const hasExplicitList = u.processAccess && u.processAccess.length > 0;
   if(hasExplicitList){
-    // Explicit list: bypass dept check, only check if process is in the list
+    
     return u.processAccess.includes(item.name);
   }
-  // No explicit list: fall back to dept access
+ 
   return hasDeptAccess(u, item.cat);
 }
 
@@ -655,20 +617,20 @@ function canAccessLink(u, procName, linkType){
   if(!u) return false;
   if(u.role === 'Admin') return true;
   if(!canAccessProc(u, {name:procName, cat:''})) return false;
-  // Check granular link-level access
+  
   if(u.linkAccess && u.linkAccess[procName] && u.linkAccess[procName].length > 0){
     return u.linkAccess[procName].includes(linkType);
   }
-  return true; // no link-level restriction → all links accessible
+  return true;  
 }
 
-/* ====================== COUNTS ====================== */
+ 
 function updateCounts(){
   const isAdmin = curUser && curUser.role === 'Admin';
   const c = {All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
   DB.forEach(d=>{ if(canAccessProc(curUser,d)){ c.All++; if(c[d.cat]!==undefined) c[d.cat]++; } });
 
-  // Map: cat key → {navId, cntId, labelId (if first in group)}
+  
   const tabs = [
     {cat:'All',       nav:'navAll',        cnt:'cntAll'},
     {cat:'Sales',     nav:'navSales',      cnt:'cntSales'},
@@ -680,7 +642,7 @@ function updateCounts(){
     {cat:'My System', nav:'navMy',         cnt:'cntMy'},
   ];
 
-  // Navigation label visibility tracking
+  
   let anyMainVisible = false, anyMyVisible = false;
 
   tabs.forEach(t=>{
@@ -689,23 +651,30 @@ function updateCounts(){
     if(!btn) return;
     if(t.cnt) $(t.cnt).textContent = count;
 
-    // Admins always see everything; employees only see tabs with accessible processes
-    const visible = isAdmin || count > 0 || t.cat === 'All';
+    
+    let visible;
+    if(t.cat === 'All'){
+      // Show "All Processes" only if user has access to processes in 2+ different depts
+      const accessibleDepts = ['Sales','Purchase','Management','HR','Finance','Support','My System']
+        .filter(cat => (c[cat] ?? 0) > 0);
+      visible = isAdmin || accessibleDepts.length >= 2;
+    } else {
+      visible = isAdmin || count > 0;
+    }
     btn.style.display = visible ? '' : 'none';
 
-    if(['Sales','Purchase','Management','HR','Finance'].includes(t.cat) && visible) anyMainVisible = true;
+    if(['All','Sales','Purchase','Management','HR','Finance'].includes(t.cat) && visible) anyMainVisible = true;
     if(['Support','My System'].includes(t.cat) && visible) anyMyVisible = true;
   });
 
-  // Show/hide section labels
-  const navLabel = document.querySelector('.sidebar-label:first-of-type');
-  // We control via class-based approach — always show "Navigation" label
-  // Hide "My System" label if nothing under it is visible
+ 
+  const navMainLabel = document.getElementById('navMainLabel');
+  if(navMainLabel) navMainLabel.style.display = anyMainVisible ? '' : 'none';
   const myLabel = document.getElementById('mySystemLabel');
   if(myLabel) myLabel.style.display = anyMyVisible ? '' : 'none';
 }
 
-/* ====================== RENDER CARDS ====================== */
+ 
 function renderCards(data){
   const b = $('cardBox'); b.innerHTML = '';
   if(!data.length){
@@ -761,7 +730,7 @@ function renderCards(data){
   });
 }
 
-/* ====================== NAV ====================== */
+ 
 function setActive(el){ document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); }
 function toggleSidebar(){
   const sb=$('sidebar'), ov=$('sidebarOverlay');
@@ -793,7 +762,7 @@ function runFilter(){
   renderCards(filtered);
 }
 
-/* ====================== ADMIN ====================== */
+ 
 async function showAdmin(el){
   if(!curUser || curUser.role !== 'Admin') return;
   closeSidebarMobile();
@@ -852,13 +821,13 @@ function renderTable(){
   });
 }
 
-/* ====================== MODAL ====================== */
+ 
 function openModal(uid){
   $('editUserId').value = '';
   $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
   $('modalTitle').textContent = 'Add User Profile';
   document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ p.classList.remove('checked'); p.querySelector('input').checked=false; });
-  // Will be called after checking user
+   
   if(uid){
     const u = cachedUsers.find(x=>x.id===uid);
     if(u){
@@ -886,7 +855,7 @@ function onRoleChange(){
   $('accessSection').style.display = r==='Admin' ? 'none' : '';
 }
 
-// Dept checkbox toggle with mutual exclusion of "All"
+ 
 document.querySelectorAll('#deptChks .chk-pill').forEach(pill=>{
   pill.addEventListener('click', function(e){
     e.preventDefault();
@@ -909,7 +878,7 @@ function updateAccessModeNote(){
   $('accessModeNote').style.display = anyChecked ? '' : 'none';
 }
 
-/* Link types that can appear per process */
+ 
 const LINK_META = {
   fms:      {label:'FMS',           icon:'fas fa-table-cells',     cls:'btn-fms'},
   form:     {label:'Form',          icon:'fab fa-google-drive',    cls:'btn-form'},
@@ -942,17 +911,19 @@ function buildProcList(existingLinkAccess){
     items.forEach(it=>{
       const availLinks = getAvailableLinks(it);
       const procRow = document.createElement('div'); procRow.className='proc-row';
-      // Process toggle header
+       
       const procHeader = document.createElement('div'); procHeader.className='proc-row-header';
       const procCb = document.createElement('input'); procCb.type='checkbox'; procCb.className='proc-master-cb'; procCb.value=it.name;
-      // Pre-check if in existing processAccess
-      const isChecked = existingLinkAccess['__procs__'] && existingLinkAccess['__procs__'].includes(it.name);
+       
+      const isNewUser = !existingLinkAccess['__procs__'] || existingLinkAccess['__procs__'].length === 0;
+      const isDefaultOn = isNewUser && it.name === 'Help Ticket';
+      const isChecked = isDefaultOn || (existingLinkAccess['__procs__'] && existingLinkAccess['__procs__'].includes(it.name));
       if(isChecked) procCb.checked = true;
       const procLabel = document.createElement('span'); procLabel.className='proc-name'; procLabel.textContent=it.name;
       procHeader.appendChild(procCb); procHeader.appendChild(procLabel);
       procRow.appendChild(procHeader);
 
-      // Link pills (only shown when process is checked)
+   
       if(availLinks.length > 0){
         const linkRow = document.createElement('div'); linkRow.className='proc-link-row'; linkRow.style.display=isChecked?'flex':'none';
         const existingLinks = existingLinkAccess[it.name] || [];
@@ -1027,7 +998,7 @@ async function saveUser(){
         const checkedLinks = [];
         linkRow.querySelectorAll('input[data-link]:checked').forEach(lcb=>checkedLinks.push(lcb.dataset.link));
         const allLinkCount = linkRow.querySelectorAll('input[data-link]').length;
-        // Only store if partial access (not all links checked)
+         
         if(checkedLinks.length > 0 && checkedLinks.length < allLinkCount){
           linkAccess[pName] = checkedLinks;
         }
@@ -1056,7 +1027,7 @@ async function deleteUserAct(id, name){
   }catch(e){ showToast('Delete failed: '+e.message, 'err'); }
 }
 
-/* ====================== FIREBASE INIT ====================== */
+ 
 window.addEventListener('firebaseReady', ()=>{
   $('loginForm').style.display = 'none';
   $('loadingState').style.display = '';
@@ -1076,8 +1047,7 @@ window.addEventListener('firebaseReady', ()=>{
     }
   });
 });
-
-/* ====================== GLOBAL EXPORTS ====================== */
+ 
 window.toggleSidebar=toggleSidebar; window.handleLogin=handleLogin; window.handleLogout=handleLogout;
 window.togglePwd=togglePwd; window.forgotPass=forgotPass; window.filterCat=filterCat;
 window.runFilter=runFilter; window.showAdmin=showAdmin; window.openModal=openModal;
