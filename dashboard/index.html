@@ -6,67 +6,90 @@
 <title>Satija Paper - System Master</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#0c1a2b;--accent:#0066ff;--accent-light:#4d94ff;--accent-glow:rgba(0,102,255,.12);--bg:#f4f6f9;--bg-card:#fff;--sidebar-w:264px;--text:#0f1d2e;--text-2:#5a6a7e;--text-3:#94a3b8;--border:#e4e8ee;--ok:#00c48c;--warn:#f5a623;--danger:#ff4757;--purple:#7c3aed;--r:12px;--shadow-s:0 1px 3px rgba(0,0,0,.04);--shadow-m:0 4px 16px rgba(0,0,0,.06);--shadow-l:0 16px 48px rgba(0,0,0,.1);--ease:cubic-bezier(.4,0,.2,1)}
+:root{
+  --primary:#0c1a2b;--accent:#0066ff;--accent-light:#4d94ff;--accent-glow:rgba(0,102,255,.12);
+  --bg:#f0f3f8;--bg-card:#fff;--sidebar-w:280px;--text:#0f1d2e;--text-2:#5a6a7e;--text-3:#94a3b8;
+  --border:#e4e8ee;--ok:#00c48c;--warn:#f5a623;--danger:#ff4757;--purple:#7c3aed;
+  --r:12px;--shadow-s:0 1px 4px rgba(0,0,0,.05);--shadow-m:0 4px 20px rgba(0,0,0,.08);
+  --shadow-l:0 16px 48px rgba(0,0,0,.12);--ease:cubic-bezier(.4,0,.2,1);
+  --nav-font-size:14px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
-.login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#070e1a,#0f1f38 50%,#070e1a)}
+
+/* ===== LOGIN ===== */
+.login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0e1e38 55%,#050d1a)}
 .login-overlay.hidden{display:none}
-.login-bg{position:absolute;inset:0;background:radial-gradient(circle at 25% 40%,rgba(0,102,255,.08),transparent 55%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.06),transparent 50%);animation:bgPulse 12s ease-in-out infinite alternate}
-@keyframes bgPulse{0%{opacity:.5}100%{opacity:1}}
-.login-card{position:relative;width:420px;background:rgba(255,255,255,.03);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:48px 40px;animation:cardUp .6s var(--ease)}
-@keyframes cardUp{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 35%,rgba(0,102,255,.1),transparent 55%),radial-gradient(ellipse at 80% 65%,rgba(124,58,237,.07),transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(0,196,140,.05),transparent 40%)}
+.login-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:36px 36px}
+.login-card{position:relative;width:440px;background:rgba(255,255,255,.04);backdrop-filter:blur(40px);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:48px 42px;animation:cardUp .5s var(--ease)}
+@keyframes cardUp{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
 .login-brand{text-align:center;margin-bottom:36px}
-.login-logo{width:80px;height:80px;border-radius:18px;object-fit:contain;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.3);background:rgba(255,255,255,.05);padding:4px}
-.login-brand h1{font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:#fff;letter-spacing:1.5px}
-.login-brand-url{font-size:11px;color:var(--accent-light);margin-top:4px;letter-spacing:.5px}
-.login-brand-sub{font-size:12px;color:rgba(255,255,255,.35);margin-top:8px;font-weight:600}
+.login-logo{width:80px;height:80px;border-radius:18px;object-fit:contain;margin-bottom:16px;box-shadow:0 8px 32px rgba(0,0,0,.4);background:rgba(255,255,255,.06);padding:6px}
+.login-brand h1{font-family:'Fraunces',serif;font-size:25px;font-weight:900;color:#fff;letter-spacing:2px}
+.login-brand-url{font-size:11px;color:var(--accent-light);margin-top:4px;letter-spacing:.6px;opacity:.9}
+.login-brand-sub{font-size:12px;color:rgba(255,255,255,.32);margin-top:8px;font-weight:600;letter-spacing:.3px}
 .login-field{margin-bottom:18px}
-.login-field label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.4);margin-bottom:7px;text-transform:uppercase;letter-spacing:.8px}
+.login-field label{display:block;font-size:11px;font-weight:800;color:rgba(255,255,255,.38);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px}
 .login-input-wrap{position:relative}
-.login-input-wrap>i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.2);font-size:14px}
-.login-input{width:100%;padding:13px 16px 13px 44px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;color:#fff;font-size:13.5px;font-family:inherit;outline:0;transition:.25s var(--ease)}
-.login-input::placeholder{color:rgba(255,255,255,.2)}
-.login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.06);box-shadow:0 0 0 3px rgba(0,102,255,.12)}
-.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),#4338ca);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:8px}
-.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.35)}
-.login-btn:disabled{opacity:.7;cursor:not-allowed}
-.login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12px;margin-bottom:16px;display:none;align-items:center;gap:7px}
+.login-input-wrap>i.field-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.2);font-size:14px;pointer-events:none}
+.login-input{width:100%;padding:13px 44px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:#fff;font-size:13.5px;font-family:inherit;outline:0;transition:.25s var(--ease)}
+.login-input::placeholder{color:rgba(255,255,255,.18)}
+.login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.07);box-shadow:0 0 0 3px rgba(0,102,255,.14)}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,#0066ff,#4338ca);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:8px;letter-spacing:.3px}
+.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,102,255,.38)}
+.login-btn:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.login-error{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.25);color:#fca5a5;padding:10px 14px;border-radius:10px;font-size:12.5px;margin-bottom:16px;display:none;align-items:center;gap:7px}
 .login-error.show{display:flex}
-.toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px}
+.login-success{background:rgba(0,196,140,.1);border:1px solid rgba(0,196,140,.28);color:#6ee7b7;padding:10px 14px;border-radius:10px;font-size:12.5px;margin-bottom:16px;display:none;align-items:center;gap:7px}
+.login-success.show{display:flex}
+.toggle-password{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:13px;padding:4px;transition:.2s}
+.toggle-password:hover{color:rgba(255,255,255,.6)}
+.loading-state{text-align:center;color:#fff;padding:40px}
+.spinner{display:inline-block;width:38px;height:38px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== APP ===== */
 .app-container{display:none;height:100vh}
 .app-container.visible{display:flex}
-.sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+
+/* ===== SIDEBAR ===== */
+.sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease)}
 .sidebar::-webkit-scrollbar{width:0}
-.brand-box{padding:24px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px}
-.brand-logo{width:60px;height:60px;border-radius:50%;object-fit:contain;padding:3px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-.brand-text{color:#fff;font-family:'Fraunces',serif;font-size:16px;font-weight:800;letter-spacing:1.5px;margin-top:4px}
-.brand-url{color:var(--accent-light);font-size:10px;text-decoration:none;font-weight:600;opacity:.8}
-.sidebar-label{padding:18px 22px 6px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:rgba(255,255,255,.22)}
-.menu-btn{background:0;border:0;padding:11px 22px;text-align:left;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:11px;border-left:3px solid transparent;font-family:inherit;font-weight:600;width:100%}
-.menu-btn i{width:18px;text-align:center;font-size:13px}
-.menu-btn:hover{background:rgba(255,255,255,.04);color:rgba(255,255,255,.85)}
-.menu-btn.active{background:rgba(0,102,255,.12);color:var(--accent-light);border-left-color:var(--accent-light)}
-.menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;min-width:22px;text-align:center}
-.menu-btn.active .count-badge{background:rgba(0,102,255,.2);color:var(--accent-light)}
-.sidebar-user{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px}
-.sidebar-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
+.brand-box{padding:26px 22px 20px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px}
+.brand-logo{width:62px;height:62px;border-radius:50%;object-fit:contain;padding:3px;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.brand-text{color:#fff;font-family:'Fraunces',serif;font-size:16px;font-weight:900;letter-spacing:2px;margin-top:4px}
+.brand-url{color:var(--accent-light);font-size:10.5px;text-decoration:none;font-weight:600;opacity:.75;letter-spacing:.3px}
+.sidebar-label{padding:20px 24px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.6px;color:rgba(255,255,255,.22)}
+.menu-btn{background:0;border:0;padding:12px 24px;text-align:left;font-size:var(--nav-font-size);color:rgba(255,255,255,.5);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:12px;border-left:3px solid transparent;font-family:inherit;font-weight:600;width:100%;line-height:1.3}
+.menu-btn i{width:20px;text-align:center;font-size:14px;flex-shrink:0}
+.menu-btn:hover{background:rgba(255,255,255,.045);color:rgba(255,255,255,.85)}
+.menu-btn.active{background:rgba(0,102,255,.13);color:var(--accent-light);border-left-color:var(--accent-light)}
+.menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.08);color:rgba(255,255,255,.42);font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:8px;min-width:24px;text-align:center;flex-shrink:0}
+.menu-btn.active .count-badge{background:rgba(0,102,255,.22);color:var(--accent-light)}
+.sidebar-user{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+.sidebar-avatar{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
 .sidebar-uinfo{flex:1;min-width:0}
-.sidebar-uname{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sidebar-urole{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
-.sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:15px;padding:6px;border-radius:8px;transition:.2s}
-.sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.08)}
-.main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto}
-.header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.page-title{font-size:18px;font-weight:800}
-.search-wrap{position:relative;width:260px}
-.search-box{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:10px;width:100%;outline:0;transition:.25s var(--ease);font-size:12.5px;font-family:inherit;background:var(--bg)}
+.sidebar-uname{font-size:13px;font-weight:700;color:rgba(255,255,255,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-urole{font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:7px;border-radius:8px;transition:.2s;flex-shrink:0}
+.sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.1)}
+
+/* ===== MAIN ===== */
+.main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
+.header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:12px}
+.page-title{font-size:19px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-wrap{position:relative;width:260px;flex-shrink:0}
+.search-box{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:10px;width:100%;outline:0;transition:.25s var(--ease);font-size:13px;font-family:inherit;background:var(--bg)}
 .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
-.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;pointer-events:none}
 .content{padding:22px 28px 60px;flex:1}
+
+/* ===== CARDS ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
-.card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.25s var(--ease);animation:fadeUp .4s var(--ease) both;position:relative;overflow:hidden}
+.card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.22s var(--ease);animation:fadeUp .38s var(--ease) both;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .card.cat-Sales::before{background:linear-gradient(90deg,#0066ff,#4d94ff)}
 .card.cat-Purchase::before{background:linear-gradient(90deg,#00c48c,#66e0bb)}
@@ -77,6 +100,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m)}
+.card.locked-card{opacity:.55}
 .card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px}
 .tag-Sales{background:#e8f0ff;color:#0052cc}.tag-Purchase{background:#e6faf3;color:#00795c}.tag-Management{background:#fff5e0;color:#8a5d00}.tag-HR{background:#f3e8ff;color:#5b21b6}.tag-Finance{background:#ffe8ea;color:#c41432}.tag-Support{background:#e0f7fa;color:#0277bd}.tag-My{background:#f0e6ff;color:#6d28d9}
 .card h3{font-size:15px;font-weight:800;margin-bottom:12px;line-height:1.3}
@@ -89,135 +113,124 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .b-sv{border-left:3px solid var(--warn)}.b-sv i{color:var(--warn)}
 .b-ex{border-left:3px solid var(--ok)}.b-ex i{color:var(--ok)}
 .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:auto}
-.btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:4px;transition:.2s var(--ease);font-family:inherit;position:relative}
-.btn:hover{filter:brightness(.92);transform:translateY(-1px)}
+.btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s var(--ease);font-family:inherit;position:relative;cursor:pointer;border:none}
+.btn:not(.disabled-link):hover{filter:brightness(.9);transform:translateY(-1px)}
 .btn-fms{background:#e8f0ff;color:#0052cc}.btn-form{background:#f3e8ff;color:#5b21b6}.btn-sheet{background:#e6faf3;color:#00795c}.btn-check{background:#fff0e0;color:#8a4500}.btn-video{background:#ffe8ea;color:#b91c1c}.btn-dash{background:#e0f2fe;color:#0369a1}.btn-admin{background:#fef3c7;color:#92400e}.btn-gp{background:#ede9fe;color:#5b21b6}
-.btn.disabled-link{opacity:.3;pointer-events:none;cursor:not-allowed}
-.lock-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.7);color:#fff;font-size:8px;padding:2px 6px;border-radius:4px;white-space:nowrap;font-weight:700}
-.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3)}
-.empty-state i{font-size:32px;margin-bottom:10px;display:block;opacity:.5}
+.btn.disabled-link{opacity:.35;pointer-events:none;cursor:not-allowed}
+.lock-badge{position:absolute;inset:0;background:rgba(15,29,46,.82);color:#fff;font-size:9px;padding:2px 8px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:4px;font-weight:700;letter-spacing:.3px}
+.empty-state{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-3)}
+.empty-state i{font-size:36px;margin-bottom:12px;display:block;opacity:.4}
+.empty-state p{font-size:14px;font-weight:600}
+
+/* ===== ADMIN PANEL ===== */
 .admin-panel{display:none}.admin-panel.visible{display:block}
-.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.admin-top h3{font-size:17px;font-weight:800}
-.add-btn{padding:10px 20px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.25s var(--ease)}
+.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+.admin-top h3{font-size:18px;font-weight:800}
+.add-btn{padding:10px 20px;background:var(--accent);color:#fff;border:0;border-radius:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.25s var(--ease)}
 .add-btn:hover{background:#0052cc;transform:translateY(-1px)}
-.tbl-wrap{background:var(--bg-card);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-s)}
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{background:var(--bg);padding:11px 16px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-2);border-bottom:1px solid var(--border)}
-.tbl td{padding:12px 16px;font-size:12px;border-bottom:1px solid var(--border)}
+.tbl-wrap{background:var(--bg-card);border-radius:var(--r);border:1px solid var(--border);overflow-x:auto;box-shadow:var(--shadow-s);-webkit-overflow-scrolling:touch}
+.tbl{width:100%;border-collapse:collapse;min-width:650px}
+.tbl th{background:var(--bg);padding:11px 16px;text-align:left;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-2);border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:12px 16px;font-size:12.5px;border-bottom:1px solid var(--border);vertical-align:top}
 .tbl tr:last-child td{border-bottom:0}
 .tbl tr:hover td{background:#f8fafc}
-.role-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase}
+.role-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px}
 .role-pill.admin{background:#ffe8ea;color:#b91c1c}.role-pill.employee{background:#e8f0ff;color:#0052cc}
 .access-pills{display:flex;flex-wrap:wrap;gap:3px}
-.ap{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700}
+.ap{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:700;white-space:nowrap}
 .ap-Sales{background:#e8f0ff;color:#0052cc}.ap-Purchase{background:#e6faf3;color:#00795c}.ap-Management{background:#fff5e0;color:#8a5d00}.ap-HR{background:#f3e8ff;color:#5b21b6}.ap-Finance{background:#ffe8ea;color:#c41432}.ap-All{background:var(--primary);color:#fff}
-.tbl-act{background:0;border:0;cursor:pointer;padding:5px 7px;border-radius:6px;font-size:13px}
+.tbl-act{background:0;border:0;cursor:pointer;padding:6px 8px;border-radius:6px;font-size:13px;transition:.15s}
 .tbl-act:hover{background:var(--bg)}
 .tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center}
+.proc-badge{display:inline-block;font-size:9.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);padding:2px 6px;border-radius:5px;margin:1px}
+
+/* ===== MODAL ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
-.modal-box{background:#fff;border-radius:18px;width:480px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .3s var(--ease)}
+.modal-box{background:#fff;border-radius:18px;width:520px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .28s var(--ease)}
 @keyframes modalUp{from{transform:translateY(16px) scale(.97);opacity:0}to{transform:none;opacity:1}}
-.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:1}
 .modal-head h3{font-size:16px;font-weight:800}
-.modal-x{background:0;border:0;font-size:16px;color:var(--text-3);cursor:pointer;padding:4px 8px;border-radius:8px}
+.modal-x{background:0;border:0;font-size:16px;color:var(--text-3);cursor:pointer;padding:5px 9px;border-radius:8px;transition:.15s}
 .modal-x:hover{background:var(--bg);color:var(--text)}
 .modal-body{padding:22px}
 .mf{margin-bottom:16px}
-.mf label{display:block;font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:5px;text-transform:uppercase}
-.mf input,.mf select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:0;background:#fff}
+.mf label{display:block;font-size:11px;font-weight:800;color:var(--text-2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.mf input,.mf select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;outline:0;background:#fff;color:var(--text);transition:.2s}
 .mf input:focus,.mf select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .chk-group{display:flex;flex-wrap:wrap;gap:7px}
-.chk-pill{display:flex;align-items:center;gap:5px;padding:7px 13px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:12px;font-weight:600;user-select:none}
+.chk-pill{display:flex;align-items:center;gap:6px;padding:8px 13px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:12.5px;font-weight:600;user-select:none;transition:.18s;line-height:1}
 .chk-pill:hover{border-color:var(--accent);background:var(--accent-glow)}
 .chk-pill.checked{background:var(--accent);color:#fff;border-color:var(--accent)}
 .chk-pill input{display:none}
-.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
-.mbtn{padding:9px 20px;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;border:0}
+.section-divider{border:0;border-top:1px solid var(--border);margin:18px 0}
+.proc-section-head{font-size:12px;font-weight:700;color:var(--text-2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.proc-section-head i{color:var(--accent);font-size:11px}
+.proc-group{margin-bottom:14px}
+.proc-group-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3);margin-bottom:6px;padding:0 2px}
+.proc-list{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.proc-item{display:flex;align-items:center;gap:7px;font-size:12px;padding:7px 9px;border-radius:8px;cursor:pointer;border:1.5px solid transparent;transition:.15s;color:var(--text-2);font-weight:500;line-height:1.3}
+.proc-item:hover{background:var(--bg);border-color:var(--border)}
+.proc-item.checked-proc{background:#e8f0ff;border-color:#b3ccff;color:#0052cc;font-weight:600}
+.proc-item input{display:none}
+.proc-sel-actions{display:flex;gap:8px;margin-bottom:10px}
+.proc-sel-btn{font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-glow);border:none;cursor:pointer;padding:4px 10px;border-radius:6px;font-family:inherit;transition:.15s}
+.proc-sel-btn:hover{background:#d1e4ff}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:#fff}
+.mbtn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.15s}
 .mbtn.sec{background:var(--bg);color:var(--text-2)}.mbtn.sec:hover{background:#e2e8f0}
 .mbtn.pri{background:var(--accent);color:#fff}.mbtn.pri:hover{background:#0052cc}
-.proc-section summary{cursor:pointer;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;padding:5px 0;user-select:none}
-.proc-list{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px;max-height:200px;overflow-y:auto;padding:3px}
-.proc-item{display:flex;align-items:center;gap:5px;font-size:11px;padding:5px 7px;border-radius:6px;cursor:pointer}
-.proc-item:hover{background:var(--bg)}
-.spinner{display:inline-block;width:40px;height:40px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-state{text-align:center;color:#fff;padding:40px}
-.loading-state .spinner{margin-bottom:16px}
 
-.mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:20px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:8px}
+/* Info box */
+.info-box{background:#fff8e8;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12.5px;margin-bottom:18px;line-height:1.6}
+.info-box a{color:#8a5d00;font-weight:700}
+
+/* Mobile */
+.mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:21px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:4px;flex-shrink:0}
 .mobile-menu-btn:hover{background:var(--bg)}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:998;backdrop-filter:blur(2px)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:998;backdrop-filter:blur(2px)}
 .sidebar-overlay.show{display:block;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.access-mode-note{background:rgba(0,102,255,.07);border:1px solid rgba(0,102,255,.15);color:#0052cc;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
 
-@media(max-width:1024px){
-  :root{--sidebar-w:240px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-  .content{padding:18px 20px 60px}
-  .header-bar{padding:12px 20px}
-  .search-wrap{width:220px}
-}
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0c1a2b;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:.35s var(--ease);white-space:nowrap;box-shadow:var(--shadow-l)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-left:3px solid var(--ok)}.toast.err{border-left:3px solid var(--danger)}.toast.info{border-left:3px solid var(--accent)}
 
+@media(max-width:1024px){:root{--sidebar-w:250px}.grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.content{padding:18px 20px 60px}.header-bar{padding:12px 20px}.search-wrap{width:220px}}
 @media(max-width:768px){
+  :root{--nav-font-size:14.5px}
   .mobile-menu-btn{display:inline-block}
-  .sidebar{position:fixed;left:-280px;top:0;bottom:0;z-index:999;width:280px;transition:left .3s var(--ease);box-shadow:4px 0 24px rgba(0,0,0,.2)}
+  .sidebar{position:fixed;left:-290px;top:0;bottom:0;z-index:999;width:280px;box-shadow:4px 0 28px rgba(0,0,0,.25)}
   .sidebar.open{left:0}
-  .header-bar{padding:12px 14px;gap:8px}
-  .page-title{font-size:15px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .header-right{flex-shrink:0}
+  .header-bar{padding:11px 14px}
+  .page-title{font-size:16px}
   .search-wrap{width:auto}
-  .search-box{width:38px;padding:9px;transition:width .3s var(--ease);cursor:pointer}
-  .search-box:focus{width:200px;padding:9px 14px 9px 36px;cursor:text}
-  .search-icon{pointer-events:none}
+  .search-box{width:38px;padding:9px;cursor:pointer}
+  .search-box:focus{width:190px;padding:9px 14px 9px 36px;cursor:text}
   .content{padding:14px 12px 80px}
   .grid{grid-template-columns:1fr;gap:12px}
   .card{padding:16px}
-  .card h3{font-size:14px}
   .actions{grid-template-columns:repeat(2,1fr);gap:6px}
   .btn{font-size:10.5px;padding:8px 4px}
-  .login-card{width:92%;padding:32px 24px;border-radius:20px}
-  .login-logo{width:64px;height:64px}
-  .login-brand h1{font-size:20px}
-  .login-input{padding:14px 14px 14px 42px;font-size:14px}
-  .login-btn{padding:14px;font-size:14px}
-  .modal-box{width:94%;border-radius:16px;max-height:88vh}
+  .login-card{width:94%;padding:32px 24px;border-radius:20px}
+  .modal-box{border-radius:16px;max-height:88vh}
   .modal-body{padding:18px}
-  .chk-group{gap:6px}
-  .chk-pill{font-size:11.5px;padding:8px 12px}
   .proc-list{grid-template-columns:1fr}
-  .admin-top{flex-direction:column;align-items:stretch;gap:12px}
+  .admin-top{flex-direction:column;align-items:stretch}
   .add-btn{justify-content:center}
-  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .tbl{min-width:600px}
-  .tbl th,.tbl td{padding:10px 12px;font-size:11.5px}
-  .badge{font-size:10.5px;padding:5px 9px}
-  .role-l{font-size:8.5px}
 }
-
-
-@media(max-width:400px){
-  .login-card{padding:24px 18px}
-  .login-brand{margin-bottom:24px}
-  .actions{grid-template-columns:1fr}
-  .header-bar{padding:10px 12px}
-  .page-title{font-size:14px}
-}
-
-
-@media(hover:none){
-  .menu-btn{padding:14px 22px}
-  .btn{min-height:36px}
-  .sidebar-logout{padding:10px;font-size:17px}
-  .tbl-act{padding:8px 10px;font-size:15px}
-}
+@media(max-width:400px){.login-card{padding:24px 16px}.actions{grid-template-columns:1fr}.header-bar{padding:10px 10px}}
+@media(hover:none){.menu-btn{padding:14px 24px}.btn{min-height:36px}.tbl-act{padding:9px 11px;font-size:15px}}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-bg"></div>
+  <div class="login-dots"></div>
   <div class="login-card">
     <div id="loginForm">
       <div class="login-brand">
@@ -227,20 +240,24 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <div class="login-brand-sub">System Master — Process Dashboard</div>
       </div>
       <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
+      <div class="login-success" id="loginSuccess"><i class="fas fa-circle-check"></i><span id="loginSuccessMsg"></span></div>
       <div class="login-field">
         <label>Email</label>
-        <div class="login-input-wrap"><i class="fas fa-envelope"></i><input type="email" class="login-input" id="loginUser" placeholder="your@email.com" autocomplete="username"></div>
+        <div class="login-input-wrap">
+          <i class="fas fa-envelope field-icon"></i>
+          <input type="email" class="login-input" id="loginUser" placeholder="your@email.com" autocomplete="username">
+        </div>
       </div>
       <div class="login-field">
         <label>Password</label>
         <div class="login-input-wrap">
-          <i class="fas fa-lock"></i>
+          <i class="fas fa-lock field-icon"></i>
           <input type="password" class="login-input" id="loginPass" placeholder="Enter your password" autocomplete="current-password">
           <button class="toggle-password" type="button" onclick="togglePwd()"><i class="fas fa-eye" id="pwdEye"></i></button>
         </div>
       </div>
       <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px"></i></button>
-      <div style="text-align:center;margin-top:14px"><a href="#" onclick="forgotPass();return false" style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:none">Forgot password?</a></div>
+      <div style="text-align:center;margin-top:14px"><a href="#" onclick="forgotPass();return false" style="font-size:11.5px;color:rgba(255,255,255,.38);text-decoration:none;transition:.2s" onmouseover="this.style.color='rgba(255,255,255,.7)'" onmouseout="this.style.color='rgba(255,255,255,.38)'">Forgot password?</a></div>
     </div>
     <div id="loadingState" class="loading-state" style="display:none">
       <div class="spinner"></div>
@@ -249,23 +266,27 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- APP -->
 <div class="app-container" id="appContainer">
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="brand-box">
       <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="brand-logo">
       <div class="brand-text">SATIJA PAPER</div>
       <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
     </div>
     <div class="sidebar-label">Navigation</div>
-    <button class="menu-btn active" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
-    <button class="menu-btn" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
-    <button class="menu-btn" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory <span class="count-badge" id="cntPurchase">0</span></button>
-    <button class="menu-btn" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
-    <button class="menu-btn" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
-    <button class="menu-btn" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
+    <button class="menu-btn active" id="navAll" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
+    <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales &amp; CRM <span class="count-badge" id="cntSales">0</span></button>
+    <button class="menu-btn" id="navPurchase" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory <span class="count-badge" id="cntPurchase">0</span></button>
+    <button class="menu-btn" id="navManagement" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
+    <button class="menu-btn" id="navHR" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR &amp; Admin <span class="count-badge" id="cntHR">0</span></button>
+    <button class="menu-btn" id="navFinance" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts <span class="count-badge" id="cntFinance">0</span></button>
     <div class="sidebar-label">My System</div>
-    <button class="menu-btn" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
-    <button class="menu-btn" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
+    <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
+    <button class="menu-btn" id="navMy" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
     <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
     <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
     <div class="sidebar-user">
@@ -274,57 +295,107 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
     </div>
   </div>
+
   <div class="main-content">
     <div class="header-bar">
       <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Menu"><i class="fas fa-bars"></i></button>
       <h2 class="page-title" id="pageHeader">All Processes</h2>
-      <div class="header-right"><div class="search-wrap" id="searchWrap"><i class="fas fa-magnifying-glass search-icon"></i><input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()"></div></div>
+      <div class="header-right">
+        <div class="search-wrap" id="searchWrap">
+          <i class="fas fa-magnifying-glass search-icon"></i>
+          <input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()">
+        </div>
+      </div>
     </div>
     <div class="content">
       <div class="grid" id="cardBox"></div>
       <div class="admin-panel" id="adminPanel">
-        <div class="admin-top"><h3><i class="fas fa-users-gear" style="margin-right:7px;color:var(--accent)"></i>User Management</h3><button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button></div>
-        <div style="background:#fff5e0;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12px;margin-bottom:16px"><i class="fas fa-info-circle" style="margin-right:6px"></i><strong>New user workflow:</strong> 1) Click "Add User" below — set name, email & access. 2) Open <a href="https://console.firebase.google.com" target="_blank" style="color:#8a5d00;font-weight:700">Firebase Console</a> → Authentication → add user with the SAME email & a password. 3) Share credentials with them.</div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Email</th><th>Display Name</th><th>Role</th><th>Dept Access</th><th>Process Access</th><th style="width:85px">Actions</th></tr></thead><tbody id="tblBody"></tbody></table></div>
+        <div class="admin-top">
+          <h3><i class="fas fa-users-gear" style="margin-right:8px;color:var(--accent)"></i>User Management</h3>
+          <button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button>
+        </div>
+        <div class="info-box">
+          <i class="fas fa-info-circle" style="margin-right:6px"></i>
+          <strong>New user workflow:</strong> 1) Click "Add User" — set name, email, role &amp; access. 2) Open 
+          <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a> → Authentication → add user with the <strong>same email</strong> &amp; a password. 3) Share credentials. User's access is already configured.
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Role</th>
+                <th>Dept Access</th>
+                <th>Process Access</th>
+                <th style="width:90px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tblBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<!-- USER MODAL -->
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
-    <div class="modal-head"><h3 id="modalTitle">Add / Edit User Profile</h3><button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button></div>
+    <div class="modal-head">
+      <h3 id="modalTitle">Add / Edit User Profile</h3>
+      <button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+    </div>
     <div class="modal-body">
       <input type="hidden" id="editUserId">
       <div class="mf"><label>Display Name</label><input type="text" id="mName" placeholder="e.g. Neha Sharma"></div>
-      <div class="mf"><label>Email (must match Firebase Auth)</label><input type="email" id="mUser" placeholder="user@example.com"></div>
-      <div class="mf"><label>Role</label><select id="mRole" onchange="onRoleChange()"><option value="Employee">Employee</option><option value="Admin">Admin</option></select></div>
-      <div class="mf" id="deptField"><label>Department Access</label>
-        <div class="chk-group" id="deptChks">
-          <label class="chk-pill" data-val="All" onclick="toggleChk(this)"><input type="checkbox" value="All"> All Depts</label>
-          <label class="chk-pill" data-val="Sales" onclick="toggleChk(this)"><input type="checkbox" value="Sales"> Sales</label>
-          <label class="chk-pill" data-val="Purchase" onclick="toggleChk(this)"><input type="checkbox" value="Purchase"> Purchase</label>
-          <label class="chk-pill" data-val="Management" onclick="toggleChk(this)"><input type="checkbox" value="Management"> MIS</label>
-          <label class="chk-pill" data-val="HR" onclick="toggleChk(this)"><input type="checkbox" value="HR"> HR</label>
-          <label class="chk-pill" data-val="Finance" onclick="toggleChk(this)"><input type="checkbox" value="Finance"> Finance</label>
+      <div class="mf"><label>Email <span style="font-weight:400;text-transform:none;letter-spacing:0">(must match Firebase Auth)</span></label><input type="email" id="mUser" placeholder="user@satijapaper.com"></div>
+      <div class="mf"><label>Role</label>
+        <select id="mRole" onchange="onRoleChange()">
+          <option value="Employee">Employee</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div id="accessSection">
+        <hr class="section-divider">
+        <div class="proc-section-head"><i class="fas fa-building"></i> Department Access</div>
+        <div class="mf" id="deptField">
+          <div class="chk-group" id="deptChks">
+            <label class="chk-pill" data-val="All"><input type="checkbox" value="All"> <i class="fas fa-layer-group" style="font-size:11px;opacity:.7"></i> All Depts</label>
+            <label class="chk-pill" data-val="Sales"><input type="checkbox" value="Sales"> Sales</label>
+            <label class="chk-pill" data-val="Purchase"><input type="checkbox" value="Purchase"> Purchase</label>
+            <label class="chk-pill" data-val="Management"><input type="checkbox" value="Management"> MIS</label>
+            <label class="chk-pill" data-val="HR"><input type="checkbox" value="HR"> HR</label>
+            <label class="chk-pill" data-val="Finance"><input type="checkbox" value="Finance"> Finance</label>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+        <div class="proc-section-head"><i class="fas fa-sliders"></i> Individual Process Access <span style="font-weight:400;color:var(--text-3);font-size:11px">(optional — overrides dept)</span></div>
+        <div class="access-mode-note" id="accessModeNote" style="display:none"><i class="fas fa-info-circle"></i> When individual processes are selected, <strong>only those processes</strong> are accessible (dept access is still required).</div>
+        <div id="procField">
+          <div class="proc-sel-actions">
+            <button class="proc-sel-btn" onclick="selectAllProcs(true)"><i class="fas fa-check-double"></i> Select All</button>
+            <button class="proc-sel-btn" onclick="selectAllProcs(false)"><i class="fas fa-xmark"></i> Clear All</button>
+          </div>
+          <div id="procListContainer"></div>
         </div>
       </div>
-      <div class="mf" id="procField"><details class="proc-section"><summary>Fine-grained Process Access (Optional)</summary><div class="proc-list" id="procList"></div></details></div>
     </div>
-    <div class="modal-foot"><button class="mbtn sec" onclick="closeModal()">Cancel</button><button class="mbtn pri" onclick="saveUser()">Save</button></div>
+    <div class="modal-foot">
+      <button class="mbtn sec" onclick="closeModal()">Cancel</button>
+      <button class="mbtn pri" onclick="saveUser()"><i class="fas fa-save" style="margin-right:5px"></i>Save</button>
+    </div>
   </div>
 </div>
 
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxt4HtZm03WQzQD7mMNOyIQr-KxAHBaO8",
@@ -340,21 +411,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
 window.fbAuth = auth;
 window.fbDb = db;
-window.fbFns = {
-  signIn: signInWithEmailAndPassword,
-  signOut: signOut,
-  onAuth: onAuthStateChanged,
-  resetPass: sendPasswordResetEmail,
-  doc, getDoc, setDoc, deleteDoc, collection, getDocs
-};
+window.fbFns = { signIn: signInWithEmailAndPassword, signOut, onAuth: onAuthStateChanged, resetPass: sendPasswordResetEmail, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy };
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com"; 
+/* ====================== DATA ====================== */
+const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
 
 const DB = [
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/macros/s/AKfycbzjlijGXaELu2FYQZifc08hsEJk8fBBbuq7a7gnmifw6olnQS0hyzpIcXOVlC2k5Q4/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
@@ -392,63 +457,65 @@ const DB = [
   {cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0",gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec"}},
   {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
 ];
-let curUser = null, curCat = 'All', curView = 'cards', cachedUsers = [];
 
+/* ====================== STATE ====================== */
+let curUser = null, curCat = 'All', cachedUsers = [];
 const $ = id => document.getElementById(id);
 
-function showLoginError(m){ $('loginErrorMsg').textContent = m; $('loginError').classList.add('show'); }
-function clearLoginError(){ $('loginError').classList.remove('show'); }
+/* ====================== TOAST ====================== */
+let toastTimer;
+function showToast(msg, type='info'){
+  const t = $('toast'); t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 3200);
+}
+
+/* ====================== LOGIN ====================== */
+function showLoginError(m){ $('loginErrorMsg').textContent=m; $('loginError').classList.add('show'); $('loginSuccess').classList.remove('show'); }
+function showLoginSuccess(m){ $('loginSuccessMsg').textContent=m; $('loginSuccess').classList.add('show'); $('loginError').classList.remove('show'); }
+function clearLoginMessages(){ $('loginError').classList.remove('show'); $('loginSuccess').classList.remove('show'); }
 function setLoginLoading(on){
   const b=$('loginBtn'); b.disabled=on;
   b.innerHTML = on ? '<i class="fas fa-circle-notch fa-spin"></i> Signing in...' : 'Sign In <i class="fas fa-arrow-right" style="margin-left:6px;font-size:12px"></i>';
 }
 function togglePwd(){
-  const i=$('loginPass'),ic=$('pwdEye');
+  const i=$('loginPass'), ic=$('pwdEye');
   if(i.type==='password'){i.type='text';ic.className='fas fa-eye-slash';}
   else{i.type='password';ic.className='fas fa-eye';}
 }
-
 async function handleLogin(){
-  clearLoginError();
+  clearLoginMessages();
   const e=$('loginUser').value.trim(), p=$('loginPass').value;
-  if(!e||!p){showLoginError("Enter email and password.");return;}
+  if(!e||!p){ showLoginError("Enter email and password."); return; }
   setLoginLoading(true);
   try{
     await window.fbFns.signIn(window.fbAuth, e, p);
-    
+    // onAuth will handle the rest
   }catch(err){
     setLoginLoading(false);
-    let msg = "Login failed.";
-    if(err.code==='auth/invalid-credential'||err.code==='auth/wrong-password'||err.code==='auth/user-not-found') msg="Invalid email or password.";
-    else if(err.code==='auth/too-many-requests') msg="Too many attempts. Try later.";
-    else if(err.code==='auth/network-request-failed') msg="Network error. Check internet.";
-    else msg = err.message;
-    showLoginError(msg);
+    const codes = { 'auth/invalid-credential':'Invalid email or password.', 'auth/wrong-password':'Invalid email or password.', 'auth/user-not-found':'No account found with this email.', 'auth/too-many-requests':'Too many attempts. Please wait and try again.', 'auth/network-request-failed':'Network error. Check your internet connection.', 'auth/invalid-email':'Invalid email format.' };
+    showLoginError(codes[err.code] || err.message || 'Login failed. Please try again.');
   }
 }
-
 async function forgotPass(){
   const e=$('loginUser').value.trim();
-  if(!e){showLoginError("Enter your email first, then click Forgot Password.");return;}
+  if(!e){ showLoginError("Enter your email first, then click Forgot Password."); return; }
+  const btn=document.querySelector('.login-card a[onclick]'); if(btn){btn.style.pointerEvents='none';}
   try{
     await window.fbFns.resetPass(window.fbAuth, e);
-    showLoginError("Reset email sent! Check your inbox.");
-    $('loginError').style.background='rgba(0,196,140,.1)';
-    $('loginError').style.borderColor='rgba(0,196,140,.3)';
-    $('loginError').style.color='#86efac';
-  }catch(err){showLoginError(err.message);}
+    showLoginSuccess("Password reset email sent! Check your inbox.");
+  }catch(err){
+    showLoginError(err.code==='auth/user-not-found' ? 'No account found with this email.' : err.message);
+  } finally{ if(btn)btn.style.pointerEvents=''; }
 }
-
 async function handleLogout(){
   await window.fbFns.signOut(window.fbAuth);
-
+  showToast('Signed out successfully.', 'info');
 }
+document.addEventListener('keydown', e=>{ if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin(); });
 
-document.addEventListener('keydown', e => {
-  if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin();
-});
-
-
+/* ====================== PROFILE ====================== */
 function emailToId(email){ return email.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
 
 async function loadProfile(fbUser){
@@ -457,32 +524,23 @@ async function loadProfile(fbUser){
   const snap = await window.fbFns.getDoc(ref);
   if(snap.exists()){
     const d = snap.data();
-    // Update uid link if missing
     if(!d.uid){ try{ await window.fbFns.setDoc(ref,{uid:fbUser.uid},{merge:true}); }catch(e){} }
     return {
-      id: emailId,
-      uid: fbUser.uid,
-      email: fbUser.email,
+      id: emailId, uid: fbUser.uid, email: fbUser.email,
       name: d.name || fbUser.email.split('@')[0],
       role: d.role || 'Employee',
       deptAccess: Array.isArray(d.deptAccess) ? d.deptAccess : [],
       processAccess: Array.isArray(d.processAccess) ? d.processAccess : []
     };
   }
-  // Auto-create profile for first login
-  const isFirstAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
-  const profile = {
-    email: fbUser.email.toLowerCase(),
-    uid: fbUser.uid,
-    name: fbUser.email.split('@')[0],
-    role: isFirstAdmin ? 'Admin' : 'Employee',
-    deptAccess: isFirstAdmin ? ['All'] : [],
-    processAccess: []
-  };
+  // Auto-create for first login
+  const isAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
+  const profile = { email:fbUser.email.toLowerCase(), uid:fbUser.uid, name:fbUser.email.split('@')[0], role:isAdmin?'Admin':'Employee', deptAccess:isAdmin?['All']:[], processAccess:[] };
   await window.fbFns.setDoc(ref, profile);
-  return { id: emailId, ...profile };
+  return { id:emailId, ...profile };
 }
 
+/* ====================== APP ENTRY ====================== */
 function enterApp(user){
   curUser = user;
   $('loginOverlay').classList.add('hidden');
@@ -490,11 +548,11 @@ function enterApp(user){
   $('sAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
   $('sName').textContent = user.name;
   $('sRole').textContent = user.role;
-  const isA = user.role==='Admin';
-  $('adminNavLabel').style.display = isA?'':'none';
-  $('adminNavBtn').style.display = isA?'':'none';
-  curCat='All'; curView='cards';
-  setActive(document.querySelector('.menu-btn'));
+  const isA = user.role === 'Admin';
+  $('adminNavLabel').style.display = isA ? '' : 'none';
+  $('adminNavBtn').style.display = isA ? '' : 'none';
+  curCat = 'All';
+  setActive($('navAll'));
   updateCounts();
   runFilter();
 }
@@ -503,213 +561,346 @@ function showLoginScreen(){
   curUser = null;
   $('appContainer').classList.remove('visible');
   $('loginOverlay').classList.remove('hidden');
-  $('loginForm').style.display='';
-  $('loadingState').style.display='none';
-  $('loginUser').value=''; $('loginPass').value='';
-  setLoginLoading(false);
-  clearLoginError();
+  $('loginForm').style.display = '';
+  $('loadingState').style.display = 'none';
+  $('loginUser').value = ''; $('loginPass').value = '';
+  setLoginLoading(false); clearLoginMessages();
 }
 
+/* ====================== ACCESS CONTROL ====================== */
+/**
+ * RBAC Logic:
+ * Admin: full access to everything including Help Ticket sheet (all users visible)
+ * Employee with "All" dept: access to all dept cards
+ * Employee with specific depts: access to those dept cards only
+ * processAccess (individual): if non-empty, user can ONLY access those specific processes
+ *   (within their allowed departments). If empty, all processes in allowed depts are accessible.
+ * Support/Help Ticket: always visible to all logged-in users (form side).
+ *   The "sheet" link in Help Ticket is only visible to Admins (so they see all tickets).
+ */
 
-function hasDept(u,c){if(!u)return false;if(u.role==='Admin')return true;if(u.deptAccess.includes('All'))return true;return u.deptAccess.includes(c);}
-function hasProc(u,n){if(!u)return false;if(u.role==='Admin')return true;if(!u.processAccess||!u.processAccess.length)return true;return u.processAccess.includes(n);}
-function getCatClass(c){return c==='My System'?'My':c;}
+function hasDeptAccess(u, cat){
+  if(!u) return false;
+  if(u.role === 'Admin') return true;
+  if(u.deptAccess.includes('All')) return true;
+  // Support and My System are always visible to all employees
+  if(cat === 'Support' || cat === 'My System') return true;
+  return u.deptAccess.includes(cat);
+}
 
+function hasProcAccess(u, procName){
+  if(!u) return false;
+  if(u.role === 'Admin') return true;
+  // If no specific process list, allow all within dept
+  if(!u.processAccess || u.processAccess.length === 0) return true;
+  return u.processAccess.includes(procName);
+}
+
+function canAccessProc(u, item){
+  return hasDeptAccess(u, item.cat) && hasProcAccess(u, item.name);
+}
+
+/* ====================== COUNTS ====================== */
 function updateCounts(){
-  const c={All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
-  DB.forEach(d=>{c.All++;if(c[d.cat]!==undefined)c[d.cat]++;});
-  $('cntAll').textContent=c.All;$('cntSales').textContent=c.Sales;$('cntPurchase').textContent=c.Purchase;
-  $('cntManagement').textContent=c.Management;$('cntHR').textContent=c.HR;$('cntFinance').textContent=c.Finance;
-  $('cntSupport').textContent=c.Support;$('cntMy').textContent=c['My System'];
+  const c = {All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
+  DB.forEach(d=>{ c.All++; if(c[d.cat]!==undefined) c[d.cat]++; });
+  $('cntAll').textContent=c.All; $('cntSales').textContent=c.Sales; $('cntPurchase').textContent=c.Purchase;
+  $('cntManagement').textContent=c.Management; $('cntHR').textContent=c.HR; $('cntFinance').textContent=c.Finance;
+  $('cntSupport').textContent=c.Support; $('cntMy').textContent=c['My System'];
 }
 
-const box=()=>$('cardBox'), hdr=()=>$('pageHeader');
-
+/* ====================== RENDER CARDS ====================== */
 function renderCards(data){
-  const b=box(); b.innerHTML='';
-  if(!data.length){b.innerHTML='<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';return;}
-  data.forEach((it,i)=>{
-    const ok=hasDept(curUser,it.cat)&&hasProc(curUser,it.name);
-    const dc=ok?'':' disabled-link';
-    const mb=(url,cls,ico,lbl)=>{
-      if(!url)return'';
-      return `<a href="${ok?url:'#'}" ${ok?'target="_blank"':''} class="btn ${cls}${dc}" ${!ok?'onclick="return false;"':''}><i class="${ico}"></i> ${lbl}${!ok?'<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span>':''}</a>`;
+  const b = $('cardBox'); b.innerHTML = '';
+  if(!data.length){
+    b.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
+    return;
+  }
+  data.forEach((it, i) => {
+    const ok = canAccessProc(curUser, it);
+    const isAdmin = curUser && curUser.role === 'Admin';
+    const cc = it.cat === 'My System' ? 'My' : it.cat;
+
+    // For Help Ticket: employees see form only; sheet is admin-only
+    const buildBtn = (url, cls, ico, lbl, adminOnly=false) => {
+      if(!url) return '';
+      const blocked = adminOnly && !isAdmin;
+      if(blocked) return ''; // hide admin-only links from employees
+      if(!ok) return `<a href="#" class="btn ${cls} disabled-link"><i class="${ico}"></i> ${lbl}<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span></a>`;
+      return `<a href="${url}" target="_blank" rel="noopener" class="btn ${cls}"><i class="${ico}"></i> ${lbl}</a>`;
     };
-    let btns='';
-    btns+=mb(it.links.fms,'btn-fms','fas fa-table-cells','FMS');
-    btns+=mb(it.links.form,'btn-form','fab fa-google-drive','Form');
-    btns+=mb(it.links.sheet,'btn-sheet','fas fa-file-spreadsheet','Sheet');
-    btns+=mb(it.links.check,'btn-check','fas fa-square-check','Checklist');
-    btns+=mb(it.links.video,'btn-video','fas fa-circle-play','Training');
-    btns+=mb(it.links.videoBCI,'btn-video','fas fa-circle-play','Training (BCI)');
-    btns+=mb(it.links.dashEmp,'btn-dash','fas fa-chart-pie','Emp Dashboard');
-    btns+=mb(it.links.dashPC,'btn-dash','fas fa-chart-line','PC Dashboard');
-    btns+=mb(it.links.admin,'btn-admin','fas fa-user-gear','Admin Panel');
-    btns+=mb(it.links.gpDash,'btn-gp','fas fa-chart-column','GP Dashboard');
-    if(!btns)btns='<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px">No Links</div>';
-    let badges='';
-    if(it.pc&&it.pc!=='-')badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
-    if(it.solver&&it.solver!=='-')badges+=`<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
-    if(it.exec&&it.exec!=='-')badges+=`<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
-    const cc=getCatClass(it.cat);
-    b.innerHTML+=`<div class="card cat-${cc}" style="animation-delay:${i*.03}s;${!ok?'opacity:.5;':''}"><span class="card-tag tag-${cc}">${it.cat}</span><h3>${it.name}</h3><div class="people">${badges}</div><div class="actions">${btns}</div></div>`;
+
+    let btns = '';
+    btns += buildBtn(it.links.fms, 'btn-fms', 'fas fa-table-cells', 'FMS');
+    btns += buildBtn(it.links.form, 'btn-form', 'fab fa-google-drive', 'Form');
+    // Help Ticket sheet: admin-only
+    if(it.name === 'Help Ticket'){
+      btns += buildBtn(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets', true);
+    } else {
+      btns += buildBtn(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'Sheet');
+    }
+    btns += buildBtn(it.links.check, 'btn-check', 'fas fa-square-check', 'Checklist');
+    btns += buildBtn(it.links.video, 'btn-video', 'fas fa-circle-play', 'Training');
+    btns += buildBtn(it.links.videoBCI, 'btn-video', 'fas fa-circle-play', 'Training (BCI)');
+    btns += buildBtn(it.links.dashEmp, 'btn-dash', 'fas fa-chart-pie', 'Emp Dashboard');
+    btns += buildBtn(it.links.dashPC, 'btn-dash', 'fas fa-chart-line', 'PC Dashboard');
+    btns += buildBtn(it.links.admin, 'btn-admin', 'fas fa-user-gear', 'Admin Panel');
+    btns += buildBtn(it.links.gpDash, 'btn-gp', 'fas fa-chart-column', 'GP Dashboard');
+    if(!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
+
+    let badges = '';
+    if(it.pc&&it.pc!=='-') badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
+    if(it.solver&&it.solver!=='-') badges+=`<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
+    if(it.exec&&it.exec!=='-') badges+=`<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
+
+    b.innerHTML += `<div class="card cat-${cc}${!ok?' locked-card':''}" style="animation-delay:${i*.03}s">
+      <span class="card-tag tag-${cc}">${it.cat}</span>
+      <h3>${it.name}</h3>
+      ${badges?`<div class="people">${badges}</div>`:''}
+      <div class="actions">${btns}</div>
+    </div>`;
   });
 }
 
-function setActive(el){document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');}
-
+/* ====================== NAV ====================== */
+function setActive(el){ document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); }
 function toggleSidebar(){
-  const sb=document.querySelector('.sidebar'), ov=$('sidebarOverlay');
-  sb.classList.toggle('open');
-  ov.classList.toggle('show');
+  const sb=$('sidebar'), ov=$('sidebarOverlay');
+  sb.classList.toggle('open'); ov.classList.toggle('show');
 }
-function closeSidebarMobile(){
-  if(window.innerWidth<=768){
-    document.querySelector('.sidebar').classList.remove('open');
-    $('sidebarOverlay').classList.remove('show');
-  }
-}
+function closeSidebarMobile(){ if(window.innerWidth<=768){ $('sidebar').classList.remove('open'); $('sidebarOverlay').classList.remove('show'); } }
 
-function filterCat(cat,el){
+const CAT_LABELS = {All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
+
+function filterCat(cat, el){
   closeSidebarMobile();
-  curCat=cat;curView='cards';setActive(el);
-  const labels={All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
-  hdr().innerText=labels[cat]||cat;
-  box().style.display='';
+  curCat = cat;
+  setActive(el);
+  $('pageHeader').innerText = CAT_LABELS[cat] || cat;
+  $('cardBox').style.display = '';
   $('adminPanel').classList.remove('visible');
-  $('searchWrap').style.display='';
+  $('searchWrap').style.display = '';
   runFilter();
 }
 
 function runFilter(){
-  const raw=$('searchInput').value.toLowerCase();
-  const terms=raw.split(' ').filter(t=>t.trim());
-  const filtered=DB.filter(it=>{
-    const mc=curCat==='All'||it.cat===curCat;
-    const txt=`${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
-    return mc&&terms.every(t=>txt.includes(t));
+  const raw = $('searchInput').value.toLowerCase();
+  const terms = raw.split(/\s+/).filter(Boolean);
+  const filtered = DB.filter(it => {
+    const mc = curCat === 'All' || it.cat === curCat;
+    const txt = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
+    return mc && terms.every(t => txt.includes(t));
   });
   renderCards(filtered);
 }
 
+/* ====================== ADMIN ====================== */
 async function showAdmin(el){
-  if(!curUser||curUser.role!=='Admin')return;
+  if(!curUser || curUser.role !== 'Admin') return;
   closeSidebarMobile();
-  curView='admin';setActive(el);hdr().innerText='User Management';
-  box().style.display='none';
+  setActive(el);
+  $('pageHeader').innerText = 'User Management';
+  $('cardBox').style.display = 'none';
   $('adminPanel').classList.add('visible');
-  $('searchWrap').style.display='none';
+  $('searchWrap').style.display = 'none';
   await loadUsers();
 }
 
 async function loadUsers(){
+  const tb = $('tblBody');
+  tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-3)"><i class="fas fa-circle-notch fa-spin"></i> Loading...</td></tr>';
   try{
     const snap = await window.fbFns.getDocs(window.fbFns.collection(window.fbDb,'users'));
     cachedUsers = [];
     snap.forEach(d=>{
-      const x=d.data();
-      cachedUsers.push({
-        id:d.id,
-        email:x.email||'(no email saved)',
-        name:x.name||'',
-        role:x.role||'Employee',
-        deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[],
-        processAccess:Array.isArray(x.processAccess)?x.processAccess:[]
-      });
+      const x = d.data();
+      cachedUsers.push({ id:d.id, email:x.email||'', name:x.name||'', role:x.role||'Employee', deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[], processAccess:Array.isArray(x.processAccess)?x.processAccess:[] });
     });
+    cachedUsers.sort((a,b)=>a.name.localeCompare(b.name));
     renderTable();
-  }catch(e){alert('Failed to load users: '+e.message);}
+  }catch(e){ tb.innerHTML=`<tr><td colspan="6" style="color:var(--danger);padding:16px;text-align:center">Failed to load: ${e.message}</td></tr>`; }
 }
 
 function renderTable(){
-  const tb=$('tblBody');tb.innerHTML='';
+  const tb = $('tblBody'); tb.innerHTML = '';
+  if(!cachedUsers.length){ tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-3)">No users found.</td></tr>'; return; }
   cachedUsers.forEach(u=>{
-    const dp=u.deptAccess.map(d=>`<span class="ap ap-${d}">${d==='Management'?'MIS':d}</span>`).join('');
-    const pp=(u.processAccess&&u.processAccess.length)?u.processAccess.map(p=>`<span style="font-size:10px;color:var(--text-2)">${p}</span>`).join(', '):'<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
-    tb.innerHTML+=`<tr><td><strong>${u.email}</strong></td><td>${u.name}</td><td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td><td><div class="access-pills">${dp}</div></td><td>${pp}</td><td><button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit"><i class="fas fa-pen"></i></button>${u.id!==curUser.id?`<button class="tbl-act delete" onclick="deleteUserAct('${u.id}')" title="Delete profile"><i class="fas fa-trash-can"></i></button>`:''}</td></tr>`;
+    const dp = u.deptAccess.map(d=>`<span class="ap ap-${d}">${d==='Management'?'MIS':d}</span>`).join('');
+    let procHtml = '';
+    if(u.role==='Admin'){
+      procHtml = '<span style="font-size:10px;color:var(--text-3)">Full access</span>';
+    } else if(u.processAccess && u.processAccess.length){
+      procHtml = u.processAccess.map(p=>`<span class="proc-badge">${p}</span>`).join('');
+    } else {
+      procHtml = '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
+    }
+    const isSelf = u.id === curUser.id;
+    tb.innerHTML += `<tr>
+      <td><strong style="font-size:12px">${u.email||'—'}</strong></td>
+      <td>${u.name||'—'}</td>
+      <td><span class="role-pill ${u.role.toLowerCase()}">${u.role}</span></td>
+      <td><div class="access-pills">${dp||'<span style="font-size:10px;color:var(--text-3)">None</span>'}</div></td>
+      <td style="max-width:220px">${procHtml}</td>
+      <td style="white-space:nowrap">
+        <button class="tbl-act edit" onclick="editUser('${u.id}')" title="Edit user"><i class="fas fa-pen"></i></button>
+        ${!isSelf?`<button class="tbl-act delete" onclick="deleteUserAct('${u.id}','${u.name||u.email}')" title="Delete profile"><i class="fas fa-trash-can"></i></button>`:'<span style="font-size:10px;color:var(--text-3);padding:0 4px">(you)</span>'}
+      </td>
+    </tr>`;
   });
 }
 
+/* ====================== MODAL ====================== */
 function openModal(uid){
-  $('editUserId').value='';$('mName').value='';$('mUser').value='';$('mRole').value='Employee';
-  $('modalTitle').textContent='Add User Profile';
-  document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{p.classList.remove('checked');p.querySelector('input').checked=false;});
+  $('editUserId').value = '';
+  $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
+  $('modalTitle').textContent = 'Add User Profile';
+  document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ p.classList.remove('checked'); p.querySelector('input').checked=false; });
   buildProcList();
   if(uid){
-    const u=cachedUsers.find(x=>x.id===uid);
+    const u = cachedUsers.find(x=>x.id===uid);
     if(u){
-      $('editUserId').value=u.id;$('mName').value=u.name;$('mUser').value=u.email;$('mRole').value=u.role;
-      $('modalTitle').textContent='Edit User Profile';
-      document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(u.deptAccess.includes(p.dataset.val)){p.classList.add('checked');p.querySelector('input').checked=true;}});
-      if(u.processAccess&&u.processAccess.length){document.querySelectorAll('#procList input[type=checkbox]').forEach(cb=>{if(u.processAccess.includes(cb.value))cb.checked=true;});}
+      $('editUserId').value = u.id; $('mName').value = u.name; $('mUser').value = u.email; $('mRole').value = u.role;
+      $('modalTitle').textContent = 'Edit User Profile';
+      document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ if(u.deptAccess.includes(p.dataset.val)){ p.classList.add('checked'); p.querySelector('input').checked=true; }});
+      if(u.processAccess && u.processAccess.length){
+        document.querySelectorAll('#procListContainer .proc-item').forEach(item=>{ if(u.processAccess.includes(item.dataset.proc)){ item.classList.add('checked-proc'); item.querySelector('input').checked=true; }});
+      }
     }
   }
-  onRoleChange();$('userModal').classList.add('show');
+  onRoleChange();
+  $('userModal').classList.add('show');
 }
-function editUser(id){openModal(id);}
-function closeModal(){$('userModal').classList.remove('show');}
-function onRoleChange(){const r=$('mRole').value;$('deptField').style.display=r==='Admin'?'none':'';$('procField').style.display=r==='Admin'?'none':'';}
-function toggleChk(el){
-  setTimeout(()=>{
-    const cb=el.querySelector('input');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);
-    if(el.dataset.val==='All'&&cb.checked){document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{if(p.dataset.val!=='All'){p.classList.remove('checked');p.querySelector('input').checked=false;}});}
-    else if(el.dataset.val!=='All'&&cb.checked){const a=document.querySelector('#deptChks .chk-pill[data-val="All"]');a.classList.remove('checked');a.querySelector('input').checked=false;}
-  },0);
+function editUser(id){ openModal(id); }
+function closeModal(){ $('userModal').classList.remove('show'); }
+
+function onRoleChange(){
+  const r = $('mRole').value;
+  $('accessSection').style.display = r==='Admin' ? 'none' : '';
 }
-function buildProcList(){const el=$('procList');el.innerHTML='';DB.forEach(it=>{el.innerHTML+=`<label class="proc-item"><input type="checkbox" value="${it.name}"> ${it.name}</label>`;});}
+
+// Dept checkbox toggle with mutual exclusion of "All"
+document.querySelectorAll('#deptChks .chk-pill').forEach(pill=>{
+  pill.addEventListener('click', function(e){
+    e.preventDefault();
+    const cb = this.querySelector('input');
+    const newVal = !cb.checked;
+    cb.checked = newVal;
+    this.classList.toggle('checked', newVal);
+    if(this.dataset.val === 'All' && newVal){
+      document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ if(p.dataset.val!=='All'){ p.classList.remove('checked'); p.querySelector('input').checked=false; }});
+    } else if(this.dataset.val !== 'All' && newVal){
+      const allPill = document.querySelector('#deptChks .chk-pill[data-val="All"]');
+      if(allPill){ allPill.classList.remove('checked'); allPill.querySelector('input').checked=false; }
+    }
+    updateAccessModeNote();
+  });
+});
+
+function updateAccessModeNote(){
+  const anyChecked = document.querySelectorAll('#procListContainer .proc-item.checked-proc').length > 0;
+  $('accessModeNote').style.display = anyChecked ? '' : 'none';
+}
+
+function buildProcList(){
+  const container = $('procListContainer'); container.innerHTML = '';
+  const cats = [...new Set(DB.map(d=>d.cat))];
+  cats.forEach(cat=>{
+    const items = DB.filter(d=>d.cat===cat);
+    const div = document.createElement('div'); div.className='proc-group';
+    div.innerHTML = `<div class="proc-group-label">${cat}</div><div class="proc-list" id="pg-${cat.replace(/\s/g,'_')}"></div>`;
+    container.appendChild(div);
+    const grid = div.querySelector('.proc-list');
+    items.forEach(it=>{
+      const label = document.createElement('label');
+      label.className = 'proc-item'; label.dataset.proc = it.name;
+      label.innerHTML = `<input type="checkbox" value="${it.name}"> ${it.name}`;
+      label.addEventListener('click', function(e){
+        e.preventDefault();
+        const cb = this.querySelector('input');
+        cb.checked = !cb.checked;
+        this.classList.toggle('checked-proc', cb.checked);
+        updateAccessModeNote();
+      });
+      grid.appendChild(label);
+    });
+  });
+  updateAccessModeNote();
+}
+
+function selectAllProcs(val){
+  document.querySelectorAll('#procListContainer .proc-item').forEach(item=>{
+    item.querySelector('input').checked = val;
+    item.classList.toggle('checked-proc', val);
+  });
+  updateAccessModeNote();
+}
 
 async function saveUser(){
-  const id=$('editUserId').value;
-  const name=$('mName').value.trim();
-  const email=$('mUser').value.trim().toLowerCase();
-  const role=$('mRole').value;
-  if(!name||!email){alert('Fill name and email.');return;}
-  let deptAccess=[];
-  if(role==='Admin')deptAccess=['All'];
-  else{document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));if(!deptAccess.length){alert('Select at least one department.');return;}}
-  let processAccess=[];
-  document.querySelectorAll('#procList input:checked').forEach(cb=>processAccess.push(cb.value));
+  const id = $('editUserId').value;
+  const name = $('mName').value.trim();
+  const email = $('mUser').value.trim().toLowerCase();
+  const role = $('mRole').value;
+  if(!name || !email){ showToast('Please fill in name and email.', 'err'); return; }
+  if(!email.includes('@')){ showToast('Please enter a valid email address.', 'err'); return; }
+
+  let deptAccess = [];
+  let processAccess = [];
+  if(role === 'Admin'){
+    deptAccess = ['All'];
+  } else {
+    document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));
+    if(!deptAccess.length){ showToast('Select at least one department for this employee.', 'err'); return; }
+    document.querySelectorAll('#procListContainer .proc-item.checked-proc input').forEach(cb=>processAccess.push(cb.value));
+  }
+
+  const saveBtn = document.querySelector('.modal-foot .mbtn.pri');
+  const orig = saveBtn.innerHTML; saveBtn.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Saving...'; saveBtn.disabled=true;
   try{
     const docId = id || emailToId(email);
-    await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',docId),{name,email,role,deptAccess,processAccess},{merge:true});
-    if(!id){
-      alert('✅ Profile saved!\n\nNext step: Go to Firebase Console > Authentication > Add user with the SAME email ('+email+') and a password. Share credentials with the user — their access is already configured.');
-    }
-    closeModal();await loadUsers();
-  }catch(e){alert('Save failed: '+e.message);}
+    await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',docId), {name,email,role,deptAccess,processAccess}, {merge:true});
+    closeModal(); await loadUsers();
+    showToast(id ? 'User updated successfully.' : `Profile saved for ${email}`, 'ok');
+    if(!id) setTimeout(()=>alert(`✅ Profile saved!\n\nNext step:\nOpen Firebase Console → Authentication → Add user:\n• Email: ${email}\n• Set a password\n\nThen share login details with the user.`), 300);
+  }catch(e){ showToast('Save failed: '+e.message, 'err'); }
+  finally{ saveBtn.innerHTML=orig; saveBtn.disabled=false; }
 }
 
-async function deleteUserAct(id){
-  if(!confirm('Delete this user profile? (Their Firebase Auth account stays — delete that from Firebase Console separately.)'))return;
-  try{await window.fbFns.deleteDoc(window.fbFns.doc(window.fbDb,'users',id));await loadUsers();}
-  catch(e){alert('Delete failed: '+e.message);}
+async function deleteUserAct(id, name){
+  if(!confirm(`Delete profile for "${name}"?\n\nNote: Their Firebase Auth account stays active — you must remove it from Firebase Console separately.`)) return;
+  try{
+    await window.fbFns.deleteDoc(window.fbFns.doc(window.fbDb,'users',id));
+    await loadUsers();
+    showToast(`Profile deleted for ${name}.`, 'ok');
+  }catch(e){ showToast('Delete failed: '+e.message, 'err'); }
 }
 
-window.addEventListener('firebaseReady', () => {
-  $('loginForm').style.display='none';
-  $('loadingState').style.display='';
-  
-  window.fbFns.onAuth(window.fbAuth, async (fbUser) => {
+/* ====================== FIREBASE INIT ====================== */
+window.addEventListener('firebaseReady', ()=>{
+  $('loginForm').style.display = 'none';
+  $('loadingState').style.display = '';
+  window.fbFns.onAuth(window.fbAuth, async fbUser=>{
     if(fbUser){
       try{
         const profile = await loadProfile(fbUser);
         enterApp(profile);
       }catch(e){
-        console.error(e);
+        console.error('Profile error:', e);
         showLoginError('Profile load failed: '+e.message);
+        await window.fbFns.signOut(window.fbAuth);
         showLoginScreen();
       }
-    }else{
+    } else {
       showLoginScreen();
     }
   });
 });
 
-
-window.toggleSidebar=toggleSidebar;window.handleLogin=handleLogin;window.handleLogout=handleLogout;window.togglePwd=togglePwd;window.forgotPass=forgotPass;
-window.filterCat=filterCat;window.runFilter=runFilter;window.showAdmin=showAdmin;
-window.openModal=openModal;window.closeModal=closeModal;window.editUser=editUser;window.deleteUserAct=deleteUserAct;
-window.onRoleChange=onRoleChange;window.toggleChk=toggleChk;window.saveUser=saveUser;
+/* ====================== GLOBAL EXPORTS ====================== */
+window.toggleSidebar=toggleSidebar; window.handleLogin=handleLogin; window.handleLogout=handleLogout;
+window.togglePwd=togglePwd; window.forgotPass=forgotPass; window.filterCat=filterCat;
+window.runFilter=runFilter; window.showAdmin=showAdmin; window.openModal=openModal;
+window.closeModal=closeModal; window.editUser=editUser; window.deleteUserAct=deleteUserAct;
+window.onRoleChange=onRoleChange; window.saveUser=saveUser; window.selectAllProcs=selectAllProcs;
 </script>
 </body>
 </html>
