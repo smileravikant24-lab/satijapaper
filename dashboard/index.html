@@ -223,6 +223,31 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 }
 @media(max-width:400px){.login-card{padding:24px 16px}.actions{grid-template-columns:1fr}.header-bar{padding:10px 10px}}
 @media(hover:none){.menu-btn{padding:14px 24px}.btn{min-height:36px}.tbl-act{padding:9px 11px;font-size:15px}}
+
+/* ===== PROC ROW (link-level access) ===== */
+.proc-row{margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.15s}
+.proc-row:hover{border-color:#c5d5ef}
+.proc-row-header{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#f8fafc}
+.proc-master-cb{width:16px;height:16px;cursor:pointer;accent-color:var(--accent);flex-shrink:0}
+.proc-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.3;flex:1}
+.proc-link-row{display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px 10px 36px;background:#fff;border-top:1px solid var(--border)}
+.link-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:20px;font-size:10.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--text-2);transition:.15s;user-select:none;white-space:nowrap}
+.link-pill i{font-size:10px}
+.link-pill:hover{border-color:var(--accent);color:var(--accent)}
+.link-pill.link-checked{border-color:currentColor;background:currentColor;color:#fff!important}
+.link-pill.link-checked i,.link-pill.link-checked{filter:none}
+.link-pill.btn-fms.link-checked{background:#0052cc;border-color:#0052cc;color:#fff!important}
+.link-pill.btn-form.link-checked{background:#5b21b6;border-color:#5b21b6;color:#fff!important}
+.link-pill.btn-sheet.link-checked{background:#00795c;border-color:#00795c;color:#fff!important}
+.link-pill.btn-check.link-checked{background:#8a4500;border-color:#8a4500;color:#fff!important}
+.link-pill.btn-video.link-checked{background:#b91c1c;border-color:#b91c1c;color:#fff!important}
+.link-pill.btn-dash.link-checked{background:#0369a1;border-color:#0369a1;color:#fff!important}
+.link-pill.btn-admin.link-checked{background:#92400e;border-color:#92400e;color:#fff!important}
+.link-pill.btn-gp.link-checked{background:#5b21b6;border-color:#5b21b6;color:#fff!important}
+/* unchecked state colors */
+.link-pill.btn-fms{color:#0052cc}.link-pill.btn-form{color:#5b21b6}.link-pill.btn-sheet{color:#00795c}
+.link-pill.btn-check{color:#8a4500}.link-pill.btn-video{color:#b91c1c}.link-pill.btn-dash{color:#0369a1}
+.link-pill.btn-admin{color:#92400e}.link-pill.btn-gp{color:#5b21b6}
 </style>
 </head>
 <body>
@@ -360,7 +385,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
       <div id="accessSection">
         <hr class="section-divider">
-        <div class="proc-section-head"><i class="fas fa-building"></i> Department Access</div>
+        <div class="proc-section-head"><i class="fas fa-building"></i> Department Access <span style="font-weight:400;color:var(--text-3);font-size:11px">(used when no individual processes are selected)</span></div>
         <div class="mf" id="deptField">
           <div class="chk-group" id="deptChks">
             <label class="chk-pill" data-val="All"><input type="checkbox" value="All"> <i class="fas fa-layer-group" style="font-size:11px;opacity:.7"></i> All Depts</label>
@@ -373,11 +398,15 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         </div>
 
         <hr class="section-divider">
-        <div class="proc-section-head"><i class="fas fa-sliders"></i> Individual Process Access <span style="font-weight:400;color:var(--text-3);font-size:11px">(optional — overrides dept)</span></div>
-        <div class="access-mode-note" id="accessModeNote" style="display:none"><i class="fas fa-info-circle"></i> When individual processes are selected, <strong>only those processes</strong> are accessible (dept access is still required).</div>
+        <div class="proc-section-head"><i class="fas fa-sliders"></i> Individual Process &amp; Link Access
+          <span style="font-weight:400;color:var(--text-3);font-size:11px">(optional — overrides dept; cross-dept access allowed)</span>
+        </div>
+        <div class="access-mode-note" id="accessModeNote" style="display:none">
+          <i class="fas fa-info-circle"></i> Individual processes selected — user can <strong>only</strong> access those listed (dept above is ignored). For each process, choose which links are allowed.
+        </div>
         <div id="procField">
           <div class="proc-sel-actions">
-            <button class="proc-sel-btn" onclick="selectAllProcs(true)"><i class="fas fa-check-double"></i> Select All</button>
+            <button class="proc-sel-btn" onclick="selectAllProcs(true)"><i class="fas fa-check-double"></i> Select All Processes</button>
             <button class="proc-sel-btn" onclick="selectAllProcs(false)"><i class="fas fa-xmark"></i> Clear All</button>
           </div>
           <div id="procListContainer"></div>
@@ -530,7 +559,8 @@ async function loadProfile(fbUser){
       name: d.name || fbUser.email.split('@')[0],
       role: d.role || 'Employee',
       deptAccess: Array.isArray(d.deptAccess) ? d.deptAccess : [],
-      processAccess: Array.isArray(d.processAccess) ? d.processAccess : []
+      processAccess: Array.isArray(d.processAccess) ? d.processAccess : [],
+      linkAccess: (d.linkAccess && typeof d.linkAccess === 'object') ? d.linkAccess : {}
     };
   }
   // Auto-create for first login
@@ -569,35 +599,50 @@ function showLoginScreen(){
 
 /* ====================== ACCESS CONTROL ====================== */
 /**
- * RBAC Logic:
- * Admin: full access to everything including Help Ticket sheet (all users visible)
- * Employee with "All" dept: access to all dept cards
- * Employee with specific depts: access to those dept cards only
- * processAccess (individual): if non-empty, user can ONLY access those specific processes
- *   (within their allowed departments). If empty, all processes in allowed depts are accessible.
- * Support/Help Ticket: always visible to all logged-in users (form side).
- *   The "sheet" link in Help Ticket is only visible to Admins (so they see all tickets).
+ * RBAC Logic (v2):
+ * Admin: full access to everything.
+ * Employee:
+ *   - deptAccess: which departments they can see ("All" = all depts)
+ *   - processAccess: array of process names explicitly allowed.
+ *     • If processAccess is NON-EMPTY → user can ONLY access those listed processes,
+ *       and the dept restriction is BYPASSED for those processes (e.g. Pooja can access
+ *       "Attendances Sheet" in HR even if her dept is only Sales — because it's explicitly listed).
+ *     • If processAccess is EMPTY → user can access ALL processes within their deptAccess.
+ *   - linkAccess: object { "ProcessName": ["form","sheet","fms",...] } — if set, only those
+ *     link types are clickable for that process. If not set, all links of that process are accessible.
+ * Support & My System cards: always visible to all employees (form link). Sheet in Help Ticket
+ *   is admin-only.
  */
 
 function hasDeptAccess(u, cat){
   if(!u) return false;
   if(u.role === 'Admin') return true;
   if(u.deptAccess.includes('All')) return true;
-  // Support and My System are always visible to all employees
   if(cat === 'Support' || cat === 'My System') return true;
   return u.deptAccess.includes(cat);
 }
 
-function hasProcAccess(u, procName){
+function canAccessProc(u, item){
   if(!u) return false;
   if(u.role === 'Admin') return true;
-  // If no specific process list, allow all within dept
-  if(!u.processAccess || u.processAccess.length === 0) return true;
-  return u.processAccess.includes(procName);
+  const hasExplicitList = u.processAccess && u.processAccess.length > 0;
+  if(hasExplicitList){
+    // Explicit list: bypass dept check, only check if process is in the list
+    return u.processAccess.includes(item.name);
+  }
+  // No explicit list: fall back to dept access
+  return hasDeptAccess(u, item.cat);
 }
 
-function canAccessProc(u, item){
-  return hasDeptAccess(u, item.cat) && hasProcAccess(u, item.name);
+function canAccessLink(u, procName, linkType){
+  if(!u) return false;
+  if(u.role === 'Admin') return true;
+  if(!canAccessProc(u, {name:procName, cat:''})) return false;
+  // Check granular link-level access
+  if(u.linkAccess && u.linkAccess[procName] && u.linkAccess[procName].length > 0){
+    return u.linkAccess[procName].includes(linkType);
+  }
+  return true; // no link-level restriction → all links accessible
 }
 
 /* ====================== COUNTS ====================== */
@@ -617,43 +662,46 @@ function renderCards(data){
     return;
   }
   data.forEach((it, i) => {
-    const ok = canAccessProc(curUser, it);
+    const procOk = canAccessProc(curUser, it);
     const isAdmin = curUser && curUser.role === 'Admin';
     const cc = it.cat === 'My System' ? 'My' : it.cat;
 
-    // For Help Ticket: employees see form only; sheet is admin-only
-    const buildBtn = (url, cls, ico, lbl, adminOnly=false) => {
+    const buildBtn = (url, linkType, cls, ico, lbl, adminOnly=false) => {
       if(!url) return '';
-      const blocked = adminOnly && !isAdmin;
-      if(blocked) return ''; // hide admin-only links from employees
-      if(!ok) return `<a href="#" class="btn ${cls} disabled-link"><i class="${ico}"></i> ${lbl}<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span></a>`;
+      if(adminOnly && !isAdmin) return '';
+      if(!procOk){
+        return `<a href="#" class="btn ${cls} disabled-link"><i class="${ico}"></i> ${lbl}<span class="lock-badge"><i class="fas fa-lock"></i> Locked</span></a>`;
+      }
+      const linkOk = canAccessLink(curUser, it.name, linkType);
+      if(!linkOk){
+        return `<a href="#" class="btn ${cls} disabled-link" title="No access to this link"><i class="${ico}"></i> ${lbl}<span class="lock-badge"><i class="fas fa-lock"></i></span></a>`;
+      }
       return `<a href="${url}" target="_blank" rel="noopener" class="btn ${cls}"><i class="${ico}"></i> ${lbl}</a>`;
     };
 
     let btns = '';
-    btns += buildBtn(it.links.fms, 'btn-fms', 'fas fa-table-cells', 'FMS');
-    btns += buildBtn(it.links.form, 'btn-form', 'fab fa-google-drive', 'Form');
-    // Help Ticket sheet: admin-only
+    btns += buildBtn(it.links.fms,      'fms',      'btn-fms',   'fas fa-table-cells',     'FMS');
+    btns += buildBtn(it.links.form,     'form',     'btn-form',  'fab fa-google-drive',    'Form');
     if(it.name === 'Help Ticket'){
-      btns += buildBtn(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets', true);
+      btns += buildBtn(it.links.sheet,  'sheet',    'btn-sheet', 'fas fa-file-spreadsheet','All Tickets', true);
     } else {
-      btns += buildBtn(it.links.sheet, 'btn-sheet', 'fas fa-file-spreadsheet', 'Sheet');
+      btns += buildBtn(it.links.sheet,  'sheet',    'btn-sheet', 'fas fa-file-spreadsheet','Sheet');
     }
-    btns += buildBtn(it.links.check, 'btn-check', 'fas fa-square-check', 'Checklist');
-    btns += buildBtn(it.links.video, 'btn-video', 'fas fa-circle-play', 'Training');
-    btns += buildBtn(it.links.videoBCI, 'btn-video', 'fas fa-circle-play', 'Training (BCI)');
-    btns += buildBtn(it.links.dashEmp, 'btn-dash', 'fas fa-chart-pie', 'Emp Dashboard');
-    btns += buildBtn(it.links.dashPC, 'btn-dash', 'fas fa-chart-line', 'PC Dashboard');
-    btns += buildBtn(it.links.admin, 'btn-admin', 'fas fa-user-gear', 'Admin Panel');
-    btns += buildBtn(it.links.gpDash, 'btn-gp', 'fas fa-chart-column', 'GP Dashboard');
+    btns += buildBtn(it.links.check,    'check',    'btn-check', 'fas fa-square-check',    'Checklist');
+    btns += buildBtn(it.links.video,    'video',    'btn-video', 'fas fa-circle-play',     'Training');
+    btns += buildBtn(it.links.videoBCI, 'videoBCI', 'btn-video', 'fas fa-circle-play',     'Training (BCI)');
+    btns += buildBtn(it.links.dashEmp,  'dashEmp',  'btn-dash',  'fas fa-chart-pie',       'Emp Dashboard');
+    btns += buildBtn(it.links.dashPC,   'dashPC',   'btn-dash',  'fas fa-chart-line',      'PC Dashboard');
+    btns += buildBtn(it.links.admin,    'admin',    'btn-admin', 'fas fa-user-gear',       'Admin Panel');
+    btns += buildBtn(it.links.gpDash,   'gpDash',   'btn-gp',    'fas fa-chart-column',    'GP Dashboard');
     if(!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
 
     let badges = '';
-    if(it.pc&&it.pc!=='-') badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
+    if(it.pc&&it.pc!=='-')     badges+=`<div class="role-g"><span class="role-l">PC/EA</span><span class="badge b-pc"><i class="fas fa-shield-halved"></i>${it.pc}</span></div>`;
     if(it.solver&&it.solver!=='-') badges+=`<div class="role-g"><span class="role-l">Solver</span><span class="badge b-sv"><i class="fas fa-wrench"></i>${it.solver}</span></div>`;
     if(it.exec&&it.exec!=='-') badges+=`<div class="role-g"><span class="role-l">Executive</span><span class="badge b-ex"><i class="fas fa-user-tie"></i>${it.exec}</span></div>`;
 
-    b.innerHTML += `<div class="card cat-${cc}${!ok?' locked-card':''}" style="animation-delay:${i*.03}s">
+    b.innerHTML += `<div class="card cat-${cc}${!procOk?' locked-card':''}" style="animation-delay:${i*.03}s">
       <span class="card-tag tag-${cc}">${it.cat}</span>
       <h3>${it.name}</h3>
       ${badges?`<div class="people">${badges}</div>`:''}
@@ -714,7 +762,7 @@ async function loadUsers(){
     cachedUsers = [];
     snap.forEach(d=>{
       const x = d.data();
-      cachedUsers.push({ id:d.id, email:x.email||'', name:x.name||'', role:x.role||'Employee', deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[], processAccess:Array.isArray(x.processAccess)?x.processAccess:[] });
+      cachedUsers.push({ id:d.id, email:x.email||'', name:x.name||'', role:x.role||'Employee', deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[], processAccess:Array.isArray(x.processAccess)?x.processAccess:[], linkAccess:(x.linkAccess&&typeof x.linkAccess==='object')?x.linkAccess:{} });
     });
     cachedUsers.sort((a,b)=>a.name.localeCompare(b.name));
     renderTable();
@@ -730,7 +778,11 @@ function renderTable(){
     if(u.role==='Admin'){
       procHtml = '<span style="font-size:10px;color:var(--text-3)">Full access</span>';
     } else if(u.processAccess && u.processAccess.length){
-      procHtml = u.processAccess.map(p=>`<span class="proc-badge">${p}</span>`).join('');
+      procHtml = u.processAccess.map(p=>{
+        const la = u.linkAccess && u.linkAccess[p];
+        const linkInfo = la && la.length ? ` <span style="font-size:9px;color:#0369a1;font-weight:600">[${la.join(',')}]</span>` : '';
+        return `<span class="proc-badge">${p}${linkInfo}</span>`;
+      }).join('');
     } else {
       procHtml = '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
     }
@@ -755,17 +807,22 @@ function openModal(uid){
   $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
   $('modalTitle').textContent = 'Add User Profile';
   document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ p.classList.remove('checked'); p.querySelector('input').checked=false; });
-  buildProcList();
+  // Will be called after checking user
   if(uid){
     const u = cachedUsers.find(x=>x.id===uid);
     if(u){
       $('editUserId').value = u.id; $('mName').value = u.name; $('mUser').value = u.email; $('mRole').value = u.role;
       $('modalTitle').textContent = 'Edit User Profile';
       document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ if(u.deptAccess.includes(p.dataset.val)){ p.classList.add('checked'); p.querySelector('input').checked=true; }});
-      if(u.processAccess && u.processAccess.length){
-        document.querySelectorAll('#procListContainer .proc-item').forEach(item=>{ if(u.processAccess.includes(item.dataset.proc)){ item.classList.add('checked-proc'); item.querySelector('input').checked=true; }});
-      }
+      // Build proc list with existing access. __procs__ = which procs are enabled.
+      const la = u.linkAccess || {};
+      la['__procs__'] = u.processAccess || [];
+      buildProcList(la);
+    } else {
+      buildProcList();
     }
+  } else {
+    buildProcList();
   }
   onRoleChange();
   $('userModal').classList.add('show');
@@ -797,40 +854,100 @@ document.querySelectorAll('#deptChks .chk-pill').forEach(pill=>{
 });
 
 function updateAccessModeNote(){
-  const anyChecked = document.querySelectorAll('#procListContainer .proc-item.checked-proc').length > 0;
+  const anyChecked = document.querySelectorAll('#procListContainer .proc-master-cb:checked').length > 0;
   $('accessModeNote').style.display = anyChecked ? '' : 'none';
 }
 
-function buildProcList(){
+/* Link types that can appear per process */
+const LINK_META = {
+  fms:      {label:'FMS',           icon:'fas fa-table-cells',     cls:'btn-fms'},
+  form:     {label:'Form',          icon:'fab fa-google-drive',    cls:'btn-form'},
+  sheet:    {label:'Sheet',         icon:'fas fa-file-spreadsheet',cls:'btn-sheet'},
+  check:    {label:'Checklist',     icon:'fas fa-square-check',    cls:'btn-check'},
+  video:    {label:'Training',      icon:'fas fa-circle-play',     cls:'btn-video'},
+  videoBCI: {label:'Training(BCI)', icon:'fas fa-circle-play',     cls:'btn-video'},
+  dashEmp:  {label:'Emp Dashboard', icon:'fas fa-chart-pie',       cls:'btn-dash'},
+  dashPC:   {label:'PC Dashboard',  icon:'fas fa-chart-line',      cls:'btn-dash'},
+  admin:    {label:'Admin Panel',   icon:'fas fa-user-gear',       cls:'btn-admin'},
+  gpDash:   {label:'GP Dashboard',  icon:'fas fa-chart-column',    cls:'btn-gp'},
+};
+
+function getAvailableLinks(it){
+  return Object.keys(LINK_META).filter(k => !!it.links[k]);
+}
+
+function buildProcList(existingLinkAccess){
+  existingLinkAccess = existingLinkAccess || {};
   const container = $('procListContainer'); container.innerHTML = '';
   const cats = [...new Set(DB.map(d=>d.cat))];
   cats.forEach(cat=>{
     const items = DB.filter(d=>d.cat===cat);
-    const div = document.createElement('div'); div.className='proc-group';
-    div.innerHTML = `<div class="proc-group-label">${cat}</div><div class="proc-list" id="pg-${cat.replace(/\s/g,'_')}"></div>`;
-    container.appendChild(div);
-    const grid = div.querySelector('.proc-list');
+    const grpDiv = document.createElement('div'); grpDiv.className='proc-group';
+    const grpLabel = document.createElement('div'); grpLabel.className='proc-group-label';
+    grpLabel.textContent = cat;
+    grpDiv.appendChild(grpLabel);
+    container.appendChild(grpDiv);
+
     items.forEach(it=>{
-      const label = document.createElement('label');
-      label.className = 'proc-item'; label.dataset.proc = it.name;
-      label.innerHTML = `<input type="checkbox" value="${it.name}"> ${it.name}`;
-      label.addEventListener('click', function(e){
-        e.preventDefault();
-        const cb = this.querySelector('input');
-        cb.checked = !cb.checked;
-        this.classList.toggle('checked-proc', cb.checked);
-        updateAccessModeNote();
-      });
-      grid.appendChild(label);
+      const availLinks = getAvailableLinks(it);
+      const procRow = document.createElement('div'); procRow.className='proc-row';
+      // Process toggle header
+      const procHeader = document.createElement('div'); procHeader.className='proc-row-header';
+      const procCb = document.createElement('input'); procCb.type='checkbox'; procCb.className='proc-master-cb'; procCb.value=it.name;
+      // Pre-check if in existing processAccess
+      const isChecked = existingLinkAccess['__procs__'] && existingLinkAccess['__procs__'].includes(it.name);
+      if(isChecked) procCb.checked = true;
+      const procLabel = document.createElement('span'); procLabel.className='proc-name'; procLabel.textContent=it.name;
+      procHeader.appendChild(procCb); procHeader.appendChild(procLabel);
+      procRow.appendChild(procHeader);
+
+      // Link pills (only shown when process is checked)
+      if(availLinks.length > 0){
+        const linkRow = document.createElement('div'); linkRow.className='proc-link-row'; linkRow.style.display=isChecked?'flex':'none';
+        const existingLinks = existingLinkAccess[it.name] || [];
+        availLinks.forEach(lk=>{
+          const m = LINK_META[lk];
+          const pill = document.createElement('label'); pill.className=`link-pill ${m.cls}`;
+          if(!existingLinks.length || existingLinks.includes(lk)) pill.classList.add('link-checked');
+          const cb = document.createElement('input'); cb.type='checkbox'; cb.dataset.proc=it.name; cb.dataset.link=lk; cb.style.display='none';
+          cb.checked = (!existingLinks.length || existingLinks.includes(lk));
+          const ic = document.createElement('i'); ic.className=m.icon;
+          const txt = document.createTextNode(' '+m.label);
+          pill.appendChild(cb); pill.appendChild(ic); pill.appendChild(txt);
+          pill.addEventListener('click', e=>{
+            e.preventDefault();
+            cb.checked = !cb.checked;
+            pill.classList.toggle('link-checked', cb.checked);
+          });
+          linkRow.appendChild(pill);
+        });
+        procRow.appendChild(linkRow);
+
+        procCb.addEventListener('change', ()=>{
+          linkRow.style.display = procCb.checked ? 'flex' : 'none';
+          if(procCb.checked){
+            // default: check all links when process is enabled
+            linkRow.querySelectorAll('label.link-pill').forEach(p=>{ p.querySelector('input').checked=true; p.classList.add('link-checked'); });
+          }
+          updateAccessModeNote();
+        });
+      } else {
+        procCb.addEventListener('change', ()=> updateAccessModeNote());
+      }
+      grpDiv.appendChild(procRow);
     });
   });
   updateAccessModeNote();
 }
 
 function selectAllProcs(val){
-  document.querySelectorAll('#procListContainer .proc-item').forEach(item=>{
-    item.querySelector('input').checked = val;
-    item.classList.toggle('checked-proc', val);
+  document.querySelectorAll('#procListContainer .proc-master-cb').forEach(cb=>{
+    cb.checked = val;
+    const linkRow = cb.closest('.proc-row').querySelector('.proc-link-row');
+    if(linkRow){
+      linkRow.style.display = val ? 'flex' : 'none';
+      if(val) linkRow.querySelectorAll('label.link-pill').forEach(p=>{ p.querySelector('input').checked=true; p.classList.add('link-checked'); });
+    }
   });
   updateAccessModeNote();
 }
@@ -850,14 +967,29 @@ async function saveUser(){
   } else {
     document.querySelectorAll('#deptChks .chk-pill.checked').forEach(p=>deptAccess.push(p.dataset.val));
     if(!deptAccess.length){ showToast('Select at least one department for this employee.', 'err'); return; }
-    document.querySelectorAll('#procListContainer .proc-item.checked-proc input').forEach(cb=>processAccess.push(cb.value));
+    let linkAccess = {};
+    document.querySelectorAll('#procListContainer .proc-master-cb:checked').forEach(cb=>{
+      const pName = cb.value;
+      processAccess.push(pName);
+      const linkRow = cb.closest('.proc-row').querySelector('.proc-link-row');
+      if(linkRow){
+        const checkedLinks = [];
+        linkRow.querySelectorAll('input[data-link]:checked').forEach(lcb=>checkedLinks.push(lcb.dataset.link));
+        const allLinks = linkRow.querySelectorAll('input[data-link]').length;
+        // If all links checked, don't store (means all access) — store only if partial
+        if(checkedLinks.length < allLinks && checkedLinks.length > 0){
+          linkAccess[pName] = checkedLinks;
+        }
+      }
+    });
+    if(Object.keys(linkAccess).length === 0) linkAccess = {};
   }
 
   const saveBtn = document.querySelector('.modal-foot .mbtn.pri');
   const orig = saveBtn.innerHTML; saveBtn.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Saving...'; saveBtn.disabled=true;
   try{
     const docId = id || emailToId(email);
-    await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',docId), {name,email,role,deptAccess,processAccess}, {merge:true});
+    await window.fbFns.setDoc(window.fbFns.doc(window.fbDb,'users',docId), {name,email,role,deptAccess,processAccess,linkAccess}, {merge:true});
     closeModal(); await loadUsers();
     showToast(id ? 'User updated successfully.' : `Profile saved for ${email}`, 'ok');
     if(!id) setTimeout(()=>alert(`✅ Profile saved!\n\nNext step:\nOpen Firebase Console → Authentication → Add user:\n• Email: ${email}\n• Set a password\n\nThen share login details with the user.`), 300);
