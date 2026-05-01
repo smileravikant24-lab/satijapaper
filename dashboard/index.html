@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,7 +19,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
 
-/* ===== LOGIN ===== */
 .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0e1e38 55%,#050d1a)}
 .login-overlay.hidden{display:none}
 .login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 35%,rgba(0,102,255,.1),transparent 55%),radial-gradient(ellipse at 80% 65%,rgba(124,58,237,.07),transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(0,196,140,.05),transparent 40%)}
@@ -51,12 +49,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .loading-state{text-align:center;color:#fff;padding:40px}
 .spinner{display:inline-block;width:38px;height:38px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== APP ===== */
 .app-container{display:none;height:100vh}
 .app-container.visible{display:flex}
-
-/* ===== SIDEBAR ===== */
 .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease)}
 .sidebar::-webkit-scrollbar{width:0}
 .brand-box{padding:26px 22px 20px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px}
@@ -77,8 +71,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sidebar-urole{font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
 .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:7px;border-radius:8px;transition:.2s;flex-shrink:0}
 .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.1)}
-
-/* ===== MAIN ===== */
 .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
 .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:12px}
 .page-title{font-size:19px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -87,8 +79,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;pointer-events:none}
 .content{padding:22px 28px 60px;flex:1}
-
-/* ===== CARDS ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
 .card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.22s var(--ease);animation:fadeUp .38s var(--ease) both;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -99,11 +89,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .card.cat-Finance::before{background:linear-gradient(90deg,#ff4757,#ff8a96)}
 .card.cat-Support::before{background:linear-gradient(90deg,#06b6d4,#67e8f9)}
 .card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
+.card.cat-Family::before{background:linear-gradient(90deg,#ec4899,#f9a8d4)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m)}
-/* locked-card removed — inaccessible cards are now hidden entirely */
 .card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px}
-.tag-Sales{background:#e8f0ff;color:#0052cc}.tag-Purchase{background:#e6faf3;color:#00795c}.tag-Management{background:#fff5e0;color:#8a5d00}.tag-HR{background:#f3e8ff;color:#5b21b6}.tag-Finance{background:#ffe8ea;color:#c41432}.tag-Support{background:#e0f7fa;color:#0277bd}.tag-My{background:#f0e6ff;color:#6d28d9}
+.tag-Sales{background:#e8f0ff;color:#0052cc}.tag-Purchase{background:#e6faf3;color:#00795c}.tag-Management{background:#fff5e0;color:#8a5d00}.tag-HR{background:#f3e8ff;color:#5b21b6}.tag-Finance{background:#ffe8ea;color:#c41432}.tag-Support{background:#e0f7fa;color:#0277bd}.tag-My{background:#f0e6ff;color:#6d28d9}.tag-Family{background:#fce7f3;color:#9d174d}
 .card h3{font-size:15px;font-weight:800;margin-bottom:12px;line-height:1.3}
 .people{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .role-g{display:flex;flex-direction:column;gap:2px}
@@ -116,14 +106,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:auto}
 .btn{text-decoration:none;padding:7px 6px;border-radius:8px;font-size:11px;text-align:center;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;transition:.2s var(--ease);font-family:inherit;position:relative;cursor:pointer;border:none}
 .btn:not(.disabled-link):hover{filter:brightness(.9);transform:translateY(-1px)}
-.btn-fms{background:#e8f0ff;color:#0052cc}.btn-form{background:#f3e8ff;color:#5b21b6}.btn-sheet{background:#e6faf3;color:#00795c}.btn-check{background:#fff0e0;color:#8a4500}.btn-video{background:#ffe8ea;color:#b91c1c}.btn-dash{background:#e0f2fe;color:#0369a1}.btn-admin{background:#fef3c7;color:#92400e}.btn-gp{background:#ede9fe;color:#5b21b6}
+.btn-fms{background:#e8f0ff;color:#0052cc}.btn-form{background:#f3e8ff;color:#5b21b6}.btn-sheet{background:#e6faf3;color:#00795c}.btn-check{background:#fff0e0;color:#8a4500}.btn-video{background:#ffe8ea;color:#b91c1c}.btn-dash{background:#e0f2fe;color:#0369a1}.btn-admin{background:#fef3c7;color:#92400e}.btn-gp{background:#ede9fe;color:#5b21b6}.btn-folder{background:#fce7f3;color:#9d174d}
 .btn.disabled-link{opacity:.35;pointer-events:none;cursor:not-allowed}
 .lock-badge{position:absolute;inset:0;background:rgba(15,29,46,.82);color:#fff;font-size:9px;padding:2px 8px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:4px;font-weight:700;letter-spacing:.3px}
 .empty-state{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-3)}
 .empty-state i{font-size:36px;margin-bottom:12px;display:block;opacity:.4}
 .empty-state p{font-size:14px;font-weight:600}
-
-/* ===== ADMIN PANEL ===== */
 .admin-panel{display:none}.admin-panel.visible{display:block}
 .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .admin-top h3{font-size:18px;font-weight:800}
@@ -144,8 +132,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tbl-act:hover{background:var(--bg)}
 .tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
 .proc-badge{display:inline-block;font-size:9.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);padding:2px 6px;border-radius:5px;margin:1px}
-
-/* ===== MODAL ===== */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal-box{background:#fff;border-radius:18px;width:520px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .28s var(--ease)}
@@ -181,20 +167,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mbtn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.15s}
 .mbtn.sec{background:var(--bg);color:var(--text-2)}.mbtn.sec:hover{background:#e2e8f0}
 .mbtn.pri{background:var(--accent);color:#fff}.mbtn.pri:hover{background:#0052cc}
-
-/* Info box */
 .info-box{background:#fff8e8;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12.5px;margin-bottom:18px;line-height:1.6}
 .info-box a{color:#8a5d00;font-weight:700}
-
-/* Mobile */
 .mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:21px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:4px;flex-shrink:0}
 .mobile-menu-btn:hover{background:var(--bg)}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:998;backdrop-filter:blur(2px)}
 .sidebar-overlay.show{display:block;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .access-mode-note{background:rgba(0,102,255,.07);border:1px solid rgba(0,102,255,.15);color:#0052cc;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
-
-/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0c1a2b;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:.35s var(--ease);white-space:nowrap;box-shadow:var(--shadow-l)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-left:3px solid var(--ok)}.toast.err{border-left:3px solid var(--danger)}.toast.info{border-left:3px solid var(--accent)}
@@ -224,8 +204,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 }
 @media(max-width:400px){.login-card{padding:24px 16px}.actions{grid-template-columns:1fr}.header-bar{padding:10px 10px}}
 @media(hover:none){.menu-btn{padding:14px 24px}.btn{min-height:36px}.tbl-act{padding:9px 11px;font-size:15px}}
-
-/* ===== PROC ROW (link-level access) ===== */
 .proc-row{margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.15s}
 .proc-row:hover{border-color:#c5d5ef}
 .proc-row-header{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#f8fafc}
@@ -245,7 +223,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .link-pill.btn-dash.link-checked{background:#0369a1;border-color:#0369a1;color:#fff!important}
 .link-pill.btn-admin.link-checked{background:#92400e;border-color:#92400e;color:#fff!important}
 .link-pill.btn-gp.link-checked{background:#5b21b6;border-color:#5b21b6;color:#fff!important}
-/* unchecked state colors */
 .link-pill.btn-fms{color:#0052cc}.link-pill.btn-form{color:#5b21b6}.link-pill.btn-sheet{color:#00795c}
 .link-pill.btn-check{color:#8a4500}.link-pill.btn-video{color:#b91c1c}.link-pill.btn-dash{color:#0369a1}
 .link-pill.btn-admin{color:#92400e}.link-pill.btn-gp{color:#5b21b6}
@@ -313,6 +290,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <div class="sidebar-label" id="mySystemLabel">My System</div>
     <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help &amp; Support <span class="count-badge" id="cntSupport">0</span></button>
     <button class="menu-btn" id="navMy" onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
+    <button class="menu-btn" id="navFamily" onclick="filterCat('Family',this)" style="display:none"><i class="fas fa-house-heart"></i> Family Documents <span class="count-badge" id="cntFamily">0</span></button>
     <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
     <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
     <div class="sidebar-user">
@@ -426,7 +404,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-// Firebase Functions SDK not needed — using fetch directly
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxt4HtZm03WQzQD7mMNOyIQr-KxAHBaO8",
@@ -449,7 +427,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
 <script>
-/* ====================== DATA ====================== */
+
 const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
 
 const DB = [
@@ -487,17 +465,13 @@ const DB = [
   {cat:"Finance",    name:"Company Payment",                        pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
   {cat:"Finance",    name:"GP Sheet",                               pc:"-",              solver:"-",              exec:"-",                    links:{sheet:1,gpDash:1}},
   {cat:"Finance",    name:"Daily Expense",                          pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Family",     name:"Satija Family Documents",                pc:"-",              solver:"-",              exec:"-",                    links:{folder:1}},
 ];
-// NOTE: links object now only has keys (value=1 = link exists).
-// Actual URLs are stored ONLY in Firestore → fetched via Cloud Function at click time.
-
-/* ====================== STATE ====================== */
 
 
 let curUser = null, curCat = 'All', cachedUsers = [];
 const $ = id => document.getElementById(id);
 
-/* ====================== TOAST ====================== */
 let toastTimer;
 function showToast(msg, type='info'){
   const t = $('toast'); t.textContent = msg;
@@ -550,7 +524,6 @@ async function handleLogout(){
 }
 document.addEventListener('keydown', e=>{ if(e.key==='Enter' && !$('loginOverlay').classList.contains('hidden')) handleLogin(); });
 
-/* ====================== PROFILE ====================== */
 function emailToId(email){ return email.toLowerCase().replace(/[^a-z0-9]/g,'_'); }
 
 async function loadProfile(fbUser){
@@ -576,7 +549,7 @@ async function loadProfile(fbUser){
   return { id:emailId, ...profile };
 }
 
-/* ====================== APP ENTRY ====================== */
+
 function enterApp(user){
   curUser = user;
   $('loginOverlay').classList.add('hidden');
@@ -589,8 +562,7 @@ function enterApp(user){
   $('adminNavBtn').style.display = isA ? '' : 'none';
   updateCounts(); // compute accessible counts first
 
-  // Auto-select the most relevant tab for this user
-  // If employee has access to exactly 1 dept category, go straight there
+
   const accessibleTabs = ['Sales','Purchase','Management','HR','Finance','Support','My System']
     .filter(cat => {
       const count = DB.filter(d => canAccessProc(curUser, d) && d.cat === cat).length;
@@ -623,26 +595,10 @@ function showLoginScreen(){
   setLoginLoading(false); clearLoginMessages();
 }
 
-/* ====================== ACCESS CONTROL ====================== */
-/**
- * RBAC Logic (v2):
- * Admin: full access to everything.
- * Employee:
- *   - deptAccess: which departments they can see ("All" = all depts)
- *   - processAccess: array of process names explicitly allowed.
- *     • If processAccess is NON-EMPTY → user can ONLY access those listed processes,
- *       and the dept restriction is BYPASSED for those processes (e.g. Pooja can access
- *       "Attendances Sheet" in HR even if her dept is only Sales — because it's explicitly listed).
- *     • If processAccess is EMPTY → user can access ALL processes within their deptAccess.
- *   - linkAccess: object { "ProcessName": ["form","sheet","fms",...] } — if set, only those
- *     link types are clickable for that process. If not set, all links of that process are accessible.
- * Support & My System cards: always visible to all employees (form link). Sheet in Help Ticket
- *   is admin-only.
- */
-
 function hasDeptAccess(u, cat){
   if(!u) return false;
   if(u.role === 'Admin') return true;
+  if(cat === 'Family') return false; // Family: only via explicit processAccess
   if(u.deptAccess.includes('All')) return true;
   if(cat === 'Support' || cat === 'My System') return true;
   return u.deptAccess.includes(cat);
@@ -671,13 +627,12 @@ function canAccessLink(u, procName, linkType){
   return true; // no link-level restriction → all links accessible
 }
 
-/* ====================== COUNTS ====================== */
 function updateCounts(){
   const isAdmin = curUser && curUser.role === 'Admin';
-  const c = {All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0};
+  const c = {All:0,Sales:0,Purchase:0,Management:0,HR:0,Finance:0,Support:0,'My System':0,Family:0};
   DB.forEach(d=>{ if(canAccessProc(curUser,d)){ c.All++; if(c[d.cat]!==undefined) c[d.cat]++; } });
 
-  // Map: cat key → {navId, cntId, labelId (if first in group)}
+
   const tabs = [
     {cat:'All',       nav:'navAll',        cnt:'cntAll'},
     {cat:'Sales',     nav:'navSales',      cnt:'cntSales'},
@@ -687,6 +642,7 @@ function updateCounts(){
     {cat:'Finance',   nav:'navFinance',    cnt:'cntFinance'},
     {cat:'Support',   nav:'navSupport',    cnt:'cntSupport'},
     {cat:'My System', nav:'navMy',         cnt:'cntMy'},
+    {cat:'Family',    nav:'navFamily',     cnt:'cntFamily'},
   ];
 
   // Navigation label visibility tracking
@@ -701,10 +657,12 @@ function updateCounts(){
     // Admins always see everything; employees only see tabs with accessible processes
     let visible;
     if(t.cat === 'All'){
-      // Show "All Processes" only if user has access to processes in 2+ different depts
       const accessibleDepts = ['Sales','Purchase','Management','HR','Finance','Support','My System']
         .filter(cat => (c[cat] ?? 0) > 0);
       visible = isAdmin || accessibleDepts.length >= 2;
+    } else if(t.cat === 'Family'){
+      // Family only visible if user has explicit access to Family process
+      visible = count > 0;
     } else {
       visible = isAdmin || count > 0;
     }
@@ -721,10 +679,7 @@ function updateCounts(){
   if(myLabel) myLabel.style.display = anyMyVisible ? '' : 'none';
 }
 
-/* ====================== SECURE URL RESOLVER ====================== */
-// URLs are NOT embedded in rendered HTML. They are stored in DB (source only).
-// When user clicks a button, we resolve the URL at click-time after re-checking access.
-// This prevents URLs from appearing in page source for unauthorized users.
+
 const FUNCTION_URL = 'https://asia-south1-sp-dashboard-1e9c8.cloudfunctions.net/getProcessUrl';
 
 async function secureOpen(procName, linkType){
@@ -767,7 +722,7 @@ async function secureOpen(procName, linkType){
   }
 }
 
-/* ====================== RENDER CARDS ====================== */
+
 function renderCards(data){
   const b = $('cardBox'); b.innerHTML = '';
   // Filter: only show cards the user can actually access
@@ -779,6 +734,7 @@ function renderCards(data){
   accessible.forEach((it, i) => {
     const isAdmin = curUser && curUser.role === 'Admin';
     const cc = it.cat === 'My System' ? 'My' : it.cat;
+    // Family category — only show if user has access
 
     // Build button — NO URL in href, uses secureOpen() onclick
     const buildBtn = (hasUrl, linkType, cls, ico, lbl, adminOnly=false) => {
@@ -805,6 +761,7 @@ function renderCards(data){
     btns += buildBtn(!!it.links.dashPC,   'dashPC',   'btn-dash',  'fas fa-chart-line',      'PC Dashboard');
     btns += buildBtn(!!it.links.admin,    'admin',    'btn-admin', 'fas fa-user-gear',       'Admin Panel');
     btns += buildBtn(!!it.links.gpDash,   'gpDash',   'btn-gp',    'fas fa-chart-column',    'GP Dashboard');
+    btns += buildBtn(!!it.links.folder,   'folder',   'btn-folder','fas fa-folder-open',     'View Folder');
     if(!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
 
     let badges = '';
@@ -821,7 +778,7 @@ function renderCards(data){
   });
 }
 
-/* ====================== NAV ====================== */
+
 function setActive(el){ document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('active')); if(el) el.classList.add('active'); }
 function toggleSidebar(){
   const sb=$('sidebar'), ov=$('sidebarOverlay');
@@ -829,7 +786,7 @@ function toggleSidebar(){
 }
 function closeSidebarMobile(){ if(window.innerWidth<=768){ $('sidebar').classList.remove('open'); $('sidebarOverlay').classList.remove('show'); } }
 
-const CAT_LABELS = {All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
+const CAT_LABELS = {All:'All Processes',Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site',Family:'Family Documents'};
 
 function filterCat(cat, el){
   closeSidebarMobile();
@@ -853,7 +810,7 @@ function runFilter(){
   renderCards(filtered);
 }
 
-/* ====================== ADMIN ====================== */
+
 async function showAdmin(el){
   if(!curUser || curUser.role !== 'Admin') return;
   closeSidebarMobile();
@@ -912,7 +869,7 @@ function renderTable(){
   });
 }
 
-/* ====================== MODAL ====================== */
+
 function openModal(uid){
   $('editUserId').value = '';
   $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
@@ -1118,7 +1075,7 @@ async function deleteUserAct(id, name){
   }catch(e){ showToast('Delete failed: '+e.message, 'err'); }
 }
 
-/* ====================== FIREBASE INIT ====================== */
+
 window.addEventListener('firebaseReady', ()=>{
   $('loginForm').style.display = 'none';
   $('loadingState').style.display = '';
@@ -1139,7 +1096,7 @@ window.addEventListener('firebaseReady', ()=>{
   });
 });
 
-/* ====================== GLOBAL EXPORTS ====================== */
+
 window.toggleSidebar=toggleSidebar; window.handleLogin=handleLogin; window.handleLogout=handleLogout;
 window.togglePwd=togglePwd; window.forgotPass=forgotPass; window.filterCat=filterCat;
 window.runFilter=runFilter; window.showAdmin=showAdmin; window.openModal=openModal;
