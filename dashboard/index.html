@@ -1,17 +1,18 @@
 <
-
+/* ====================== URL OBFUSCATION ====================== */
+// Encode all URLs in DB at startup so they are not readable in DevTools/source
 (function encodeDBUrls(){
   DB.forEach(item=>{
     const enc = {};
     Object.keys(item.links).forEach(k=>{
       enc[k] = btoa(unescape(encodeURIComponent(item.links[k])));
     });
-    item._links = item.links; 
-    item.links = enc;         
+    item._links = item.links; // keep original for internal use only
+    item.links = enc;         // replace with encoded version
   });
 })();
-
-
+ 
+// Decode a URL — only called inside secureOpen() after access check
 function _decodeUrl(encoded){
   try{ return decodeURIComponent(escape(atob(encoded))); }
   catch(e){ return null; }
