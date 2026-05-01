@@ -20,7 +20,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
 
-
+/* ===== LOGIN ===== */
 .login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0e1e38 55%,#050d1a)}
 .login-overlay.hidden{display:none}
 .login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 35%,rgba(0,102,255,.1),transparent 55%),radial-gradient(ellipse at 80% 65%,rgba(124,58,237,.07),transparent 50%),radial-gradient(ellipse at 50% 90%,rgba(0,196,140,.05),transparent 40%)}
@@ -51,8 +51,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .loading-state{text-align:center;color:#fff;padding:40px}
 .spinner{display:inline-block;width:38px;height:38px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== APP ===== */
 .app-container{display:none;height:100vh}
 .app-container.visible{display:flex}
+
+/* ===== SIDEBAR ===== */
 .sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease)}
 .sidebar::-webkit-scrollbar{width:0}
 .brand-box{padding:26px 22px 20px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px}
@@ -73,6 +77,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sidebar-urole{font-size:10px;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
 .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.25);cursor:pointer;font-size:16px;padding:7px;border-radius:8px;transition:.2s;flex-shrink:0}
 .sidebar-logout:hover{color:var(--danger);background:rgba(255,71,87,.1)}
+
+/* ===== MAIN ===== */
 .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
 .header-bar{display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);padding:14px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:12px}
 .page-title{font-size:19px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -81,6 +87,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
 .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:12px;pointer-events:none}
 .content{padding:22px 28px 60px;flex:1}
+
+/* ===== CARDS ===== */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
 .card{background:var(--bg-card);border-radius:var(--r);padding:20px;box-shadow:var(--shadow-s);border:1px solid var(--border);display:flex;flex-direction:column;transition:.22s var(--ease);animation:fadeUp .38s var(--ease) both;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -93,6 +101,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-m)}
+/* locked-card removed — inaccessible cards are now hidden entirely */
 .card-tag{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:6px;margin-bottom:10px}
 .tag-Sales{background:#e8f0ff;color:#0052cc}.tag-Purchase{background:#e6faf3;color:#00795c}.tag-Management{background:#fff5e0;color:#8a5d00}.tag-HR{background:#f3e8ff;color:#5b21b6}.tag-Finance{background:#ffe8ea;color:#c41432}.tag-Support{background:#e0f7fa;color:#0277bd}.tag-My{background:#f0e6ff;color:#6d28d9}
 .card h3{font-size:15px;font-weight:800;margin-bottom:12px;line-height:1.3}
@@ -113,6 +122,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .empty-state{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text-3)}
 .empty-state i{font-size:36px;margin-bottom:12px;display:block;opacity:.4}
 .empty-state p{font-size:14px;font-weight:600}
+
+/* ===== ADMIN PANEL ===== */
 .admin-panel{display:none}.admin-panel.visible{display:block}
 .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .admin-top h3{font-size:18px;font-weight:800}
@@ -133,6 +144,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tbl-act:hover{background:var(--bg)}
 .tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
 .proc-badge{display:inline-block;font-size:9.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);padding:2px 6px;border-radius:5px;margin:1px}
+
+/* ===== MODAL ===== */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal-box{background:#fff;border-radius:18px;width:520px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .28s var(--ease)}
@@ -168,17 +181,24 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .mbtn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;border:0;transition:.15s}
 .mbtn.sec{background:var(--bg);color:var(--text-2)}.mbtn.sec:hover{background:#e2e8f0}
 .mbtn.pri{background:var(--accent);color:#fff}.mbtn.pri:hover{background:#0052cc}
+
+/* Info box */
 .info-box{background:#fff8e8;border:1px solid #f5d68a;color:#8a5d00;padding:12px 16px;border-radius:10px;font-size:12.5px;margin-bottom:18px;line-height:1.6}
 .info-box a{color:#8a5d00;font-weight:700}
+
+/* Mobile */
 .mobile-menu-btn{display:none;background:transparent;border:0;color:var(--text);font-size:21px;cursor:pointer;padding:6px 10px;border-radius:8px;margin-right:4px;flex-shrink:0}
 .mobile-menu-btn:hover{background:var(--bg)}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:998;backdrop-filter:blur(2px)}
 .sidebar-overlay.show{display:block;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .access-mode-note{background:rgba(0,102,255,.07);border:1px solid rgba(0,102,255,.15);color:#0052cc;padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+
+/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0c1a2b;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:.35s var(--ease);white-space:nowrap;box-shadow:var(--shadow-l)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-left:3px solid var(--ok)}.toast.err{border-left:3px solid var(--danger)}.toast.info{border-left:3px solid var(--accent)}
+
 @media(max-width:1024px){:root{--sidebar-w:250px}.grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}.content{padding:18px 20px 60px}.header-bar{padding:12px 20px}.search-wrap{width:220px}}
 @media(max-width:768px){
   :root{--nav-font-size:14.5px}
@@ -205,6 +225,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 @media(max-width:400px){.login-card{padding:24px 16px}.actions{grid-template-columns:1fr}.header-bar{padding:10px 10px}}
 @media(hover:none){.menu-btn{padding:14px 24px}.btn{min-height:36px}.tbl-act{padding:9px 11px;font-size:15px}}
 
+/* ===== PROC ROW (link-level access) ===== */
 .proc-row{margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.15s}
 .proc-row:hover{border-color:#c5d5ef}
 .proc-row-header{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#f8fafc}
@@ -405,6 +426,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-functions.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxt4HtZm03WQzQD7mMNOyIQr-KxAHBaO8",
@@ -420,9 +442,11 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const functions = getFunctions(app, 'asia-south1');
 window.fbAuth = auth;
 window.fbDb = db;
-window.fbFns = { signIn: signInWithEmailAndPassword, signOut, onAuth: onAuthStateChanged, resetPass: sendPasswordResetEmail, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy };
+window.fbApp = functions;
+window.fbFns = { signIn: signInWithEmailAndPassword, signOut, onAuth: onAuthStateChanged, resetPass: sendPasswordResetEmail, doc, getDoc, setDoc, deleteDoc, collection, getDocs, query, orderBy, httpsCallable };
 window.dispatchEvent(new Event('firebaseReady'));
 </script>
 
@@ -431,62 +455,46 @@ window.dispatchEvent(new Event('firebaseReady'));
 const ADMIN_EMAIL_FALLBACK = "mis@satijapaper.com";
 
 const DB = [
-  {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1yq1zQy71b2X0DYU3FWeQKquWj4mBmxqF4067O-FW8RE/edit?gid=1264286419#gid=1264286419",form:"https://script.google.com/macros/s/AKfycbzjlijGXaELu2FYQZifc08hsEJk8fBBbuq7a7gnmifw6olnQS0hyzpIcXOVlC2k5Q4/exec",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
-  {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:"https://docs.google.com/spreadsheets/d/1pXEmkwPbw9MWmkv4pHpcd_SPd0ec0Pzh1jsHHfUcpq4/edit?usp=sharing"}},
-  {cat:"Sales",name:"Double A Order Form",pc:"-",solver:"-",exec:"Mukesh",links:{form:"https://script.google.com/macros/s/AKfycby6egRY9Iwv8VZbkApHOfzTQJGuohimxqz08QuJ1La3kO1pC1XNAK8CYiEeKxgoWci-/exec",sheet:"https://docs.google.com/spreadsheets/d/1SoeYZrERSmUEiaLyIOh0aMduacbeAnVTrkif2RJfcPs/edit?usp=sharing"}},
-  {cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:"https://forms.gle/ufmi4wL7CGjXPcxg8",sheet:"https://docs.google.com/spreadsheets/d/1wZGQ7IgaOzEPzcf_PLLinVgZc7UDtAubgEsjh-tVVUk/edit?usp=sharing"}},
-  {cat:"Sales",name:"Next Week Marketing Plan",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby9-yG6xp-FwYgHJKaGFCHfggOKLnJfteM7m3q1PXDUwN5fXuwtAfCkrTUNXtT6_K-c/exec",sheet:"https://docs.google.com/spreadsheets/d/1JHimWmLl3LWJrqTAJ1HhItTk21KvNd99vsNIta2i7mM/edit?gid=1906678901#gid=1906678901"}},
-  {cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:"https://forms.gle/simx8cyQQBD5x4aj8",sheet:"https://docs.google.com/spreadsheets/d/1J0iqWAHLvAPrHMfKXGQRZmVhv7Y_N1bI_nJvVhkPlM4/edit?usp=sharing"}},
-  {cat:"Sales",name:"DA Distributor Checklist",pc:"-",solver:"-",exec:"-",links:{form:"https://forms.gle/uAC3jHJkJRKkWhzD9",sheet:"https://docs.google.com/spreadsheets/d/1qUq8t-ny3jYw8Sr5EX1o8JPwTZTABq-84u3WZmqZiGA/edit?gid=1524564798#gid=1524564798"}},
-  {cat:"Sales",name:"Enquiry Capture FY 2026-27",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycby7Huu0BT34uNxdiTw56RCwbzBfGOXn82ciyY5m7qy6pRpLOTuTR6Q9kTkuhNBihqak/exec",sheet:"https://docs.google.com/spreadsheets/d/1dzxpe1pC8GttTMmyrS_AAez81W54T4YquwpBgyrilHc/edit?gid=0#gid=0"}},
-  {cat:"Sales",name:"Double A CME Payment FMS FY 2026-27",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1Qd36JU8bTIVyeKi99KC26ktH2XOy_SwtgBm4f3qzAnc/edit?gid=663292535#gid=663292535",form:"https://script.google.com/macros/s/AKfycbzFD8VRBltDC03aYXP7XKNHp4ho6iQSkYPcHihW5CUvBs4hNGLPnNtXi51lGCw_zo6_/exec"}},
-  {cat:"Sales",name:"CRM Payment FMS",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1RWzVwiihyzjZKLyZew4csbI4y4z9j4o2zxQZPdFjG88/edit?gid=2061178155#gid=2061178155"}},
-  {cat:"Sales",name:"Price List",pc:"-",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:"https://docs.google.com/spreadsheets/d/1MNAJurPOo-gmx_0jOugi9-KBpvEXYaDm6ZiW02AY4qs/edit?usp=sharing"}},
-  {cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:"https://docs.google.com/spreadsheets/d/1XrykdT3AGzqeWxyxTjwW-wx_ah9g1vXsz7VaB90pVgQ/edit?gid=663292535#gid=663292535",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbxQNUAtVUGNGBNQBH6sQy_67tmCyiruYf9-quHGxNQKKTkzs9ZeBIIQvV7DEOBCN6m9/exec",video:"https://drive.google.com/file/d/1fWolylWij-qPSDPB8UNTTFFV4oO75_U_/view?usp=sharing",videoBCI:"https://youtu.be/PI_hErtw5hg"}},
-  {cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:"https://forms.gle/MjxJZb2PfeSEpy8K9",sheet:"https://docs.google.com/spreadsheets/d/1vQqvQpARP6nQQOA5me4MMRGxojzVjNvVgl2FXNTEz4M/edit?gid=1525898616#gid=1525898616",video:"https://youtu.be/N1Rs7-0gW5c"}},
-  {cat:"Purchase",name:"WMS",pc:"Mukesh Shukla",solver:"Ravi Kant Kumar",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbywofvP3NAHcOcSWVHQx2D5uUksmuF-g9g9E6MCCJraXs5ZI-MH3RKCxBrH1Vto6EyAag/exec",sheet:"https://docs.google.com/spreadsheets/d/1R1eMFIwOdN5CyfrZa0K8NSVaJZnVmjPd95bOp2FYz90/edit?usp=sharing"}},
-  {cat:"Purchase",name:"Stock Transfer FMS",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1DGirLMKqUeBb3F9NAc85BDOXHZrbePg26yvqfXtKGSE/edit?gid=1990994408#gid=1990994408",form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbzODn8JBlbkk_UTI8gVFsx-rDT0btxQml-ulTH-MhXZFyogpTPu-LRb1iwG3JwMlqJU_Q/exec"}},
-  {cat:"Management",name:"Ultimate Checklist",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{check:"https://docs.google.com/spreadsheets/d/1CjiaW5EuDdyUtzLcM-3lg7Omp47Uc94PxtdNkd8X7cM/edit?gid=2123213379#gid=2123213379",video:"https://youtu.be/b3CDW57r7hA",dashEmp:"https://lookerstudio.google.com/reporting/867783ed-3310-433d-af65-215a8637dc1c",dashPC:"https://lookerstudio.google.com/reporting/47123040-143d-40e6-accd-ca979d4821f8"}},
-  {cat:"Management",name:"Delegation Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbwkZJdwMiyW3RRXrd5xUxZUoiWuqarz7Gm-f-xUgywpZdpAYMeR35uCykCCm9HHXXEJsg/exec",sheet:"https://docs.google.com/spreadsheets/d/1wlNnew6xsTyKubBaiGh_AjFf9WURcyI_ChsRHI3PfJU/edit?usp=sharing",video:"https://youtu.be/zTtmwX-8N5c"}},
-  {cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:"https://forms.gle/RZk3BaqF2RR4dRWZA",sheet:"https://docs.google.com/spreadsheets/d/1E1-RY6Q8v3DQDgvlzGL8y7-DBrQccNA8A7yOer3oElM/edit?usp=sharing"}},
-  {cat:"Management",name:"To Do (EA)",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha / Pranav",links:{form:"https://forms.gle/aJkEUVAkXSM2zar4A",sheet:"https://docs.google.com/spreadsheets/d/1JI2j-2pZVqv0cfbLv_xK5GtIPOzHn1FRSWdHNOIR3eQ/edit?usp=sharing"}},
-  {cat:"Management",name:"MIS Score",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1a_mXf1x6CBuzYdzY0CMNPXq9jb96FVL9nPfOJCi8zgc/edit?gid=0#gid=0"}},
-  {cat:"Management",name:"Dashboard of All FMS",pc:"-",solver:"-",exec:"-",links:{dashEmp:"https://lookerstudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9",dashPC:"https://lookerstudio.google.com/reporting/6072ed63-d184-4db1-b140-30ecba6fdc96"}},
-  {cat:"Management",name:"FMS OF FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:"https://docs.google.com/spreadsheets/d/145fPQ-xJYiR9sceKh391kVoXPr3dwNThR73Ij0sih3c/edit?gid=663292535#gid=663292535",form:"https://forms.gle/CxsCmRZzeESiygMt9"}},
-  {cat:"Management",name:"Home Loan FMS",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1jTcRgNlFTX1uVl5VVEkyHKXFA8fM5W4bJQrk-owadEM/edit?gid=663292535#gid=663292535",form:"https://script.google.com/macros/s/AKfycbxt0haql2_FmwYXklLBQ3itBn4IsxpnbM49oQr-QY_nj1iiY4cfsUjF8wuTSzXP_RAY/exec"}},
-  {cat:"Management",name:"eMail & Password Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1R5Z1EYWvxdps9DlGsClu21akraJiMiT7jkwWpDxvJTM/edit?gid=0#gid=0"}},
-  {cat:"Support",name:"Help Ticket",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://forms.gle/1spYybVfM8C3a8bu9",sheet:"https://docs.google.com/spreadsheets/d/16sHaywxje9okn-UBIdlocm6_ZlmWJfjnAvmfZjdwApg/edit?resourcekey=&gid=1739158437#gid=1739158437"}},
-  {cat:"My System",name:"Google Site",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:"https://sites.google.com/satijapaper.com/satija-paper/home",sheet:"https://docs.google.com/spreadsheets/d/1cILiWFTHeoJ5ELsw0HKr5UWfWne7TVgrGy5xdgseZWE/edit?gid=0#gid=0"}},
-  {cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{form:"https://script.google.com/macros/s/AKfycbwN-zMYqEPGy4IdgXHMxcsIwndpKLzib7hGqRxIx_j4pdy-V7xAHn10RYq2aM2HOzZ3/exec",sheet:"https://docs.google.com/spreadsheets/d/1o3j9B0UAE_AywprE7SV2hRtXscYyVXivDDVok2otPEM/edit?usp=sharing"}},
-  {cat:"HR",name:"Attendances Sheet",pc:"Neha / Preksha",solver:"Neha / Pranav",exec:"All Staff",links:{form:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec",sheet:"https://docs.google.com/spreadsheets/d/179U4qy_lPVOV4HtmNHoGfnNy_TgWHhzhxg0Ip-2sR2k/edit?gid=0#gid=0",admin:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbyosWuO3w6o6BbLPr6MgS3Mxg9Nz0jWTusvezFVx4-ntUCS2dKcCfjiSUuH8DE0A38i/exec?page=admin"}},
-  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1oxxIzERQ5DGgh9QsapS9sefu8_-Y8Z9_7QNHJF9cks8/edit?gid=760114361#gid=760114361",form:"https://forms.gle/BRZFSt6MmUMbUogZ6"}},
-  {cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:"https://forms.gle/DicXKSdhGBVBnBDL8",sheet:"https://docs.google.com/spreadsheets/d/1fSytJSS3zc2QhpIaMFLKawRBW-taOvd0TJd0l6K9fFQ/edit?gid=1674675112#gid=1674675112"}},
-  {cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{sheet:"https://docs.google.com/spreadsheets/d/1O-d1HUIXLrqZceHw46RXHS08Kv0S89GLLvyBd4Rf1xg/edit?gid=183137054#gid=183137054",form:"https://forms.gle/bzgaZgtAhdPExPLS6"}},
-  {cat:"Finance",name:"Company Payment",pc:"-",solver:"-",exec:"-",links:{fms:"https://docs.google.com/spreadsheets/d/1SICtsFKfdsnP0Ailr6k0EyFu3Cd_7YGDPpIgI9E5kp4/edit?gid=663292535#gid=663292535",form:"https://forms.gle/sRnf7J8obGq1agnV7"}},
-  {cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:"https://docs.google.com/spreadsheets/d/1bN8KpRkbFmflD0ThrLrHQLWrL6EXAH7s8GoHD1GC6pU/edit?gid=0#gid=0",gpDash:"https://script.google.com/a/macros/satijapaper.com/s/AKfycbycFnOfp2JwTukCsjSS2x0V2b45UL6zJN1fKJBu5HMdusDYBSa8rDl-I6bXYu85YKc__A/exec"}},
-  {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:"https://script.google.com/macros/s/AKfycbx9Ltu16HEzS97tOuJg2mYnizudpPALNLILcX7TqJqFA_eVa8tnsWKMMMsnqSV5lxNl4Q/exec",sheet:"https://docs.google.com/spreadsheets/d/1qyeQpj9VHFGzuRBeLbhJIhIHANRy3sU0CKKioEPrRD8/edit?gid=0#gid=0"}}
+  {cat:"Sales",      name:"Order to Delivery FMS",                  pc:"Ms. Preksha",    solver:"Mukesh",         exec:"Khushi",               links:{fms:1,form:1,videoBCI:1}},
+  {cat:"Sales",      name:"Follow Up Calls",                        pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Neha",                 links:{sheet:1}},
+  {cat:"Sales",      name:"Double A Order Form",                    pc:"-",              solver:"-",              exec:"Mukesh",               links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Next Day Market Plan",                   pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Rishabh / Pawan",      links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Next Week Marketing Plan",               pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Customer Visit",                         pc:"Neha",           solver:"Neha / Pranav",  exec:"Sonu, Pawan, Rishabh", links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"DA Distributor Checklist",               pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Enquiry Capture FY 2026-27",             pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Double A CME Payment FMS FY 2026-27",   pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
+  {cat:"Sales",      name:"CRM Payment FMS",                        pc:"-",              solver:"-",              exec:"-",                    links:{fms:1}},
+  {cat:"Sales",      name:"Price List",                             pc:"-",              solver:"Mr. Pranav",     exec:"Mr. Mukesh",           links:{sheet:1}},
+  {cat:"Purchase",   name:"Purchase FMS",                           pc:"Ms. Preksha",    solver:"Neha / Pranav",  exec:"Khushi",               links:{fms:1,form:1,video:1,videoBCI:1}},
+  {cat:"Purchase",   name:"IMS (Inventory System)",                 pc:"Ms. Neha",       solver:"Mukesh / Pranav",exec:"Khushi",               links:{form:1,sheet:1,video:1}},
+  {cat:"Purchase",   name:"WMS",                                    pc:"Mukesh Shukla",  solver:"Ravi Kant Kumar",exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Purchase",   name:"Stock Transfer FMS",                     pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
+  {cat:"Management", name:"Ultimate Checklist",                     pc:"Ms. Preksha",    solver:"Neha / Pranav",  exec:"Khushi",               links:{check:1,video:1,dashEmp:1,dashPC:1}},
+  {cat:"Management", name:"Delegation Sheet",                       pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Neha",                 links:{form:1,sheet:1,video:1}},
+  {cat:"Management", name:"To Do (MIS)",                            pc:"Ms. Neha",       solver:"Khushi / Pranav",exec:"Neha / Khushi",        links:{form:1,sheet:1}},
+  {cat:"Management", name:"To Do (EA)",                             pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Neha / Pranav",        links:{form:1,sheet:1}},
+  {cat:"Management", name:"MIS Score",                              pc:"-",              solver:"-",              exec:"-",                    links:{sheet:1}},
+  {cat:"Management", name:"Dashboard of All FMS",                   pc:"-",              solver:"-",              exec:"-",                    links:{dashEmp:1,dashPC:1}},
+  {cat:"Management", name:"FMS OF FMS",                             pc:"Ms. Preksha",    solver:"Neha / Pranav",  exec:"Khushi",               links:{sheet:1,form:1}},
+  {cat:"Management", name:"Home Loan FMS",                          pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
+  {cat:"Management", name:"eMail & Password Sheet",                 pc:"-",              solver:"-",              exec:"-",                    links:{sheet:1}},
+  {cat:"Support",    name:"Help Ticket",                            pc:"Ms. Preksha",    solver:"Khushi/Ravi",    exec:"Ravi",                 links:{form:1,sheet:1}},
+  {cat:"My System",  name:"Google Site",                            pc:"Ms. Preksha",    solver:"Khushi/Ravi",    exec:"Ravi",                 links:{form:1,sheet:1}},
+  {cat:"HR",         name:"Office Chores Form",                     pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Rashmi",               links:{form:1,sheet:1}},
+  {cat:"HR",         name:"Attendances Sheet",                      pc:"Neha / Preksha", solver:"Neha / Pranav",  exec:"All Staff",            links:{form:1,sheet:1,admin:1}},
+  {cat:"HR",         name:"Courier FMS",                            pc:"Neha",           solver:"Neha / Pranav",  exec:"Indresh",              links:{sheet:1,form:1}},
+  {cat:"Finance",    name:"Petrol/Rider Form",                      pc:"Neha / Mukesh",  solver:"Neha / Pranav",  exec:"Sonu, Pawan...",       links:{form:1,sheet:1}},
+  {cat:"Finance",    name:"Cheque Payment",                         pc:"Neha / Mukesh",  solver:"Mukesh",         exec:"Indresh",              links:{sheet:1,form:1}},
+  {cat:"Finance",    name:"Company Payment",                        pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
+  {cat:"Finance",    name:"GP Sheet",                               pc:"-",              solver:"-",              exec:"-",                    links:{sheet:1,gpDash:1}},
+  {cat:"Finance",    name:"Daily Expense",                          pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
 ];
+// NOTE: links object now only has keys (value=1 = link exists).
+// Actual URLs are stored ONLY in Firestore → fetched via Cloud Function at click time.
 
 /* ====================== STATE ====================== */
 
-/* ====================== URL OBFUSCATION ====================== */
-// Encode all URLs in DB at startup so they are not readable in DevTools/source
-(function encodeDBUrls(){
-  DB.forEach(item=>{
-    const enc = {};
-    Object.keys(item.links).forEach(k=>{
-      enc[k] = btoa(unescape(encodeURIComponent(item.links[k])));
-    });
-    item._links = item.links; // keep original for internal use only
-    item.links = enc;         // replace with encoded version
-  });
-})();
-
-// Decode a URL — only called inside secureOpen() after access check
-function _decodeUrl(encoded){
-  try{ return decodeURIComponent(escape(atob(encoded))); }
-  catch(e){ return null; }
-}
 
 let curUser = null, curCat = 'All', cachedUsers = [];
 const $ = id => document.getElementById(id);
@@ -719,16 +727,32 @@ function updateCounts(){
 // URLs are NOT embedded in rendered HTML. They are stored in DB (source only).
 // When user clicks a button, we resolve the URL at click-time after re-checking access.
 // This prevents URLs from appearing in page source for unauthorized users.
-function secureOpen(procName, linkType){
+async function secureOpen(procName, linkType){
+  // Quick client-side pre-check (UX only — real check happens on server)
   const item = DB.find(d => d.name === procName);
   if(!item){ showToast('Process not found.', 'err'); return; }
   if(!canAccessProc(curUser, item)){ showToast('Access denied.', 'err'); return; }
-  if(!canAccessLink(curUser, procName, linkType)){ showToast('You do not have access to this link.', 'err'); return; }
-  const encoded = item.links[linkType];
-  if(!encoded){ showToast('Link not available.', 'err'); return; }
-  const url = _decodeUrl(encoded);
-  if(!url){ showToast('Invalid link.', 'err'); return; }
-  window.open(url, '_blank', 'noopener');
+  if(!canAccessLink(curUser, procName, linkType)){ showToast('No access to this link.', 'err'); return; }
+
+  // Show loading state on button
+  showToast('Opening...', 'info');
+
+  try{
+    // Call Firebase Cloud Function — URL is resolved SERVER-SIDE after auth check
+    const getProcessUrl = window.fbFns.httpsCallable(window.fbApp, 'getProcessUrl');
+    const result = await getProcessUrl({ procName, linkType });
+    if(result.data && result.data.url){
+      window.open(result.data.url, '_blank', 'noopener');
+    } else {
+      showToast('Link not available.', 'err');
+    }
+  } catch(err){
+    console.error('secureOpen error:', err);
+    if(err.code === 'functions/permission-denied') showToast('Access denied.', 'err');
+    else if(err.code === 'functions/unauthenticated') showToast('Please login again.', 'err');
+    else if(err.code === 'functions/not-found') showToast('Link not configured.', 'err');
+    else showToast('Error opening link. Try again.', 'err');
+  }
 }
 
 /* ====================== RENDER CARDS ====================== */
