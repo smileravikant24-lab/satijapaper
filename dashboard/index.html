@@ -480,7 +480,7 @@ function showToast(msg, type='info'){
   toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 3200);
 }
 
-/* ====================== LOGIN ====================== */
+
 function showLoginError(m){ $('loginErrorMsg').textContent=m; $('loginError').classList.add('show'); $('loginSuccess').classList.remove('show'); }
 function showLoginSuccess(m){ $('loginSuccessMsg').textContent=m; $('loginSuccess').classList.add('show'); $('loginError').classList.remove('show'); }
 function clearLoginMessages(){ $('loginError').classList.remove('show'); $('loginSuccess').classList.remove('show'); }
@@ -500,7 +500,7 @@ async function handleLogin(){
   setLoginLoading(true);
   try{
     await window.fbFns.signIn(window.fbAuth, e, p);
-    // onAuth will handle the rest
+    
   }catch(err){
     setLoginLoading(false);
     const codes = { 'auth/invalid-credential':'Invalid email or password.', 'auth/wrong-password':'Invalid email or password.', 'auth/user-not-found':'No account found with this email.', 'auth/too-many-requests':'Too many attempts. Please wait and try again.', 'auth/network-request-failed':'Network error. Check your internet connection.', 'auth/invalid-email':'Invalid email format.' };
@@ -542,7 +542,7 @@ async function loadProfile(fbUser){
       linkAccess: (d.linkAccess && typeof d.linkAccess === 'object') ? d.linkAccess : {}
     };
   }
-  // Auto-create for first login
+ 
   const isAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
   const profile = { email:fbUser.email.toLowerCase(), uid:fbUser.uid, name:fbUser.email.split('@')[0], role:isAdmin?'Admin':'Employee', deptAccess:isAdmin?['All']:[], processAccess:[] };
   await window.fbFns.setDoc(ref, profile);
@@ -560,7 +560,7 @@ function enterApp(user){
   const isA = user.role === 'Admin';
   $('adminNavLabel').style.display = isA ? '' : 'none';
   $('adminNavBtn').style.display = isA ? '' : 'none';
-  updateCounts(); // compute accessible counts first
+  updateCounts(); 
 
 
   const accessibleTabs = ['Sales','Purchase','Management','HR','Finance','Support','My System']
@@ -573,7 +573,7 @@ function enterApp(user){
   const labelMap = {Sales:'Sales & CRM',Purchase:'Purchase & Inventory',Management:'Management (MIS)',HR:'HR & Admin',Finance:'Finance & Accounts',Support:'Help & Support','My System':'Google Site'};
 
   if(curUser.role !== 'Admin' && accessibleTabs.length <= 2){
-    // If only 1-2 depts, skip "All Processes" and go straight to first accessible dept
+
     const cat = accessibleTabs[0];
     curCat = cat;
     setActive($(navMap[cat]));
@@ -598,7 +598,7 @@ function showLoginScreen(){
 function hasDeptAccess(u, cat){
   if(!u) return false;
   if(u.role === 'Admin') return true;
-  if(cat === 'Family') return false; // Family: only via explicit processAccess
+  if(cat === 'Family') return false; 
   if(u.deptAccess.includes('All')) return true;
   if(cat === 'Support' || cat === 'My System') return true;
   return u.deptAccess.includes(cat);
@@ -609,10 +609,10 @@ function canAccessProc(u, item){
   if(u.role === 'Admin') return true;
   const hasExplicitList = u.processAccess && u.processAccess.length > 0;
   if(hasExplicitList){
-    // Explicit list: bypass dept check, only check if process is in the list
+   
     return u.processAccess.includes(item.name);
   }
-  // No explicit list: fall back to dept access
+ 
   return hasDeptAccess(u, item.cat);
 }
 
@@ -645,7 +645,7 @@ function updateCounts(){
     {cat:'Family',    nav:'navFamily',     cnt:'cntFamily'},
   ];
 
-  // Navigation label visibility tracking
+ 
   let anyMainVisible = false, anyMyVisible = false;
 
   tabs.forEach(t=>{
@@ -672,7 +672,7 @@ function updateCounts(){
     if(['Support','My System'].includes(t.cat) && visible) anyMyVisible = true;
   });
 
-  // Show/hide section labels
+ 
   const navMainLabel = document.getElementById('navMainLabel');
   if(navMainLabel) navMainLabel.style.display = anyMainVisible ? '' : 'none';
   const myLabel = document.getElementById('mySystemLabel');
@@ -683,7 +683,7 @@ function updateCounts(){
 const FUNCTION_URL = 'https://asia-south1-sp-dashboard-1e9c8.cloudfunctions.net/getProcessUrl';
 
 async function secureOpen(procName, linkType){
-  // Client-side pre-check
+ 
   const item = DB.find(d => d.name === procName);
   if(!item){ showToast('Process not found.', 'err'); return; }
   if(!canAccessProc(curUser, item)){ showToast('Access denied.', 'err'); return; }
@@ -692,12 +692,12 @@ async function secureOpen(procName, linkType){
   showToast('Opening...', 'info');
 
   try{
-    // Get fresh Firebase ID token
+   
     const fbUser = window.fbAuth.currentUser;
     if(!fbUser){ showToast('Please login again.', 'err'); return; }
     const idToken = await fbUser.getIdToken(true); // force refresh
 
-    // Call Cloud Function with Bearer token
+ 
     const resp = await fetch(FUNCTION_URL, {
       method: 'POST',
       headers: {
@@ -725,7 +725,7 @@ async function secureOpen(procName, linkType){
 
 function renderCards(data){
   const b = $('cardBox'); b.innerHTML = '';
-  // Filter: only show cards the user can actually access
+ 
   const accessible = data.filter(it => canAccessProc(curUser, it));
   if(!accessible.length){
     b.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
@@ -734,9 +734,7 @@ function renderCards(data){
   accessible.forEach((it, i) => {
     const isAdmin = curUser && curUser.role === 'Admin';
     const cc = it.cat === 'My System' ? 'My' : it.cat;
-    // Family category — only show if user has access
-
-    // Build button — NO URL in href, uses secureOpen() onclick
+  
     const buildBtn = (hasUrl, linkType, cls, ico, lbl, adminOnly=false) => {
       if(!hasUrl) return '';
       if(adminOnly && !isAdmin) return '';
@@ -875,14 +873,14 @@ function openModal(uid){
   $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
   $('modalTitle').textContent = 'Add User Profile';
   document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ p.classList.remove('checked'); p.querySelector('input').checked=false; });
-  // Will be called after checking user
+
   if(uid){
     const u = cachedUsers.find(x=>x.id===uid);
     if(u){
       $('editUserId').value = u.id; $('mName').value = u.name; $('mUser').value = u.email; $('mRole').value = u.role;
       $('modalTitle').textContent = 'Edit User Profile';
       document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ if(u.deptAccess.includes(p.dataset.val)){ p.classList.add('checked'); p.querySelector('input').checked=true; }});
-      // Build proc list with existing access. __procs__ = which procs are enabled.
+      
       const la = u.linkAccess || {};
       la['__procs__'] = u.processAccess || [];
       buildProcList(la);
@@ -903,7 +901,7 @@ function onRoleChange(){
   $('accessSection').style.display = r==='Admin' ? 'none' : '';
 }
 
-// Dept checkbox toggle with mutual exclusion of "All"
+
 document.querySelectorAll('#deptChks .chk-pill').forEach(pill=>{
   pill.addEventListener('click', function(e){
     e.preventDefault();
@@ -926,7 +924,7 @@ function updateAccessModeNote(){
   $('accessModeNote').style.display = anyChecked ? '' : 'none';
 }
 
-/* Link types that can appear per process */
+
 const LINK_META = {
   fms:      {label:'FMS',           icon:'fas fa-table-cells',     cls:'btn-fms'},
   form:     {label:'Form',          icon:'fab fa-google-drive',    cls:'btn-form'},
@@ -971,7 +969,7 @@ function buildProcList(existingLinkAccess){
       procHeader.appendChild(procCb); procHeader.appendChild(procLabel);
       procRow.appendChild(procHeader);
 
-      // Link pills (only shown when process is checked)
+    
       if(availLinks.length > 0){
         const linkRow = document.createElement('div'); linkRow.className='proc-link-row'; linkRow.style.display=isChecked?'flex':'none';
         const existingLinks = existingLinkAccess[it.name] || [];
