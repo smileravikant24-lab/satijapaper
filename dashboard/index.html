@@ -223,6 +223,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .link-pill.btn-dash.link-checked{background:#0369a1;border-color:#0369a1;color:#fff!important}
 .link-pill.btn-admin.link-checked{background:#92400e;border-color:#92400e;color:#fff!important}
 .link-pill.btn-gp.link-checked{background:#5b21b6;border-color:#5b21b6;color:#fff!important}
+.btn-stock{background:#e0fdf4;color:#065f46}
+.link-pill.btn-stock{color:#065f46}
+.link-pill.btn-stock.link-checked{background:#065f46;border-color:#065f46;color:#fff!important}
 .link-pill.btn-fms{color:#0052cc}.link-pill.btn-form{color:#5b21b6}.link-pill.btn-sheet{color:#00795c}
 .link-pill.btn-check{color:#8a4500}.link-pill.btn-video{color:#b91c1c}.link-pill.btn-dash{color:#0369a1}
 .link-pill.btn-admin{color:#92400e}.link-pill.btn-gp{color:#5b21b6}
@@ -437,11 +440,12 @@ const DB = [
   {cat:"Sales",      name:"Next Day Market Plan",                   pc:"Ms. Neha",       solver:"Neha / Pranav",  exec:"Rishabh / Pawan",      links:{form:1,sheet:1}},
   {cat:"Sales",      name:"Next Week Marketing Plan",               pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
   {cat:"Sales",      name:"Customer Visit",                         pc:"Neha",           solver:"Neha / Pranav",  exec:"Sonu, Pawan, Rishabh", links:{form:1,sheet:1}},
-  {cat:"Sales",      name:"DA Distributor Checklist",               pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
-  {cat:"Sales",      name:"Enquiry Capture FY 2026-27",             pc:"-",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
-  {cat:"Sales",      name:"Double A CME Payment FMS FY 2026-27",   pc:"-",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
-  {cat:"Sales",      name:"CRM Payment FMS",                        pc:"-",              solver:"-",              exec:"-",                    links:{fms:1}},
-  {cat:"Sales",      name:"Price List",                             pc:"-",              solver:"Mr. Pranav",     exec:"Mr. Mukesh",           links:{sheet:1}},
+  {cat:"Sales",      name:"DA Distributor Checklist",               pc:"Ms. Preksha",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Enquiry Capture FY 2026-27",             pc:"Ms. Preksha",              solver:"-",              exec:"-",                    links:{form:1,sheet:1}},
+  {cat:"Sales",      name:"Double A CME Payment FMS FY 2026-27",   pc:"Ms. Preksha",              solver:"-",              exec:"-",                    links:{fms:1,form:1}},
+  {cat:"Sales",      name:"CRM Payment FMS",                        pc:"Ms. Preksha",              solver:"-",              exec:"-",                    links:{fms:1}},
+  {cat:"Sales",      name:"Price List",                             pc:"Ms. Preksha",              solver:"Mr. Pranav",     exec:"Mr. Mukesh",           links:{sheet:1}},
+  {cat:"Sales",       name:"Stock Dashboard",                       pc:"Ms. Preksha",               solver:"Ravi",             exec:"All Sales",                     links:{stockDash:1}},
   {cat:"Purchase",   name:"Purchase FMS",                           pc:"Ms. Preksha",    solver:"Neha / Pranav",  exec:"Khushi",               links:{fms:1,form:1,video:1,videoBCI:1}},
   {cat:"Purchase",   name:"IMS (Inventory System)",                 pc:"Ms. Neha",       solver:"Mukesh / Pranav",exec:"Khushi",               links:{form:1,sheet:1,video:1}},
   {cat:"Purchase",   name:"WMS",                                    pc:"Mukesh Shukla",  solver:"Ravi Kant Kumar",exec:"-",                    links:{form:1,sheet:1}},
@@ -759,6 +763,7 @@ function renderCards(data){
     btns += buildBtn(!!it.links.dashPC,   'dashPC',   'btn-dash',  'fas fa-chart-line',      'PC Dashboard');
     btns += buildBtn(!!it.links.admin,    'admin',    'btn-admin', 'fas fa-user-gear',       'Admin Panel');
     btns += buildBtn(!!it.links.gpDash,   'gpDash',   'btn-gp',    'fas fa-chart-column',    'GP Dashboard');
+    btns += buildBtn(!!it.links.stockDash,'stockDash','btn-stock',  'fas fa-boxes-stacking',  'Stock Dashboard');
     btns += buildBtn(!!it.links.folder,   'folder',   'btn-folder','fas fa-folder-open',     'View Folder');
     if(!btns) btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
 
@@ -936,6 +941,7 @@ const LINK_META = {
   dashPC:   {label:'PC Dashboard',  icon:'fas fa-chart-line',      cls:'btn-dash'},
   admin:    {label:'Admin Panel',   icon:'fas fa-user-gear',       cls:'btn-admin'},
   gpDash:   {label:'GP Dashboard',  icon:'fas fa-chart-column',    cls:'btn-gp'},
+  stockDash:{label:'Stock Dashboard',icon:'fas fa-boxes-stacking', cls:'btn-stock'},
 };
 
 function getAvailableLinks(it){
