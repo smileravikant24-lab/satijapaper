@@ -360,7 +360,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="mf"><label>Email <span style="font-weight:400;text-transform:none;letter-spacing:0">(must match Firebase Auth)</span></label><input type="email" id="mUser" placeholder="user@satijapaper.com"></div>
       <div class="mf"><label>Role</label>
         <select id="mRole" onchange="onRoleChange()">
-          <option value="Employee">Team Member</option>
+          <option value="Team Member">Team Member</option>
           <option value="Admin">Admin</option>
         </select>
       </div>
@@ -540,7 +540,7 @@ async function loadProfile(fbUser){
     return {
       id: emailId, uid: fbUser.uid, email: fbUser.email,
       name: d.name || fbUser.email.split('@')[0],
-      role: d.role || 'Employee',
+      role: d.role || 'Team Member',
       deptAccess: Array.isArray(d.deptAccess) ? d.deptAccess : [],
       processAccess: Array.isArray(d.processAccess) ? d.processAccess : [],
       linkAccess: (d.linkAccess && typeof d.linkAccess === 'object') ? d.linkAccess : {}
@@ -548,7 +548,7 @@ async function loadProfile(fbUser){
   }
  
   const isAdmin = fbUser.email.toLowerCase() === ADMIN_EMAIL_FALLBACK.toLowerCase();
-  const profile = { email:fbUser.email.toLowerCase(), uid:fbUser.uid, name:fbUser.email.split('@')[0], role:isAdmin?'Admin':'Employee', deptAccess:isAdmin?['All']:[], processAccess:[] };
+  const profile = { email:fbUser.email.toLowerCase(), uid:fbUser.uid, name:fbUser.email.split('@')[0], role:isAdmin?'Admin':'Team Member', deptAccess:isAdmin?['All']:[], processAccess:[] };
   await window.fbFns.setDoc(ref, profile);
   return { id:emailId, ...profile };
 }
@@ -833,7 +833,7 @@ async function loadUsers(){
     cachedUsers = [];
     snap.forEach(d=>{
       const x = d.data();
-      cachedUsers.push({ id:d.id, email:x.email||'', name:x.name||'', role:x.role||'Employee', deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[], processAccess:Array.isArray(x.processAccess)?x.processAccess:[], linkAccess:(x.linkAccess&&typeof x.linkAccess==='object')?x.linkAccess:{} });
+      cachedUsers.push({ id:d.id, email:x.email||'', name:x.name||'', role:x.role||'Team Member', deptAccess:Array.isArray(x.deptAccess)?x.deptAccess:[], processAccess:Array.isArray(x.processAccess)?x.processAccess:[], linkAccess:(x.linkAccess&&typeof x.linkAccess==='object')?x.linkAccess:{} });
     });
     cachedUsers.sort((a,b)=>a.name.localeCompare(b.name));
     renderTable();
@@ -875,7 +875,7 @@ function renderTable(){
 
 function openModal(uid){
   $('editUserId').value = '';
-  $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Employee';
+  $('mName').value = ''; $('mUser').value = ''; $('mRole').value = 'Team Member';
   $('modalTitle').textContent = 'Add User Profile';
   document.querySelectorAll('#deptChks .chk-pill').forEach(p=>{ p.classList.remove('checked'); p.querySelector('input').checked=false; });
 
