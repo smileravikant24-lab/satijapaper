@@ -10,9 +10,12 @@
 <style>
 :root{
   --primary:#0b1729;
-  --accent:#0066ff;
+  --accent:#0066ff;  
   --accent-light:#4d94ff;
   --accent-glow:rgba(0,102,255,.13);
+  --da-red:#e60012;
+  --da-yellow:#ffd200;
+  --da-green:#00a651;
   --bg:#edf1f7;
   --bg-card:#ffffff;
   --sidebar-w:286px;
@@ -29,15 +32,13 @@
   --shadow-m:0 8px 30px rgba(0,0,0,.10);
   --shadow-l:0 20px 60px rgba(0,0,0,.15);
   --ease:cubic-bezier(.4,0,.2,1);
-  --brand-grad:linear-gradient(135deg,#0066ff 0%,#2563eb 50%,#0ea5e9 100%);
+  --brand-grad:linear-gradient(135deg,#0066ff 0%,#0052cc 40%,#e60012 100%);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;font-size:14.5px}
-
-/* ── LOGIN ────────────────────────────── */
-.login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0d1c38 60%,#061424)}
+.login-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#050d1a,#0d1c36 55%,#1a080e)}
 .login-overlay.hidden{display:none}
-.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 18% 32%,rgba(0,102,255,.22),transparent 52%),radial-gradient(ellipse at 82% 68%,rgba(14,165,233,.14),transparent 48%),radial-gradient(ellipse at 50% 95%,rgba(99,102,241,.09),transparent 38%)}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 18% 32%,rgba(0,102,255,.2),transparent 52%),radial-gradient(ellipse at 82% 68%,rgba(230,0,18,.12),transparent 48%),radial-gradient(ellipse at 50% 95%,rgba(255,210,0,.08),transparent 38%)}
 .login-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);background-size:34px 34px}
 .login-card{position:relative;width:460px;background:rgba(255,255,255,.05);backdrop-filter:blur(44px);border:1px solid rgba(255,255,255,.09);border-radius:28px;padding:52px 46px;animation:cardUp .5s var(--ease)}
 .login-card::before{content:'';position:absolute;top:0;left:26px;right:26px;height:2px;background:var(--brand-grad);border-radius:2px;opacity:.9}
@@ -47,6 +48,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .login-brand h1{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:2.5px}
 .login-brand-url{font-size:12px;color:var(--accent-light);margin-top:5px;letter-spacing:.6px;opacity:.9;font-weight:600}
 .login-brand-sub{font-size:12.5px;color:rgba(255,255,255,.38);margin-top:9px;font-weight:600;letter-spacing:.4px}
+.login-brand-sub .da-mark{color:var(--da-yellow);font-weight:800;letter-spacing:1.2px}
 .login-field{margin-bottom:18px}
 .login-field label{display:block;font-size:11px;font-weight:800;color:rgba(255,255,255,.42);margin-bottom:7px;text-transform:uppercase;letter-spacing:1.2px}
 .login-input-wrap{position:relative}
@@ -54,8 +56,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .login-input{width:100%;padding:14px 46px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:13px;color:#fff;font-size:14px;font-family:inherit;outline:0;transition:.25s var(--ease);font-weight:500}
 .login-input::placeholder{color:rgba(255,255,255,.2)}
 .login-input:focus{border-color:var(--accent);background:rgba(0,102,255,.09);box-shadow:0 0 0 3px rgba(0,102,255,.18)}
-.login-btn{width:100%;padding:15px;background:var(--brand-grad);border:none;border-radius:13px;color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:10px;letter-spacing:.4px;box-shadow:0 5px 20px rgba(0,102,255,.35)}
-.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(14,165,233,.45)}
+.login-btn{width:100%;padding:15px;background:var(--brand-grad);border:none;border-radius:13px;color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:.25s var(--ease);margin-top:10px;letter-spacing:.4px;box-shadow:0 5px 20px rgba(0,102,255,.38)}
+.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,102,255,.48)}
 .login-btn:disabled{opacity:.65;cursor:not-allowed;transform:none}
 .login-error{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.28);color:#fca5a5;padding:11px 15px;border-radius:11px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:8px;font-weight:600}
 .login-error.show{display:flex}
@@ -66,28 +68,25 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .loading-state{text-align:center;color:#fff;padding:44px}
 .spinner{display:inline-block;width:42px;height:42px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent-light);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ── APP ──────────────────────────────── */
 .app-container{display:none;height:100vh}
 .app-container.visible{display:flex}
-
-/* ── SIDEBAR ──────────────────────────── */
-.sidebar{width:var(--sidebar-w);background:linear-gradient(180deg,#1e1b4b 0%,#1a1744 60%,#151232 100%);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease);position:relative}
+.sidebar{width:var(--sidebar-w);background:var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:left .3s var(--ease);position:relative}
 .sidebar::-webkit-scrollbar{width:0}
 .sidebar::after{content:'';position:absolute;top:0;right:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.06) 30%,rgba(255,255,255,.06) 70%,transparent)}
 .brand-box{padding:26px 20px 22px;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;margin-bottom:4px}
 .brand-box::after{content:'';position:absolute;bottom:0;left:20px;right:20px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent)}
 .brand-logo{width:66px;height:66px;border-radius:50%;object-fit:contain;padding:2px;box-shadow:0 4px 24px rgba(0,0,0,.4),0 0 0 2px rgba(255,255,255,.07)}
 .brand-text{color:#fff;font-family:'Fraunces',serif;font-size:17px;font-weight:900;letter-spacing:2.4px;margin-top:6px}
+.brand-sub-tag{font-size:9px;color:var(--da-yellow);font-weight:800;letter-spacing:2.6px;text-transform:uppercase;opacity:.9}
 .brand-url{color:var(--accent-light);font-size:10.5px;text-decoration:none;font-weight:600;opacity:.7;letter-spacing:.4px}
 .sidebar-label{padding:20px 22px 7px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.8px;color:rgba(255,255,255,.25)}
 .menu-btn{background:0;border:0;padding:12px 22px;text-align:left;font-size:14.5px;color:rgba(255,255,255,.52);cursor:pointer;transition:.2s var(--ease);display:flex;align-items:center;gap:12px;border-left:3px solid transparent;font-family:inherit;font-weight:600;width:100%;line-height:1.3}
 .menu-btn i{width:20px;text-align:center;font-size:14px;flex-shrink:0;opacity:.8}
 .menu-btn:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.9)}
-.menu-btn.active{background:linear-gradient(90deg,rgba(99,102,241,.28),rgba(99,102,241,.06));color:#fff;border-left-color:#818cf8;font-weight:700}
+.menu-btn.active{background:linear-gradient(90deg,rgba(0,102,255,.2),rgba(0,102,255,.04));color:#fff;border-left-color:#4d94ff;font-weight:700}
 .menu-btn.active i{opacity:1}
 .menu-btn .count-badge{margin-left:auto;background:rgba(255,255,255,.09);color:rgba(255,255,255,.46);font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:8px;min-width:24px;text-align:center;flex-shrink:0}
-.menu-btn.active .count-badge{background:#6366f1;color:#fff}
+.menu-btn.active .count-badge{background:var(--accent);color:#fff}
 .sidebar-user{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.2)}
 .sidebar-avatar{width:38px;height:38px;border-radius:10px;background:var(--brand-grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0}
 .sidebar-uinfo{flex:1;min-width:0}
@@ -95,8 +94,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sidebar-urole{font-size:10px;color:rgba(255,255,255,.36);text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-top:2px}
 .sidebar-logout{background:0;border:0;color:rgba(255,255,255,.28);cursor:pointer;font-size:16px;padding:7px;border-radius:8px;transition:.2s;flex-shrink:0}
 .sidebar-logout:hover{color:var(--danger);background:rgba(239,68,68,.12)}
-
-/* ── MAIN ─────────────────────────────── */
 .main-content{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0}
 .header-bar{display:flex;justify-content:space-between;align-items:center;background:#fff;padding:15px 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .page-title{font-size:20px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.3px}
@@ -105,11 +102,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .search-box:focus{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-glow)}
 .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:13px;pointer-events:none}
 .content{padding:22px 26px 60px;flex:1}
-
-/* ── CARDS GRID ───────────────────────── */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
-
-/* ── CARD ─────────────────────────────── */
 .card{
   background:var(--bg-card);
   border-radius:var(--r);
@@ -129,20 +122,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 }
 .card:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);border-color:#c8d5e8}
 .card:hover::before{height:5px}
-.card.cat-Sales::before{background:linear-gradient(90deg,#0066ff,#38bdf8)}
-.card.cat-Purchase::before{background:linear-gradient(90deg,#059669,#34d399)}
+.card.cat-Sales::before{background:linear-gradient(90deg,#0066ff,#60a5fa,#e60012)}
+.card.cat-Purchase::before{background:linear-gradient(90deg,#00a651,#34d399)}
 .card.cat-Management::before{background:linear-gradient(90deg,#f59e0b,#fcd34d)}
 .card.cat-HR::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
-.card.cat-Finance::before{background:linear-gradient(90deg,#e11d48,#fb7185)}
+.card.cat-Finance::before{background:linear-gradient(90deg,#e60012,#f87171)}
 .card.cat-Support::before{background:linear-gradient(90deg,#0891b2,#67e8f9)}
 .card.cat-My::before{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
 .card.cat-Family::before{background:linear-gradient(90deg,#db2777,#f9a8d4)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-
-/* card inner padding */
 .card-inner{padding:18px 18px 16px;display:flex;flex-direction:column;flex:1;gap:12px}
 
-/* tag */
 .card-tag{
   display:inline-flex;align-items:center;gap:5px;
   font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.1px;
@@ -156,16 +146,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tag-Support{background:#ecfeff;color:#164e63;border:1px solid #a5f3fc}
 .tag-My{background:#faf5ff;color:#581c87;border:1px solid #e9d5ff}
 .tag-Family{background:#fdf2f8;color:#831843;border:1px solid #fbcfe8}
-
-/* title */
 .card-title{font-size:15.5px;font-weight:800;line-height:1.3;letter-spacing:-.15px;color:var(--text)}
-
-/* ── ROLE BADGES ── perfectly aligned grid ── */
 .roles-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:6px;
-  /* always 1 row — all 3 columns same height */
 }
 .role-cell{
   display:flex;flex-direction:column;gap:3px;min-width:0;
@@ -188,8 +173,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .rv-pc{border-left:3px solid var(--purple)}.rv-pc i{color:var(--purple)}
 .rv-sv{border-left:3px solid var(--warn)}.rv-sv i{color:var(--warn)}
 .rv-ex{border-left:3px solid var(--ok)}.rv-ex i{color:var(--ok)}
-
-/* ── ACTION BUTTONS ── */
 .actions{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -219,16 +202,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .btn-folder{background:#fce7f3;color:#831843;border-color:#fbcfe8}
 .btn-stock {background:#ccfbf1;color:#134e4a;border-color:#99f6e4}
 .btn.disabled-link{opacity:.3;pointer-events:none;cursor:not-allowed}
-
-/* ── DIVIDER inside card ── */
 .card-divider{height:1px;background:var(--border);margin:0 -18px}
-
-/* ── EMPTY STATE ── */
 .empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--text-3)}
 .empty-state i{font-size:44px;margin-bottom:14px;display:block;opacity:.35}
 .empty-state p{font-size:15px;font-weight:600}
-
-/* ── ADMIN PANEL ── */
 .admin-panel{display:none}.admin-panel.visible{display:block}
 .admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:12px}
 .admin-top h3{font-size:19px;font-weight:800;letter-spacing:-.2px}
@@ -251,8 +228,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tbl-act{background:0;border:0;cursor:pointer;padding:6px 8px;border-radius:7px;font-size:13px;transition:.15s}
 .tbl-act:hover{background:var(--bg)}.tbl-act.edit{color:var(--accent)}.tbl-act.delete{color:var(--danger)}
 .proc-badge{display:inline-block;font-size:9.5px;color:var(--text-2);background:var(--bg);border:1px solid var(--border);padding:2px 6px;border-radius:5px;margin:1px;font-weight:600}
-
-/* ── MODAL ── */
 .modal-bg{position:fixed;inset:0;background:rgba(8,16,30,.55);backdrop-filter:blur(6px);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.show{display:flex}
 .modal-box{background:#fff;border-radius:20px;width:540px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-l);animation:modalUp .28s var(--ease)}
@@ -294,8 +269,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0b1729;color:#fff;padding:12px 20px;border-radius:12px;font-size:13.5px;font-weight:600;z-index:9999;opacity:0;transition:.32s var(--ease);white-space:nowrap;box-shadow:var(--shadow-l)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-left:3px solid var(--ok)}.toast.err{border-left:3px solid var(--danger)}.toast.info{border-left:3px solid var(--accent)}
-
-/* proc rows in modal */
 .proc-row{margin-bottom:10px;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;transition:.15s}
 .proc-row:hover{border-color:#c5d5ef}
 .proc-row-header{display:flex;align-items:center;gap:9px;padding:9px 12px;cursor:pointer;background:#f8fafc}
@@ -318,8 +291,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .link-pill.btn-fms{color:#1e40af}.link-pill.btn-form{color:#4c1d95}.link-pill.btn-sheet{color:#065f46}
 .link-pill.btn-check{color:#78350f}.link-pill.btn-video{color:#991b1b}.link-pill.btn-dash{color:#0c4a6e}
 .link-pill.btn-admin{color:#713f12}.link-pill.btn-gp{color:#4c1d95}.link-pill.btn-stock{color:#134e4a}
-
-/* ── RESPONSIVE ── */
 @media(max-width:1024px){
   :root{--sidebar-w:256px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
@@ -364,7 +335,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <img src="https://lh3.googleusercontent.com/d/18xzMwZ_XE11XbaqPPOZhX8-ITt5DAm9h" alt="Satija Paper" class="login-logo">
         <h1>SATIJA PAPER</h1>
         <div class="login-brand-url">www.satijapaper.com</div>
-        <div class="login-brand-sub">Process Management System</div>
       </div>
       <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
       <div class="login-success" id="loginSuccess"><i class="fas fa-circle-check"></i><span id="loginSuccessMsg"></span></div>
@@ -536,30 +506,30 @@ const DB=[
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1}},
   {cat:"Sales",name:"O2D Direct Dispatch FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1}},
   {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:1}},
-  {cat:"Sales",name:"Double A Order Form",pc:"-",solver:"-",exec:"Mukesh",links:{form:1,sheet:1}},
+  {cat:"Sales",name:"Double A Order Form",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{form:1,sheet:1}},
   {cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:1,sheet:1}},
-  {cat:"Sales",name:"Next Week Marketing Plan",pc:"-",solver:"-",exec:"-",links:{form:1,sheet:1}},
+  {cat:"Sales",name:"Next Week Marketing Plan",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{form:1,sheet:1}},
   {cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:1,sheet:1}},
-  {cat:"Sales",name:"DA Distributor Checklist",pc:"Ms. Preksha",solver:"-",exec:"-",links:{form:1,sheet:1}},
-  {cat:"Sales",name:"Enquiry Capture FY 2026-27",pc:"Ms. Preksha",solver:"-",exec:"-",links:{form:1,sheet:1}},
-  {cat:"Sales",name:"Double A CME Payment FMS FY 2026-27",pc:"Ms. Preksha",solver:"-",exec:"-",links:{fms:1,form:1}},
-  {cat:"Sales",name:"CRM Payment FMS",pc:"Ms. Preksha",solver:"-",exec:"-",links:{fms:1}},
+  {cat:"Sales",name:"DA New Distributor Checklist",pc:"Mr. Mukesh",solver:"Mr. Pranav/Ms. Neha",exec:"Mr. Rishabh",links:{form:1,sheet:1}},
+  {cat:"Sales",name:"Enquiry Capture FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Neha",links:{form:1,sheet:1}},
+  {cat:"Sales",name:"Double A CME Payment FMS FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Mukesh/Ms. Preksha",links:{fms:1,form:1}},
+  {cat:"Sales",name:"CRM Payment FMS",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Pooja",links:{fms:1}},
   {cat:"Sales",name:"Price List",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
   {cat:"Sales",name:"Stock Dashboard",pc:"Ms. Preksha",solver:"Ravi",exec:"All Sales",links:{stockDash:1}},
   {cat:"Sales",name:"Mr. Mukesh Debtors List",pc:"Ms. Preksha",solver:"Ravi",exec:"Mr. Mukesh",links:{sheet:1}},
   {cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:1,form:1,video:1,videoBCI:1}},
   {cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:1,sheet:1,video:1}},
-  {cat:"Purchase",name:"WMS",pc:"Mukesh Shukla",solver:"Ravi Kant Kumar",exec:"-",links:{form:1,sheet:1}},
-  {cat:"Purchase",name:"Stock Transfer FMS",pc:"-",solver:"-",exec:"-",links:{fms:1,form:1}},
+  {cat:"Purchase",name:"WMS",pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Preksha/Ms. Khushi",links:{form:1,sheet:1}},
+  {cat:"Purchase",name:"Stock Transfer FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{fms:1,form:1}},
   {cat:"Management",name:"Ultimate Checklist",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{check:1,video:1,dashEmp:1,dashPC:1}},
   {cat:"Management",name:"Delegation Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{form:1,sheet:1,video:1}},
   {cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:1,sheet:1}},
   {cat:"Management",name:"To Do (EA)",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha / Pranav",links:{form:1,sheet:1}},
-  {cat:"Management",name:"MIS Score",pc:"-",solver:"-",exec:"-",links:{sheet:1}},
-  {cat:"Management",name:"Dashboard of All FMS",pc:"-",solver:"-",exec:"-",links:{dashEmp:1,dashPC:1}},
+  {cat:"Management",name:"MIS Score",pc:"Ms. Neha",solver:"Ms. Khushi",exec:"Ms. Neha/Ms. Khushi",links:{sheet:1}},
+  {cat:"Management",name:"Dashboard of All FMS",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team Members",links:{dashEmp:1,dashPC:1}},
   {cat:"Management",name:"FMS OF FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:1,form:1}},
-  {cat:"Management",name:"Home Loan FMS",pc:"-",solver:"-",exec:"-",links:{fms:1,form:1}},
-  {cat:"Management",name:"eMail & Password Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:1}},
+  {cat:"Management",name:"Home Loan FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Saneeep/Ms. Neha/Ms. Preksha",links:{fms:1,form:1}},
+  {cat:"Management",name:"eMail & Password Sheet",pc:"MDO",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1}},
   {cat:"Support",name:"Help Ticket",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:1,sheet:1}},
   {cat:"My System",name:"Google Site",pc:"Ms. Preksha",solver:"Khushi/Ravi",exec:"Ravi",links:{form:1,sheet:1}},
   {cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{form:1,sheet:1}},
@@ -567,10 +537,10 @@ const DB=[
   {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{sheet:1,form:1}},
   {cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
   {cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{sheet:1,form:1}},
-  {cat:"Finance",name:"Company Payment",pc:"-",solver:"-",exec:"-",links:{fms:1,form:1}},
-  {cat:"Finance",name:"GP Sheet",pc:"-",solver:"-",exec:"-",links:{sheet:1,gpDash:1}},
-  {cat:"Finance",name:"Daily Expense",pc:"-",solver:"-",exec:"-",links:{form:1,sheet:1}},
-  {cat:"Family",name:"Satija Family Documents",pc:"-",solver:"-",exec:"-",links:{folder:1}},
+  {cat:"Finance",name:"Company Payment",pc:"Ms. Preksha",solver:"Mr. Pranav ",exec:"Mr. Sandeep/Ms. Neha",links:{fms:1,form:1}},
+  {cat:"Finance",name:"GP Sheet",pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Khushi",links:{sheet:1,gpDash:1}},
+  {cat:"Finance",name:"Sales Marketing Daily Expense",pc:"Ms. Preksha",solver:"Ms. Neha",exec:"Sale's Team",links:{form:1,sheet:1}},
+  {cat:"Family",name:"Satija Family Documents",pc:"Ms. Neha",solver:"Ms. Mukesh",exec:"Ms. Khushi",links:{folder:1}},
 ];
 
 let curUser=null,curCat='All',cachedUsers=[];
@@ -694,7 +664,6 @@ async function secureOpen(procName,linkType){
   }catch(err){showToast('Network error.','err');}
 }
 
-/* ── RENDER CARDS ── */
 function renderCards(data){
   const b=$('cardBox');b.innerHTML='';
   const accessible=data.filter(it=>canAccessProc(curUser,it));
@@ -704,7 +673,6 @@ function renderCards(data){
     const isAdmin=curUser&&curUser.role==='Admin';
     const cc=it.cat==='My System'?'My':it.cat;
 
-    /* ── action buttons ── */
     const buildBtn=(hasUrl,linkType,cls,ico,lbl,adminOnly=false)=>{
       if(!hasUrl)return'';if(adminOnly&&!isAdmin)return'';
       if(!canAccessLink(curUser,it.name,linkType))return'';
@@ -730,7 +698,6 @@ function renderCards(data){
     btns+=buildBtn(!!it.links.folder,   'folder',   'btn-folder','fas fa-folder-open',      'View Folder');
     if(!btns)btns='<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
 
-    /* ── role cells — always 3 columns, perfectly aligned ── */
     const mkCell=(cls,icon,label,val)=>{
       if(!val||val==='-')return`<div class="role-cell"><div class="role-key">${label}</div><div class="role-val" style="opacity:.35;font-style:italic;font-size:10.5px"><span>—</span></div></div>`;
       return`<div class="role-cell"><div class="role-key">${label}</div><div class="role-val ${cls}"><i class="${icon}"></i><span title="${val}">${val}</span></div></div>`;
