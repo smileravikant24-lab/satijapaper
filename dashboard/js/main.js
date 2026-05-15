@@ -1,14 +1,6 @@
-// ============================================================
-// MAIN ENTRY POINT
-// Bootstraps the app, listens to auth state, exposes the few
-// functions needed by inline onclick handlers in index.html.
-// ============================================================
-
 import { $, showToast }           from './ui/dom.js';
 import { state }                  from './state.js';
 import { onAuth, fetchOrCreateProfile } from './services/auth.service.js';
-
-// Views
 import {
   handleLogin, handleLogout, forgotPass, togglePwd,
   showLoginScreen, showCheckingSession
@@ -23,7 +15,6 @@ import {
   onRoleChange, selectAllProcs
 }                                 from './admin/modal.view.js';
 
-// ---- App entry on successful auth ---------------------------------------
 function enterApp(user){
   state.curUser = user;
   $('loginOverlay').classList.add('hidden');
@@ -32,10 +23,7 @@ function enterApp(user){
   updateCounts();
   renderFiltered();
 }
-
-// ---- Wire up auth state listener ----------------------------------------
 showCheckingSession();
-
 onAuth(async fbUser => {
   if (!fbUser){
     state.curUser = null;
@@ -51,16 +39,10 @@ onAuth(async fbUser => {
   }
 });
 
-// ---- Expose handlers used by inline onclick="" in HTML ------------------
-// (Inline handlers can only reach window-scoped functions.)
 Object.assign(window, {
-  // login
   handleLogin, handleLogout, forgotPass, togglePwd,
-  // nav + cards
   filterCat, runFilter, secureOpen,
-  // admin panel
   showAdmin,
-  // modal
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 });
