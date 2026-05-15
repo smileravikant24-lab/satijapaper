@@ -1,0 +1,16 @@
+/* ============================================================
+   BASE RESET & DOCUMENT
+   ============================================================ */
+*{ margin:0; padding:0; box-sizing:border-box }
+
+body{
+  font-family:'Plus Jakarta Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  font-size: 14.5px;
+}
+
+/* shared spinner used by login + buttons */
+@keyframes spin { to { transform: rotate(360deg) } }

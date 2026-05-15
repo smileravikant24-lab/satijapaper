@@ -1,0 +1,82 @@
+/* ============================================================
+   ADMIN PANEL
+   ============================================================ */
+.admin-panel{ display:none }
+.admin-panel.visible{ display:block }
+
+.admin-top{
+  display:flex; justify-content:space-between;
+  align-items:center; margin-bottom:22px;
+}
+
+.add-btn{
+  padding:10px 20px;
+  background:var(--brand-grad);
+  color:#fff; border:0; border-radius:11px;
+  font-weight:700; cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+}
+
+.tbl-wrap{
+  background:#fff;
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  overflow-x:auto;
+}
+.tbl{
+  width:100%; border-collapse:collapse;
+  min-width:680px;
+}
+.tbl th{
+  background:#f8fafc; padding:12px 16px;
+  text-align:left; font-size:11px; font-weight:800;
+  text-transform:uppercase; color:var(--text-2);
+  border-bottom:1px solid var(--border);
+}
+.tbl td{
+  padding:13px 16px; font-size:13px;
+  border-bottom:1px solid var(--border);
+}
+
+.role-pill{
+  display:inline-block; padding:3px 10px;
+  border-radius:20px; font-size:10px;
+  font-weight:800; text-transform:uppercase;
+}
+.role-pill.admin                         { background:#fee2e2; color:#b91c1c }
+.role-pill.employee, .role-pill.team\.member { background:#dbeafe; color:#1e40af }
+
+.access-pills{ display:flex; flex-wrap:wrap; gap:3px }
+.ap{
+  font-size:9.5px; padding:2px 8px;
+  border-radius:10px; font-weight:700;
+}
+.ap-Sales     { background:#dbeafe; color:#1e40af }
+.ap-Purchase  { background:#d1fae5; color:#065f46 }
+.ap-Management{ background:#fef3c7; color:#78350f }
+.ap-HR        { background:#ede9fe; color:#4c1d95 }
+.ap-Finance   { background:#fee2e2; color:#b91c1c }
+.ap-All       { background:var(--primary); color:#fff }
+
+.tbl-act{
+  background:0; border:0; cursor:pointer;
+  padding:6px 8px; border-radius:7px; font-size:13px;
+}
+.tbl-act.edit  { color:var(--accent) }
+.tbl-act.delete{ color:var(--danger) }
+
+.proc-badge{
+  display:inline-block; font-size:9.5px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  padding:2px 6px; border-radius:5px;
+  margin:1px;
+}
+
+.info-box{
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  color:#78350f;
+  padding:13px 16px; border-radius:10px;
+  font-size:12.5px; margin-bottom:18px;
+}

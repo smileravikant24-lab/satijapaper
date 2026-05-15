@@ -1,0 +1,36 @@
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed; bottom:24px; left:50%;
+  transform:translateX(-50%) translateY(80px);
+  background:#0b1729; color:#fff;
+  padding:12px 20px; border-radius:12px;
+  font-size:13.5px; font-weight:600;
+  z-index:9999; opacity:0;
+  transition:.32s var(--ease);
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+.toast.ok  { border-left:3px solid var(--ok) }
+.toast.err { border-left:3px solid var(--danger) }
+.toast.info{ border-left:3px solid var(--accent) }
+
+/* ============================================================
+   RESPONSIVE (mobile)
+   ============================================================ */
+@media (max-width:768px){
+  .sidebar{
+    position:fixed; left:-300px; top:0; bottom:0;
+    z-index:999; width:284px;
+  }
+  .sidebar.open{ left:0 }
+
+  .grid{ grid-template-columns:1fr; gap:12px }
+  .roles-grid{ grid-template-columns:1fr 1fr 1fr }
+
+  .login-card{ width:94%; padding:34px 26px }
+  .modal-box { width:95% }
+}

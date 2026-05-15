@@ -1,0 +1,44 @@
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  /* brand */
+  --primary:       #0b1729;
+  --accent:        #0066ff;
+  --accent-light:  #4d94ff;
+  --accent-glow:   rgba(0,102,255,.13);
+  --da-red:        #e60012;
+  --da-yellow:     #ffd200;
+  --da-green:      #00a651;
+
+  /* surfaces */
+  --bg:            #edf1f7;
+  --bg-card:       #ffffff;
+  --sidebar-w:     286px;
+
+  /* text */
+  --text:          #0f1d2e;
+  --text-2:        #4a5568;
+  --text-3:        #94a3b8;
+  --border:        #e2e8f0;
+
+  /* status */
+  --ok:            #00c48c;
+  --warn:          #f59e0b;
+  --danger:        #ef4444;
+  --purple:        #7c3aed;
+
+  /* shape */
+  --r:             16px;
+
+  /* depth */
+  --shadow-s:      0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-m:      0 8px 30px rgba(0,0,0,.10);
+  --shadow-l:      0 20px 60px rgba(0,0,0,.15);
+
+  /* motion */
+  --ease:          cubic-bezier(.4,0,.2,1);
+
+  /* gradients */
+  --brand-grad:    linear-gradient(135deg,#0066ff 0%,#0052cc 40%,#e60012 100%);
+}
