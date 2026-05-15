@@ -1,199 +1,460 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Satija Paper × System Master</title>
-<link rel="icon" type="image/png" href="logo.png">
-
-<!-- ============ EXTERNAL ============ -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
-
-<!-- ============ APP STYLES ============ -->
-<link rel="stylesheet" href="css/variables.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/login.css">
-<link rel="stylesheet" href="css/sidebar.css">
-<link rel="stylesheet" href="css/cards.css">
-<link rel="stylesheet" href="css/admin.css">
-<link rel="stylesheet" href="css/modal.css">
-<link rel="stylesheet" href="css/utility.css">
+<title>Satija Paper — Premium Paper Distributor in Delhi | Copier & Printing Paper</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<meta name="description" content="Satija Paper is a leading paper distributor in Delhi NCR. Authorized dealer of Double A, Satia, Khanna, Ruchira, NR Agarwal & Andhra Paper. Copier paper, writing paper, printing paper at wholesale rates. Pan-India delivery.">
+<meta name="keywords" content="paper distributor Delhi, copier paper wholesale, Double A paper dealer, printing paper supplier, Satija Paper, paper dealer Mukherjee Nagar, bulk paper supply India, writing printing paper, office paper supplier Delhi NCR, Andhra Paper dealer">
+<meta name="author" content="Satija Paper">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.satijapaper.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Satija Paper — Premium Paper Distributor in Delhi">
+<meta property="og:description" content="Authorized distributor of Double A, Satia, Khanna, Ruchira, NR Agarwal & Andhra Paper. Wholesale copier & printing paper with Pan-India delivery.">
+<meta property="og:image" content="https://www.satijapaper.com/logo.jpg">
+<meta property="og:url" content="https://www.satijapaper.com/">
+<meta property="og:site_name" content="Satija Paper">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Satija Paper — Premium Paper Distributor in Delhi">
+<meta name="twitter:description" content="Authorized distributor of Double A, Satia, Khanna, Ruchira, NR Agarwal & Andhra Paper. Pan-India delivery.">
+<meta name="twitter:image" content="https://www.satijapaper.com/logo.jpg">
+<meta name="geo.region" content="IN-DL">
+<meta name="geo.placename" content="New Delhi">
+<meta name="geo.position" content="28.7174;77.2086">
+<meta name="ICBM" content="28.7174, 77.2086">
+<meta http-equiv="content-language" content="en-IN">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"LocalBusiness","name":"Satija Paper","description":"Premium paper distributor and authorized dealer of Double A, Satia Industries, Khanna Paper, Ruchira Papers, NR Agarwal Industries & Andhra Paper Limited in Delhi NCR.","url":"https://www.satijapaper.com","telephone":"+919899708098","email":"info@satijapaper.com","image":"https://www.satijapaper.com/logo.jpg","address":{"@type":"PostalAddress","streetAddress":"790, Near Batra Cinema, Dr. Mukherjee Nagar","addressLocality":"New Delhi","addressRegion":"Delhi","postalCode":"110009","addressCountry":"IN"},"geo":{"@type":"GeoCoordinates","latitude":28.7174,"longitude":77.2086},"openingHours":"Mo-Sa 10:00-18:00","priceRange":"$$","sameAs":[],"foundingDate":"2010","areaServed":{"@type":"Country","name":"India"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Paper Products","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Product","name":"Double A Copier Paper"}},{"@type":"Offer","itemOffered":{"@type":"Product","name":"NR Agarwal Writing Printing Paper"}},{"@type":"Offer","itemOffered":{"@type":"Product","name":"Satia Industries Paper"}},{"@type":"Offer","itemOffered":{"@type":"Product","name":"Khanna Paper"}},{"@type":"Offer","itemOffered":{"@type":"Product","name":"Ruchira Papers"}},{"@type":"Offer","itemOffered":{"@type":"Product","name":"Andhra Paper Limited"}}]}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- CSS Files -->
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="nav.css">
+<link rel="stylesheet" href="layout.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="responsive.css">
 </head>
 <body>
 
-<!-- ============ LOGIN OVERLAY ============ -->
-<div class="login-overlay" id="loginOverlay">
-  <div class="login-bg"></div>
-  <div class="login-dots"></div>
-  <div class="login-card">
-    <div id="loginForm">
-      <div class="login-brand">
-        <img src="logo.png" alt="Satija Paper" class="login-logo" onerror="this.src='https://via.placeholder.com/86x86?text=SP'">
-        <h1>SATIJA PAPER</h1>
-        <div class="login-brand-url">www.satijapaper.com</div>
-      </div>
-      <div class="login-error" id="loginError"><i class="fas fa-circle-exclamation"></i><span id="loginErrorMsg"></span></div>
-      <div class="login-success" id="loginSuccess"><i class="fas fa-circle-check"></i><span id="loginSuccessMsg"></span></div>
-      <div class="login-field">
-        <label>Email</label>
-        <div class="login-input-wrap">
-          <i class="fas fa-envelope field-icon"></i>
-          <input type="email" class="login-input" id="loginUser" placeholder="your@email.com">
-        </div>
-      </div>
-      <div class="login-field">
-        <label>Password</label>
-        <div class="login-input-wrap">
-          <i class="fas fa-lock field-icon"></i>
-          <input type="password" class="login-input" id="loginPass" placeholder="Enter your password">
-          <button class="toggle-password" type="button" onclick="togglePwd()"><i class="fas fa-eye" id="pwdEye"></i></button>
-        </div>
-      </div>
-      <button class="login-btn" id="loginBtn" onclick="handleLogin()">Sign In <i class="fas fa-arrow-right"></i></button>
-      <div style="text-align:center;margin-top:14px">
-        <a href="#" onclick="forgotPass();return false" style="font-size:11.5px;color:rgba(255,255,255,.38);text-decoration:none;font-weight:600;">Forgot password?</a>
-      </div>
-    </div>
-    <div id="loadingState" class="loading-state" style="display:none">
-      <div class="spinner"></div>
-      <div style="font-size:13.5px;font-weight:700">Checking session...</div>
-    </div>
-  </div>
+
+<div class="sp-loader" id="pageLoader">
+  <div class="sp-loader-brand">Satija Paper</div>
+  <div class="sp-loader-line"></div>
+  <div class="sp-loader-sub">Premium Paper Distribution</div>
 </div>
 
-<!-- ============ TOAST ============ -->
-<div class="toast" id="toast"></div>
 
-<!-- ============ MAIN APP ============ -->
-<div class="app-container" id="appContainer">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar">
-    <div class="brand-box">
-      <img src="logo.png" alt="Satija Paper" class="brand-logo" onerror="this.src='https://via.placeholder.com/66x66?text=SP'">
-      <div class="brand-text">SATIJA PAPER</div>
-      <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
-    </div>
-
-    <div class="sidebar-label" id="navMainLabel">Navigation</div>
-    <button class="menu-btn active" id="navAll"        onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
-    <button class="menu-btn"        id="navSales"      onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales & CRM <span class="count-badge" id="cntSales">0</span></button>
-    <button class="menu-btn"        id="navPurchase"   onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase & Inventory <span class="count-badge" id="cntPurchase">0</span></button>
-    <button class="menu-btn"        id="navManagement" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
-    <button class="menu-btn"        id="navHR"         onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR & Admin <span class="count-badge" id="cntHR">0</span></button>
-    <button class="menu-btn"        id="navFinance"    onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance & Accounts <span class="count-badge" id="cntFinance">0</span></button>
-
-    <div class="sidebar-label" id="mySystemLabel">My System</div>
-    <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)"><i class="fas fa-headset"></i> Help & Support <span class="count-badge" id="cntSupport">0</span></button>
-    <button class="menu-btn" id="navMy"      onclick="filterCat('My System',this)"><i class="fas fa-globe"></i> Google Site <span class="count-badge" id="cntMy">0</span></button>
-    <button class="menu-btn" id="navFamily"  onclick="filterCat('Family',this)"><i class="fas fa-house-heart"></i> Family Documents <span class="count-badge" id="cntFamily">0</span></button>
-
-    <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
-    <button class="menu-btn"  id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
-
-    <div class="sidebar-user">
-      <div class="sidebar-avatar" id="sAvatar">A</div>
-      <div class="sidebar-uinfo">
-        <div class="sidebar-uname" id="sName">Admin</div>
-        <div class="sidebar-urole" id="sRole">Admin</div>
-      </div>
-      <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
-    </div>
+<nav>
+  <a class="logo-container" onclick="showPage('home')">
+    <img src="logo.jpg" class="logo-img" alt="Satija Paper">
+    <span class="brand-name-nav">Satija Paper</span>
+  </a>
+  <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+    <span class="ham-line"></span><span class="ham-line"></span><span class="ham-line"></span>
   </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a id="link-home" class="active" onclick="showPage('home')">Home</a></li>
+    <li class="nav-dropdown">
+      <a id="link-products" onclick="toggleDropdownMobile(event,'productsDropdown')">Inventory <span class="drop-arrow">&#9660;</span></a>
+      <div class="dropdown-menu" id="productsDropdown">
+        <a onclick="showPage('brand-doublea')"><img src="doublea.jpg" class="menu-logo"> Double A (Thailand)</a>
+        <a onclick="showPage('brand-nragarwal')"><img src="nra.jpg" class="menu-logo"> N R Agarwal Industries</a>
+        <a onclick="showPage('brand-satia')"><img src="satia.jpg" class="menu-logo"> Satia Industries</a>
+        <a onclick="showPage('brand-khanna')"><img src="khanna.jpg" class="menu-logo"> Khanna Paper</a>
+        <a onclick="showPage('brand-ruchira')"><img src="ruchira.jpg" class="menu-logo"> Ruchira Papers</a>
+        <a onclick="showPage('brand-andhra')"><img src="andhra.jpg" class="menu-logo"> Andhra Paper</a>
+      </div>
+    </li>
+    <li><a id="link-about" onclick="showPage('about')">Profile</a></li>
+    <li class="nav-dropdown">
+      <a id="link-media" onclick="toggleDropdownMobile(event,'mediaDropdown')">Media <span class="drop-arrow">&#9660;</span></a>
+      <div class="dropdown-menu" id="mediaDropdown">
+        <a onclick="showPage('photos')"><span class="menu-icon">&#128248;</span> Photo Gallery</a>
+        <div class="dropdown-divider"></div>
+        <a onclick="showPage('videos')"><span class="menu-icon">&#127916;</span> Video Gallery</a>
+      </div>
+    </li>
+    <li><a id="link-enquiry" onclick="showPage('enquiry')">Enquiry</a></li>
+    <li><a id="link-contact" onclick="showPage('contact')">Contact</a></li>
+  </ul>
+</nav>
+<div class="mobile-overlay" id="mobileOverlay" onclick="closeMenu()"></div>
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">&#8593;</button>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-    <div class="header-bar">
-      <h2 class="page-title" id="pageHeader">All Processes</h2>
-      <div class="search-wrap" id="searchWrap">
-        <i class="fas fa-magnifying-glass search-icon"></i>
-        <input type="text" class="search-box" placeholder="Search processes…" id="searchInput" oninput="runFilter()">
+
+<div id="home" class="page active">
+  <div class="hero-particles-wrap" id="heroParticles"></div>
+  <div class="hero-orb" style="width:450px;height:450px;background:radial-gradient(circle,rgba(13,74,43,0.18),transparent);top:-120px;right:-80px;opacity:0.6;"></div>
+  <div class="hero-orb" style="width:320px;height:320px;background:radial-gradient(circle,rgba(196,154,60,0.12),transparent);bottom:80px;left:-60px;opacity:0.5;animation-delay:4s;"></div>
+
+  <div class="hero-section">
+    <div class="sr-left">
+      <span class="subtitle" style="font-size:1.2rem;letter-spacing:3.5px;padding:7px 18px 7px 20px;">Importer &amp; Distributor</span>
+      <h1>The Right Paper.<br>The Right Price.<br><span class="accent">Always.</span></h1>
+      <p>As authorized Distributor/Channel Partner, we bridge the gap between world-class paper mills and your professional printing needs. Precision-cut, jam-free, and high-whiteness solutions.</p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <button onclick="showPage('brand-doublea')" class="btn">Explore Inventory <span style="font-size:16px;">&#8594;</span></button>
+        <button onclick="showPage('contact')" class="btn btn-outline">Contact Us</button>
       </div>
     </div>
-
-    <div class="content">
-      <div class="grid" id="cardBox"></div>
-
-      <!-- ADMIN PANEL -->
-      <div class="admin-panel" id="adminPanel">
-        <div class="admin-top">
-          <h3><i class="fas fa-users-gear" style="margin-right:8px;color:var(--accent)"></i>User Management</h3>
-          <button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button>
-        </div>
-        <div class="info-box">
-          <i class="fas fa-info-circle"></i> <strong>New user workflow:</strong> Add user here -> Create user in Firebase Auth with same email.
-        </div>
-        <div class="tbl-wrap">
-          <table class="tbl">
-            <thead>
-              <tr>
-                <th>Email</th><th>Display Name</th><th>Role</th>
-                <th>Dept Access</th><th>Process Access</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tblBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ USER MODAL ============ -->
-<div class="modal-bg" id="userModal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <h3 id="modalTitle">Add / Edit User Profile</h3>
-      <button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="editUserId">
-      <div class="mf"><label>Display Name</label><input type="text" id="mName" placeholder="e.g. Neha Sharma"></div>
-      <div class="mf"><label>Email</label><input type="email" id="mUser" placeholder="user@satijapaper.com"></div>
-      <div class="mf">
-        <label>Role</label>
-        <select id="mRole" onchange="onRoleChange()">
-          <option value="Team Member">Team Member</option>
-          <option value="Admin">Admin</option>
-        </select>
-      </div>
-      <div id="accessSection">
-        <hr class="section-divider">
-        <div class="proc-section-head"><i class="fas fa-building"></i> Department Access</div>
-        <div class="mf">
-          <div class="chk-group" id="deptChks">
-            <label class="chk-pill" data-val="All"><input type="checkbox" value="All"> All Depts</label>
-            <label class="chk-pill" data-val="Sales"><input type="checkbox" value="Sales"> Sales</label>
-            <label class="chk-pill" data-val="Purchase"><input type="checkbox" value="Purchase"> Purchase</label>
-            <label class="chk-pill" data-val="Management"><input type="checkbox" value="Management"> MIS</label>
-            <label class="chk-pill" data-val="HR"><input type="checkbox" value="HR"> HR</label>
-            <label class="chk-pill" data-val="Finance"><input type="checkbox" value="Finance"> Finance</label>
+    <div class="hero-visual sr-right">
+      <div class="paper-stack">
+        <div class="paper paper-back"></div>
+        <div class="paper paper-mid"></div>
+        <div class="paper paper-front">
+          <div class="premium-tag">PREMIUM QUALITY</div>
+          <div class="pan-india-tag">PAN-INDIA DELIVERY</div>
+          <div class="slideshow-container">
+            <img class="mySlides fade" src="doublea.jpg"><img class="mySlides fade" src="satia.jpg">
+            <img class="mySlides fade" src="ruchira.jpg"><img class="mySlides fade" src="khanna.jpg">
+            <img class="mySlides fade" src="nra.jpg"><img class="mySlides fade" src="andhra.jpg">
+            <div id="slide-caption">Double A</div>
           </div>
         </div>
-        <hr class="section-divider">
-        <div class="proc-section-head"><i class="fas fa-sliders"></i> Individual Process Access</div>
-        <div class="access-mode-note" id="accessModeNote" style="display:none">
-          <i class="fas fa-info-circle"></i> Individual processes selected.
-        </div>
-        <div id="procField">
-          <div class="proc-sel-actions">
-            <button class="proc-sel-btn" onclick="selectAllProcs(true)"><i class="fas fa-check-double"></i> Select All</button>
-            <button class="proc-sel-btn" onclick="selectAllProcs(false)"><i class="fas fa-xmark"></i> Clear All</button>
-          </div>
-          <div id="procListContainer"></div>
-        </div>
       </div>
     </div>
-    <div class="modal-foot">
-      <button class="mbtn sec" onclick="closeModal()">Cancel</button>
-      <button class="mbtn pri" onclick="saveUser()"><i class="fas fa-save"></i> Save</button>
+  </div>
+
+  <div class="brand-bar sr full-width-section">
+    <p class="brand-bar-title">Trusted Partner for Industry Leaders</p>
+    <div class="brand-logos-flex">
+      <div class="brand-item doublea sr-scale d1" onclick="showPage('brand-doublea')"><img src="doublea.jpg" class="brand-logo"> DOUBLE A</div>
+      <div class="brand-item nr sr-scale d2" onclick="showPage('brand-nragarwal')"><img src="nra.jpg" class="brand-logo"> N R AGARWAL INDUSTRIES</div>
+      <div class="brand-item satia sr-scale d3" onclick="showPage('brand-satia')"><img src="satia.jpg" class="brand-logo"> SATIA INDUSTRIES</div>
+      <div class="brand-item khanna sr-scale d4" onclick="showPage('brand-khanna')"><img src="khanna.jpg" class="brand-logo"> KHANNA PAPER</div>
+      <div class="brand-item ruchira sr-scale d5" onclick="showPage('brand-ruchira')"><img src="ruchira.jpg" class="brand-logo"> RUCHIRA PAPERS</div>
+      <div class="brand-item andhra sr-scale d6" onclick="showPage('brand-andhra')"><img src="andhra.jpg" class="brand-logo"> ANDHRA PAPER</div>
+    </div>
+  </div>
+
+
+  <div class="brand-video-section sr full-width-section">
+    <h2>Brand Videos</h2>
+    <p class="section-sub">Watch how our partner mills craft premium paper.</p>
+    <div class="brand-video-grid">
+      <div class="brand-video-card sr-scale d1" onclick="openVideoPopup('doublea.mp4')"><div class="bv-thumb"><img src="doublea.jpg" alt="Double A"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>Double A (Thailand)</h4><p>30M fibres/gram premium copier</p></div></div>
+      <div class="brand-video-card sr-scale d2" onclick="openVideoPopup('https://www.youtube.com/embed/3aI5C13Zw_4')"><div class="bv-thumb"><img src="nra.jpg" alt="NR Agarwal"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>N R Agarwal Industries</h4><p>100% recycled fibre, VOITH technology</p></div></div>
+      <div class="brand-video-card sr-scale d3" onclick="openVideoPopup('satia.mp4')"><div class="bv-thumb"><img src="satia.jpg" alt="Satia"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>Satia Industries</h4><p>Eco-friendly copier from Punjab</p></div></div>
+      <div class="brand-video-card sr-scale d4" onclick="openVideoPopup('khanna.mp4')"><div class="bv-thumb"><img src="khanna.jpg" alt="Khanna"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>Khanna Paper Mills</h4><p>Hi-bright copier range since 1985</p></div></div>
+      <div class="brand-video-card sr-scale d5" onclick="openVideoPopup('ruchira.mp4')"><div class="bv-thumb"><img src="ruchira.jpg" alt="Ruchira"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>Ruchira Papers</h4><p>100% tree-free sustainable paper</p></div></div>
+      <div class="brand-video-card sr-scale d6" onclick="openVideoPopup('andhra.mp4')"><div class="bv-thumb"><img src="andhra.jpg" alt="Andhra"><div class="bv-play"><span>&#9654;</span></div></div><div class="bv-info"><h4>Andhra Paper Limited</h4><p>Reflection series, ECF technology</p></div></div>
     </div>
   </div>
 </div>
 
-<!-- ============ ENTRY MODULE ============ -->
-<script type="module" src="js/main.js"></script>
 
+<div id="brand-doublea" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span style="color:#003BFF;">Double A &ndash; Premium Copier</span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('doublea.mp4')">
+    <div class="bpv-thumb"><img src="doublea.jpg" alt="Double A video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(0,59,255,0.1);color:#003BFF;">&#9654; Watch Video</span><h4 style="color:#003BFF;">Double A (Thailand)</h4><p>30 million fibres per gram premium copier. Jam-free performance with CIE 167 whiteness.</p></div>
+  </div>
+  <span class="brand-badge" style="background:rgba(0,59,255,0.08);color:#003BFF;">Imported &bull; Thailand</span>
+  <h2 style="color:#003BFF;font-size:3rem;margin:10px 0 8px;font-family:'Times New Roman',Times,serif;">Double A Premium Copier</h2>
+  <p style="color:var(--text-muted);margin-bottom:24px;max-width:720px;line-height:1.8;font-weight:300;">Double A is a globally recognized premium copier paper from Thailand with 30 million fibres per gram. Known for "Paper from KHAN-NA" sustainable sourcing, jam-free performance, and CIE 167 whiteness. Available in A3, A4, and A11 sizes across 70, 75, 80, and 100 GSM.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+    <div style="background:rgba(0,59,255,0.04);border:1px solid rgba(0,59,255,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#003BFF;font-family:'Times New Roman',Times,serif;">30M</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Fibres / Gram</div></div>
+    <div style="background:rgba(0,59,255,0.04);border:1px solid rgba(0,59,255,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#003BFF;font-family:'Times New Roman',Times,serif;">CIE 167</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Whiteness</div></div>
+    <div style="background:rgba(0,59,255,0.04);border:1px solid rgba(0,59,255,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#003BFF;font-family:'Times New Roman',Times,serif;">120+</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Countries</div></div>
+    <div style="background:rgba(0,59,255,0.04);border:1px solid rgba(0,59,255,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#003BFF;font-family:'Times New Roman',Times,serif;">FSC</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Certified</div></div>
+  </div>
+  <div class="rpl-showcase-grid">
+    <div class="rpl-card sr-scale d1" style="border-color:rgba(0,59,255,0.12);"><div class="rpl-card-img" style="background:rgba(0,59,255,0.03);"><img src="DA 70.jpg" alt="70 GSM"></div><div class="rpl-card-body"><h3 style="color:#003BFF;">Double A 70 GSM</h3><p class="rpl-card-sub">Everyday </p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>A11</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">70 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">102% ISO</td></tr><tr><td class="spec-label">CIE</td><td class="spec-value">148</td></tr><tr><td class="spec-label">Opacity</td><td class="spec-value">93%</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Forms, memos, daily printing</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d2" style="border-color:rgba(0,59,255,0.12);"><div class="rpl-card-img" style="background:rgba(0,59,255,0.03);"><img src="DA75.jpeg" alt="75 GSM"></div><div class="rpl-card-body"><h3 style="color:#003BFF;">Double A 75 GSM</h3><p class="rpl-card-sub">Business</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>A11</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">75 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">103% ISO</td></tr><tr><td class="spec-label">CIE</td><td class="spec-value">152</td></tr><tr><td class="spec-label">Opacity</td><td class="spec-value">94%</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Reports, official documents</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d3" style="border-color:rgba(0,59,255,0.12);"><div class="rpl-card-img" style="background:rgba(0,59,255,0.03);"><img src="doublea.jpg" alt="80 GSM"></div><div class="rpl-card-body"><h3 style="color:#003BFF;">Double A Premium 80 GSM</h3><p class="rpl-card-sub">Premium</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>A11</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">80 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">104% ISO</td></tr><tr><td class="spec-label">CIE</td><td class="spec-value">167</td></tr><tr><td class="spec-label">Thickness</td><td class="spec-value">110 &micro;m</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Presentations, letterheads</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d4" style="border-color:rgba(0,59,255,0.12);"><div class="rpl-card-img" style="background:rgba(0,59,255,0.03);"><img src="DA100.jpeg" alt="100 GSM"></div><div class="rpl-card-body"><h3 style="color:#003BFF;">Double A 100 GSM</h3><p class="rpl-card-sub">Presentation</p><div class="rpl-card-tags"><span>A4</span><span>A3</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">100 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">104% ISO</td></tr><tr><td class="spec-label">CIE</td><td class="spec-value">167</td></tr><tr><td class="spec-label">Opacity</td><td class="spec-value">97%</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Charts, proposals, premium reports</td></tr></table></div></div>
+  </div>
+  <div class="brand-cta sr" style="margin-top:48px;background:linear-gradient(135deg,rgba(0,59,255,0.03),rgba(0,59,255,0.07));border-color:rgba(0,59,255,0.12);"><h3 style="color:#003BFF;">Interested in Double A?</h3><p>Get wholesale rates with direct supply. Pan-India delivery.</p><button onclick="showPage('enquiry')" class="btn" style="background:#003BFF;">Send Enquiry</button></div>
+</div>
+
+
+<div id="brand-nragarwal" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span>N R Agarwal &ndash; Brilliance Copier</span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('https://www.youtube.com/embed/3aI5C13Zw_4')">
+    <div class="bpv-thumb"><img src="nra.jpg" alt="NR Agarwal video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(0,0,0,0.06);color:var(--graphite);">&#9654; Watch Video</span><h4>N R Agarwal Industries</h4><p>100% de-inked recycled fibre with VOITH de-inking technology from Germany.</p></div>
+  </div>
+  <span class="brand-badge" style="background:rgba(0,0,0,0.05);color:var(--graphite);">Made in India &bull; Gujarat</span>
+  <h2 style="color:var(--graphite);font-size:3rem;margin:10px 0 8px;font-family:'Times New Roman',Times,serif;">NR Brilliance Copier</h2>
+  <p style="color:var(--text-muted);margin-bottom:24px;max-width:720px;line-height:1.8;font-weight:300;">NRAIL manufactures high-quality copier paper using 100% de-inked wood-free recycled fibre with VOITH de-inking technology from Germany. Available in A4 and A3 sizes across 70, 75, and 80 GSM.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:155px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--graphite);font-family:'Times New Roman',Times,serif;">100%</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Recycled Fibre</div></div>
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:155px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--graphite);font-family:'Times New Roman',Times,serif;">354K TPA</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Capacity</div></div>
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:155px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--graphite);font-family:'Times New Roman',Times,serif;">VOITH</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">German De-Inking</div></div>
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:155px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--graphite);font-family:'Times New Roman',Times,serif;">90&ndash;94%</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">ISO Brightness</div></div>
+  </div>
+  <div class="rpl-showcase-grid">
+    <div class="rpl-card sr-scale d1"><div class="rpl-card-img" style="background:var(--cream);"><img src="nra.jpg"></div><div class="rpl-card-body"><h3>Brilliance 70 GSM</h3><p class="rpl-card-sub">Economy Everyday</p><div class="rpl-card-tags"><span>A4</span><span>A3</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">70 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">90% ISO</td></tr><tr><td class="spec-label">Sheets/Ream</td><td class="spec-value">500</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Daily office, drafts</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d2"><div class="rpl-card-img" style="background:var(--cream);"><img src="nra.jpg"></div><div class="rpl-card-body"><h3>Brilliance 75 GSM</h3><p class="rpl-card-sub">Standard Office</p><div class="rpl-card-tags"><span>A4</span><span>A3</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">75 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">92% ISO</td></tr><tr><td class="spec-label">Sheets/Ream</td><td class="spec-value">500</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Reports, presentations</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d3"><div class="rpl-card-img" style="background:var(--cream);"><img src="nra.jpg"></div><div class="rpl-card-body"><h3>Brilliance 80 GSM</h3><p class="rpl-card-sub">Premium Professional</p><div class="rpl-card-tags"><span>A4</span><span>A3</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">80 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">94% ISO</td></tr><tr><td class="spec-label">Sheets/Ream</td><td class="spec-value">500</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Contracts, letterheads</td></tr></table></div></div>
+  </div>
+  <div class="brand-cta sr" style="margin-top:48px;"><h3>Interested in N R Agarwal?</h3><p>Wholesale supply with competitive rates. Contact for bulk orders.</p><button onclick="showPage('enquiry')" class="btn">Send Enquiry</button></div>
+</div>
+
+
+<div id="brand-satia" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span style="color:#31832a;">Satia Industries &ndash; Superb Copier</span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('satia.mp4')">
+    <div class="bpv-thumb"><img src="satia.jpg" alt="Satia video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(49,131,42,0.1);color:#31832a;">&#9654; Watch Video</span><h4 style="color:#31832a;">Satia Industries (Punjab)</h4><p>Eco-friendly copier made from agricultural residues with ECF bleaching technology.</p></div>
+  </div>
+  <span class="brand-badge" style="background:rgba(49,131,42,0.08);color:#31832a;">Made in India &bull; Punjab</span>
+  <h2 style="color:#31832a;font-size:3rem;margin:10px 0 8px;font-family:'Times New Roman',Times,serif;">Satia Superb Copier</h2>
+  <p style="color:var(--text-muted);margin-bottom:24px;max-width:720px;line-height:1.8;font-weight:300;">Satia Industries produces eco-friendly copier paper using agricultural residues and ECF bleaching. "Satia Superb" offers long-lasting whiteness, fine texture, and smooth running. Available in A4, A3, and FS.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+    <div style="background:rgba(49,131,42,0.04);border:1px solid rgba(49,131,42,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#31832a;font-family:'Times New Roman',Times,serif;">ECF</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Bleached Pulp</div></div>
+    <div style="background:rgba(49,131,42,0.04);border:1px solid rgba(49,131,42,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#31832a;font-family:'Times New Roman',Times,serif;">ISI</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">BIS Certified</div></div>
+    <div style="background:rgba(49,131,42,0.04);border:1px solid rgba(49,131,42,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#31832a;font-family:'Times New Roman',Times,serif;">FSC</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Certified</div></div>
+    <div style="background:rgba(49,131,42,0.04);border:1px solid rgba(49,131,42,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#31832a;font-family:'Times New Roman',Times,serif;">70+</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Dealers</div></div>
+  </div>
+  <div class="rpl-showcase-grid">
+    <div class="rpl-card sr-scale d1" style="border-color:rgba(49,131,42,0.12);"><div class="rpl-card-img" style="background:rgba(49,131,42,0.03);"><img src="satia.jpg"></div><div class="rpl-card-body"><h3 style="color:#31832a;">Satia 65 GSM</h3><p class="rpl-card-sub">Budget</p><div class="rpl-card-tags"><span>A4</span><span>FS</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">65 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">86&ndash;88% ISO</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Bulk, draft printing</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d2" style="border-color:rgba(49,131,42,0.12);"><div class="rpl-card-img" style="background:rgba(49,131,42,0.03);"><img src="satia.jpg"></div><div class="rpl-card-body"><h3 style="color:#31832a;">Satia 70 GSM</h3><p class="rpl-card-sub">Economy</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>FS</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">70 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">88&ndash;90% ISO</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">High-volume printing</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d3" style="border-color:rgba(49,131,42,0.12);"><div class="rpl-card-img" style="background:rgba(49,131,42,0.03);"><img src="satia.jpg"></div><div class="rpl-card-body"><h3 style="color:#31832a;">Satia 75 GSM</h3><p class="rpl-card-sub">Standard</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>FS</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">75 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">88&ndash;90% ISO</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Reports, stationery</td></tr></table></div></div>
+    <div class="rpl-card sr-scale d4" style="border-color:rgba(49,131,42,0.12);"><div class="rpl-card-img" style="background:rgba(49,131,42,0.03);"><img src="satia.jpg"></div><div class="rpl-card-body"><h3 style="color:#31832a;">Satia 80 GSM</h3><p class="rpl-card-sub">Premium</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>FS</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">80 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">88&ndash;90% ISO</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Contracts, double-sided</td></tr></table></div></div>
+  </div>
+  <div class="brand-cta sr" style="margin-top:48px;background:linear-gradient(135deg,rgba(49,131,42,0.03),rgba(49,131,42,0.08));border-color:rgba(49,131,42,0.12);"><h3 style="color:#31832a;">Interested in Satia?</h3><p>Competitive wholesale pricing. Pan-India dispatch.</p><button onclick="showPage('enquiry')" class="btn" style="background:#31832a;">Send Enquiry</button></div>
+</div>
+
+<div id="brand-khanna" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span style="color:#2e317e;">Khanna Paper Mills</span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('khanna.mp4')">
+    <div class="bpv-thumb"><img src="khanna.jpg" alt="Khanna video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(46,49,126,0.1);color:#2e317e;">&#9654; Watch Video</span><h4 style="color:#2e317e;">Khanna Paper Mills (Amritsar)</h4><p>ISO 9001 certified — India's first mill to produce W&amp;P paper from 100% de-inked recovered paper.</p></div>
+  </div>
+  <span class="brand-badge" style="background:rgba(46,49,126,0.08);color:#2e317e;">Made in India &bull; Amritsar</span>
+  <h2 style="color:#2e317e;font-size:3rem;margin:10px 0 8px;font-family:'Times New Roman',Times,serif;">Khanna Copier Paper</h2>
+  <p style="color:var(--text-muted);margin-bottom:24px;max-width:720px;line-height:1.8;font-weight:300;">Khanna Paper Mills (est. 1985, ISO 9001) — first Indian mill to produce W&P paper from 100% de-inked recovered paper. Range: K BOLD, E PRINT, E COPY.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+    <div style="background:rgba(46,49,126,0.04);border:1px solid rgba(46,49,126,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#2e317e;font-family:'Times New Roman',Times,serif;">3.3L</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">MT/Year</div></div>
+    <div style="background:rgba(46,49,126,0.04);border:1px solid rgba(46,49,126,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#2e317e;font-family:'Times New Roman',Times,serif;">100%</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Recycled</div></div>
+    <div style="background:rgba(46,49,126,0.04);border:1px solid rgba(46,49,126,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#2e317e;font-family:'Times New Roman',Times,serif;">ISO 9001</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Certified</div></div>
+    <div style="background:rgba(46,49,126,0.04);border:1px solid rgba(46,49,126,0.1);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#2e317e;font-family:'Times New Roman',Times,serif;">100+</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Dealers</div></div>
+  </div>
+  <div class="rpl-showcase-grid" style="grid-template-columns:repeat(auto-fill,minmax(310px,1fr));">
+    <div class="rpl-card sr-scale d1" style="border-color:rgba(46,49,126,0.12);overflow:visible;"><div style="position:absolute;top:-10px;right:15px;background:#2e317e;color:#fff;font-size:9px;font-weight:700;padding:5px 14px;border-radius:4px;letter-spacing:1.5px;z-index:2;">ECONOMY</div><div class="rpl-card-img" style="background:rgba(46,49,126,0.03);"><img src="khanna.jpg"></div><div class="rpl-card-body"><h3 style="color:#2e317e;font-size:1.7rem;">K BOLD</h3><p class="rpl-card-sub">65 GSM &bull; Budget Copier</p><p style="color:var(--text-muted);font-size:0.86rem;line-height:1.7;margin-bottom:14px;">Eco-friendly economical copier, crisp white texture, perfect for high-volume everyday printing.</p><div class="rpl-card-tags"><span>A4</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">65 GSM</td></tr><tr><td class="spec-label">Sheets</td><td class="spec-value">500/Ream</td></tr><tr><td class="spec-label">Features</td><td class="spec-value">Jam-free, eco-friendly</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Bulk printing, drafts</td></tr></table><button onclick="showPage('enquiry')" class="btn" style="background:#2e317e;width:100%;margin-top:16px;padding:12px;font-size:12px;">Get Quotation</button></div></div>
+    <div class="rpl-card sr-scale d2" style="border-color:rgba(46,49,126,0.12);overflow:visible;"><div style="position:absolute;top:-10px;right:15px;background:#4a4eab;color:#fff;font-size:9px;font-weight:700;padding:5px 14px;border-radius:4px;letter-spacing:1.5px;z-index:2;">STANDARD</div><div class="rpl-card-img" style="background:rgba(46,49,126,0.03);"><img src="khanna.jpg"></div><div class="rpl-card-body"><h3 style="color:#2e317e;font-size:1.7rem;">E PRINT</h3><p class="rpl-card-sub">70 GSM &bull; Hi-Bright</p><p style="color:var(--text-muted);font-size:0.86rem;line-height:1.7;margin-bottom:14px;">Hi-bright copier for both-side printing. Jam-less operation on hi-speed machines.</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>FS</span><span style="background:rgba(46,49,126,0.1);color:#2e317e;">Surface Sized</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">70 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">Hi-Bright</td></tr><tr><td class="spec-label">Features</td><td class="spec-value">Both-side, hi-speed</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Office docs, reports</td></tr></table><button onclick="showPage('enquiry')" class="btn" style="background:#2e317e;width:100%;margin-top:16px;padding:12px;font-size:12px;">Get Quotation</button></div></div>
+    <div class="rpl-card sr-scale d3" style="border-color:rgba(46,49,126,0.12);overflow:visible;"><div style="position:absolute;top:-10px;right:15px;background:linear-gradient(135deg,#2e317e,#4a4eab);color:#fff;font-size:9px;font-weight:700;padding:5px 14px;border-radius:4px;letter-spacing:1.5px;z-index:2;">PREMIUM</div><div class="rpl-card-img" style="background:rgba(46,49,126,0.03);"><img src="khanna.jpg"></div><div class="rpl-card-body"><h3 style="color:#2e317e;font-size:1.7rem;">E COPY</h3><p class="rpl-card-sub">75 GSM &bull; Premium</p><p style="color:var(--text-muted);font-size:0.86rem;line-height:1.7;margin-bottom:14px;">Premium hi-bright with superb photo imaging and crisp colour. Jam-less for hi-speed machines.</p><div class="rpl-card-tags"><span>A4</span><span>A3</span><span>FS</span><span style="background:rgba(46,49,126,0.1);color:#2e317e;">Surface Sized</span></div><table class="spec-table"><tr><td class="spec-label">Weight</td><td class="spec-value">75 GSM</td></tr><tr><td class="spec-label">Brightness</td><td class="spec-value">Premium White</td></tr><tr><td class="spec-label">Features</td><td class="spec-value">Photo imaging, colour</td></tr><tr><td class="spec-label">Best For</td><td class="spec-value">Contracts, letterheads</td></tr></table><button onclick="showPage('enquiry')" class="btn" style="background:#2e317e;width:100%;margin-top:16px;padding:12px;font-size:12px;">Get Quotation</button></div></div>
+  </div>
+  <div class="brand-cta sr" style="margin-top:48px;background:linear-gradient(135deg,rgba(46,49,126,0.03),rgba(46,49,126,0.08));border-color:rgba(46,49,126,0.12);"><h3 style="color:#2e317e;">Interested in Khanna Paper?</h3><p>Bulk wholesale rates, fast dispatch from Delhi.</p><button onclick="showPage('enquiry')" class="btn" style="background:#2e317e;">Send Enquiry</button></div>
+</div>
+
+<div id="brand-ruchira" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span id="rpl-bc-cat" onclick="rplShowCatalog()" style="cursor:pointer;color:#555;">Ruchira Papers</span><span class="apl-bc-sep rpl-bc-detail" style="display:none;">&rsaquo;</span><span class="rpl-bc-detail" id="rpl-bc-product" style="display:none;color:var(--text-muted);"></span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('ruchira.mp4')">
+    <div class="bpv-thumb"><img src="ruchira.jpg" alt="Ruchira video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(102,102,102,0.1);color:#555;">&#9654; Watch Video</span><h4 style="color:#555;">Ruchira Papers (Himachal Pradesh)</h4><p>100% tree-free paper made from agricultural residues — since 1980.</p></div>
+  </div>
+  <div class="apl-layout">
+    <div class="apl-sidebar" style="border-color:var(--border);">
+      <div style="text-align:center;margin-bottom:15px;"><img src="ruchira.jpg" alt="Ruchira" style="width:100%;border-radius:8px;border:1px solid var(--border);"><div style="font-family:'Times New Roman',Times,serif;font-size:1.25rem;color:var(--text);font-weight:700;margin-top:12px;">Ruchira Papers</div><div style="font-size:10px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;">Tree-Free &bull; Since 1980</div></div>
+      <div style="height:1px;background:var(--border);margin-bottom:12px;"></div>
+      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;padding:8px 14px;">Products</div>
+      <a onclick="rplShowProd('mela')" class="apl-sb-link">Mela &ndash; Colour</a>
+      <a onclick="rplShowProd('mogra')" class="apl-sb-link">Mogra &ndash; Card</a>
+      <a onclick="rplShowProd('rozana')" class="apl-sb-link">Rozana &ndash; Copier</a>
+      <a onclick="rplShowProd('tarang')" class="apl-sb-link">Tarang &ndash; Executive</a>
+      <a onclick="rplShowProd('kora')" class="apl-sb-link">Kora &ndash; Maplitho</a>
+      <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+      <a onclick="rplShowCatalog()" class="apl-sb-link" style="font-weight:600;">&#8592; View All</a>
+      <div style="margin-top:16px;"><a onclick="showPage('enquiry')" class="btn" style="background:#555;width:100%;text-align:center;display:block;font-size:12px;padding:12px;">Get Quotation</a></div>
+    </div>
+    <div class="apl-content">
+      <div id="rpl-catalog">
+        <span class="brand-badge" style="background:rgba(102,102,102,0.08);color:#555;">Ruchira Papers &bull; Himachal Pradesh</span>
+        <h2 style="color:#555;font-size:3rem;margin:10px 0;line-height:1.1;font-family:'Times New Roman',Times,serif;">Paper Showcase</h2>
+        <p style="color:var(--text-muted);margin-bottom:18px;max-width:720px;line-height:1.8;font-weight:300;">Tree-free papers for writing, print, colour work, and office use. Manufactured using agricultural residues.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+          <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#555;font-family:'Times New Roman',Times,serif;">100%</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Tree-Free</div></div>
+          <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#555;font-family:'Times New Roman',Times,serif;">450 TPD</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Capacity</div></div>
+          <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#555;font-family:'Times New Roman',Times,serif;">1980</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Established</div></div>
+          <div style="background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:14px 22px;flex:1;min-width:150px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#555;font-family:'Times New Roman',Times,serif;">Acid-Free</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Base</div></div>
+        </div>
+        <div class="rpl-showcase-grid">
+          <div class="rpl-card sr-scale d1" onclick="rplShowProd('mela')"><div class="rpl-card-img"><img src="https://ruchirapapers.com/images/paper-showcase/mela/mela-01.jpg" alt="Mela"></div><div class="rpl-card-body"><h3>MELA</h3><p class="rpl-card-sub">Colour Paper</p><div class="rpl-card-tags"><span>Lemon</span><span>Mint</span><span>Rose</span><span>Sky</span></div><div class="rpl-card-gsm">49&ndash;160 GSM</div><div class="rpl-card-link">View Details &rarr;</div></div></div>
+          <div class="rpl-card sr-scale d2" onclick="rplShowProd('mogra')"><div class="rpl-card-img"><img src="https://ruchirapapers.com/images/paper-showcase/mogra/mogra-01.jpg" alt="Mogra"></div><div class="rpl-card-body"><h3>MOGRA</h3><p class="rpl-card-sub">Card &amp; Invitation</p><div class="rpl-card-tags"><span>Natural</span><span>White</span></div><div class="rpl-card-gsm">145&ndash;160 GSM</div><div class="rpl-card-link">View Details &rarr;</div></div></div>
+          <div class="rpl-card sr-scale d3" onclick="rplShowProd('rozana')"><div class="rpl-card-img"><img src="https://ruchirapapers.com/images/paper-showcase/rozana/rozana-01.jpg" alt="Rozana"></div><div class="rpl-card-body"><h3>ROZANA</h3><p class="rpl-card-sub">Copier</p><div class="rpl-card-tags"><span>Economy</span><span>A4/A3</span></div><div class="rpl-card-gsm">70&ndash;75 GSM</div><div class="rpl-card-link">View Details &rarr;</div></div></div>
+          <div class="rpl-card sr-scale d4" onclick="rplShowProd('tarang')"><div class="rpl-card-img"><img src="https://ruchirapapers.com/images/paper-showcase/tarang/tarang-01.jpg" alt="Tarang"></div><div class="rpl-card-body"><h3>TARANG</h3><p class="rpl-card-sub">Executive Colour A4</p><div class="rpl-card-tags"><span>Yellow</span><span>Pink</span><span>Green</span><span>Blue</span></div><div class="rpl-card-gsm">75 GSM &bull; A4</div><div class="rpl-card-link">View Details &rarr;</div></div></div>
+          <div class="rpl-card sr-scale d5" onclick="rplShowProd('kora')"><div class="rpl-card-img" style="background:var(--cream);"><img src="https://ruchirapapers.com/images/paper-showcase/kora/kora-01.jpg" alt="Kora"></div><div class="rpl-card-body"><h3>KORA</h3><p class="rpl-card-sub">Maplitho / Writing Printing</p><div class="rpl-card-tags"><span>White</span><span>Cream Wove</span></div><div class="rpl-card-gsm">58&ndash;120 GSM</div><div class="rpl-card-link">View Details &rarr;</div></div></div>
+        </div>
+      </div>
+      <div id="rpl-detail" style="display:none;">
+        <h2 id="rpl-d-title" style="color:#555;font-size:2.4rem;margin-bottom:6px;font-family:'Times New Roman',Times,serif;"></h2>
+        <p id="rpl-d-sub" style="font-size:12px;color:var(--gold);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;"></p>
+        <p id="rpl-d-desc" style="color:var(--text-muted);line-height:1.8;margin-bottom:28px;max-width:680px;font-weight:300;"></p>
+        <div class="apl-detail-layout">
+          <div class="apl-detail-img-wrap"><img id="rpl-d-img" src="" alt="" style="width:100%;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-card);"><div id="rpl-d-gallery" style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;"></div></div>
+          <div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#127912; Variants &amp; Colours</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="rpl-av"></div></div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#128202; Specifications</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="rpl-as"></div></div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#128196; Usage</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="rpl-au"></div></div>
+            <div style="margin-top:24px;"><button onclick="showPage('enquiry')" class="btn" style="background:#555;width:100%;">Request Quotation</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="brand-cta sr" style="background:linear-gradient(135deg,rgba(102,102,102,0.03),rgba(102,102,102,0.08));border-color:rgba(102,102,102,0.12);margin-top:56px;"><h3 style="color:#555;">Interested in Ruchira?</h3><p>Wholesale pricing, Pan-India delivery.</p><button onclick="showPage('enquiry')" class="btn" style="background:#555;">Send Enquiry</button></div>
+</div>
+
+<div id="brand-andhra" class="page">
+  <div class="apl-breadcrumb"><span onclick="showPage('home')" style="cursor:pointer;color:var(--emerald);">Home</span><span class="apl-bc-sep">&rsaquo;</span><span id="apl-bc-cat" onclick="aplShowCatalog()" style="cursor:pointer;color:#1B6B4F;">Andhra Paper &ndash; Copier</span><span class="apl-bc-sep apl-bc-detail" style="display:none;">&rsaquo;</span><span class="apl-bc-detail" id="apl-bc-product" style="display:none;color:var(--text-muted);"></span></div>
+  <div class="brand-page-video sr" onclick="openVideoPopup('andhra.mp4')">
+    <div class="bpv-thumb"><img src="andhra.jpg" alt="Andhra video"><div class="bv-play"><span>&#9654;</span></div></div>
+    <div class="bpv-info"><span class="bpv-badge" style="background:rgba(27,107,79,0.1);color:#1B6B4F;">&#9654; Watch Video</span><h4 style="color:#1B6B4F;">Andhra Paper Limited</h4><p>Reflection series with ECF Pulp technology — jam-free performance for all copiers.</p></div>
+  </div>
+  <div class="apl-layout">
+    <div class="apl-sidebar">
+      <div class="apl-sidebar-brand"><img src="andhra.jpg" alt="Andhra Paper" style="width:100%;border-radius:8px;margin-bottom:14px;border:1px solid var(--border);"><div style="font-family:'Times New Roman',Times,serif;font-size:1.25rem;color:#1B6B4F;font-weight:700;text-align:center;margin-bottom:4px;">Andhra Paper</div><div style="text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Copier Range</div></div>
+      <div style="height:1px;background:var(--border);margin-bottom:14px;"></div>
+      <div class="apl-sidebar-section"><div class="apl-sidebar-heading" style="color:#1B6B4F;font-size:11px;pointer-events:none;padding-bottom:4px;">REFLECTION SERIES</div>
+        <a onclick="aplShowProd('ref-65')" class="apl-sb-link">Reflection 65 GSM</a>
+        <a onclick="aplShowProd('ref-70')" class="apl-sb-link">Reflection 70 GSM</a>
+        <a onclick="aplShowProd('ref-70w')" class="apl-sb-link">Reflection 70 &ndash; White</a>
+        <a onclick="aplShowProd('ref-75')" class="apl-sb-link">Reflection 75 GSM</a>
+        <a onclick="aplShowProd('ref-80')" class="apl-sb-link">Reflection 80 GSM</a>
+        <a onclick="aplShowProd('ref-100')" class="apl-sb-link">Reflection 100 GSM</a>
+      </div>
+      <div style="height:1px;background:var(--border);margin:14px 0;"></div>
+      <a onclick="aplShowCatalog()" class="apl-sb-link" style="color:#1B6B4F;font-weight:600;">&#8592; View All</a>
+      <div style="margin-top:16px;"><a onclick="showPage('enquiry')" class="btn" style="background:#1B6B4F;width:100%;text-align:center;display:block;font-size:12px;padding:12px;">Get Quotation</a></div>
+    </div>
+    <div class="apl-content">
+      <div id="apl-catalog">
+        <span class="brand-badge" style="background:rgba(27,107,79,0.08);color:#1B6B4F;">Andhra Paper &bull; Andhra Pradesh</span>
+        <h2 style="color:#1B6B4F;font-size:3rem;margin-bottom:10px;font-family:'Times New Roman',Times,serif;">Copier Paper</h2>
+        <p style="color:var(--text-muted);margin-bottom:18px;max-width:720px;line-height:1.8;font-weight:300;">Office and multipurpose papers from economy to premium, with ECF Pulp technology. Engineered for all copiers, printers, and fax machines.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:36px;">
+          <div style="background:var(--cream);border:1px solid rgba(27,107,79,0.12);border-radius:10px;padding:14px 22px;flex:1;min-width:170px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#1B6B4F;font-family:'Times New Roman',Times,serif;">ECF</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Pulp Tech</div></div>
+          <div style="background:var(--cream);border:1px solid rgba(27,107,79,0.12);border-radius:10px;padding:14px 22px;flex:1;min-width:170px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#1B6B4F;font-family:'Times New Roman',Times,serif;">Jam-Free</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Performance</div></div>
+          <div style="background:var(--cream);border:1px solid rgba(27,107,79,0.12);border-radius:10px;padding:14px 22px;flex:1;min-width:170px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#1B6B4F;font-family:'Times New Roman',Times,serif;">65&ndash;100</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">GSM Range</div></div>
+          <div style="background:var(--cream);border:1px solid rgba(27,107,79,0.12);border-radius:10px;padding:14px 22px;flex:1;min-width:170px;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:#1B6B4F;font-family:'Times New Roman',Times,serif;">A4, A3, FS</div><div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Sizes</div></div>
+        </div>
+        <h4 class="apl-cat-heading">Reflection Series</h4>
+        <div class="apl-product-grid" id="apl-grid-ref"></div>
+        <h4 class="apl-cat-heading" style="margin-top:36px;">Carton &amp; Wrapper 3D</h4>
+        <div class="apl-product-grid" id="apl-grid-cw"></div>
+      </div>
+      <div id="apl-detail" style="display:none;">
+        <h2 id="apl-d-title" style="color:#1B6B4F;font-size:2.4rem;margin-bottom:8px;font-family:'Times New Roman',Times,serif;"></h2>
+        <p id="apl-d-desc" style="color:var(--text-muted);line-height:1.8;margin-bottom:28px;max-width:680px;font-weight:300;"></p>
+        <div class="apl-detail-layout">
+          <div class="apl-detail-img-wrap"><img id="apl-d-img" src="" alt="" style="width:100%;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-card);"></div>
+          <div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#9733; Features</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="apl-af"></div></div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#128202; Specs</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="apl-as"></div></div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#9989; Benefits</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="apl-ab"></div></div>
+            <div class="apl-accordion"><div class="apl-accordion-head" onclick="aplToggleAcc(this)"><span>&#128196; End Uses</span><span class="apl-acc-icon">+</span></div><div class="apl-accordion-body" id="apl-ae"></div></div>
+            <div style="margin-top:24px;"><button onclick="showPage('enquiry')" class="btn" style="background:#1B6B4F;width:100%;">Request Quotation</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="brand-cta sr" style="background:linear-gradient(135deg,rgba(27,107,79,0.03),rgba(27,107,79,0.08));border-color:rgba(27,107,79,0.12);margin-top:56px;"><h3 style="color:#1B6B4F;">Interested in Andhra Paper?</h3><p>Premium copier products at wholesale rates.</p><button onclick="showPage('enquiry')" class="btn" style="background:#1B6B4F;">Send Enquiry</button></div>
+</div>
+
+<div id="about" class="page">
+  <div class="profile-container">
+    <img src="logo.jpg" class="profile-logo sr-scale">
+    <span class="brand-name-nav sr" style="display:block;margin:0 0 8px;font-size:2.4rem;letter-spacing:3px;">SATIJA PAPER</span>
+    <h2 class="sr" style="font-size:3.2rem;margin-bottom:2rem;font-family:'Times New Roman',Times,serif;">A Legacy of Paper Distribution</h2>
+    <div class="profile-text">
+      <p class="sr-left">Founded in 2010, <strong>Satija Paper</strong> has evolved from a local distributor to a trusted regional partner for major paper mills across India. Based in North Delhi, New Delhi, our operational excellence is defined by technical precision and client-first ethics.</p>
+      <p class="sr-right">Our infrastructure includes a climate-controlled warehouse housing over 100+ metric tons of ready stock. We take pride in our direct-from-mill supply chain, ensuring clients receive 100% authentic products at competitive market rates.</p>
+    </div>
+    <div class="stats-row sr">
+      <div><span class="stat-val">15+</span><div class="stat-lab">Years</div></div>
+      <div><span class="stat-val">1800+</span><div class="stat-lab">Clients</div></div>
+      <div><span class="stat-val">500+</span><div class="stat-lab">Tons Stock</div></div>
+      <div><span class="stat-val">24hr</span><div class="stat-lab">Dispatch</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="photos" class="page">
+  <span class="subtitle">Our Visual Journey</span>
+  <h2 style="font-size:3rem;margin-bottom:1.2rem;">Photo Gallery</h2>
+  <p style="color:var(--text-muted);margin-bottom:28px;max-width:560px;font-weight:300;">A glimpse into our warehouse, products, and operations.</p>
+  <div class="gallery-grid" id="photoGallery"><div class="gallery-empty"><div class="empty-icon">&#128248;</div><h3 style="margin-bottom:8px;">Photos Coming Soon</h3><p>We're curating our best moments.</p></div></div>
+</div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)"><div class="lightbox-close" onclick="closeLightbox(event)">&times;</div><div class="lightbox-nav lightbox-prev" onclick="navigateLightbox(event,-1)">&lsaquo;</div><img id="lightbox-img" src="" alt=""><div class="lightbox-caption" id="lightbox-caption"></div><div class="lightbox-nav lightbox-next" onclick="navigateLightbox(event,1)">&rsaquo;</div></div>
+
+<div id="videos" class="page">
+  <span class="subtitle">Watch &amp; Learn</span>
+  <h2 style="font-size:3rem;margin-bottom:1.2rem;">Video Gallery</h2>
+  <p style="color:var(--text-muted);margin-bottom:28px;max-width:560px;font-weight:300;">Product showcases, warehouse tours, and more.</p>
+  <div class="video-grid"><div class="gallery-empty"><div class="empty-icon">&#127916;</div><h3 style="margin-bottom:8px;">Videos Coming Soon</h3><p>Exciting content on the way.</p></div></div>
+</div>
+
+<div id="enquiry" class="page">
+  <div style="text-align:center;margin-bottom:28px;"><span class="subtitle" style="padding-left:0;margin-left:auto;margin-right:auto;">Get a Quotation</span><h2 style="font-size:2.8rem;">Enquiry Form</h2></div>
+  <form id="enquiryForm" class="contact-form sr" style="max-width:640px;margin:0 auto;">
+    <input type="text" id="enqName" placeholder="Full Name / Company Name" required>
+    <input type="tel" id="enqWhatsApp" placeholder="WhatsApp No. (10 digits)" required pattern="[0-9]{10}" maxlength="10">
+    <input type="email" id="enqEmail" placeholder="Email Address" required>
+    <input type="text" id="enqQty" placeholder="Quantity (e.g. 500 Reams)">
+    <textarea id="enqReq" rows="5" placeholder="Requirements (Brand, GSM, Size)"></textarea>
+    <button type="submit" class="btn" style="width:100%;justify-content:center;">Submit Enquiry</button>
+    <p id="enqMsg" style="display:none;text-align:center;margin-top:14px;color:var(--emerald);font-weight:600;font-size:13px;">Enquiry submitted! We'll get back to you soon.</p>
+  </form>
+</div>
+
+<div id="contact" class="page">
+  <div class="contact-container">
+    <div class="sr-left">
+      <span class="subtitle">Reach Us</span>
+      <h2 style="font-size:3rem;">Contact Details</h2>
+      <p style="margin:14px 0;color:var(--text-muted);font-weight:300;">Visit our office or get in touch.</p>
+      <div style="background:var(--bg-card);padding:28px;border-radius:var(--radius);line-height:2.1;border:1px solid var(--border);border-left:4px solid var(--emerald);">
+        <p><strong>&#128205; Address:</strong><br>790, Near Batra Cinema, Dr. Mukherjee Nagar, New Delhi &ndash; 110009</p>
+        <hr style="margin:14px 0;border:0;border-top:1px solid var(--border);">
+        <p><strong>&#128222;</strong> +91 98997 08098</p>
+        <p><strong>&#9993;&#65039;</strong> info@satijapaper.com</p>
+        <p><strong>&#9200;</strong> 10:00 AM &ndash; 6:00 PM</p>
+      </div>
+    </div>
+    <div class="sr-right" style="width:100%;height:400px;background:var(--cream);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.0722323869085!2d77.20864387532392!3d28.717384975619564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd17bdd0b529%3A0x2d798912e612319c!2sSatija%20Paper!5e0!3m2!1sen!2sin!4v1709500000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+<div id="review-section">
+  <div style="text-align:center;margin-bottom:36px;" class="sr"><span class="subtitle" style="padding-left:0;letter-spacing:2px;font-family:'Outfit',sans-serif;font-weight:600;text-decoration:none;">Client Testimonials</span><h2 style="font-size:3rem;">What People Say</h2></div>
+  <div id="reviews-display" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:28px;margin-bottom:48px;max-width:1400px;margin-left:auto;margin-right:auto;"><p style="text-align:center;grid-column:1/-1;color:var(--silver);">Loading reviews...</p></div>
+  <div class="sr" style="max-width:560px;margin:0 auto;background:var(--cream);padding:36px;border-radius:var(--radius);border:1px solid var(--border);">
+    <h3 style="margin-bottom:18px;text-align:center;font-size:1.4rem;">Write a Review</h3>
+    <form id="reviewForm" class="contact-form">
+      <input type="text" id="revName" placeholder="Your Name" required>
+      <textarea id="revText" rows="3" placeholder="Share your experience..." required></textarea>
+      <div style="margin-bottom:14px;text-align:center;">
+        <p style="margin-bottom:5px;font-size:13px;color:var(--text-muted);">Rate your experience:</p>
+        <div id="star-input" style="font-size:24px;color:#ccc;cursor:pointer;"><span class="star" data-val="1">&#9733;</span><span class="star" data-val="2">&#9733;</span><span class="star" data-val="3">&#9733;</span><span class="star" data-val="4">&#9733;</span><span class="star" data-val="5">&#9733;</span></div>
+        <input type="hidden" id="revRating" value="5">
+      </div>
+      <button type="submit" class="btn" style="width:100%;justify-content:center;">Submit Review</button>
+    </form>
+    <p id="msg" style="display:none;text-align:center;margin-top:14px;color:var(--emerald);font-weight:600;font-size:13px;">Review sent for approval!</p>
+  </div>
+</div>
+
+<div id="videoPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99999;justify-content:center;align-items:center;flex-direction:column;" onclick="closeVideoPopup(event)">
+  <div style="position:absolute;top:24px;right:28px;color:#fff;font-size:30px;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.08);" class="video-popup-close" onclick="closeVideoPopup(event)">&times;</div>
+  <div id="videoPopupContent" style="width:90%;max-width:800px;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;box-shadow:0 0 60px rgba(0,0,0,0.5);"></div>
+</div>
+
+<footer>
+  <div class="footer-brand">SATIJA PAPER</div>
+  <div class="footer-line"></div>
+  <p>&copy; 2026 Satija Paper. All specifications subject to mill standards.</p>
+</footer>
+
+<script src="main.js"></script>
+<script src="brands.js"></script>
+<script src="forms.js"></script>
 </body>
 </html>
