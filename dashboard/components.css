@@ -1,0 +1,52 @@
+:root {
+  --primary: #0b1729;
+  --accent: #0066ff;
+  --bg: #edf1f7;
+  --text: #0f1d2e;
+  --border: #e2e8f0;
+  --brand-grad: linear-gradient(135deg,#0066ff 0%,#0052cc 40%,#e60012 100%);
+}
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+
+
+.login-overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 9999; background: #050d1a; }
+.login-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(0,102,255,0.15), transparent); }
+.login-card { position: relative; width: 420px; background: rgba(255,255,255,0.05); backdrop-filter: blur(30px); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+.login-logo { width: 80px; margin-bottom: 15px; }
+.login-brand h1 { color: white; font-size: 24px; margin: 0; }
+.login-input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; box-sizing: border-box; }
+.login-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--brand-grad); color: white; font-weight: bold; cursor: pointer; margin-top: 20px; }
+
+
+.app-container { display: flex; height: 100vh; }
+.sidebar { width: 280px; background: var(--primary); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
+.brand-box { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.brand-logo { width: 60px; border-radius: 50%; }
+.brand-text { font-size: 18px; font-weight: 800; margin-top: 10px; color: white; }
+.sidebar-label { padding: 20px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.3); }
+.menu-btn { width: 100%; padding: 12px 20px; background: none; border: none; color: rgba(255,255,255,0.6); text-align: left; cursor: pointer; font-size: 14px; transition: 0.3s; }
+.menu-btn i { margin-right: 10px; }
+.menu-btn.active, .menu-btn:hover { background: rgba(0,102,255,0.1); color: white; border-left: 4px solid var(--accent); }
+
+.main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+.header-bar { padding: 20px 30px; background: white; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+.search-box { padding: 10px 15px; border-radius: 10px; border: 1px solid var(--border); width: 250px; }
+
+.content { padding: 30px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.card { background: white; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+.card-inner { padding: 20px; }
+.card-tag { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 6px; background: #f0f7ff; color: var(--accent); text-transform: uppercase; }
+.card-title { font-size: 16px; font-weight: 700; margin: 15px 0; }
+.roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.role-key { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+.role-val { font-size: 13px; font-weight: 600; }
+.actions { display: flex; gap: 10px; }
+.btn { flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: #f8fafc; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+.sidebar-user { margin-top: auto; padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; }
+.sidebar-avatar { width: 35px; height: 35px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.sidebar-uname { font-size: 14px; font-weight: 600; flex: 1; }
+.sidebar-logout { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 18px; }

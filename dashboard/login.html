@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satija Paper - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body style="background: #050d1a; overflow: hidden;">
+    <div class="login-overlay">
+        <div class="login-bg"></div>
+        <div class="login-dots"></div>
+        <div class="login-card">
+            <div class="login-brand">
+                <img src="logo.png" class="login-logo">
+                <h1>SATIJA PAPER</h1>
+                <div class="login-brand-url">www.satijapaper.com</div>
+            </div>
+            <div id="loginError" class="login-error">
+                <i class="fas fa-circle-exclamation"></i> <span id="errMsg"></span>
+            </div>
+            <div class="login-field">
+                <label>Email</label>
+                <div class="login-input-wrap">
+                    <i class="fas fa-envelope field-icon"></i>
+                    <input type="email" id="loginUser" class="login-input" placeholder="your@email.com">
+                </div>
+            </div>
+            <div class="login-field">
+                <label>Password</label>
+                <div class="login-input-wrap">
+                    <i class="fas fa-lock field-icon"></i>
+                    <input type="password" id="loginPass" class="login-input" placeholder="••••••••">
+                </div>
+            </div>
+            <button class="login-btn" id="loginBtn">Sign In <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from './auth.js';
+        import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        onAuthStateChanged(auth, (user) => { if(user) window.location.href = 'index.html'; });
+
+        document.getElementById('loginBtn').onclick = async () => {
+            const e = document.getElementById('loginUser').value;
+            const p = document.getElementById('loginPass').value;
+            const errBox = document.getElementById('loginError');
+            try {
+                await signInWithEmailAndPassword(auth, e, p);
+                window.location.href = 'index.html';
+            } catch (err) {
+                document.getElementById('errMsg').textContent = "Invalid Login Details";
+                errBox.classList.add('show');
+            }
+        };
+    </script>
+</body>
+</html>
