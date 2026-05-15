@@ -2,53 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Satija Paper Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="components.css">
 </head>
 <body>
-    <div class="app-container visible">
-        <div class="sidebar">
+    <div class="toast" id="toast"></div>
+
+    <div class="app-container visible" id="appContainer">
+        <div class="sidebar" id="sidebar">
             <div class="brand-box">
-                <img src="logo.png" class="brand-logo">
+                <img src="logo.png" alt="Satija Paper" class="brand-logo">
                 <div class="brand-text">SATIJA PAPER</div>
                 <div class="brand-sub-tag">SYSTEM MASTER</div>
             </div>
-            <div class="sidebar-label">Navigation</div>
-            <button class="menu-btn active" id="navAll" onclick="filterCat('All', this)"><i class="fas fa-layer-group"></i> All Processes</button>
-            <button class="menu-btn" onclick="filterCat('Sales', this)"><i class="fas fa-chart-line"></i> Sales & CRM</button>
-            <button class="menu-btn" onclick="filterCat('Purchase', this)"><i class="fas fa-cart-shopping"></i> Purchase</button>
-            <button class="menu-btn" onclick="filterCat('Management', this)"><i class="fas fa-clipboard-check"></i> MIS</button>
-            <button class="menu-btn" onclick="filterCat('HR', this)"><i class="fas fa-people-group"></i> HR & Admin</button>
-            <button class="menu-btn" onclick="filterCat('Finance', this)"><i class="fas fa-indian-rupee-sign"></i> Finance</button>
+            <div class="sidebar-label" id="navMainLabel">Navigation</div>
+            <button class="menu-btn active" id="navAll" onclick="filterCat('All',this)"><i class="fas fa-grid-2"></i> All Processes <span class="count-badge" id="cntAll">0</span></button>
+            <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)"><i class="fas fa-chart-mixed"></i> Sales & CRM <span class="count-badge" id="cntSales">0</span></button>
+            <button class="menu-btn" id="navPurchase" onclick="filterCat('Purchase',this)"><i class="fas fa-cart-shopping"></i> Purchase & Inventory <span class="count-badge" id="cntPurchase">0</span></button>
+            <button class="menu-btn" id="navManagement" onclick="filterCat('Management',this)"><i class="fas fa-clipboard-check"></i> Management (MIS) <span class="count-badge" id="cntManagement">0</span></button>
+            <button class="menu-btn" id="navHR" onclick="filterCat('HR',this)"><i class="fas fa-people-group"></i> HR & Admin <span class="count-badge" id="cntHR">0</span></button>
+            <button class="menu-btn" id="navFinance" onclick="filterCat('Finance',this)"><i class="fas fa-indian-rupee-sign"></i> Finance & Accounts <span class="count-badge" id="cntFinance">0</span></button>
             
+            <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
+            <button class="menu-btn" id="adminNavBtn" style="display:none" onclick="showAdmin(this)"><i class="fas fa-user-gear"></i> User Management</button>
+
             <div class="sidebar-user">
                 <div class="sidebar-avatar" id="sAvatar">A</div>
                 <div class="sidebar-uinfo">
                     <div class="sidebar-uname" id="sName">Admin</div>
+                    <div class="sidebar-urole" id="sRole">Admin</div>
                 </div>
-                <button class="sidebar-logout" onclick="handleLogout()"><i class="fas fa-right-from-bracket"></i></button>
+                <button class="sidebar-logout" onclick="handleLogout()" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
             </div>
         </div>
 
         <div class="main-content">
             <div class="header-bar">
                 <h2 class="page-title" id="pageHeader">All Processes</h2>
-                <div class="search-wrap">
+                <div class="search-wrap" id="searchWrap">
                     <i class="fas fa-magnifying-glass search-icon"></i>
                     <input type="text" class="search-box" placeholder="Search processes..." id="searchInput" oninput="runFilter()">
                 </div>
             </div>
+
             <div class="content">
                 <div class="grid" id="cardBox"></div>
+
+                <div class="admin-panel" id="adminPanel">
+                    <div class="admin-top">
+                        <h3><i class="fas fa-users-gear" style="margin-right:8px;color:var(--accent)"></i>User Management</h3>
+                        <button class="add-btn" onclick="openModal()"><i class="fas fa-plus"></i> Add User</button>
+                    </div>
+                    <div class="tbl-wrap">
+                        <table class="tbl">
+                            <thead><tr><th>Email</th><th>Name</th><th>Role</th><th>Dept Access</th><th>Process Access</th><th>Actions</th></tr></thead>
+                            <tbody id="tblBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-bg" id="userModal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h3 id="modalTitle">Add / Edit User</h3>
+                <button class="modal-x" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editUserId">
+                <div class="mf"><label>Display Name</label><input type="text" id="mName"></div>
+                <div class="mf"><label>Email</label><input type="email" id="mUser"></div>
+                <div class="mf"><label>Role</label>
+                    <select id="mRole" onchange="onRoleChange()">
+                        <option value="Team Member">Team Member</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-foot">
+                <button class="mbtn sec" onclick="closeModal()">Cancel</button>
+                <button class="mbtn pri" onclick="saveUser()">Save</button>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { auth, db, checkAuth } from './auth.js';
-        import { signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { auth, db, fbFns } from './auth.js';
 
         const DB=[
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1}},
@@ -93,32 +136,50 @@
   {cat:"Family",name:"Satija Family Documents",pc:"Ms. Neha",solver:"Ms. Mukesh",exec:"Ms. Khushi",links:{folder:1}},
 ];
 
-        let curUser = null;
-        let curCat = 'All';
+       let curUser = null, curCat = 'All', cachedUsers = [];
+        const $ = id => document.getElementById(id);
 
-        checkAuth(async (fbUser) => {
-            const emailId = fbUser.email.replace(/[^a-z0-9]/g,'_');
-            const snap = await getDoc(doc(db, 'users', emailId));
-            curUser = snap.exists() ? snap.data() : { name: fbUser.email.split('@')[0], role: 'Admin' };
+        function showToast(msg, type='info') {
+            const t = $('toast'); t.textContent = msg; t.className = `toast ${type} show`;
+            setTimeout(() => t.className = 'toast', 3000);
+        }
+
+        fbFns.onAuth(auth, async (fbUser) => {
+            if (!fbUser) return window.location.href = 'login.html';
+            const emailId = fbUser.email.toLowerCase().replace(/[^a-z0-9]/g,'_');
+            const snap = await fbFns.getDoc(fbFns.doc(db, 'users', emailId));
+            curUser = snap.exists() ? {id: emailId, ...snap.data()} : { id: emailId, email: fbUser.email, name: fbUser.email.split('@')[0], role: 'Admin', deptAccess: ['All'] };
             
-            document.getElementById('sName').textContent = curUser.name;
-            document.getElementById('sAvatar').textContent = curUser.name[0].toUpperCase();
+            $('sAvatar').textContent = curUser.name.charAt(0).toUpperCase();
+            $('sName').textContent = curUser.name;
+            $('sRole').textContent = curUser.role;
+            
+            if (curUser.role === 'Admin') {
+                $('adminNavLabel').style.display = '';
+                $('adminNavBtn').style.display = '';
+            }
             runFilter();
         });
 
+        // Dashboard Filters & Render
+        window.filterCat = (cat, el) => {
+            curCat = cat;
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            if(el) el.classList.add('active');
+            $('pageHeader').innerText = cat;
+            $('cardBox').style.display = '';
+            $('adminPanel').classList.remove('visible');
+            runFilter();
+        };
+
         window.runFilter = () => {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = DB.filter(it => {
-                const mc = curCat === 'All' || it.cat === curCat;
-                const ms = it.name.toLowerCase().includes(q) || it.pc.toLowerCase().includes(q);
-                return mc && ms;
-            });
+            const q = $('searchInput').value.toLowerCase();
+            const filtered = DB.filter(it => (curCat === 'All' || it.cat === curCat) && it.name.toLowerCase().includes(q));
             renderCards(filtered);
         };
 
         function renderCards(data) {
-            const box = document.getElementById('cardBox');
-            box.innerHTML = data.map(it => `
+            $('cardBox').innerHTML = data.map(it => `
                 <div class="card cat-${it.cat}">
                     <div class="card-inner">
                         <span class="card-tag tag-${it.cat}">${it.cat}</span>
@@ -127,28 +188,69 @@
                             <div class="role-cell"><div class="role-key">PC</div><div class="role-val">${it.pc}</div></div>
                             <div class="role-cell"><div class="role-key">Solver</div><div class="role-val">${it.solver}</div></div>
                         </div>
-                        <div class="actions">
-                            ${it.links.fms ? `<button class="btn btn-fms">FMS</button>` : ''}
-                            ${it.links.form ? `<button class="btn btn-form">Form</button>` : ''}
-                            ${it.links.sheet ? `<button class="btn btn-sheet">Sheet</button>` : ''}
-                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        window.filterCat = (cat, el) => {
-            curCat = cat;
+        // ADMIN PANEL LOGIC
+        window.showAdmin = async (el) => {
+            if (curUser.role !== 'Admin') return;
             document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
-            document.getElementById('pageHeader').textContent = cat === 'All' ? 'All Processes' : cat;
-            runFilter();
+            $('pageHeader').innerText = 'User Management';
+            $('cardBox').style.display = 'none';
+            $('adminPanel').classList.add('visible');
+            await loadUsers();
         };
 
-        window.handleLogout = async () => {
-            await signOut(auth);
-            window.location.href = 'login.html';
+        async function loadUsers() {
+            $('tblBody').innerHTML = '<tr><td colspan="6">Loading...</td></tr>';
+            const snap = await fbFns.getDocs(fbFns.collection(db, 'users'));
+            cachedUsers = [];
+            snap.forEach(d => cachedUsers.push({id: d.id, ...d.data()}));
+            $('tblBody').innerHTML = cachedUsers.map(u => `
+                <tr>
+                    <td>${u.email}</td><td>${u.name}</td><td>${u.role}</td>
+                    <td>${u.deptAccess ? u.deptAccess.join(', ') : 'None'}</td>
+                    <td>${u.processAccess ? u.processAccess.length : 0} processes</td>
+                    <td>
+                        <button onclick="editUser('${u.id}')">Edit</button>
+                        <button onclick="deleteUserAct('${u.id}')">Del</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        window.openModal = () => { $('userModal').classList.add('show'); };
+        window.closeModal = () => { $('userModal').classList.remove('show'); };
+        
+        window.editUser = (id) => {
+            const u = cachedUsers.find(x => x.id === id);
+            $('editUserId').value = u.id;
+            $('mName').value = u.name;
+            $('mUser').value = u.email;
+            $('mRole').value = u.role;
+            openModal();
         };
+
+        window.saveUser = async () => {
+            const id = $('editUserId').value, name = $('mName').value, email = $('mUser').value, role = $('mRole').value;
+            const docId = id || email.toLowerCase().replace(/[^a-z0-9]/g,'_');
+            await fbFns.setDoc(fbFns.doc(db, 'users', docId), {name, email, role}, {merge: true});
+            showToast('User Saved!', 'ok');
+            closeModal();
+            loadUsers();
+        };
+
+        window.deleteUserAct = async (id) => {
+            if(!confirm("Delete user?")) return;
+            await fbFns.deleteDoc(fbFns.doc(db, 'users', id));
+            showToast('User Deleted', 'ok');
+            loadUsers();
+        };
+
+        window.handleLogout = async () => { await fbFns.signOut(auth); window.location.href = 'login.html'; };
     </script>
 </body>
 </html>
