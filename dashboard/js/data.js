@@ -1,7 +1,3 @@
-// ============================================================
-// PROCESS DATABASE (DB) + LINK METADATA
-// Pure data. No DOM, no logic. Imported wherever needed.
-// ============================================================
 
 /**
  * @typedef {Object} ProcessLinks
