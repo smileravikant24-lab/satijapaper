@@ -235,3 +235,39 @@
   .prod-brand-img-wrap { width: 100%; height: 160px; }
   .prod-enquire-wrap { justify-content: flex-start; }
 }
+
+
+/* ============================================================
+   Sidebar additions — Double A folder button & Products badge
+   Add these into css/sidebar.css if you prefer, or keep here.
+   ============================================================ */
+
+/* Double A sub-folder button */
+.doublea-btn {
+  padding-left: 2.4rem;
+  font-size: 13px;
+  position: relative;
+}
+.doublea-btn::before {
+  content: '';
+  position: absolute;
+  left: 1.15rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 60%;
+  background: #7c3aed;
+  border-radius: 2px;
+  opacity: .4;
+}
+.doublea-icon { color: #7c3aed !important; }
+.doublea-badge {
+  background: #ede9fe !important;
+  color:      #5b21b6 !important;
+}
+
+/* Products count badge accent */
+.products-badge {
+  background: #d1fae5 !important;
+  color:      #065f46 !important;
+}
