@@ -1,0 +1,237 @@
+/* ============================================================
+   products.css  –  Products catalogue page styles
+   Also includes: Double A folder sidebar & btn-aiqa card button
+   ============================================================ */
+
+/* ── AI Q&A button ─────────────────────────────────────────── */
+.btn-aiqa {
+  background: linear-gradient(135deg, #10a37f 0%, #0d8f6f 100%);
+  color: #fff;
+  border-color: #0d8f6f;
+}
+.btn-aiqa:hover {
+  background: linear-gradient(135deg, #0d8f6f 0%, #0a7a5e 100%);
+  color: #fff;
+}
+.btn-aiqa i { color: #fff; }
+
+/* ── Double A folder sidebar items ─────────────────────────── */
+.menu-btn.folder-group {
+  font-size: 12.5px;
+  padding-left: 2.2rem;
+  color: var(--text-secondary, #6b7280);
+  position: relative;
+}
+.menu-btn.folder-group::before {
+  content: '';
+  position: absolute;
+  left: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #7c3aed;
+  opacity: .55;
+}
+.menu-btn.doublea-parent .fa-folder-star { color: #7c3aed; }
+.menu-btn.doublea-parent .count-badge    { background: #ede9fe; color: #5b21b6; }
+
+/* ── Products page wrapper ─────────────────────────────────── */
+.products-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* ── Brand card ────────────────────────────────────────────── */
+.prod-brand-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 1.1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  transition: box-shadow .2s;
+}
+.prod-brand-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+
+.prod-brand-header {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border, #f0f0f0);
+  background: var(--header-bg, #fafafa);
+}
+
+.prod-brand-img-wrap {
+  width: 140px;
+  height: 90px;
+  border-radius: .6rem;
+  overflow: hidden;
+  border: 1px solid var(--border, #e5e7eb);
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.prod-brand-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.prod-brand-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: .25rem;
+  color: var(--text-primary, #111827);
+}
+.prod-brand-origin {
+  font-size: 12px;
+  color: var(--text-secondary, #6b7280);
+  margin-bottom: .5rem;
+}
+.prod-brand-origin i { margin-right: 4px; }
+.prod-brand-tagline {
+  font-size: 13px;
+  color: var(--text-secondary, #374151);
+  line-height: 1.55;
+  margin-bottom: .65rem;
+}
+
+.prod-cert-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.prod-cert {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 20px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 600;
+}
+
+.prod-enquire-wrap { display: flex; align-items: flex-start; padding-top: 2px; }
+.prod-enquire-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: .6rem;
+  background: var(--accent, #4f46e5);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .2s, transform .1s;
+}
+.prod-enquire-btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+/* ── Variants grid ─────────────────────────────────────────── */
+.prod-variants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0;
+}
+
+.prod-variant-card {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border, #f0f0f0);
+  border-top: none;
+  padding: 1rem;
+  transition: background .15s;
+}
+.prod-variant-card:last-child { border-right: none; }
+.prod-variant-card:hover { background: var(--hover-bg, #fafafa); }
+
+.prod-variant-img-wrap {
+  width: 100%;
+  height: 110px;
+  border-radius: .5rem;
+  overflow: hidden;
+  background: #f3f4f6;
+  margin-bottom: .7rem;
+  border: 1px solid var(--border, #e5e7eb);
+}
+.prod-variant-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.prod-variant-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  margin-bottom: .55rem;
+  line-height: 1.3;
+}
+
+.prod-spec-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: .6rem; }
+.prod-spec {
+  display: flex;
+  flex-direction: column;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: .4rem;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+.prod-spec span { color: #6b7280; font-weight: 500; }
+.prod-spec strong { color: #111827; font-size: 12px; margin-top: 1px; }
+
+.prod-sizes-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: .55rem; }
+.prod-size-pill {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.prod-bestfor {
+  font-size: 12px;
+  color: #059669;
+  line-height: 1.45;
+  margin-top: auto;
+}
+.prod-bestfor i { margin-right: 4px; }
+
+/* ── Dark mode overrides ───────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .prod-brand-card { border-color: #2d2d2d; background: #1a1a1a; }
+  .prod-brand-header { background: #141414; border-color: #2d2d2d; }
+  .prod-brand-img-wrap, .prod-variant-img-wrap { border-color: #2d2d2d; background: #222; }
+  .prod-variant-card { border-color: #2d2d2d; }
+  .prod-variant-card:hover { background: #1f1f1f; }
+  .prod-spec { background: #1f1f1f; border-color: #2d2d2d; }
+  .prod-spec span { color: #9ca3af; }
+  .prod-spec strong { color: #f3f4f6; }
+  .prod-cert { background: #3b1f6e; color: #c4b5fd; }
+  .prod-size-pill { background: #1e3a5f; color: #93c5fd; }
+  .prod-brand-name, .prod-variant-name { color: #f9fafb; }
+  .prod-brand-tagline { color: #9ca3af; }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .prod-brand-header {
+    grid-template-columns: 1fr;
+  }
+  .prod-brand-img-wrap { width: 100%; height: 160px; }
+  .prod-enquire-wrap { justify-content: flex-start; }
+}
