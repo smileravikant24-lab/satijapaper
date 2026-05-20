@@ -107,33 +107,6 @@ function _syncDoubleAFolder(activeCat) {
   if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
 
-function _injectDoubleAFolderTile(grid) {
-  if (!grid) grid = document.getElementById('cardBox');
-  if (!grid || grid.querySelector('.da-folder-tile')) return;
-
-  const daItems = DB.filter(d => d.group === 'Double A');
-  if (!daItems.length) return;
-
-  const listItems = daItems.map(d =>
-    `<div class="da-folder-item"><i class="fas fa-file-lines"></i>${d.name}</div>`
-  ).join('');
-
-  const tile = document.createElement('div');
-  tile.className    = 'da-folder-tile';
-  tile.dataset.name = '__doubleA_folder__';  // not in DB so observer ignores it
-  tile.innerHTML = `
-    <div class="da-folder-icon-row">
-      <span class="da-folder-icon"><i class="fas fa-folder-star"></i></span>
-      <span class="da-folder-label">Double A</span>
-      <span class="da-folder-count">${daItems.length}</span>
-    </div>
-    <div class="da-folder-desc">Container Booking · Distributor Checklist · CME Payment</div>
-    <div class="da-folder-items">${listItems}</div>
-    <div class="da-folder-footer"><i class="fas fa-arrow-right"></i> Click to open Double A processes</div>`;
-
-  tile.addEventListener('click', () => filterGroup('Double A', document.getElementById('navDoubleA')));
-  grid.appendChild(tile);
-}
 
 // ─────────────────────────────────────────────────────────────
 // filterGroup — sidebar "Double A" click OR folder tile click
