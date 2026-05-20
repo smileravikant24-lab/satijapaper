@@ -14,11 +14,22 @@ import { resolveProcessUrl }        from '../services/process.service.js';
  */
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
-  if (!item){                                showToast('Process not found.',  'err'); return; }
-  if (!canAccessProc(state.curUser, item)){  showToast('Access denied.',      'err'); return; }
+  if (!item){                               showToast('Process not found.',  'err'); return; }
+  if (!canAccessProc(state.curUser, item)){ showToast('Access denied.',      'err'); return; }
   if (!canAccessLink(state.curUser, procName, linkType)){
     showToast('No access to this link.', 'err'); return;
   }
+
+  // ── AI Q&A: direct external link — skip Cloud Function ──────
+  if (linkType === 'aiqa'){
+    window.open(
+      'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
+      '_blank', 'noopener,noreferrer'
+    );
+    return;
+  }
+  // ────────────────────────────────────────────────────────────
+
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
   if (result.ok) window.open(result.url, '_blank', 'noopener');
@@ -28,9 +39,9 @@ export async function secureOpen(procName, linkType){
 /** Build a single action button's HTML, or '' if user has no access. */
 function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
   const isAdmin = state.curUser?.role === 'Admin';
-  if (!hasUrl)                                              return '';
-  if (adminOnly && !isAdmin)                                return '';
-  if (!canAccessLink(state.curUser, item.name, linkType))   return '';
+  if (!hasUrl)                                             return '';
+  if (adminOnly && !isAdmin)                               return '';
+  if (!canAccessLink(state.curUser, item.name, linkType))  return '';
   const pn = item.name.replace(/'/g, "\\'");
   return `<button onclick="secureOpen('${pn}','${linkType}')" class="btn ${cls}">
             <i class="${icon}"></i>${label}
@@ -71,29 +82,34 @@ export function renderCards(data){
 
     let btns = '';
     btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,      'form',      'btn-form',   'fab fa-google-drive',     'Form');
+    btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
     } else {
-      btns += buildButton(it, !!it.links.sheet,   'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
+      btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
     }
 
-    btns += buildButton(it, !!it.links.check,     'check',     'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,     'video',     'btn-video',  'fas fa-circle-play',      'Training');
-    btns += buildButton(it, !!it.links.videoBCI,  'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
-    btns += buildButton(it, !!it.links.dashEmp,   'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,    'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
-    btns += buildButton(it, !!it.links.admin,     'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
-    btns += buildButton(it, !!it.links.gpDash,    'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash, 'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
-    btns += buildButton(it, !!it.links.folder,    'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
+    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
+    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
+    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
+    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
+    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
+    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
+    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
+    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
+    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
+
+    // ── AI Q&A button (Sales only) ───────────────────────────
+    btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
+    // ────────────────────────────────────────────────────────
 
     if (!btns){
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
     }
 
-    return `<div class="card cat-${cc}" style="animation-delay:${i*.028}s">
+    // ── data-name added for MutationObserver DA-hiding ───────
+    return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
       <div class="card-inner">
         <span class="card-tag tag-${cc}">${escapeHtml(it.cat)}</span>
         <div class="card-title">${escapeHtml(it.name)}</div>
@@ -116,8 +132,8 @@ export function renderCards(data){
  * Sidebar / search input both call this.
  */
 export function renderFiltered(){
-  const raw   = $('searchInput').value.toLowerCase();
-  const terms = raw.split(/\s+/).filter(Boolean);
+  const raw    = $('searchInput').value.toLowerCase();
+  const terms  = raw.split(/\s+/).filter(Boolean);
   const filtered = DB.filter(it => {
     if (!canAccessProc(state.curUser, it)) return false;
     const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
