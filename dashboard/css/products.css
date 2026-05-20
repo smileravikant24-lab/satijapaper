@@ -1,9 +1,4 @@
-/* ============================================================
-   products.css  –  Products catalogue page styles
-   Also includes: Double A folder sidebar & btn-aiqa card button
-   ============================================================ */
 
-/* ── AI Q&A button ─────────────────────────────────────────── */
 .btn-aiqa {
   background: linear-gradient(135deg, #10a37f 0%, #0d8f6f 100%);
   color: #fff;
@@ -15,7 +10,7 @@
 }
 .btn-aiqa i { color: #fff; }
 
-/* ── Double A folder sidebar items ─────────────────────────── */
+
 .menu-btn.folder-group {
   font-size: 12.5px;
   padding-left: 2.2rem;
@@ -237,10 +232,7 @@
 }
 
 
-/* ============================================================
-   Sidebar additions — Double A folder button & Products badge
-   Add these into css/sidebar.css if you prefer, or keep here.
-   ============================================================ */
+
 
 /* Double A sub-folder button */
 .doublea-btn {
@@ -397,3 +389,22 @@
 
 /* remove old enquire styles if present */
 .prod-enquire-wrap, .prod-enquire-btn { display: none !important; }
+
+/* ── GSM badge overlay on variant image (replaces per-GSM external images) ── */
+.prod-variant-img-wrap {
+  position: relative;
+}
+.prod-variant-gsm-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,.72);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: .02em;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
