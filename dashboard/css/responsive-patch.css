@@ -1,0 +1,283 @@
+/* ============================================================
+   responsive-patch.css
+   ADD THIS FILE: <link rel="stylesheet" href="css/responsive-patch.css">
+   Place this LAST in <head>, after all other CSS links.
+   Fixes: 1) Role name truncation  2) Button row overflow
+           3) Full mobile responsive layout
+   ============================================================ */
+
+
+/* ── 1. ROLE CELLS — fix name truncation ───────────────────────
+   Root cause: role-val has overflow:hidden + fixed width.
+   Fix: allow wrapping, remove hard truncation, shrink font slightly.
+────────────────────────────────────────────────────────────── */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  align-items: start;
+}
+
+.role-cell {
+  min-width: 0;          /* allows children to shrink below content size */
+  overflow: visible;
+}
+
+.role-val {
+  white-space: normal !important;   /* allow wrapping */
+  overflow: visible    !important;
+  text-overflow: unset !important;
+  word-break: break-word;
+  font-size: 11px !important;
+  line-height: 1.35;
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.role-val i {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 10px;
+}
+
+.role-val span {
+  overflow: visible !important;
+  text-overflow: unset !important;
+  white-space: normal !important;
+  word-break: break-word;
+}
+
+.role-key {
+  font-size: 9.5px !important;
+  font-weight: 600;
+  letter-spacing: .04em;
+  margin-bottom: 3px;
+  opacity: .55;
+  text-transform: uppercase;
+}
+
+
+/* ── 2. ACTIONS / BUTTONS — fix 2nd-row overflow ──────────────
+   Root cause: actions grid has fixed column count that overflows.
+   Fix: auto-fill with min width so buttons wrap cleanly.
+────────────────────────────────────────────────────────────── */
+.actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  align-items: center;
+}
+
+.actions .btn {
+  flex: 1 1 auto;
+  min-width: 80px;
+  max-width: calc(50% - 3px);
+  font-size: 12px !important;
+  padding: 7px 10px !important;
+  white-space: nowrap;
+  text-align: center;
+  justify-content: center;
+}
+
+/* AI Q&A button — full width when alone on its row */
+.actions .btn-aiqa {
+  flex: 1 1 100%;
+  max-width: 100%;
+  background: linear-gradient(135deg,#10a37f,#0d8f6f);
+  color: #fff;
+  border-color: #0d8f6f;
+}
+.actions .btn-aiqa:hover {
+  background: linear-gradient(135deg,#0d8f6f,#0a7a5e);
+}
+.actions .btn-aiqa i { color:#fff; }
+
+
+/* ── 3. MOBILE — sidebar, header, cards ────────────────────────
+
+   Mobile layout:
+   • Sidebar hidden by default; slides in via .sidebar-open class
+   • Hamburger button (☰) in top-left of header
+   • Overlay backdrop when sidebar open
+   • Cards go full-width
+   • Roles stack vertically on very small screens
+
+────────────────────────────────────────────────────────────── */
+
+/* ── Hamburger button (injected by JS below) ── */
+.mob-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: var(--sidebar-bg, #0f172a);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* ── Sidebar backdrop overlay ── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 199;
+}
+.sidebar-backdrop.open { display: block; }
+
+@media (max-width: 768px) {
+
+  /* Show hamburger */
+  .mob-menu-btn { display: flex; }
+
+  /* App layout: single column */
+  .app-container {
+    flex-direction: column !important;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Sidebar: fixed overlay, slides from left */
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 260px !important;
+    min-width: unset !important;
+    transform: translateX(-100%);
+    transition: transform .25s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  }
+
+  /* Sidebar open state */
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Main content: full width, scrollable */
+  .main-content {
+    flex: 1;
+    width: 100% !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Header bar: flex row, hamburger + title + search */
+  .header-bar {
+    display: flex !important;
+    align-items: center;
+    padding: 10px 14px !important;
+    gap: 8px;
+    flex-wrap: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--main-bg, #f8fafc);
+    border-bottom: 1px solid var(--border, #e5e7eb);
+  }
+
+  .page-title {
+    font-size: 16px !important;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 !important;
+  }
+
+  /* Search: icon only on mobile, expands on focus */
+  .search-wrap {
+    width: 36px !important;
+    transition: width .2s ease;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .search-wrap:focus-within {
+    width: 180px !important;
+  }
+  .search-box {
+    font-size: 13px !important;
+  }
+
+  /* Content padding */
+  .content {
+    padding: 12px !important;
+  }
+
+  /* Card grid: single column on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Cards: full width */
+  .card {
+    width: 100% !important;
+  }
+
+  /* Roles: 3 cols still but smaller; stack to 1 col on very small */
+  .roles-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  /* Buttons: 2 per row max on mobile */
+  .actions .btn {
+    min-width: 70px;
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+  }
+
+  /* Double A folder tile full width */
+  .da-folder-tile {
+    width: 100%;
+  }
+
+  /* Products: single column */
+  .prod-brand-header {
+    grid-template-columns: 1fr !important;
+  }
+  .prod-brand-img-wrap {
+    width: 100% !important;
+    height: 140px !important;
+  }
+  .prod-variants-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .prod-share-wrap { justify-content: flex-start; }
+
+  /* Admin table: scroll horizontally */
+  .tbl-wrap { overflow-x: auto; }
+
+  /* Modal: full screen on mobile */
+  .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Very small phones: roles stack */
+  .roles-grid {
+    grid-template-columns: 1fr !important;
+    gap: 3px;
+  }
+  /* Products: single column */
+  .prod-variants-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
