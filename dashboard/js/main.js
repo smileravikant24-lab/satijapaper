@@ -38,6 +38,51 @@ function enterApp(user) {
   _syncDoubleAFolder('All');
   _setProductsCount();
   _startCardObserver();
+  _initMobileSidebar();   // ← mobile hamburger + backdrop
+}
+
+// ─────────────────────────────────────────────────────────────
+// MOBILE SIDEBAR
+// ─────────────────────────────────────────────────────────────
+function _initMobileSidebar() {
+  // Inject hamburger button into header-bar
+  const headerBar = document.querySelector('.header-bar');
+  if (headerBar && !document.getElementById('mobMenuBtn')) {
+    const btn = document.createElement('button');
+    btn.id        = 'mobMenuBtn';
+    btn.className = 'mob-menu-btn';
+    btn.title     = 'Menu';
+    btn.innerHTML = '<i class="fas fa-bars"></i>';
+    btn.addEventListener('click', _toggleSidebar);
+    headerBar.insertBefore(btn, headerBar.firstChild);
+  }
+  // Inject backdrop
+  if (!document.getElementById('sidebarBackdrop')) {
+    const bd = document.createElement('div');
+    bd.id        = 'sidebarBackdrop';
+    bd.className = 'sidebar-backdrop';
+    bd.addEventListener('click', _closeSidebar);
+    document.body.appendChild(bd);
+  }
+  // Close sidebar on any nav click (mobile)
+  document.querySelectorAll('.menu-btn').forEach(b =>
+    b.addEventListener('click', () => { if (window.innerWidth <= 768) _closeSidebar(); })
+  );
+}
+
+function _toggleSidebar() {
+  document.getElementById('sidebar')?.classList.contains('sidebar-open')
+    ? _closeSidebar() : _openSidebar();
+}
+function _openSidebar() {
+  document.getElementById('sidebar')?.classList.add('sidebar-open');
+  document.getElementById('sidebarBackdrop')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function _closeSidebar() {
+  document.getElementById('sidebar')?.classList.remove('sidebar-open');
+  document.getElementById('sidebarBackdrop')?.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 showCheckingSession();
@@ -107,6 +152,33 @@ function _syncDoubleAFolder(activeCat) {
   if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
 
+function _injectDoubleAFolderTile(grid) {
+  if (!grid) grid = document.getElementById('cardBox');
+  if (!grid || grid.querySelector('.da-folder-tile')) return;
+
+  const daItems = DB.filter(d => d.group === 'Double A');
+  if (!daItems.length) return;
+
+  const listItems = daItems.map(d =>
+    `<div class="da-folder-item"><i class="fas fa-file-lines"></i>${d.name}</div>`
+  ).join('');
+
+  const tile = document.createElement('div');
+  tile.className    = 'da-folder-tile';
+  tile.dataset.name = '__doubleA_folder__';  // not in DB so observer ignores it
+  tile.innerHTML = `
+    <div class="da-folder-icon-row">
+      <span class="da-folder-icon"><i class="fas fa-folder-star"></i></span>
+      <span class="da-folder-label">Double A</span>
+      <span class="da-folder-count">${daItems.length}</span>
+    </div>
+    <div class="da-folder-desc">Container Booking · Distributor Checklist · CME Payment</div>
+    <div class="da-folder-items">${listItems}</div>
+    <div class="da-folder-footer"><i class="fas fa-arrow-right"></i> Click to open Double A processes</div>`;
+
+  tile.addEventListener('click', () => filterGroup('Double A', document.getElementById('navDoubleA')));
+  grid.appendChild(tile);
+}
 
 // ─────────────────────────────────────────────────────────────
 // filterGroup — sidebar "Double A" click OR folder tile click
@@ -264,4 +336,5 @@ Object.assign(window, {
   showAdmin,
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs,
+  toggleSidebar: _toggleSidebar,
 });
