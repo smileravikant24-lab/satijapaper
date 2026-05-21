@@ -1,7 +1,3 @@
-// ============================================================
-// USER MODAL - add/edit user profile
-// ============================================================
-
 import { $, showToast }                       from '../ui/dom.js';
 import { state }                              from '../state.js';
 import { emailToId }                          from '../services/auth.service.js';
@@ -12,8 +8,6 @@ import {
   selectAllProcs,
   updateAccessModeNote
 } from './proc-builder.js';
-
-// ---- Helpers -------------------------------------------------------------
 
 function resetDeptChecks(){
   document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
@@ -31,16 +25,12 @@ function applyDeptChecks(deptAccess){
   });
 }
 
-/** Show/hide the dept+process section based on selected role. */
+
 export function onRoleChange(){
   $('accessSection').style.display = $('mRole').value === 'Admin' ? 'none' : '';
 }
 
-// ---- Open / close --------------------------------------------------------
-
-/** Open the modal. If `uid` given, populate for edit; otherwise blank for add. */
 export function openModal(uid){
-  // reset
   $('editUserId').value       = '';
   $('mName').value            = '';
   $('mUser').value            = '';
@@ -73,9 +63,6 @@ export function openModal(uid){
 
 export const editUser   = id => openModal(id);
 export const closeModal = () => $('userModal').classList.remove('show');
-
-// ---- Save / Delete -------------------------------------------------------
-
 export async function saveUser(){
   const id    = $('editUserId').value;
   const name  = $('mName').value.trim();
@@ -137,8 +124,6 @@ export async function deleteUserAct(id, name){
   }
 }
 
-// ---- Wire up dept-pill clicks (once at module load) ----------------------
-
 document.querySelectorAll('#deptChks .chk-pill').forEach(pill => {
   pill.addEventListener('click', function(e){
     e.preventDefault();
@@ -148,7 +133,6 @@ document.querySelectorAll('#deptChks .chk-pill').forEach(pill => {
     this.classList.toggle('checked', nv);
 
     if (this.dataset.val === 'All' && nv){
-      // 'All' selected — clear the others
       document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
         if (p.dataset.val !== 'All'){
           p.classList.remove('checked');
@@ -156,7 +140,6 @@ document.querySelectorAll('#deptChks .chk-pill').forEach(pill => {
         }
       });
     } else if (this.dataset.val !== 'All' && nv){
-      // any specific dept selected — clear 'All'
       const all = document.querySelector('#deptChks .chk-pill[data-val="All"]');
       if (all){
         all.classList.remove('checked');
@@ -166,6 +149,4 @@ document.querySelectorAll('#deptChks .chk-pill').forEach(pill => {
     updateAccessModeNote();
   });
 });
-
-// Re-export so main.js can put on window for inline handlers
 export { selectAllProcs };
