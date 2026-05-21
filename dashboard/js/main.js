@@ -16,15 +16,10 @@ import {
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB }                    from './data.js';
 
-// ─────────────────────────────────────────────────────────────
-// PATCHED originals — defined FIRST so all functions can use them
-// ─────────────────────────────────────────────────────────────
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
-// ─────────────────────────────────────────────────────────────
-// APP BOOT
-// ─────────────────────────────────────────────────────────────
+
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -49,9 +44,6 @@ onAuth(async fbUser => {
   } catch (err) { console.error('Profile load failed:', err); showLoginScreen(); }
 });
 
-// ─────────────────────────────────────────────────────────────
-// MOBILE SIDEBAR
-// ─────────────────────────────────────────────────────────────
 function _initMobileSidebar() {
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('mobMenuBtn')) {
@@ -89,9 +81,6 @@ function _closeSidebar() {
   document.body.style.overflow = '';
 }
 
-// ─────────────────────────────────────────────────────────────
-// MUTATION OBSERVER — reliable async card visibility
-// ─────────────────────────────────────────────────────────────
 let _observer = null;
 
 function _startCardObserver() {
@@ -126,9 +115,7 @@ function _applyDAVisibility() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-// DOUBLE A FOLDER TILE
-// ─────────────────────────────────────────────────────────────
+
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
@@ -164,9 +151,7 @@ function _injectDoubleAFolderTile(grid) {
   grid.appendChild(tile);
 }
 
-// ─────────────────────────────────────────────────────────────
-// filterGroup — Double A sidebar/tile click
-// ─────────────────────────────────────────────────────────────
+
 function filterGroup(group, btn) {
   if (btn) {
     document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -182,9 +167,7 @@ function filterGroup(group, btn) {
   _origRunFilter();   // safe now — defined at top of file
 }
 
-// ─────────────────────────────────────────────────────────────
-// AI Q&A — direct link, no Cloud Function
-// ─────────────────────────────────────────────────────────────
+
 function openAIQA() {
   window.open(
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
@@ -192,9 +175,7 @@ function openAIQA() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// PRODUCTS PAGE
-// ─────────────────────────────────────────────────────────────
+
 function _setProductsCount() {
   const badge = document.getElementById('cntProducts');
   if (badge) badge.textContent = PRODUCTS.length;
@@ -247,7 +228,8 @@ function _buildBrandCard(brand) {
 
 function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  const imgSrc = brand.img;   // brand logo used; external hotlinks (Amazon/IndiaMART) are blocked
+  
+  const imgSrc = (v.img && v.img !== brand.img) ? v.img : brand.img;
   const extras = [
     v.cie       ? `<div class="prod-spec"><span>CIE</span><strong>${v.cie}</strong></div>`             : '',
     v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>`     : '',
@@ -277,9 +259,7 @@ function _buildVariant(v, brand) {
   </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────
+
 function _showCardGrid() {
   document.getElementById('adminPanel').style.display    = 'none';
   document.getElementById('productsPanel').style.display = 'none';
@@ -287,9 +267,6 @@ function _showCardGrid() {
   document.getElementById('cardBox').style.display       = '';
 }
 
-// ─────────────────────────────────────────────────────────────
-// PATCHED filterCat & runFilter
-// ─────────────────────────────────────────────────────────────
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
   state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
@@ -303,99 +280,110 @@ function runFilterPatched() {
   // Observer handles DA visibility automatically as cards land in DOM
 }
 
-// ─────────────────────────────────────────────────────────────
-// EXPOSE TO WINDOW
-// ─────────────────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────────────────────
-// SHARE AS IMAGE — html2canvas + Web Share API
-// ─────────────────────────────────────────────────────────────
+const _imgCache = new Map();
 
-/**
- * Capture a product card/variant as image and open native share sheet.
- * Falls back to download if Web Share API unavailable.
- * @param {string} elementId  - id of the element to capture
- * @param {string} label      - used for filename
- */
+/** Fetch an image URL and return a base64 dataURL (bypasses CORS for canvas). */
+async function _toBase64(url) {
+  if (_imgCache.has(url)) return _imgCache.get(url);
+  try {
+    const res  = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+    const blob = await res.blob();
+    const b64  = await new Promise(res => {
+      const r = new FileReader();
+      r.onload = () => res(r.result);
+      r.readAsDataURL(blob);
+    });
+    _imgCache.set(url, b64);
+    return b64;
+  } catch {
+    // If CORS still fails, return original URL and let html2canvas try
+    return url;
+  }
+}
+
+
+async function _replaceImgsWithBase64(clone) {
+  const imgs = [...clone.querySelectorAll('img')];
+  await Promise.all(imgs.map(async img => {
+    if (!img.src || img.src.startsWith('data:')) return;
+    const b64 = await _toBase64(img.src);
+    img.src = b64;
+  }));
+}
+
+
 async function shareProductImage(elementId, label) {
   const el = document.getElementById(elementId);
   if (!el) { showToast('Element not found.', 'err'); return; }
 
-  // Show loading state on button
+  // Show loading state on clicked button
   const btn = el.querySelector('.prod-share-btn, .prod-variant-share');
   const origHTML = btn ? btn.innerHTML : '';
-  if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Capturing...';
+  if (btn) {
+    btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
+    btn.disabled   = true;
+  }
 
   try {
-    // Load html2canvas if not already loaded
     await _loadHtml2Canvas();
 
-    // Temporarily expand card so nothing is clipped
-    const prevOverflow = el.style.overflow;
-    el.style.overflow = 'visible';
-
     const canvas = await html2canvas(el, {
-      useCORS:        true,
-      allowTaint:     false,
+      useCORS:         true,
+      allowTaint:      true,
       backgroundColor: '#ffffff',
-      scale:          2,           // 2x for sharp image on retina
-      logging:        false,
-      imageTimeout:   8000,
-      onclone: (doc, clone) => {
-        // Hide share buttons in the captured image
+      scale:           2,
+      logging:         false,
+      imageTimeout:    12000,
+      onclone: async (doc, clone) => {
+        // 1. Hide share buttons so they don't appear in the image
         clone.querySelectorAll('.prod-share-btn, .prod-variant-share').forEach(b => {
           b.style.display = 'none';
         });
-        // Ensure brand header image visible
-        clone.querySelectorAll('img').forEach(img => {
-          img.crossOrigin = 'anonymous';
-        });
+        // 2. Convert all images to base64 to bypass CORS
+        await _replaceImgsWithBase64(clone);
       }
     });
 
-    el.style.overflow = prevOverflow;
-
-    // Convert to blob
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
+    const blob     = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
     const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.png`;
 
-    // Try Web Share API (works on mobile Chrome/Safari)
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
-      const file = new File([blob], fileName, { type: 'image/png' });
+    // Web Share API — works on mobile (Chrome Android, Safari iOS)
+    if (navigator.share && navigator.canShare &&
+        navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
       await navigator.share({
-        files: [file],
+        files: [new File([blob], fileName, { type: 'image/png' })],
         title: `${label} — Satija Paper`,
-        text:  `${label} — Available at Satija Paper (www.satijapaper.com)`
+        text:  `${label} | Satija Paper — www.satijapaper.com`
       });
       showToast('Shared!', 'info');
-
     } else {
-      // Fallback: download image
+      // Desktop fallback: download
       const url = URL.createObjectURL(blob);
       const a   = document.createElement('a');
       a.href     = url;
       a.download = fileName;
       a.click();
       URL.revokeObjectURL(url);
-      showToast('Image downloaded — share manually.', 'info');
+      showToast('Image saved — share it from your downloads.', 'info');
     }
 
   } catch (err) {
     console.error('Share error:', err);
-    showToast('Could not capture image. Try again.', 'err');
+    showToast('Could not capture. Try again.', 'err');
   } finally {
-    if (btn) btn.innerHTML = origHTML;
+    if (btn) { btn.innerHTML = origHTML; btn.disabled = false; }
   }
 }
 
-/** Dynamically load html2canvas from CDN (loaded once, cached). */
+/** Dynamically load html2canvas from CDN once, then cache on window. */
 function _loadHtml2Canvas() {
   if (window.html2canvas) return Promise.resolve();
   return new Promise((resolve, reject) => {
     const s   = document.createElement('script');
     s.src     = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
     s.onload  = resolve;
-    s.onerror = () => reject(new Error('html2canvas failed to load'));
+    s.onerror = () => reject(new Error('html2canvas load failed'));
     document.head.appendChild(s);
   });
 }
