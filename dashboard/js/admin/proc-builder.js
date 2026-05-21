@@ -1,33 +1,17 @@
-// ============================================================
-// PROC LIST BUILDER - constructs the process-access editor
-// inside the user modal. Handles the master checkbox + nested
-// link-pill checkboxes for each process.
-// ============================================================
-
 import { $ }                  from '../ui/dom.js';
 import { DB, LINK_META }      from '../data.js';
 
-/** Return the link types actually configured for a process. */
 const getAvailableLinks = item =>
-  Object.keys(LINK_META).filter(k => !!item.links[k]);
-
-/** Show/hide the "individual processes selected" info note. */
+Object.keys(LINK_META).filter(k => !!item.links[k]);
 export function updateAccessModeNote(){
   const any = document.querySelectorAll('#procListContainer .proc-master-cb:checked').length > 0;
   $('accessModeNote').style.display = any ? '' : 'none';
 }
 
-/**
- * Build the entire process list inside the modal.
- * @param {Object} existingLinkAccess
- *        Map of procName -> string[] (allowed link types).
- *        Plus '__procs__': string[] of pre-selected process names.
- */
 export function buildProcList(existingLinkAccess = {}){
   const container = $('procListContainer');
   container.innerHTML = '';
   const cats = [...new Set(DB.map(d => d.cat))];
-
   cats.forEach(cat => {
     const items   = DB.filter(d => d.cat === cat);
     const grpDiv  = document.createElement('div');
@@ -44,14 +28,11 @@ export function buildProcList(existingLinkAccess = {}){
   updateAccessModeNote();
 }
 
-/** Build one row (master checkbox + link pills) for a single process. */
 function buildProcRow(item, existingLinkAccess){
   const availLinks = getAvailableLinks(item);
   const procRow    = document.createElement('div');
   procRow.className = 'proc-row';
   const isChecked  = existingLinkAccess.__procs__?.includes(item.name);
-
-  // master checkbox
   const procHeader = document.createElement('div');
   procHeader.className = 'proc-row-header';
   const procCb = document.createElement('input');
@@ -106,11 +87,8 @@ function buildProcRow(item, existingLinkAccess){
   } else {
     procCb.addEventListener('change', updateAccessModeNote);
   }
-
   return procRow;
 }
-
-/** Bulk-toggle every process and its links. */
 export function selectAllProcs(value){
   document.querySelectorAll('#procListContainer .proc-master-cb').forEach(cb => {
     cb.checked = value;
