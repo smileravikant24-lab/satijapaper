@@ -1,4 +1,9 @@
+/* ============================================================
+   products.css  –  Products catalogue page styles
+   Also includes: Double A folder sidebar & btn-aiqa card button
+   ============================================================ */
 
+/* ── AI Q&A button ─────────────────────────────────────────── */
 .btn-aiqa {
   background: linear-gradient(135deg, #10a37f 0%, #0d8f6f 100%);
   color: #fff;
@@ -10,7 +15,7 @@
 }
 .btn-aiqa i { color: #fff; }
 
-
+/* ── Double A folder sidebar items ─────────────────────────── */
 .menu-btn.folder-group {
   font-size: 12.5px;
   padding-left: 2.2rem;
@@ -232,7 +237,10 @@
 }
 
 
-
+/* ============================================================
+   Sidebar additions — Double A folder button & Products badge
+   Add these into css/sidebar.css if you prefer, or keep here.
+   ============================================================ */
 
 /* Double A sub-folder button */
 .doublea-btn {
@@ -347,7 +355,7 @@
   font-weight: 600;
 }
 
-/* ── Share button (replaces Enquire) ──────────────────────── */
+/* ── Share as Image button — brand card (top right) ────────── */
 .prod-share-wrap { display: flex; align-items: flex-start; padding-top: 2px; }
 .prod-share-btn {
   display: inline-flex;
@@ -355,18 +363,20 @@
   gap: 7px;
   padding: 9px 20px;
   border-radius: .6rem;
-  background: #25d366;
+  background: #4f46e5;
   color: #fff;
   font-size: 13px;
   font-weight: 700;
-  text-decoration: none;
+  border: none;
+  cursor: pointer;
   white-space: nowrap;
   transition: background .2s, transform .1s;
+  font-family: inherit;
 }
-.prod-share-btn:hover { background: #1ebe5a; transform: translateY(-1px); }
-.prod-share-btn i { font-size: 16px; }
+.prod-share-btn:hover { background: #4338ca; transform: translateY(-1px); }
+.prod-share-btn i { font-size: 14px; }
 
-/* Per-variant share button */
+/* ── Share as Image button — per variant (small) ─────────── */
 .prod-variant-share {
   display: inline-flex;
   align-items: center;
@@ -374,18 +384,22 @@
   margin-top: .6rem;
   font-size: 11.5px;
   font-weight: 700;
-  color: #25d366;
-  text-decoration: none;
+  color: #4f46e5;
+  background: transparent;
   padding: 4px 10px;
-  border: 1.5px solid #25d366;
+  border: 1.5px solid #4f46e5;
   border-radius: 20px;
+  cursor: pointer;
   transition: background .15s, color .15s;
+  font-family: inherit;
 }
-.prod-variant-share:hover {
-  background: #25d366;
-  color: #fff;
-}
-.prod-variant-share i { font-size: 13px; }
+.prod-variant-share:hover { background: #4f46e5; color: #fff; }
+.prod-variant-share i { font-size: 12px; }
+
+/* Spinner while capturing */
+.prod-share-btn .fa-spinner,
+.prod-variant-share .fa-spinner { animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* remove old enquire styles if present */
 .prod-enquire-wrap, .prod-enquire-btn { display: none !important; }
