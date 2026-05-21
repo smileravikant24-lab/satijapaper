@@ -15,8 +15,16 @@ import {
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB }                    from './data.js';
+
+// ─────────────────────────────────────────────────────────────
+// PATCHED originals — defined FIRST so all functions can use them
+// ─────────────────────────────────────────────────────────────
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
+
+// ─────────────────────────────────────────────────────────────
+// APP BOOT
+// ─────────────────────────────────────────────────────────────
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -41,7 +49,9 @@ onAuth(async fbUser => {
   } catch (err) { console.error('Profile load failed:', err); showLoginScreen(); }
 });
 
-
+// ─────────────────────────────────────────────────────────────
+// MOBILE SIDEBAR
+// ─────────────────────────────────────────────────────────────
 function _initMobileSidebar() {
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('mobMenuBtn')) {
@@ -79,7 +89,9 @@ function _closeSidebar() {
   document.body.style.overflow = '';
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// MUTATION OBSERVER — reliable async card visibility
+// ─────────────────────────────────────────────────────────────
 let _observer = null;
 
 function _startCardObserver() {
@@ -114,7 +126,9 @@ function _applyDAVisibility() {
   }
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// DOUBLE A FOLDER TILE
+// ─────────────────────────────────────────────────────────────
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
@@ -150,7 +164,9 @@ function _injectDoubleAFolderTile(grid) {
   grid.appendChild(tile);
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// filterGroup — Double A sidebar/tile click
+// ─────────────────────────────────────────────────────────────
 function filterGroup(group, btn) {
   if (btn) {
     document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -166,7 +182,9 @@ function filterGroup(group, btn) {
   _origRunFilter();   // safe now — defined at top of file
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// AI Q&A — direct link, no Cloud Function
+// ─────────────────────────────────────────────────────────────
 function openAIQA() {
   window.open(
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
@@ -174,7 +192,9 @@ function openAIQA() {
   );
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// PRODUCTS PAGE
+// ─────────────────────────────────────────────────────────────
 function _setProductsCount() {
   const badge = document.getElementById('cntProducts');
   if (badge) badge.textContent = PRODUCTS.length;
@@ -202,8 +222,6 @@ function _buildProductsHTML() {
 function _buildBrandCard(brand) {
   const certs    = brand.cert.map(c => `<span class="prod-cert">${c}</span>`).join('');
   const variants = brand.variants.map(v => _buildVariant(v, brand)).join('');
-  const waMsg    = encodeURIComponent(brand.shareMsg || `Hi! I need ${brand.name} paper from Satija Paper. Please share pricing.`);
-  const waUrl    = `https://wa.me/919899708098?text=${waMsg}`;
   return `
   <div class="prod-brand-card" id="prod-${brand.id}">
     <div class="prod-brand-header">
@@ -218,9 +236,9 @@ function _buildBrandCard(brand) {
         <div class="prod-cert-row">${certs}</div>
       </div>
       <div class="prod-share-wrap">
-        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="prod-share-btn">
-          <i class="fab fa-whatsapp"></i> Share
-        </a>
+        <button class="prod-share-btn" onclick="shareProductImage('prod-${brand.id}','${brand.name}')">
+          <i class="fas fa-share-nodes"></i> Share
+        </button>
       </div>
     </div>
     <div class="prod-variants-grid">${variants}</div>
@@ -237,13 +255,12 @@ function _buildVariant(v, brand) {
     v.thickness ? `<div class="prod-spec"><span>Thickness</span><strong>${v.thickness}</strong></div>` : '',
     v.sheets    ? `<div class="prod-spec"><span>Sheets/Ream</span><strong>${v.sheets}</strong></div>`  : '',
   ].filter(Boolean).join('');
-  const waMsg = encodeURIComponent(`Hi! I need ${v.name} (${v.sizes.join('/')}) from Satija Paper. Please share pricing.`);
-  const waUrl = `https://wa.me/919899708098?text=${waMsg}`;
+  const varId = `prod-var-${brand.id}-${v.gsm}`;
   return `
-  <div class="prod-variant-card">
+  <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap">
       <img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
-           onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
+           onerror="this.onerror=null;this.src='${fbSrc}'">
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
     <div class="prod-variant-info">
@@ -254,14 +271,16 @@ function _buildVariant(v, brand) {
       </div>
       <div class="prod-sizes-row">${sizes}</div>
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
-      <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="prod-variant-share">
-        <i class="fab fa-whatsapp"></i> Share
-      </a>
+      <button class="prod-variant-share" onclick="shareProductImage('${varId}','${v.name}')">
+        <i class="fas fa-share-nodes"></i> Share
+      </button>
     </div>
   </div>`;
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
 function _showCardGrid() {
   document.getElementById('adminPanel').style.display    = 'none';
   document.getElementById('productsPanel').style.display = 'none';
@@ -269,7 +288,9 @@ function _showCardGrid() {
   document.getElementById('cardBox').style.display       = '';
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// PATCHED filterCat & runFilter
+// ─────────────────────────────────────────────────────────────
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
   state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
@@ -283,6 +304,102 @@ function runFilterPatched() {
   // Observer handles DA visibility automatically as cards land in DOM
 }
 
+// ─────────────────────────────────────────────────────────────
+// EXPOSE TO WINDOW
+// ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// SHARE AS IMAGE — html2canvas + Web Share API
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Capture a product card/variant as image and open native share sheet.
+ * Falls back to download if Web Share API unavailable.
+ * @param {string} elementId  - id of the element to capture
+ * @param {string} label      - used for filename
+ */
+async function shareProductImage(elementId, label) {
+  const el = document.getElementById(elementId);
+  if (!el) { showToast('Element not found.', 'err'); return; }
+
+  // Show loading state on button
+  const btn = el.querySelector('.prod-share-btn, .prod-variant-share');
+  const origHTML = btn ? btn.innerHTML : '';
+  if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Capturing...';
+
+  try {
+    // Load html2canvas if not already loaded
+    await _loadHtml2Canvas();
+
+    // Temporarily expand card so nothing is clipped
+    const prevOverflow = el.style.overflow;
+    el.style.overflow = 'visible';
+
+    const canvas = await html2canvas(el, {
+      useCORS:        true,
+      allowTaint:     false,
+      backgroundColor: '#ffffff',
+      scale:          2,           // 2x for sharp image on retina
+      logging:        false,
+      imageTimeout:   8000,
+      onclone: (doc, clone) => {
+        // Hide share buttons in the captured image
+        clone.querySelectorAll('.prod-share-btn, .prod-variant-share').forEach(b => {
+          b.style.display = 'none';
+        });
+        // Ensure brand header image visible
+        clone.querySelectorAll('img').forEach(img => {
+          img.crossOrigin = 'anonymous';
+        });
+      }
+    });
+
+    el.style.overflow = prevOverflow;
+
+    // Convert to blob
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
+    const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.png`;
+
+    // Try Web Share API (works on mobile Chrome/Safari)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
+      const file = new File([blob], fileName, { type: 'image/png' });
+      await navigator.share({
+        files: [file],
+        title: `${label} — Satija Paper`,
+        text:  `${label} — Available at Satija Paper (www.satijapaper.com)`
+      });
+      showToast('Shared!', 'info');
+
+    } else {
+      // Fallback: download image
+      const url = URL.createObjectURL(blob);
+      const a   = document.createElement('a');
+      a.href     = url;
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Image downloaded — share manually.', 'info');
+    }
+
+  } catch (err) {
+    console.error('Share error:', err);
+    showToast('Could not capture image. Try again.', 'err');
+  } finally {
+    if (btn) btn.innerHTML = origHTML;
+  }
+}
+
+/** Dynamically load html2canvas from CDN (loaded once, cached). */
+function _loadHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const s   = document.createElement('script');
+    s.src     = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload  = resolve;
+    s.onerror = () => reject(new Error('html2canvas failed to load'));
+    document.head.appendChild(s);
+  });
+}
 
 Object.assign(window, {
   handleLogin, handleLogout, forgotPass, togglePwd,
@@ -296,4 +413,5 @@ Object.assign(window, {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs,
   toggleSidebar: _toggleSidebar,
+  shareProductImage,
 });
