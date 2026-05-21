@@ -20,9 +20,6 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════
-     LOGIN OVERLAY
-════════════════════════════════════════════════════════════ -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-bg"></div>
   <div class="login-dots"></div>
@@ -76,12 +73,9 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     APP CONTAINER
-════════════════════════════════════════════════════════════ -->
+
 <div class="app-container" id="appContainer">
 
-  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
   <div class="sidebar" id="sidebar">
 
     <div class="brand-box">
@@ -91,7 +85,6 @@
       <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
     </div>
 
-    <!-- ── Main navigation ──────────────────────────────── -->
     <div class="sidebar-label" id="navMainLabel">Navigation</div>
 
     <button class="menu-btn active" id="navAll"
@@ -107,7 +100,6 @@
       <span class="count-badge" id="cntSales">0</span>
     </button>
 
-    <!-- Double A collapsible sub-item – hidden until Sales is active -->
     <div id="doubleAFolder" style="display:none">
       <button class="menu-btn doublea-btn" id="navDoubleA"
               onclick="filterGroup('Double A',this)">
@@ -140,7 +132,7 @@
       <span class="count-badge" id="cntFinance">0</span>
     </button>
 
-    <!-- ── My System ──────────────────────────────────── -->
+
     <div class="sidebar-label" id="mySystemLabel">My System</div>
 
     <button class="menu-btn" id="navSupport"
@@ -168,14 +160,12 @@
       <span class="count-badge products-badge" id="cntProducts">6</span>
     </button>
 
-    <!-- ── Administration (admin-only) ───────────────── -->
     <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
     <button class="menu-btn" id="adminNavBtn" style="display:none"
             onclick="showAdmin(this)">
       <i class="fas fa-user-gear"></i> User Management
     </button>
 
-    <!-- ── Sidebar user strip ────────────────────────── -->
     <div class="sidebar-user">
       <div class="sidebar-avatar" id="sAvatar">A</div>
       <div class="sidebar-uinfo">
@@ -190,7 +180,6 @@
   </div><!-- /sidebar -->
 
 
-  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
   <div class="main-content">
 
     <div class="header-bar">
@@ -244,9 +233,6 @@
 </div><!-- /app-container -->
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     ADD / EDIT USER MODAL
-════════════════════════════════════════════════════════════ -->
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
     <div class="modal-head">
