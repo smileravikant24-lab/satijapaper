@@ -1,6 +1,3 @@
-/* ============================================================
-   SIDEBAR & APP SHELL
-   ============================================================ */
 .app-container{ display:none; height:100vh }
 .app-container.visible{ display:flex }
 
@@ -98,7 +95,6 @@
   background:rgba(239,68,68,.12);
 }
 
-/* main content */
 .main-content{
   flex:1; display:flex; flex-direction:column;
   overflow-y:auto;
