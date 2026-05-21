@@ -1,13 +1,7 @@
-// ============================================================
-// ADMIN VIEW - User Management panel
-// ============================================================
-
 import { $, escapeHtml }  from '../ui/dom.js';
 import { state }          from '../state.js';
 import { setActive }      from '../ui/sidebar.view.js';
 import { listUsers }      from '../services/users.service.js';
-
-/** Show the admin panel (replaces card grid). */
 export async function showAdmin(el){
   if (state.curUser?.role !== 'Admin') return;
   setActive(el);
@@ -18,7 +12,6 @@ export async function showAdmin(el){
   await loadAndRenderUsers();
 }
 
-/** Fetch user list from Firestore and re-render the table. */
 export async function loadAndRenderUsers(){
   const tb = $('tblBody');
   tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-3)">
@@ -34,7 +27,7 @@ export async function loadAndRenderUsers(){
   }
 }
 
-/** Render the user table from state.cachedUsers. */
+
 function renderTable(){
   const tb = $('tblBody');
   tb.innerHTML = '';
