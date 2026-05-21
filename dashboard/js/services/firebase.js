@@ -1,8 +1,3 @@
-// ============================================================
-// FIREBASE SERVICE - initialization + re-exports
-// ============================================================
-// Single place where Firebase SDK is wired up. Every other file
-// imports auth/db and helpers from here.
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
