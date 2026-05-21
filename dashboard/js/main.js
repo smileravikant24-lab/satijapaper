@@ -247,8 +247,7 @@ function _buildBrandCard(brand) {
 
 function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  // Use brand logo image only — external product images (Amazon/IndiaMART) block hotlinking
-  const imgSrc = brand.img;
+  const imgSrc = brand.img;   // brand logo used; external hotlinks (Amazon/IndiaMART) are blocked
   const extras = [
     v.cie       ? `<div class="prod-spec"><span>CIE</span><strong>${v.cie}</strong></div>`             : '',
     v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>`     : '',
@@ -260,7 +259,7 @@ function _buildVariant(v, brand) {
   <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap">
       <img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
-           onerror="this.onerror=null;this.src='${fbSrc}'">
+           onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
     <div class="prod-variant-info">
