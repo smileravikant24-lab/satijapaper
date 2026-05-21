@@ -1,8 +1,3 @@
-// ============================================================
-// AUTH SERVICE
-// Login / logout / password reset + profile bootstrap on Firestore.
-// ============================================================
-
 import {
   auth, db,
   signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged,
@@ -11,32 +6,16 @@ import {
 
 import { DEFAULT_ADMIN_EMAIL } from '../config.js';
 
-/** Convert an email to a Firestore-safe doc ID. */
+
 export const emailToId = email =>
-  email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-
-/** Sign in with email+password. Throws on failure. */
+email.toLowerCase().replace(/[^a-z0-9]/g, '_');
 export const login = (email, password) =>
-  signInWithEmailAndPassword(auth, email, password);
-
-/** Sign out the current user. */
+signInWithEmailAndPassword(auth, email, password);
 export const logout = () => signOut(auth);
-
-/** Trigger a password-reset email. */
 export const resetPassword = email =>
-  sendPasswordResetEmail(auth, email);
-
-/** Subscribe to auth state changes. */
+sendPasswordResetEmail(auth, email);
 export const onAuth = callback => onAuthStateChanged(auth, callback);
-
-/** Get a fresh ID token for the currently signed-in Firebase user. */
 export const getIdToken = () => auth.currentUser?.getIdToken(true);
-
-/**
- * Fetch the user profile from Firestore.
- * If no profile exists, create a bare-bones one
- * (Admin if email matches DEFAULT_ADMIN_EMAIL, else Team Member).
- */
 export async function fetchOrCreateProfile(fbUser){
   const emailId = emailToId(fbUser.email);
   const ref     = doc(db, 'users', emailId);
@@ -44,8 +23,6 @@ export async function fetchOrCreateProfile(fbUser){
 
   if (snap.exists()){
     const d = snap.data();
-
-    // Backfill uid if missing (older profiles)
     if (!d.uid){
       try { await setDoc(ref, {uid: fbUser.uid}, {merge: true}); }
       catch(_){ /* non-fatal */ }
@@ -63,7 +40,6 @@ export async function fetchOrCreateProfile(fbUser){
     };
   }
 
-  // Brand-new profile
   const isAdmin = fbUser.email.toLowerCase() === DEFAULT_ADMIN_EMAIL;
   const profile = {
     id:            emailId,
