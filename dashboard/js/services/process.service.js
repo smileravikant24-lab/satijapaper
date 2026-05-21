@@ -1,22 +1,8 @@
-// ============================================================
-// PROCESS SERVICE
-// Calls the secure Cloud Function that returns the real URL
-// for a given process + link type. Front-end never sees the URLs.
-// ============================================================
-
 import { FUNCTION_URL } from '../config.js';
 import { getIdToken }   from './auth.service.js';
-
-/**
- * Resolve a process + link type into a URL the user can open.
- * @param {string} procName
- * @param {string} linkType
- * @returns {Promise<{ok:boolean, url?:string, error?:string}>}
- */
 export async function resolveProcessUrl(procName, linkType){
   const idToken = await getIdToken();
   if (!idToken) return {ok: false, error: 'Please login again.'};
-
   try {
     const resp = await fetch(FUNCTION_URL, {
       method: 'POST',
