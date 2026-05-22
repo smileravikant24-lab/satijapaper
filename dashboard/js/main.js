@@ -16,6 +16,7 @@ import {
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB }                    from './data.js';
 
+
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
@@ -43,6 +44,7 @@ onAuth(async fbUser => {
     enterApp(profile);
   } catch (err) { console.error('Profile load failed:', err); showLoginScreen(); }
 });
+
 
 function _initMobileSidebar() {
   const headerBar = document.querySelector('.header-bar');
@@ -80,6 +82,7 @@ function _closeSidebar() {
   document.getElementById('sidebarBackdrop')?.classList.remove('open');
   document.body.style.overflow = '';
 }
+
 
 let _observer = null;
 
@@ -151,7 +154,6 @@ function _injectDoubleAFolderTile(grid) {
   grid.appendChild(tile);
 }
 
-
 function filterGroup(group, btn) {
   if (btn) {
     document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -166,7 +168,6 @@ function filterGroup(group, btn) {
   if (header) header.textContent = 'Double A — Sales';
   _origRunFilter();   // safe now — defined at top of file
 }
-
 
 function openAIQA() {
   window.open(
@@ -228,20 +229,27 @@ function _buildBrandCard(brand) {
 
 function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  
   const imgSrc = (v.img && v.img !== brand.img) ? v.img : brand.img;
+
+  // Standard spec badges
   const extras = [
     v.cie       ? `<div class="prod-spec"><span>CIE</span><strong>${v.cie}</strong></div>`             : '',
     v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>`     : '',
     v.thickness ? `<div class="prod-spec"><span>Thickness</span><strong>${v.thickness}</strong></div>` : '',
     v.sheets    ? `<div class="prod-spec"><span>Sheets/Ream</span><strong>${v.sheets}</strong></div>`  : '',
   ].filter(Boolean).join('');
+
+  // Feature bullet list (used when spec sheet has text features, e.g. K Bold)
+  const featureList = v.features && v.features.length
+    ? `<ul class="prod-feature-list">${v.features.map(f => `<li><i class="fas fa-check"></i>${f}</li>`).join('')}</ul>`
+    : '';
+
   const varId = `prod-var-${brand.id}-${v.gsm}`;
   return `
   <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap">
       <img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
-           onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
+           onerror="this.onerror=null;this.src='https://satijapaper.com/khanna.jpg'">
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
     <div class="prod-variant-info">
@@ -251,6 +259,7 @@ function _buildVariant(v, brand) {
         ${extras}
       </div>
       <div class="prod-sizes-row">${sizes}</div>
+      ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <button class="prod-variant-share" onclick="shareProductImage('${varId}','${v.name}')">
         <i class="fas fa-share-nodes"></i> Share
@@ -280,10 +289,9 @@ function runFilterPatched() {
   // Observer handles DA visibility automatically as cards land in DOM
 }
 
-
 const _imgCache = new Map();
 
-/** Fetch an image URL and return a base64 dataURL (bypasses CORS for canvas). */
+
 async function _toBase64(url) {
   if (_imgCache.has(url)) return _imgCache.get(url);
   try {
@@ -312,7 +320,11 @@ async function _replaceImgsWithBase64(clone) {
   }));
 }
 
-
+/**
+ * Capture a product card/variant as image and open native share sheet.
+ * @param {string} elementId  - id of the element to capture
+ * @param {string} label      - used for filename
+ */
 async function shareProductImage(elementId, label) {
   const el = document.getElementById(elementId);
   if (!el) { showToast('Element not found.', 'err'); return; }
