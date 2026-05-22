@@ -8,6 +8,8 @@
   color: #fff;
 }
 .btn-aiqa i { color: #fff; }
+
+/* ── Double A folder sidebar items ─────────────────────────── */
 .menu-btn.folder-group {
   font-size: 12.5px;
   padding-left: 2.2rem;
@@ -28,6 +30,8 @@
 }
 .menu-btn.doublea-parent .fa-folder-star { color: #7c3aed; }
 .menu-btn.doublea-parent .count-badge    { background: #ede9fe; color: #5b21b6; }
+
+/* ── Products page wrapper ─────────────────────────────────── */
 .products-wrap {
   display: flex;
   flex-direction: column;
@@ -35,6 +39,7 @@
   padding-bottom: 2rem;
 }
 
+/* ── Brand card ────────────────────────────────────────────── */
 .prod-brand-card {
   background: var(--card-bg, #fff);
   border: 1px solid var(--border, #e5e7eb);
@@ -127,6 +132,7 @@
   transform: translateY(-1px);
 }
 
+/* ── Variants grid ─────────────────────────────────────────── */
 .prod-variants-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -199,6 +205,7 @@
 }
 .prod-bestfor i { margin-right: 4px; }
 
+/* ── Dark mode overrides ───────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   .prod-brand-card { border-color: #2d2d2d; background: #1a1a1a; }
   .prod-brand-header { background: #141414; border-color: #2d2d2d; }
@@ -214,6 +221,7 @@
   .prod-brand-tagline { color: #9ca3af; }
 }
 
+/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 700px) {
   .prod-brand-header {
     grid-template-columns: 1fr;
@@ -332,6 +340,7 @@
   font-weight: 600;
 }
 
+/* ── Share as Image button — brand card (top right) ────────── */
 .prod-share-wrap { display: flex; align-items: flex-start; padding-top: 2px; }
 .prod-share-btn {
   display: inline-flex;
@@ -351,6 +360,8 @@
 }
 .prod-share-btn:hover { background: #4338ca; transform: translateY(-1px); }
 .prod-share-btn i { font-size: 14px; }
+
+/* ── Share as Image button — per variant (small) ─────────── */
 .prod-variant-share {
   display: inline-flex;
   align-items: center;
@@ -369,10 +380,16 @@
 }
 .prod-variant-share:hover { background: #4f46e5; color: #fff; }
 .prod-variant-share i { font-size: 12px; }
+
+/* Spinner while capturing */
 .prod-share-btn .fa-spinner,
 .prod-variant-share .fa-spinner { animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* remove old enquire styles if present */
 .prod-enquire-wrap, .prod-enquire-btn { display: none !important; }
+
+/* ── GSM badge overlay on variant image (replaces per-GSM external images) ── */
 .prod-variant-img-wrap {
   position: relative;
 }
@@ -389,4 +406,28 @@
   letter-spacing: .02em;
   backdrop-filter: blur(4px);
   pointer-events: none;
+}
+
+/* ── Variant feature bullet list (K Bold style spec sheet) ── */
+.prod-feature-list {
+  list-style: none;
+  margin: .5rem 0 .5rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.prod-feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.45;
+}
+.prod-feature-list li i {
+  color: #4f46e5;
+  font-size: 10px;
+  margin-top: 3px;
+  flex-shrink: 0;
 }
