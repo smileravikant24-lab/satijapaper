@@ -9,18 +9,22 @@ import {
   updateCounts, filterCat, runFilter, paintSidebarUser
 }                                          from './ui/sidebar.view.js';
 import { renderFiltered, secureOpen }      from './ui/cards.view.js';
-import { showAdmin }                       from './admin/admin.view.js';
+import { showAdmin as _origShowAdmin }     from './admin/admin.view.js';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB }                    from './data.js';
 
-
+// ─────────────────────────────────────────────────────────────
+// PATCHED originals — defined FIRST so all functions can use them
+// ─────────────────────────────────────────────────────────────
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
-
+// ─────────────────────────────────────────────────────────────
+// APP BOOT
+// ─────────────────────────────────────────────────────────────
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -45,7 +49,9 @@ onAuth(async fbUser => {
   } catch (err) { console.error('Profile load failed:', err); showLoginScreen(); }
 });
 
-
+// ─────────────────────────────────────────────────────────────
+// MOBILE SIDEBAR
+// ─────────────────────────────────────────────────────────────
 function _initMobileSidebar() {
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('mobMenuBtn')) {
@@ -83,7 +89,9 @@ function _closeSidebar() {
   document.body.style.overflow = '';
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// MUTATION OBSERVER — reliable async card visibility
+// ─────────────────────────────────────────────────────────────
 let _observer = null;
 
 function _startCardObserver() {
@@ -118,7 +126,9 @@ function _applyDAVisibility() {
   }
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// DOUBLE A FOLDER TILE
+// ─────────────────────────────────────────────────────────────
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
@@ -154,6 +164,9 @@ function _injectDoubleAFolderTile(grid) {
   grid.appendChild(tile);
 }
 
+// ─────────────────────────────────────────────────────────────
+// filterGroup — Double A sidebar/tile click
+// ─────────────────────────────────────────────────────────────
 function filterGroup(group, btn) {
   if (btn) {
     document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -169,6 +182,9 @@ function filterGroup(group, btn) {
   _origRunFilter();   // safe now — defined at top of file
 }
 
+// ─────────────────────────────────────────────────────────────
+// AI Q&A — direct link, no Cloud Function
+// ─────────────────────────────────────────────────────────────
 function openAIQA() {
   window.open(
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
@@ -176,7 +192,9 @@ function openAIQA() {
   );
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// PRODUCTS PAGE
+// ─────────────────────────────────────────────────────────────
 function _setProductsCount() {
   const badge = document.getElementById('cntProducts');
   if (badge) badge.textContent = PRODUCTS.length;
@@ -195,6 +213,7 @@ function showProducts(btn) {
   const panel = document.getElementById('productsPanel');
   panel.style.display = 'block';
   panel.innerHTML     = _buildProductsHTML();
+  _lazyLoadImages(panel);   // load images as they scroll into view
 }
 
 function _buildProductsHTML() {
@@ -208,8 +227,9 @@ function _buildBrandCard(brand) {
   <div class="prod-brand-card" id="prod-${brand.id}">
     <div class="prod-brand-header">
       <div class="prod-brand-img-wrap">
-        <img src="${brand.img}" alt="${brand.name}" class="prod-brand-img"
-             onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
+        <img data-src="${brand.img}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+           alt="${brand.name}" class="prod-brand-img prod-lazy"
+           onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
       </div>
       <div class="prod-brand-meta">
         <h3 class="prod-brand-name">${brand.fullName || brand.name}</h3>
@@ -234,9 +254,13 @@ function _buildVariant(v, brand) {
   // Standard spec badges
   const extras = [
     v.cie       ? `<div class="prod-spec"><span>CIE</span><strong>${v.cie}</strong></div>`             : '',
-    v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>`      : '',
+    v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>`     : '',
     v.thickness ? `<div class="prod-spec"><span>Thickness</span><strong>${v.thickness}</strong></div>` : '',
     v.sheets    ? `<div class="prod-spec"><span>Sheets/Ream</span><strong>${v.sheets}</strong></div>`  : '',
+    (v.color && v.colorName) ? `<div class="prod-spec prod-spec-color">
+        <span>Colour</span>
+        <strong><span class="prod-color-dot" style="background:${v.color};border:1px solid rgba(0,0,0,.12)"></span>${v.colorName}</strong>
+      </div>` : '',
   ].filter(Boolean).join('');
 
   // Feature bullet list (used when spec sheet has text features, e.g. K Bold)
@@ -248,7 +272,8 @@ function _buildVariant(v, brand) {
   return `
   <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap">
-      <img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
+      <img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+           alt="${v.name}" class="prod-variant-img prod-lazy"
            onerror="this.onerror=null;this.src='https://satijapaper.com/khanna.jpg'">
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
@@ -268,7 +293,9 @@ function _buildVariant(v, brand) {
   </div>`;
 }
 
-
+// ─────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────
 function _showCardGrid() {
   document.getElementById('adminPanel').style.display    = 'none';
   document.getElementById('productsPanel').style.display = 'none';
@@ -276,6 +303,24 @@ function _showCardGrid() {
   document.getElementById('cardBox').style.display       = '';
 }
 
+/** Wrap showAdmin to always hide productsPanel first */
+function showAdmin(btn) {
+  // Hide products panel & restore search before showing admin
+  const pp = document.getElementById('productsPanel');
+  const sw = document.getElementById('searchWrap');
+  const cb = document.getElementById('cardBox');
+  if (pp) pp.style.display = 'none';
+  if (sw) sw.style.display = '';
+  if (cb) cb.style.display = 'none';
+  state.curCat   = '__admin__';
+  state.curGroup = null;
+  state.daMode   = 'all';
+  _origShowAdmin(btn);
+}
+
+// ─────────────────────────────────────────────────────────────
+// PATCHED filterCat & runFilter
+// ─────────────────────────────────────────────────────────────
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
   state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
@@ -289,10 +334,23 @@ function runFilterPatched() {
   // Observer handles DA visibility automatically as cards land in DOM
 }
 
+// ─────────────────────────────────────────────────────────────
+// EXPOSE TO WINDOW
+// ─────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────
+// SHARE AS IMAGE — html2canvas + Web Share API
+// Images pre-converted to base64 to bypass CORS restrictions
+// ─────────────────────────────────────────────────────────────
+
+/** Cache: url → base64 dataURL */
 const _imgCache = new Map();
 
-
+/** Fetch an image URL and return a base64 dataURL (bypasses CORS for canvas). */
 async function _toBase64(url) {
+  if (!url) return url;
+  // Already base64 (embedded Khanna images) — return as-is
+  if (url.startsWith('data:')) return url;
   if (_imgCache.has(url)) return _imgCache.get(url);
   try {
     const res  = await fetch(url, { mode: 'cors', cache: 'force-cache' });
@@ -305,12 +363,14 @@ async function _toBase64(url) {
     _imgCache.set(url, b64);
     return b64;
   } catch {
-    // If CORS still fails, return original URL and let html2canvas try
     return url;
   }
 }
 
-
+/**
+ * Replace all <img src="..."> inside a cloned element with base64 versions.
+ * Called inside html2canvas onclone so the canvas sees local data.
+ */
 async function _replaceImgsWithBase64(clone) {
   const imgs = [...clone.querySelectorAll('img')];
   await Promise.all(imgs.map(async img => {
@@ -398,6 +458,36 @@ function _loadHtml2Canvas() {
     s.onerror = () => reject(new Error('html2canvas load failed'));
     document.head.appendChild(s);
   });
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// LAZY IMAGE LOADER — IntersectionObserver
+// Loads base64/url images only when card scrolls into view.
+// Prevents 483KB of base64 from being painted all at once → no freeze.
+// ─────────────────────────────────────────────────────────────
+function _lazyLoadImages(container) {
+  const imgs = container.querySelectorAll('img.prod-lazy[data-src]');
+  if (!imgs.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: load all immediately (older browsers)
+    imgs.forEach(img => { img.src = img.dataset.src; img.classList.remove('prod-lazy'); });
+    return;
+  }
+
+  const obs = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+      img.classList.remove('prod-lazy');
+      observer.unobserve(img);
+    });
+  }, { rootMargin: '200px 0px' });   // pre-load 200px before entering viewport
+
+  imgs.forEach(img => obs.observe(img));
 }
 
 Object.assign(window, {
