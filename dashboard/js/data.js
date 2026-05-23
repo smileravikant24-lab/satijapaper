@@ -108,36 +108,28 @@ export const PRODUCTS = [
     fullName: 'Double A',
     origin: 'Thailand',
     tagline: 'Premium 30M fibres/gram copier. Jam-free, CIE 167 whiteness.',
-    img: 'https://satijapaper.com/doublea.jpg',
-    cert: ['FSC Certified', 'CIE 167', '120+ Countries'],
-    shareMsg: 'Hi! I am interested in Double A paper from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'Double A 70 GSM', gsm: 70, sizes: ['A4','A3','A11'],
-        brightness: '102% ISO', cie: '148', opacity: '93%',
-        bestFor: 'Forms, memos, daily printing',
-        img: 'https://satijapaper.com/DA 70.jpg',
+    img: 'https://i.indiamart.com/data/img/catalogue/double-a-a4-70gsm-paper_24148053_xxl.jpg',
         fallbackImg: 'https://i.indiamart.com/data/img/catalogue/double-a-a4-70gsm-paper_24148053_xxl.jpg'
       },
       {
         name: 'Double A 75 GSM', gsm: 75, sizes: ['A4','A3','A11'],
         brightness: '103% ISO', cie: '152', opacity: '94%',
         bestFor: 'Reports, official documents',
-        img: 'https://satijapaper.com/DA75.jpeg',
+        img: 'https://i.indiamart.com/data/img/catalogue/double-a-75-gsm-a4-copier-paper_230_xxl.jpg',
         fallbackImg: 'https://i.indiamart.com/data/img/catalogue/double-a-75-gsm-a4-copier-paper_230_xxl.jpg'
       },
       {
         name: 'Double A 80 GSM', gsm: 80, sizes: ['A4','A3','A11'],
         brightness: '104% ISO', cie: '167', thickness: '110 µm',
         bestFor: 'Presentations, letterheads',
-        img: 'https://satijapaper.com/doublea.jpg',
+        img: 'https://i.indiamart.com/data/img/catalogue/double-a-premium-paper-a4-80gsm_xxl.jpg',
         fallbackImg: 'https://i.indiamart.com/data/img/catalogue/double-a-premium-paper-a4-80gsm_xxl.jpg'
       },
       {
         name: 'Double A 100 GSM', gsm: 100, sizes: ['A4','A3'],
         brightness: '104% ISO', cie: '167', opacity: '97%',
         bestFor: 'Charts, proposals, premium reports',
-        img: 'https://satijapaper.com/DA100.jpeg',
+        img: 'https://i.indiamart.com/data/img/catalogue/double-a-presentation-100gsm_250_xxl.jpg',
         fallbackImg: 'https://i.indiamart.com/data/img/catalogue/double-a-presentation-100gsm_250_xxl.jpg'
       }
     ]
@@ -149,28 +141,20 @@ export const PRODUCTS = [
     origin: 'Gujarat, India',
     tagline: '100% de-inked recycled fibre with VOITH German de-inking technology.',
     img: 'https://satijapaper.com/nra.jpg',
-    cert: ['VOITH German Tech', '354K TPA Capacity', 'ISO 9001'],
-    shareMsg: 'Hi! I am interested in NR Agarwal Brilliance Copier paper from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'Brilliance 70 GSM', gsm: 70, sizes: ['A4','A3'],
-        brightness: '90% ISO', sheets: 500,
-        bestFor: 'Daily office, drafts',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/3/294090203/PJ/KV/MN/9965628/brilliance-a4-size-premium-copier-paper-70-gsm.jpg',
         fallbackImg: 'https://satijapaper.com/nra.jpg'
       },
       {
         name: 'Brilliance 75 GSM', gsm: 75, sizes: ['A4','A3'],
         brightness: '92% ISO', sheets: 500,
         bestFor: 'Reports, presentations',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2021/10/LR/FS/XM/9965628/nr-agarwal-brilliance-75-gsm.jpg',
+        img: 'https://satijapaper.com/nra.jpg',
         fallbackImg: 'https://satijapaper.com/nra.jpg'
       },
       {
         name: 'Brilliance 80 GSM', gsm: 80, sizes: ['A4','A3'],
         brightness: '94% ISO', sheets: 500,
         bestFor: 'Contracts, letterheads',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/8/FT/LW/CQ/9965628/nr-agarwal-80-gsm-copier-paper.jpg',
+        img: 'https://satijapaper.com/nra.jpg',
         fallbackImg: 'https://satijapaper.com/nra.jpg'
       }
     ]
@@ -182,35 +166,27 @@ export const PRODUCTS = [
     origin: 'Punjab, India',
     tagline: 'Eco-friendly from agricultural residues. ECF bleached. ISI & FSC certified.',
     img: 'https://satijapaper.com/satia.jpg',
-    cert: ['ECF Bleached', 'ISI BIS Certified', 'FSC Certified'],
-    shareMsg: 'Hi! I am interested in Satia Superb Copier paper from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'Satia 65 GSM', gsm: 65, sizes: ['A4','FS'],
-        brightness: '86–88% ISO',
-        bestFor: 'Bulk, draft printing',
-        img: 'https://m.media-amazon.com/images/I/61GE7NaIFOL._SL1500_.jpg',
         fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
         name: 'Satia 70 GSM', gsm: 70, sizes: ['A4','A3','FS'],
         brightness: '88–90% ISO',
         bestFor: 'High-volume printing',
-        img: 'https://m.media-amazon.com/images/I/71TDuuwCxPL._SL1500_.jpg',
+        img: 'https://satijapaper.com/satia.jpg',
         fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
         name: 'Satia 75 GSM', gsm: 75, sizes: ['A4','A3','FS'],
         brightness: '88–90% ISO',
         bestFor: 'Reports, stationery',
-        img: 'https://m.media-amazon.com/images/I/71fPx0jj2WL._SL1500_.jpg',
+        img: 'https://satijapaper.com/satia.jpg',
         fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
         name: 'Satia 80 GSM', gsm: 80, sizes: ['A4','A3','FS'],
         brightness: '90–92% ISO',
         bestFor: 'Premium office use',
-        img: 'https://m.media-amazon.com/images/I/71oiYC6bBNL._SL1500_.jpg',
+        img: 'https://satijapaper.com/satia.jpg',
         fallbackImg: 'https://satijapaper.com/satia.jpg'
       }
     ]
@@ -222,22 +198,6 @@ export const PRODUCTS = [
     origin: 'Punjab, India',
     tagline: 'Premium copier range: K Bold · E-Print · E-Copy · White Gem. Jam-free, hi-bright, all-printer compatible.',
     img: 'https://satijapaper.com/khanna.jpg',
-    cert: ['ISO 9001', 'Hi-Bright 92% ISO', 'Jam-Free', 'Since 1985'],
-    shareMsg: 'Hi! I am interested in Khanna Paper from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'K Bold 65 GSM', gsm: 65, sizes: ['A4','A3'],
-        brightness: 'Superior Brightness',
-        bestFor: 'High-speed printing, all printers & copiers',
-        features: [
-          'Superior Brightness for Clear, Vibrant Prints',
-          'Jam-Free Performance for Hassle-Free Use',
-          'High Image Contrast with exceptional sharpness',
-          'Compatible with All Printers & Copiers',
-          'No Misfeeds, Ensuring Consistent Output Quality',
-          'Optimized for High-Speed Printing'
-        ],
-        img: 'https://satijapaper.com/khanna.jpg',
         fallbackImg: 'https://satijapaper.com/khanna.jpg'
       },
       {
@@ -294,28 +254,20 @@ export const PRODUCTS = [
     origin: 'Himachal Pradesh, India',
     tagline: '100% tree-free sustainable paper from agricultural waste.',
     img: 'https://satijapaper.com/ruchira.jpg',
-    cert: ['Tree-Free', 'FSC Certified', 'ISO 9001'],
-    shareMsg: 'Hi! I am interested in Ruchira Papers from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'Ruchira 70 GSM', gsm: 70, sizes: ['A4','A3'],
-        brightness: '90% ISO',
-        bestFor: 'Daily office, forms',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/6/WY/RX/EF/3076408/ruchira-tarang-70-gsm-a4-copier.jpg',
         fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
         name: 'Ruchira 75 GSM', gsm: 75, sizes: ['A4','A3'],
         brightness: '92% ISO',
         bestFor: 'Reports, documents',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/5/AK/KM/SQ/3076408/75-gsm-ruchira-tarang-a4-copier-paper.jpg',
+        img: 'https://satijapaper.com/ruchira.jpg',
         fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
         name: 'Ruchira 80 GSM', gsm: 80, sizes: ['A4','A3'],
         brightness: '94% ISO',
         bestFor: 'Presentations, letterheads',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/7/FM/XY/ER/3076408/ruchira-80-gsm-a4-copier-paper.jpg',
+        img: 'https://satijapaper.com/ruchira.jpg',
         fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       }
     ]
@@ -327,28 +279,20 @@ export const PRODUCTS = [
     origin: 'Andhra Pradesh, India',
     tagline: 'Reflection series with ECF technology. Low-lint, smooth surface.',
     img: 'https://satijapaper.com/andhra.jpg',
-    cert: ['ECF Technology', 'ISO 9001', 'Low-Lint'],
-    shareMsg: 'Hi! I am interested in Andhra Paper Reflection series from Satija Paper. Please share pricing. www.satijapaper.com',
-    variants: [
-      {
-        name: 'Reflection 70 GSM', gsm: 70, sizes: ['A4','A3'],
-        brightness: '90% ISO',
-        bestFor: 'Daily office printing',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/4/QX/PH/MM/151013247/andhra-copier-paper-reflection-a4-70-gsm.jpg',
         fallbackImg: 'https://satijapaper.com/andhra.jpg'
       },
       {
         name: 'Reflection 75 GSM', gsm: 75, sizes: ['A4','A3'],
         brightness: '92% ISO',
         bestFor: 'Reports, official docs',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/3/TX/XJ/VB/151013247/andhra-reflection-75-gsm-a4-papers.jpg',
+        img: 'https://satijapaper.com/andhra.jpg',
         fallbackImg: 'https://satijapaper.com/andhra.jpg'
       },
       {
         name: 'Reflection 80 GSM', gsm: 80, sizes: ['A4','A3'],
         brightness: '94% ISO',
         bestFor: 'Premium presentations',
-        img: 'https://www.andhrapaper.com/images/reflection-80gsm.jpg',
+        img: 'https://satijapaper.com/andhra.jpg',
         fallbackImg: 'https://satijapaper.com/andhra.jpg'
       }
     ]
