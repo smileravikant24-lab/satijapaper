@@ -14,7 +14,7 @@ import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
-import { PRODUCTS, DB }                    from './data.js';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
 // ─────────────────────────────────────────────────────────────
 // PATCHED originals — defined FIRST so all functions can use them
@@ -34,10 +34,27 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
+  // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
+  _forceLocalCounts();
   _syncDoubleAFolder('All');
   _setProductsCount();
   _startCardObserver();
   _initMobileSidebar();
+}
+
+
+/** Force sidebar count badges from local DB — ensures Dispatch shows 1 even before seed. */
+function _forceLocalCounts() {
+  // DB and NAV_TABS are imported at top of this file — use them directly
+  NAV_TABS.forEach(tab => {
+    if (tab.cat === 'All' || tab.cat === 'Products') return;
+    const cnt = document.getElementById(tab.cnt);
+    if (!cnt) return;
+    const n = DB.filter(d => d.cat === tab.cat).length;
+    if (n > 0) cnt.textContent = n;
+  });
+  const cntAll = document.getElementById('cntAll');
+  if (cntAll) cntAll.textContent = DB.length;
 }
 
 showCheckingSession();
