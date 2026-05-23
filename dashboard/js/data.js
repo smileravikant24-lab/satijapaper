@@ -320,13 +320,7 @@ export const PRODUCTS = [
     cert: ['Tree-Free', 'FSC Certified', 'ISO 9001'],
     shareMsg: 'Hi! I am interested in Ruchira Papers from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
-      {
-        name: 'Tarang — Mint', gsm: 75, sizes: ['A4'],
-        brightness: '85–90% ISO', sheets: 500,
-        bestFor: 'Colour-coded filing, eco office use',
-        color: '#A8D5BA', colorName: 'Mint Green',
-        img: _IMG['TARANG_MINT'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
-      },
+
       {
         name: 'Tarang — Rose', gsm: 75, sizes: ['A4'],
         brightness: '85–90% ISO', sheets: 100,
