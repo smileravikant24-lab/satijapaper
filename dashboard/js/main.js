@@ -227,9 +227,9 @@ function _buildBrandCard(brand) {
   <div class="prod-brand-card" id="prod-${brand.id}">
     <div class="prod-brand-header">
       <div class="prod-brand-img-wrap">
-        <img data-src="${brand.img}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        <img data-src="${brand.variants[0]?.img || brand.img}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
            alt="${brand.name}" class="prod-brand-img prod-lazy"
-           onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
+           onerror="this.onerror=null;this.src='https://satijapaper.com/ruchira.jpg'">
       </div>
       <div class="prod-brand-meta">
         <h3 class="prod-brand-name">${brand.fullName || brand.name}</h3>
@@ -249,7 +249,9 @@ function _buildBrandCard(brand) {
 
 function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  const imgSrc = (v.img && v.img !== brand.img) ? v.img : brand.img;
+  // v.img may be a resolved _IMG value (base64 data: URL) or an external URL
+  // Use v.img if it exists and is not identical to brand logo
+  const imgSrc = (v.img && v.img.length > 10) ? v.img : brand.img;
 
   // Standard spec badges
   const extras = [
@@ -303,18 +305,32 @@ function _showCardGrid() {
   document.getElementById('cardBox').style.display       = '';
 }
 
-/** Wrap showAdmin to always hide productsPanel first */
+/** Wrap showAdmin to always hide productsPanel and show adminPanel */
 function showAdmin(btn) {
-  // Hide products panel & restore search before showing admin
+  // Deactivate all nav buttons
+  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Hide everything else
   const pp = document.getElementById('productsPanel');
   const sw = document.getElementById('searchWrap');
   const cb = document.getElementById('cardBox');
+  const ap = document.getElementById('adminPanel');
   if (pp) pp.style.display = 'none';
-  if (sw) sw.style.display = '';
+  if (sw) sw.style.display = 'none';
   if (cb) cb.style.display = 'none';
+
+  // Show admin panel explicitly BEFORE calling orig (which loads users)
+  if (ap) ap.style.display = 'block';
+
   state.curCat   = '__admin__';
   state.curGroup = null;
   state.daMode   = 'all';
+
+  // Update page header
+  const header = document.getElementById('pageHeader');
+  if (header) header.textContent = 'User Management';
+
   _origShowAdmin(btn);
 }
 
@@ -463,16 +479,29 @@ function _loadHtml2Canvas() {
 
 // ─────────────────────────────────────────────────────────────
 // LAZY IMAGE LOADER — IntersectionObserver
-// Loads base64/url images only when card scrolls into view.
-// Prevents 483KB of base64 from being painted all at once → no freeze.
+// base64 (data:) images → load immediately (already in memory)
+// External URL images → load on scroll
 // ─────────────────────────────────────────────────────────────
 function _lazyLoadImages(container) {
-  const imgs = container.querySelectorAll('img.prod-lazy[data-src]');
+  const imgs = [...container.querySelectorAll('img.prod-lazy[data-src]')];
   if (!imgs.length) return;
 
+  imgs.forEach(img => {
+    const src = img.dataset.src;
+    // base64 images are already in memory — load immediately, no observer needed
+    if (!src || src.startsWith('data:')) {
+      img.src = src || '';
+      img.removeAttribute('data-src');
+      img.classList.remove('prod-lazy');
+    }
+  });
+
+  // For remaining external URL images, use IntersectionObserver
+  const remaining = [...container.querySelectorAll('img.prod-lazy[data-src]')];
+  if (!remaining.length) return;
+
   if (!('IntersectionObserver' in window)) {
-    // Fallback: load all immediately (older browsers)
-    imgs.forEach(img => { img.src = img.dataset.src; img.classList.remove('prod-lazy'); });
+    remaining.forEach(img => { img.src = img.dataset.src; img.classList.remove('prod-lazy'); });
     return;
   }
 
@@ -485,9 +514,9 @@ function _lazyLoadImages(container) {
       img.classList.remove('prod-lazy');
       observer.unobserve(img);
     });
-  }, { rootMargin: '200px 0px' });   // pre-load 200px before entering viewport
+  }, { rootMargin: '300px 0px' });
 
-  imgs.forEach(img => obs.observe(img));
+  remaining.forEach(img => obs.observe(img));
 }
 
 Object.assign(window, {
