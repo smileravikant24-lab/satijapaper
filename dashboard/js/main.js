@@ -227,9 +227,8 @@ function _buildBrandCard(brand) {
   <div class="prod-brand-card" id="prod-${brand.id}">
     <div class="prod-brand-header">
       <div class="prod-brand-img-wrap">
-        <img data-src="${brand.variants[0]?.img || brand.img}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-           alt="${brand.name}" class="prod-brand-img prod-lazy"
-           onerror="this.onerror=null;this.src='https://satijapaper.com/ruchira.jpg'">
+        <img src="${brand.img}" alt="${brand.name}" class="prod-brand-img"
+             onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">
       </div>
       <div class="prod-brand-meta">
         <h3 class="prod-brand-name">${brand.fullName || brand.name}</h3>
@@ -273,10 +272,15 @@ function _buildVariant(v, brand) {
   const varId = `prod-var-${brand.id}-${v.gsm}`;
   return `
   <div class="prod-variant-card" id="${varId}">
-    <div class="prod-variant-img-wrap">
-      <img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-           alt="${v.name}" class="prod-variant-img prod-lazy"
-           onerror="this.onerror=null;this.src='https://satijapaper.com/khanna.jpg'">
+    <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
+      ${v.colorOnly
+        ? `<div class="prod-colour-swatch" style="background:${v.color}">
+             <span class="prod-colour-name-big">${v.colorName}</span>
+           </div>`
+        : `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+               alt="${v.name}" class="prod-variant-img prod-lazy"
+               onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
+      }
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
     <div class="prod-variant-info">
