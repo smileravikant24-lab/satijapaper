@@ -183,25 +183,22 @@ export const PRODUCTS = [
     shareMsg: 'Hi! I am interested in NR Agarwal Brilliance Copier paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
       {
-        name: 'Brilliance 70 GSM', gsm: 70, sizes: ['A4','A3'],
+        name: 'NR Copier 70 GSM', gsm: 70, sizes: ['A4'],
         brightness: '90% ISO', sheets: 500,
-        bestFor: 'Daily office, drafts',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/3/294090203/PJ/KV/MN/9965628/brilliance-a4-size-premium-copier-paper-70-gsm.jpg',
-        fallbackImg: 'https://satijapaper.com/nra.jpg'
+        bestFor: 'Eco-friendly daily printing',
+        img: _IMG['NR_70'], fallbackImg: 'https://satijapaper.com/nra.jpg'
       },
       {
-        name: 'Brilliance 75 GSM', gsm: 75, sizes: ['A4','A3'],
+        name: 'NR Copier 75 GSM', gsm: 75, sizes: ['A4'],
         brightness: '92% ISO', sheets: 500,
         bestFor: 'Reports, presentations',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2021/10/LR/FS/XM/9965628/nr-agarwal-brilliance-75-gsm.jpg',
-        fallbackImg: 'https://satijapaper.com/nra.jpg'
+        img: _IMG['NR_75'], fallbackImg: 'https://satijapaper.com/nra.jpg'
       },
       {
-        name: 'Brilliance 80 GSM', gsm: 80, sizes: ['A4','A3'],
+        name: 'NR Copier 80 GSM', gsm: 80, sizes: ['A4'],
         brightness: '94% ISO', sheets: 500,
         bestFor: 'Contracts, letterheads',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/8/FT/LW/CQ/9965628/nr-agarwal-80-gsm-copier-paper.jpg',
-        fallbackImg: 'https://satijapaper.com/nra.jpg'
+        img: _IMG['NR_80'], fallbackImg: 'https://satijapaper.com/nra.jpg'
       }
     ]
   },
@@ -216,32 +213,28 @@ export const PRODUCTS = [
     shareMsg: 'Hi! I am interested in Satia Superb Copier paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
       {
-        name: 'Satia 65 GSM', gsm: 65, sizes: ['A4','FS'],
-        brightness: '86–88% ISO',
+        name: 'Satia Superb 65 GSM', gsm: 65, sizes: ['A4'],
+        brightness: '86–88% ISO', sheets: 500,
         bestFor: 'Bulk, draft printing',
-        img: 'https://m.media-amazon.com/images/I/61GE7NaIFOL._SL1500_.jpg',
-        fallbackImg: 'https://satijapaper.com/satia.jpg'
+        img: _IMG['SATIA_65'], fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
-        name: 'Satia 70 GSM', gsm: 70, sizes: ['A4','A3','FS'],
-        brightness: '88–90% ISO',
-        bestFor: 'High-volume printing',
-        img: 'https://m.media-amazon.com/images/I/71TDuuwCxPL._SL1500_.jpg',
-        fallbackImg: 'https://satijapaper.com/satia.jpg'
+        name: 'Satia Superb 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '88–90% ISO', sheets: 500,
+        bestFor: 'High-volume printing, copiers',
+        img: _IMG['SATIA_70'], fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
-        name: 'Satia 75 GSM', gsm: 75, sizes: ['A4','A3','FS'],
-        brightness: '88–90% ISO',
+        name: 'Satia Superb 75 GSM', gsm: 75, sizes: ['A4'],
+        brightness: '88–90% ISO', sheets: 500,
         bestFor: 'Reports, stationery',
-        img: 'https://m.media-amazon.com/images/I/71fPx0jj2WL._SL1500_.jpg',
-        fallbackImg: 'https://satijapaper.com/satia.jpg'
+        img: _IMG['SATIA_75'], fallbackImg: 'https://satijapaper.com/satia.jpg'
       },
       {
-        name: 'Satia 80 GSM', gsm: 80, sizes: ['A4','A3','FS'],
-        brightness: '90–92% ISO',
-        bestFor: 'Premium office use',
-        img: 'https://m.media-amazon.com/images/I/71oiYC6bBNL._SL1500_.jpg',
-        fallbackImg: 'https://satijapaper.com/satia.jpg'
+        name: 'Satia Superb 80 GSM', gsm: 80, sizes: ['A4'],
+        brightness: '90–92% ISO', sheets: 500,
+        bestFor: 'Premium office use, double-sided',
+        img: _IMG['SATIA_80'], fallbackImg: 'https://satijapaper.com/satia.jpg'
       }
     ]
   },
@@ -320,33 +313,96 @@ export const PRODUCTS = [
   {
     id: 'ruchira',
     name: 'Ruchira Papers',
-    fullName: 'Ruchira Papers – Tree-Free Copier',
+    fullName: 'Ruchira Papers – Tarang · Rozana · Mela · Mogra · Kora · VV',
     origin: 'Himachal Pradesh, India',
-    tagline: '100% tree-free sustainable paper from agricultural waste.',
+    tagline: 'Earth-friendly paper from agro-waste. Tarang (colour), Rozana (daily), Mela, Mogra (invitations), Kora (maplitho), VV (premium).',
     img: 'https://satijapaper.com/ruchira.jpg',
     cert: ['Tree-Free', 'FSC Certified', 'ISO 9001'],
     shareMsg: 'Hi! I am interested in Ruchira Papers from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
       {
-        name: 'Ruchira 70 GSM', gsm: 70, sizes: ['A4','A3'],
-        brightness: '90% ISO',
-        bestFor: 'Daily office, forms',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/6/WY/RX/EF/3076408/ruchira-tarang-70-gsm-a4-copier.jpg',
-        fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        name: 'Tarang — Mint', gsm: 75, sizes: ['A4'],
+        brightness: '85–90% ISO', sheets: 500,
+        bestFor: 'Colour-coded filing, eco office use',
+        color: '#A8D5BA', colorName: 'Mint Green',
+        img: _IMG['TARANG_MINT'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
-        name: 'Ruchira 75 GSM', gsm: 75, sizes: ['A4','A3'],
-        brightness: '92% ISO',
-        bestFor: 'Reports, documents',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/5/AK/KM/SQ/3076408/75-gsm-ruchira-tarang-a4-copier-paper.jpg',
-        fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        name: 'Tarang — Rose', gsm: 75, sizes: ['A4'],
+        brightness: '85–90% ISO', sheets: 100,
+        bestFor: 'Colour-coded filing, creative use',
+        color: '#F4B8C1', colorName: 'Rose Pink',
+        img: _IMG['TARANG_ROSE'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
-        name: 'Ruchira 80 GSM', gsm: 80, sizes: ['A4','A3'],
-        brightness: '94% ISO',
-        bestFor: 'Presentations, letterheads',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2022/7/FM/XY/ER/3076408/ruchira-80-gsm-a4-copier-paper.jpg',
-        fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        name: 'Tarang — Lemon', gsm: 75, sizes: ['A4'],
+        brightness: '85–90% ISO', sheets: 500,
+        bestFor: 'Colour-coded filing, notices',
+        color: '#F9E79F', colorName: 'Lemon Yellow',
+        img: _IMG['TARANG_LEMON'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Tarang — Green', gsm: 75, sizes: ['A4'],
+        brightness: '85–90% ISO', sheets: 500,
+        bestFor: 'Eco filing, colour separation',
+        color: '#82C784', colorName: 'Green',
+        img: _IMG['TARANG_GREEN'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Tarang — Sky', gsm: 75, sizes: ['A4'],
+        brightness: '85–90% ISO', sheets: 500,
+        bestFor: 'Colour-coded filing, presentations',
+        color: '#87CEEB', colorName: 'Sky Blue',
+        img: _IMG['TARANG_SKY'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Rozana 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '88–90% ISO', sheets: 500,
+        bestFor: 'Daily home & office copier/xerox use',
+        color: '#6B8E9F', colorName: 'Blue-Grey',
+        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Rozana 75 GSM', gsm: 75, sizes: ['A4'],
+        brightness: '88–90% ISO', sheets: 500,
+        bestFor: 'Economy range multipurpose printing',
+        color: '#7B9E6B', colorName: 'Olive Green',
+        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Rozana 80 GSM', gsm: 80, sizes: ['A4'],
+        brightness: '88–90% ISO', sheets: 500,
+        bestFor: 'Economy range, all printers & copiers',
+        color: '#5B7FA6', colorName: 'Blue',
+        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Mela — Colour Printing', gsm: 75, sizes: ['A4'],
+        brightness: '85–88% ISO', sheets: 500,
+        bestFor: 'Bill books, vouchers, colour forms',
+        color: '#F0E68C', colorName: 'Multi-colour',
+        img: _IMG['RUCHIRA_MELA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Mogra — Invitation', gsm: 160, sizes: ['A4'],
+        brightness: '88% ISO', sheets: 250,
+        bestFor: 'Wedding cards, invitations, announcements',
+        color: '#E8A020', colorName: 'Golden Yellow',
+        img: _IMG['RUCHIRA_MOGRA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'Kora — Maplitho', gsm: 70, sizes: ['A4','A3'],
+        brightness: '85–86% ISO', sheets: 500,
+        bestFor: 'Notebooks, textbooks, bill books, stationery',
+        color: '#C4A882', colorName: 'Cream / Natural',
+        img: _IMG['RUCHIRA_KORA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      },
+      {
+        name: 'VV — Premium White', gsm: 75, sizes: ['A4'],
+        brightness: '90–92% ISO', sheets: 500,
+        bestFor: 'High-quality office printing, documents',
+        color: '#FAFAFA', colorName: 'Bright White',
+        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       }
     ]
   },
@@ -361,25 +417,34 @@ export const PRODUCTS = [
     shareMsg: 'Hi! I am interested in Andhra Paper Reflection series from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
       {
-        name: 'Reflection 70 GSM', gsm: 70, sizes: ['A4','A3'],
-        brightness: '90% ISO',
-        bestFor: 'Daily office printing',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/4/QX/PH/MM/151013247/andhra-copier-paper-reflection-a4-70-gsm.jpg',
-        fallbackImg: 'https://satijapaper.com/andhra.jpg'
+        name: 'Reflection White 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '93% ISO', thickness: '98 µm', sheets: 500,
+        bestFor: 'Daily multipurpose printing',
+        img: _IMG['ANDHRA_70_WHITE'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
       },
       {
-        name: 'Reflection 75 GSM', gsm: 75, sizes: ['A4','A3'],
-        brightness: '92% ISO',
-        bestFor: 'Reports, official docs',
-        img: 'https://5.imimg.com/data5/SELLER/Default/2023/3/TX/XJ/VB/151013247/andhra-reflection-75-gsm-a4-papers.jpg',
-        fallbackImg: 'https://satijapaper.com/andhra.jpg'
+        name: 'Reflection 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '91% ISO', thickness: '98 µm', sheets: 500,
+        bestFor: 'High-volume office printing',
+        img: _IMG['ANDHRA_70'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
       },
       {
-        name: 'Reflection 80 GSM', gsm: 80, sizes: ['A4','A3'],
-        brightness: '94% ISO',
-        bestFor: 'Premium presentations',
-        img: 'https://www.andhrapaper.com/images/reflection-80gsm.jpg',
-        fallbackImg: 'https://satijapaper.com/andhra.jpg'
+        name: 'Reflection 75 GSM', gsm: 75, sizes: ['A4'],
+        brightness: '93% ISO', thickness: '103 µm', sheets: 500,
+        bestFor: 'Reports, official documents',
+        img: _IMG['ANDHRA_75'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
+      },
+      {
+        name: 'Reflection 80 GSM', gsm: 80, sizes: ['A4'],
+        brightness: '92% ISO', thickness: '100 µm', sheets: 500,
+        bestFor: 'Premium presentations, letterheads',
+        img: _IMG['ANDHRA_80'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
+      },
+      {
+        name: 'Reflection 100 GSM', gsm: 100, sizes: ['A4'],
+        brightness: '93% ISO', sheets: 500,
+        bestFor: 'Digital printing, premium office paper',
+        img: _IMG['ANDHRA_100'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
       }
     ]
   }
