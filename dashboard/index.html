@@ -108,6 +108,12 @@
       </button>
     </div>
 
+    <button class="menu-btn" id="navDispatch"
+            onclick="filterCat('Dispatch',this)">
+      <i class="fas fa-truck-fast"></i> Dispatch
+      <span class="count-badge" id="cntDispatch">0</span>
+    </button>
+    
     <button class="menu-btn" id="navPurchase"
             onclick="filterCat('Purchase',this)">
       <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
@@ -266,6 +272,9 @@
             </label>
             <label class="chk-pill" data-val="Sales">
               <input type="checkbox" value="Sales"> Sales
+            </label>
+            <label class="chk-pill" data-val="Dispatch">
+              <input type="checkbox" value="Dispatch"> Dispatch
             </label>
             <label class="chk-pill" data-val="Purchase">
               <input type="checkbox" value="Purchase"> Purchase
