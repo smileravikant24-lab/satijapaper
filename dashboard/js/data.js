@@ -1,41 +1,10 @@
 import { _IMG } from './images.js';
-
-/**
- * @typedef {Object} ProcessLinks
- * @property {1=} fms
- * @property {1=} form
- * @property {1=} sheet
- * @property {1=} check
- * @property {1=} video
- * @property {1=} videoBCI
- * @property {1=} dashEmp
- * @property {1=} dashPC
- * @property {1=} admin
- * @property {1=} gpDash
- * @property {1=} stockDash
- * @property {1=} folder
- * @property {1=} aiqa     AI Q&A ChatGPT link
- */
-
-/**
- * @typedef {Object} Process
- * @property {string} cat
- * @property {string} name
- * @property {string} pc      Person In Charge
- * @property {string} solver  Process solver
- * @property {string} exec    Executive who runs it
- * @property {ProcessLinks} links
- * @property {string=} group  Optional sub-group within category (e.g. "Double A")
- */
-
-/** @type {Process[]} */
 export const DB = [
   // -------- SALES --------
   {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,aiqa:1}},
   {cat:"Dispatch",name:"O2D Direct Dispatch FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1,aiqa:1}},
   {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:1,sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Next Week Marketing Plan",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{form:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Next Day/ Week Marketing Plan",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"Enquiry Capture FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Neha",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"CRM Payment FMS",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Pooja",links:{fms:1,aiqa:1}},
@@ -90,10 +59,7 @@ export const DB = [
   {cat:"Family",name:"Satija Family Documents",pc:"Ms. Neha",solver:"Ms. Mukesh",exec:"Ms. Khushi",links:{folder:1}}
 ];
 
-/**
- * Visual metadata for each link type.
- * Used by both the process cards and the access-modal proc list.
- */
+
 export const LINK_META = {
   fms:       {label:'FMS',            icon:'fas fa-table-cells',      cls:'btn-fms'},
   form:      {label:'Form',           icon:'fab fa-google-drive',     cls:'btn-form'},
@@ -126,11 +92,7 @@ export const NAV_TABS = [
   {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'}
 ];
 
-/**
- * Product catalogue – all brands stocked by Satija Paper.
- * productImg keys are GSM numbers → real product ream image URLs.
- * shareUrl  → WhatsApp share link for that brand/GSM.
- */
+
 export const PRODUCTS = [
   {
     id: 'doublea',
