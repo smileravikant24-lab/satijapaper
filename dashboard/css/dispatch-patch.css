@@ -1,0 +1,68 @@
+/* ============================================================
+   dispatch-patch.css
+   ADD: <link rel="stylesheet" href="css/dispatch-patch.css">
+   in index.html <head> after other CSS links.
+   Fixes: 1) Dispatch card border + tag colour
+           2) Product variant images fit to box properly
+   ============================================================ */
+
+/* ── Dispatch card — top border + tag colour ─────────────────
+   Matches the pattern of other categories in cards.css
+────────────────────────────────────────────────────────────── */
+.card.cat-Dispatch {
+  border-top: 3px solid #f97316;   /* orange — matches truck/logistics feel */
+}
+.card-tag.tag-Dispatch {
+  background: #fff7ed;
+  color: #ea6c00;
+  border: 1px solid #fed7aa;
+}
+
+/* ── Product variant image — force fill the box ──────────────
+   Fixes images appearing smaller than the card box
+────────────────────────────────────────────────────────────── */
+.prod-variant-img-wrap {
+  width: 100% !important;
+  height: 160px !important;
+  overflow: hidden;
+  border-radius: .5rem;
+  background: #f3f4f6;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prod-variant-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block;
+}
+
+/* Brand header image — also force fill */
+.prod-brand-img-wrap {
+  width: 140px !important;
+  height: 90px !important;
+  overflow: hidden;
+  border-radius: .6rem;
+  flex-shrink: 0;
+  background: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.prod-brand-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;   /* contain for logos so they don't crop */
+  object-position: center !important;
+  display: block;
+}
+
+/* Shimmer placeholder fills full box */
+img.prod-lazy {
+  width: 100% !important;
+  height: 100% !important;
+}
