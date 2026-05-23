@@ -1,9 +1,4 @@
-/* ============================================================
-   products.css  –  Products catalogue page styles
-   Also includes: Double A folder sidebar & btn-aiqa card button
-   ============================================================ */
 
-/* ── AI Q&A button ─────────────────────────────────────────── */
 .btn-aiqa {
   background: linear-gradient(135deg, #10a37f 0%, #0d8f6f 100%);
   color: #fff;
