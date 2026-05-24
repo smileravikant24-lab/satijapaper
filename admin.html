@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satija Paper — Admin CMS</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<style>
+:root{
+  --emerald:#0d4a2b;--emerald-light:#1a6b40;--gold:#c49a3c;
+  --bg:#f4f3ef;--card:#ffffff;--border:rgba(0,0,0,0.09);
+  --text:#1a1a1a;--muted:#6b7280;--danger:#dc2626;
+  --success:#16a34a;--warning:#d97706;--sidebar-w:240px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;background:var(--emerald);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--card);border-radius:16px;padding:48px 40px;width:380px;box-shadow:0 24px 80px rgba(0,0,0,0.3)}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo img{height:72px;border-radius:50%;border:3px solid var(--emerald)}
+.login-logo h2{font-family:'Times New Roman',serif;font-size:1.6rem;color:var(--emerald);margin-top:12px;letter-spacing:1px}
+.login-logo p{font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.login-field{margin-bottom:16px}
+.login-field label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px}
+.login-field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+.login-field input:focus{border-color:var(--emerald)}
+.login-btn{width:100%;padding:13px;background:var(--emerald);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.5px;margin-top:8px;transition:background .2s}
+.login-btn:hover{background:var(--emerald-light)}
+.login-btn:disabled{opacity:.6;cursor:not-allowed}
+.login-error{background:#fef2f2;color:var(--danger);border:1px solid #fecaca;border-radius:6px;padding:10px 14px;font-size:13px;margin-bottom:16px;display:none}
+
+/* LAYOUT */
+#app{display:none;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--emerald);display:flex;flex-direction:column;z-index:100}
+.sidebar-brand{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.sidebar-brand img{height:44px;border-radius:50%;border:2px solid rgba(255,255,255,0.25)}
+.sidebar-brand span{display:block;color:#fff;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:10px}
+.sidebar-brand small{color:rgba(255,255,255,0.5);font-size:10px;letter-spacing:1px}
+.sidebar-nav{flex:1;padding:12px 0;overflow-y:auto}
+.nav-section{padding:8px 20px 4px;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,0.75);font-size:13px;cursor:pointer;border-left:3px solid transparent;transition:all .2s}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,0.12);color:#fff;border-left-color:var(--gold)}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1)}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;cursor:pointer;padding:8px 0}
+.logout-btn:hover{color:#fff}
+
+.main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar h1{font-size:17px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.admin-pill{background:rgba(13,74,43,0.08);color:var(--emerald);font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px}
+.user-email{font-size:12px;color:var(--muted)}
+
+.content{padding:28px;flex:1}
+.panel{display:none}.panel.active{display:block}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card.green::before{background:var(--emerald)}
+.stat-card.gold::before{background:var(--gold)}
+.stat-card.blue::before{background:#3b82f6}
+.stat-card.red::before{background:var(--danger)}
+.stat-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.stat-val{font-size:2rem;font-weight:700;color:var(--text);font-family:'Times New Roman',serif;margin:6px 0 2px}
+.stat-sub{font-size:12px;color:var(--muted)}
+
+/* SECTION */
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.sec-title{font-size:16px;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
+.btn-primary{background:var(--emerald);color:#fff}.btn-primary:hover{background:var(--emerald-light)}
+.btn-outline{background:#fff;color:var(--text);border:1px solid var(--border)}.btn-outline:hover{background:var(--bg)}
+.btn-danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}.btn-danger:hover{background:#fee2e2}
+.btn-success{background:#f0fdf4;color:var(--success);border:1px solid #bbf7d0}.btn-success:hover{background:#dcfce7}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* TABLE */
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{background:#f9f9f7;padding:11px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.data-table td{padding:13px 16px;font-size:13px;border-bottom:1px solid rgba(0,0,0,0.04);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#fafaf8}
+.badge{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-green{background:#dcfce7;color:#15803d}
+.badge-yellow{background:#fef9c3;color:#a16207}
+.badge-red{background:#fee2e2;color:#b91c1c}
+.badge-blue{background:#dbeafe;color:#1d4ed8}
+.badge-gray{background:#f3f4f6;color:#6b7280}
+.action-btns{display:flex;gap:6px;flex-wrap:wrap}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-field{margin-bottom:16px}
+.form-field.full{grid-column:1/-1}
+.form-field label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .2s;background:#fff}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--emerald)}
+.form-field textarea{min-height:90px;resize:vertical}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:16px;width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:28px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.modal-header h3{font-size:17px;font-weight:600}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:22px;padding:0;line-height:1}
+
+/* SEARCH */
+.search-bar{display:flex;gap:10px;margin-bottom:18px}
+.search-bar input{flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none}
+.search-bar input:focus{border-color:var(--emerald)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;color:#fff}
+.toast.show{opacity:1;transform:none}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+.toast.info{background:var(--text)}
+
+/* QUICK */
+.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.quick-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;text-align:center}
+.quick-card:hover{border-color:var(--emerald);transform:translateY(-2px);box-shadow:0 4px 16px rgba(13,74,43,0.1)}
+.quick-card svg{width:28px;height:28px;color:var(--emerald);margin:0 auto 10px;display:block}
+.quick-card span{font-size:13px;font-weight:600;color:var(--text);display:block}
+.quick-card small{font-size:11px;color:var(--muted)}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--emerald);border-radius:50%;animation:spin .7s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.gallery-item{position:relative;border-radius:10px;overflow:hidden;aspect-ratio:1;background:#eee}
+.gallery-item img{width:100%;height:100%;object-fit:cover}
+.gallery-item .del-btn{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;display:none}
+.gallery-item:hover .del-btn{display:block}
+
+@media(max-width:768px){
+  .sidebar{width:60px}
+  .sidebar-brand span,.sidebar-brand small,.nav-item span,.nav-section,.nav-badge,.sidebar-footer span{display:none}
+  .main{margin-left:60px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .quick-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="logo.jpg" alt="SP" onerror="this.style.display='none'">
+      <h2>SATIJA PAPER</h2>
+      <p>Admin CMS</p>
+    </div>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@satijapaper.com" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <img src="logo.jpg" alt="SP" onerror="this.style.display='none'">
+      <span>Satija Paper</span>
+      <small>Admin CMS</small>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPanel('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-section">Content</div>
+      <div class="nav-item" onclick="showPanel('brands')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <span>Brands & Products</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('gallery')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Gallery</span>
+      </div>
+      <div class="nav-section">CRM</div>
+      <div class="nav-item" onclick="showPanel('enquiries')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Enquiries</span>
+        <span class="nav-badge" id="enqBadge">0</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('reviews')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>Reviews</span>
+        <span class="nav-badge" id="revBadge">0</span>
+      </div>
+      <div class="nav-section">Settings</div>
+      <div class="nav-item" onclick="showPanel('contact')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Contact Info</span>
+      </div>
+      <div class="nav-item" onclick="showPanel('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M22 12h-2M4 12H2M12 22v-2M12 4V2"/></svg>
+        <span>Settings</span>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="logout-btn" onclick="doLogout()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Logout</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1 id="topbarTitle">Dashboard</h1>
+      <div class="topbar-right">
+        <span class="user-email" id="userEmail"></span>
+        <a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View Site ↗</a>
+        <div class="admin-pill">Admin</div>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="stat-grid">
+          <div class="stat-card green"><div class="stat-label">Total Brands</div><div class="stat-val">6</div><div class="stat-sub">Active on website</div></div>
+          <div class="stat-card gold"><div class="stat-label">New Enquiries</div><div class="stat-val" id="dashEnqCount">—</div><div class="stat-sub">Pending response</div></div>
+          <div class="stat-card blue"><div class="stat-label">Pending Reviews</div><div class="stat-val" id="dashRevCount">—</div><div class="stat-sub">Awaiting approval</div></div>
+          <div class="stat-card red"><div class="stat-label">Gallery Photos</div><div class="stat-val" id="dashGalCount">—</div><div class="stat-sub">Uploaded</div></div>
+        </div>
+        <div class="quick-grid">
+          <div class="quick-card" onclick="showPanel('enquiries')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Enquiries</span><small>View & respond</small>
+          </div>
+          <div class="quick-card" onclick="showPanel('reviews')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Reviews</span><small>Approve pending</small>
+          </div>
+          <div class="quick-card" onclick="showPanel('gallery')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Gallery</span><small>Upload photos</small>
+          </div>
+          <div class="quick-card" onclick="showPanel('brands')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span>Brands</span><small>Manage products</small>
+          </div>
+          <div class="quick-card" onclick="showPanel('contact')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Contact</span><small>Update info</small>
+          </div>
+          <div class="quick-card" onclick="window.open('https://satijapaper.com','_blank')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <span>Live Site</span><small>satijapaper.com</small>
+          </div>
+        </div>
+        <div class="sec-header"><div class="sec-title">Recent Enquiries</div><button class="btn btn-outline btn-sm" onclick="showPanel('enquiries')">View All</button></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>WhatsApp</th><th>Requirement</th><th>Status</th></tr></thead><tbody id="dashEnqTable"><tr><td colspan="4" class="loading"><span class="spinner"></span>Loading...</td></tr></tbody></table></div>
+      </div>
+
+      <!-- BRANDS -->
+      <div class="panel" id="panel-brands">
+        <div class="sec-header"><div class="sec-title">Brands & Products</div></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Brand</th><th>Origin</th><th>Products</th><th>GSM</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Double A</strong></td><td>Thailand</td><td>70, 75, 80, 100 GSM</td><td>70–100</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+          <tr><td><strong>NR Agarwal</strong></td><td>Gujarat</td><td>Brilliance 70, 75, 80 GSM</td><td>70–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+          <tr><td><strong>Satia Industries</strong></td><td>Punjab</td><td>Superb 65, 70, 75, 80 GSM</td><td>65–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+          <tr><td><strong>Khanna Paper</strong></td><td>Amritsar</td><td>K Bold, E-Print, E-Copy, White Gem</td><td>65–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+          <tr><td><strong>Ruchira Papers</strong></td><td>Himachal Pradesh</td><td>Tarang, Rozana, Mela, Mogra, Kora, VV</td><td>49–160</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+          <tr><td><strong>Andhra Paper</strong></td><td>Andhra Pradesh</td><td>Reflection 70, 70W, 75, 80, 100 GSM</td><td>70–100</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
+        </tbody></table></div>
+      </div>
+
+      <!-- ENQUIRIES -->
+      <div class="panel" id="panel-enquiries">
+        <div class="sec-header"><div class="sec-title">Enquiries</div><button class="btn btn-outline btn-sm" onclick="exportEnq()">Export CSV</button></div>
+        <div class="search-bar"><input type="text" placeholder="Search by name, phone or requirement..." oninput="filterEnq(this.value)" id="enqSearch"></div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Name</th><th>WhatsApp</th><th>Email</th><th>Quantity</th><th>Requirement</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="enqTable"><tr><td colspan="8" class="loading"><span class="spinner"></span>Loading...</td></tr></tbody></table></div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="panel" id="panel-reviews">
+        <div class="sec-header"><div class="sec-title">Customer Reviews</div></div>
+        <div class="search-bar"><input type="text" placeholder="Search reviews..." oninput="filterRevs(this.value)"></div>
+        <div id="reviewsList"><div class="loading"><span class="spinner"></span>Loading...</div></div>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="panel" id="panel-gallery">
+        <div class="sec-header"><div class="sec-title">Photo Gallery</div><button class="btn btn-primary" onclick="document.getElementById('galleryUpload').click()">+ Upload Photos</button></div>
+        <input type="file" id="galleryUpload" multiple accept="image/*" style="display:none" onchange="handleGalleryUpload(this)">
+        <div style="background:var(--card);border:2px dashed var(--border);border-radius:12px;padding:40px;text-align:center;margin-bottom:20px;cursor:pointer" onclick="document.getElementById('galleryUpload').click()">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" style="margin:0 auto 10px;display:block"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <div style="font-size:14px;font-weight:600;color:var(--muted)">Click to upload photos</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">PNG, JPG, WEBP — stored in Firebase Storage</div>
+        </div>
+        <div id="galleryGrid" class="gallery-grid"></div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="panel" id="panel-contact">
+        <div class="sec-header"><div class="sec-title">Contact Information</div></div>
+        <div class="table-wrap" style="padding:24px;max-width:600px">
+          <div class="form-grid">
+            <div class="form-field full"><label>Business Name</label><input type="text" id="ctName" value="Satija Paper"></div>
+            <div class="form-field full"><label>Address</label><textarea id="ctAddr">790, Near Batra Cinema, Dr. Mukherjee Nagar, New Delhi – 110009</textarea></div>
+            <div class="form-field"><label>Phone</label><input type="text" id="ctPhone" value="+91 98997 08098"></div>
+            <div class="form-field"><label>Email</label><input type="text" id="ctEmail" value="info@satijapaper.com"></div>
+            <div class="form-field"><label>Opening Hours</label><input type="text" id="ctHours" value="10:00 AM – 6:00 PM"></div>
+            <div class="form-field"><label>Working Days</label><input type="text" id="ctDays" value="Monday – Saturday"></div>
+            <div class="form-field full"><label>WhatsApp Number (10 digits)</label><input type="text" id="ctWA" value="9899708098"></div>
+          </div>
+          <button class="btn btn-primary" onclick="saveContact()">Save to Firebase</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="sec-header"><div class="sec-title">Admin Settings</div></div>
+        <div class="table-wrap" style="padding:24px;max-width:480px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)">Change Password</div>
+          <div class="form-field"><label>New Password</label><input type="password" id="newPass" placeholder="Min 6 characters"></div>
+          <div class="form-field"><label>Confirm Password</label><input type="password" id="confPass" placeholder="Repeat new password"></div>
+          <button class="btn btn-primary" onclick="changePass()">Update Password</button>
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Logged in as: <strong id="settingsEmail"></strong></div>
+            <button class="btn btn-danger" onclick="doLogout()">Sign Out</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ENQUIRY MODAL -->
+<div class="modal-overlay" id="enqModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Enquiry Details</h3><button class="modal-close" onclick="closeModal('enqModal')">×</button></div>
+    <div id="enqModalBody"></div>
+    <div style="display:flex;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn btn-success" id="markDoneBtn" onclick="markEnqDone()">✓ Mark as Responded</button>
+      <button class="btn btn-outline" onclick="closeModal('enqModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBxt4HtZm03WQzQD7mMNOyIQr-KxAHBaO8",
+  authDomain: "sp-dashboard-1e9c8.firebaseapp.com",
+  projectId: "sp-dashboard-1e9c8",
+  storageBucket: "sp-dashboard-1e9c8.firebasestorage.app",
+  messagingSenderId: "347959572660",
+  appId: "1:347959572660:web:72c16e7289d63bcaff3fe1",
+  measurementId: "G-M2J2R2KZS7"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const storage = getStorage(app);
+
+// ── STATE ──
+let allEnquiries = [];
+let allReviews   = [];
+let allGallery   = [];
+let currentEnqId = null;
+let unsubEnq = null, unsubRev = null, unsubGal = null;
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, user => {
+  if(user) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('userEmail').textContent = user.email;
+    document.getElementById('settingsEmail').textContent = user.email;
+    startListeners();
+    renderDashboard();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    stopListeners();
+  }
+});
+
+// ── LOGIN ──
+window.doLogin = async function() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('loginError');
+  err.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    err.textContent = 'Incorrect email or password.';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Sign In →';
+  }
+};
+
+window.doLogout = async function() {
+  await signOut(auth);
+};
+
+// ── REALTIME LISTENERS ──
+function startListeners() {
+  // Enquiries — realtime
+  const enqQ = query(collection(db,'enquiries'), orderBy('date','desc'));
+  unsubEnq = onSnapshot(enqQ, snap => {
+    allEnquiries = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    updateBadges();
+    renderDashboard();
+    if(document.getElementById('panel-enquiries').classList.contains('active')) renderEnquiries();
+  });
+
+  // Reviews — realtime
+  const revQ = query(collection(db,'reviews'), orderBy('date','desc'));
+  unsubRev = onSnapshot(revQ, snap => {
+    allReviews = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    updateBadges();
+    if(document.getElementById('panel-reviews').classList.contains('active')) renderReviews();
+  });
+
+  // Gallery — realtime
+  unsubGal = onSnapshot(collection(db,'gallery'), snap => {
+    allGallery = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    document.getElementById('dashGalCount').textContent = allGallery.length;
+    if(document.getElementById('panel-gallery').classList.contains('active')) renderGallery();
+  });
+
+  // Load contact
+  loadContact();
+}
+
+function stopListeners() {
+  if(unsubEnq) unsubEnq();
+  if(unsubRev) unsubRev();
+  if(unsubGal) unsubGal();
+}
+
+function updateBadges() {
+  const newEnq  = allEnquiries.filter(e => e.status === 'new').length;
+  const pendRev = allReviews.filter(r => r.status === 'pending').length;
+  document.getElementById('enqBadge').textContent = newEnq;
+  document.getElementById('revBadge').textContent = pendRev;
+  document.getElementById('dashEnqCount').textContent = newEnq;
+  document.getElementById('dashRevCount').textContent = pendRev;
+}
+
+// ── PANELS ──
+window.showPanel = function(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if(n.getAttribute('onclick')?.includes("'"+id+"'")) n.classList.add('active');
+  });
+  const titles = {dashboard:'Dashboard',brands:'Brands & Products',enquiries:'Enquiries',reviews:'Reviews',gallery:'Gallery',contact:'Contact Info',settings:'Settings'};
+  document.getElementById('topbarTitle').textContent = titles[id] || id;
+  if(id === 'enquiries') renderEnquiries();
+  if(id === 'reviews')   renderReviews();
+  if(id === 'gallery')   renderGallery();
+};
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  const recent = allEnquiries.slice(0, 5);
+  document.getElementById('dashEnqTable').innerHTML = recent.length
+    ? recent.map(e => `<tr>
+        <td><strong>${e.name||''}</strong></td>
+        <td>${e.wa||e.whatsapp||''}</td>
+        <td style="color:var(--muted);font-size:12px;max-width:200px">${e.req||e.requirement||''}</td>
+        <td><span class="badge ${e.status==='new'?'badge-yellow':'badge-green'}">${e.status==='new'?'New':'Responded'}</span></td>
+      </tr>`).join('')
+    : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">No enquiries yet</td></tr>';
+}
+
+// ── ENQUIRIES ──
+function renderEnquiries(data) {
+  const list = data || allEnquiries;
+  document.getElementById('enqTable').innerHTML = list.length
+    ? list.map(e => `<tr>
+        <td><strong>${e.name||''}</strong></td>
+        <td><a href="https://wa.me/91${e.wa||e.whatsapp||''}" target="_blank" style="color:var(--emerald)">+91 ${e.wa||e.whatsapp||''}</a></td>
+        <td style="font-size:12px;color:var(--muted)">${e.email||''}</td>
+        <td>${e.qty||e.quantity||'—'}</td>
+        <td style="font-size:12px;max-width:180px">${e.req||e.requirement||''}</td>
+        <td style="font-size:12px;color:var(--muted)">${e.date||''}</td>
+        <td><span class="badge ${e.status==='new'?'badge-yellow':'badge-green'}">${e.status==='new'?'New':'Responded'}</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-outline btn-sm" onclick="viewEnq('${e.id}')">View</button>
+            <a href="https://wa.me/91${e.wa||e.whatsapp||''}" target="_blank" class="btn btn-primary btn-sm">WhatsApp</a>
+            <button class="btn btn-danger btn-sm" onclick="deleteEnq('${e.id}')">Del</button>
+          </div>
+        </td>
+      </tr>`).join('')
+    : '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:32px">No enquiries yet</td></tr>';
+}
+
+window.filterEnq = function(q) {
+  const f = allEnquiries.filter(e =>
+    (e.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (e.wa||e.whatsapp||'').includes(q) ||
+    (e.req||e.requirement||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderEnquiries(f);
+};
+
+window.viewEnq = function(id) {
+  const e = allEnquiries.find(x => x.id === id);
+  if(!e) return;
+  currentEnqId = id;
+  document.getElementById('enqModalBody').innerHTML = `
+    <table style="width:100%;font-size:14px;border-collapse:collapse">
+      <tr><td style="padding:8px 0;color:var(--muted);width:140px">Name</td><td><strong>${e.name||''}</strong></td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">WhatsApp</td><td><a href="https://wa.me/91${e.wa||e.whatsapp||''}" target="_blank" style="color:var(--emerald)">+91 ${e.wa||e.whatsapp||''}</a></td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">Email</td><td>${e.email||'—'}</td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">Quantity</td><td>${e.qty||e.quantity||'Not specified'}</td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">Requirement</td><td>${e.req||e.requirement||'—'}</td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">Date</td><td>${e.date||'—'}</td></tr>
+      <tr><td style="padding:8px 0;color:var(--muted)">Status</td><td><span class="badge ${e.status==='new'?'badge-yellow':'badge-green'}">${e.status==='new'?'New':'Responded'}</span></td></tr>
+    </table>`;
+  document.getElementById('markDoneBtn').style.display = e.status==='new' ? 'inline-flex' : 'none';
+  document.getElementById('enqModal').classList.add('open');
+};
+
+window.markEnqDone = async function() {
+  if(!currentEnqId) return;
+  await updateDoc(doc(db,'enquiries',currentEnqId), {status:'responded'});
+  closeModal('enqModal');
+  showToast('Marked as responded','success');
+};
+
+window.deleteEnq = async function(id) {
+  if(!confirm('Delete this enquiry?')) return;
+  await deleteDoc(doc(db,'enquiries',id));
+  showToast('Deleted','success');
+};
+
+window.exportEnq = function() {
+  const csv = 'Name,WhatsApp,Email,Qty,Requirement,Status,Date\n' +
+    allEnquiries.map(e =>
+      `"${e.name||''}","${e.wa||e.whatsapp||''}","${e.email||''}","${e.qty||e.quantity||''}","${e.req||e.requirement||''}","${e.status||''}","${e.date||''}"`
+    ).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'satijapaper_enquiries_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  showToast('CSV exported!','success');
+};
+
+// ── REVIEWS ──
+function renderReviews(data) {
+  const list = data || allReviews;
+  document.getElementById('reviewsList').innerHTML = list.length
+    ? list.map(r => `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;gap:14px;margin-bottom:12px;align-items:flex-start">
+        <div style="width:42px;height:42px;border-radius:50%;background:var(--emerald);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0">${(r.name||'?')[0].toUpperCase()}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap">
+            <strong style="font-size:14px">${r.name||''}</strong>
+            <div style="color:var(--gold);font-size:16px">${'★'.repeat(r.rating||5)}${'☆'.repeat(5-(r.rating||5))}</div>
+            <span class="badge ${r.status==='pending'?'badge-yellow':'badge-green'}">${r.status||'pending'}</span>
+            <span style="font-size:11px;color:var(--muted)">${r.date||''}</span>
+          </div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:12px">${r.text||''}</div>
+          <div style="display:flex;gap:8px">
+            ${r.status==='pending'?`<button class="btn btn-success btn-sm" onclick="approveReview('${r.id}')">✓ Approve</button>`:''}
+            <button class="btn btn-danger btn-sm" onclick="deleteReview('${r.id}')">Delete</button>
+          </div>
+        </div>
+      </div>`).join('')
+    : '<div style="text-align:center;color:var(--muted);padding:40px">No reviews yet</div>';
+}
+
+window.filterRevs = function(q) {
+  const f = allReviews.filter(r =>
+    (r.name||'').toLowerCase().includes(q.toLowerCase()) ||
+    (r.text||'').toLowerCase().includes(q.toLowerCase())
+  );
+  renderReviews(f);
+};
+
+window.approveReview = async function(id) {
+  await updateDoc(doc(db,'reviews',id), {status:'approved'});
+  showToast('Review approved!','success');
+};
+
+window.deleteReview = async function(id) {
+  if(!confirm('Delete this review?')) return;
+  await deleteDoc(doc(db,'reviews',id));
+  showToast('Review deleted','success');
+};
+
+// ── GALLERY ──
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = allGallery.map(img => `
+    <div class="gallery-item">
+      <img src="${img.url}" alt="${img.name||''}">
+      <button class="del-btn" onclick="deletePhoto('${img.id}','${img.storagePath||''}')">✕ Delete</button>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">No photos yet</div>';
+}
+
+window.handleGalleryUpload = async function(input) {
+  const files = Array.from(input.files);
+  showToast(`Uploading ${files.length} photo(s)...`,'info');
+  for(const file of files) {
+    try {
+      const path = `gallery/${Date.now()}_${file.name}`;
+      const storageRef = ref(storage, path);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      await addDoc(collection(db,'gallery'), {
+        url, name: file.name, storagePath: path,
+        uploadedAt: new Date().toISOString()
+      });
+    } catch(e) { showToast('Upload failed: '+e.message,'error'); }
+  }
+  showToast('Photos uploaded!','success');
+  input.value = '';
+};
+
+window.deletePhoto = async function(id, path) {
+  if(!confirm('Delete this photo?')) return;
+  try {
+    if(path) await deleteObject(ref(storage, path));
+    await deleteDoc(doc(db,'gallery',id));
+    showToast('Photo deleted','success');
+  } catch(e) { showToast('Error: '+e.message,'error'); }
+};
+
+// ── CONTACT ──
+async function loadContact() {
+  try {
+    const snap = await getDoc(doc(db,'sp_settings','contact'));
+    if(snap.exists()) {
+      const d = snap.data();
+      if(d.name)  document.getElementById('ctName').value  = d.name;
+      if(d.addr)  document.getElementById('ctAddr').value  = d.addr;
+      if(d.phone) document.getElementById('ctPhone').value = d.phone;
+      if(d.email) document.getElementById('ctEmail').value = d.email;
+      if(d.hours) document.getElementById('ctHours').value = d.hours;
+      if(d.days)  document.getElementById('ctDays').value  = d.days;
+      if(d.wa)    document.getElementById('ctWA').value    = d.wa;
+    }
+  } catch(e) {}
+}
+
+window.saveContact = async function() {
+  const data = {
+    name:  document.getElementById('ctName').value,
+    addr:  document.getElementById('ctAddr').value,
+    phone: document.getElementById('ctPhone').value,
+    email: document.getElementById('ctEmail').value,
+    hours: document.getElementById('ctHours').value,
+    days:  document.getElementById('ctDays').value,
+    wa:    document.getElementById('ctWA').value,
+    updatedAt: new Date().toISOString()
+  };
+  await setDoc(doc(db,'sp_settings','contact'), data);
+  showToast('Contact info saved to Firebase!','success');
+};
+
+// ── SETTINGS ──
+window.changePass = async function() {
+  const nw   = document.getElementById('newPass').value;
+  const conf = document.getElementById('confPass').value;
+  if(nw.length < 6) { showToast('Password must be 6+ characters','error'); return; }
+  if(nw !== conf)   { showToast('Passwords do not match','error'); return; }
+  try {
+    await updatePassword(auth.currentUser, nw);
+    showToast('Password updated!','success');
+    document.getElementById('newPass').value = '';
+    document.getElementById('confPass').value = '';
+  } catch(e) {
+    showToast('Error: Re-login and try again','error');
+  }
+};
+
+// ── UTILS ──
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+
+window.showToast = function(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + (type||'info');
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 3500);
+};
+
+// Close modal on outside click
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) window.closeModal(m.id); });
+});
+
+// Enter key login
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key==='Enter') window.doLogin(); });
+document.getElementById('loginEmail').addEventListener('keydown', e => { if(e.key==='Enter') window.doLogin(); });
+</script>
+</body>
+</html>
