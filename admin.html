@@ -281,16 +281,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 
       <!-- BRANDS -->
       <div class="panel" id="panel-brands">
-        <div class="sec-header"><div class="sec-title">Brands & Products</div></div>
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>Brand</th><th>Origin</th><th>Products</th><th>GSM</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Double A</strong></td><td>Thailand</td><td>70, 75, 80, 100 GSM</td><td>70–100</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-          <tr><td><strong>NR Agarwal</strong></td><td>Gujarat</td><td>Brilliance 70, 75, 80 GSM</td><td>70–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-          <tr><td><strong>Satia Industries</strong></td><td>Punjab</td><td>Superb 65, 70, 75, 80 GSM</td><td>65–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-          <tr><td><strong>Khanna Paper</strong></td><td>Amritsar</td><td>K Bold, E-Print, E-Copy, White Gem</td><td>65–80</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-          <tr><td><strong>Ruchira Papers</strong></td><td>Himachal Pradesh</td><td>Tarang, Rozana, Mela, Mogra, Kora, VV</td><td>49–160</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-          <tr><td><strong>Andhra Paper</strong></td><td>Andhra Pradesh</td><td>Reflection 70, 70W, 75, 80, 100 GSM</td><td>70–100</td><td><span class="badge badge-green">Active</span></td><td><div class="action-btns"><a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a></div></td></tr>
-        </tbody></table></div>
+        <div class="sec-header">
+          <div class="sec-title">Brands & Products</div>
+          <button class="btn btn-primary" onclick="openAddBrand()">+ Add Brand</button>
+        </div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Brand</th><th>Origin</th><th>Tagline</th><th>Products</th><th>GSM</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="brandsTable"><tr><td colspan="7" class="loading"><span class="spinner"></span>Loading...</td></tr></tbody>
+        </table></div>
       </div>
 
       <!-- ENQUIRIES -->
@@ -351,6 +348,37 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- BRAND MODAL -->
+<div class="modal-overlay" id="brandModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-header">
+      <h3 id="brandModalTitle">Edit Brand</h3>
+      <button class="modal-close" onclick="closeModal('brandModal')">×</button>
+    </div>
+    <div class="form-grid">
+      <input type="hidden" id="bId">
+      <div class="form-field"><label>Brand Name</label><input type="text" id="bName" placeholder="e.g. Double A"></div>
+      <div class="form-field"><label>Origin / Location</label><input type="text" id="bOrigin" placeholder="e.g. Thailand"></div>
+      <div class="form-field full"><label>Tagline</label><input type="text" id="bTagline" placeholder="e.g. Premium copier from Thailand"></div>
+      <div class="form-field full"><label>Products / Variants</label><input type="text" id="bProducts" placeholder="e.g. 70 GSM, 75 GSM, 80 GSM, 100 GSM"></div>
+      <div class="form-field"><label>GSM Range</label><input type="text" id="bGsm" placeholder="e.g. 70–100 GSM"></div>
+      <div class="form-field"><label>Status</label>
+        <select id="bStatus">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <div class="form-field full"><label>Description</label><textarea id="bDesc" placeholder="Brand ke baare mein brief description..."></textarea></div>
+      <div class="form-field full"><label>Certifications (comma separated)</label><input type="text" id="bCerts" placeholder="e.g. ISO 9001, FSC Certified, ECF Bleached"></div>
+      <div class="form-field full"><label>Key Stats (JSON format)</label><textarea id="bStats" style="min-height:70px;font-family:monospace;font-size:12px" placeholder='e.g. [{"label":"Fibres/Gram","value":"30M"},{"label":"Countries","value":"120+"}]'></textarea></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn btn-primary" onclick="saveBrand()">Save to Firebase</button>
+      <button class="btn btn-outline" onclick="closeModal('brandModal')">Cancel</button>
     </div>
   </div>
 </div>
@@ -470,6 +498,8 @@ function startListeners() {
 
   // Load contact
   loadContact();
+  // Load brands
+  loadBrands();
 }
 
 function stopListeners() {
@@ -729,6 +759,98 @@ window.showToast = function(msg, type) {
   setTimeout(() => t.classList.add('show'), 10);
   setTimeout(() => t.classList.remove('show'), 3500);
 };
+
+
+  // ── BRANDS CRUD ──
+  const DEFAULT_BRANDS = [
+    {name:'Double A',        origin:'Thailand',         tagline:'Premium copier — 30M fibres/gram',    products:'70 GSM, 75 GSM, 80 GSM, 100 GSM',            gsm:'70–100 GSM', status:'active', desc:'Globally recognized premium copier from Thailand. Jam-free, CIE 167 whiteness.',    certs:'FSC Certified,ISO 9001',             stats:'[{"label":"Fibres/Gram","value":"30M"},{"label":"CIE","value":"167"},{"label":"Countries","value":"120+"}]'},
+    {name:'NR Agarwal',      origin:'Gujarat, India',   tagline:'100% recycled — VOITH German tech',   products:'Brilliance 70 GSM, 75 GSM, 80 GSM',           gsm:'70–80 GSM',  status:'active', desc:'100% de-inked recycled fibre with VOITH de-inking technology from Germany.',        certs:'ISO 9001,VOITH Tech',                stats:'[{"label":"Recycled","value":"100%"},{"label":"Capacity","value":"354K TPA"}]'},
+    {name:'Satia Industries', origin:'Punjab, India',   tagline:'Eco-friendly — ECF bleached pulp',    products:'Superb 65, 70, 75, 80 GSM',                   gsm:'65–80 GSM',  status:'active', desc:'Eco-friendly copier paper using agricultural residues and ECF bleaching.',          certs:'ECF Bleached,ISI BIS,FSC Certified', stats:'[{"label":"Dealers","value":"70+"},{"label":"Tech","value":"ECF"}]'},
+    {name:'Khanna Paper',    origin:'Amritsar, India',  tagline:'ISO 9001 — 100% de-inked recovered',  products:'K Bold 65, E-Print 70, E-Copy 75, White Gem 80', gsm:'65–80 GSM', status:'active', desc:'First Indian mill to produce W&P paper from 100% de-inked recovered paper.',     certs:'ISO 9001',                           stats:'[{"label":"MT/Year","value":"3.3L"},{"label":"Recycled","value":"100%"}]'},
+    {name:'Ruchira Papers',  origin:'Himachal Pradesh', tagline:'100% tree-free — agro-waste paper',   products:'Tarang, Rozana, Mela, Mogra, Kora, VV',       gsm:'49–160 GSM', status:'active', desc:'Tree-free papers manufactured using agricultural residues since 1980.',             certs:'FSC Certified,Acid-Free,Tree-Free',  stats:'[{"label":"Tree-Free","value":"100%"},{"label":"Capacity","value":"450 TPD"}]'},
+    {name:'Andhra Paper',    origin:'Andhra Pradesh',   tagline:'ECF Pulp — Reflection series',        products:'Reflection 70, 70W, 75, 80, 100 GSM',         gsm:'70–100 GSM', status:'active', desc:'Reflection series with ECF Pulp technology — jam-free for all copiers.',            certs:'ECF Pulp,Jam-Free',                  stats:'[{"label":"GSM Range","value":"70–100"},{"label":"Sizes","value":"A4, A3, FS"}]'},
+  ];
+  let allBrands = [];
+
+  async function loadBrands() {
+    try {
+      const snap = await getDocs(collection(db,'brands'));
+      if(snap.empty) {
+        for(const b of DEFAULT_BRANDS) await addDoc(collection(db,'brands'), {...b, createdAt:new Date().toISOString()});
+        const s2 = await getDocs(collection(db,'brands'));
+        allBrands = s2.docs.map(d=>({id:d.id,...d.data()}));
+      } else {
+        allBrands = snap.docs.map(d=>({id:d.id,...d.data()}));
+      }
+      renderBrandsTable();
+    } catch(e) { showToast('Error: '+e.message,'error'); }
+  }
+
+  function renderBrandsTable() {
+    document.getElementById('brandsTable').innerHTML = allBrands.length
+      ? allBrands.map(b=>`<tr>
+          <td><strong>${b.name||''}</strong></td>
+          <td style="color:var(--muted);font-size:12px">${b.origin||''}</td>
+          <td style="color:var(--muted);font-size:12px;max-width:160px">${b.tagline||''}</td>
+          <td style="font-size:12px">${b.products||''}</td>
+          <td style="font-size:12px">${b.gsm||''}</td>
+          <td><span class="badge ${b.status==='active'?'badge-green':'badge-gray'}">${b.status==='active'?'Active':'Inactive'}</span></td>
+          <td><div class="action-btns">
+            <button class="btn btn-primary btn-sm" onclick="editBrand('${b.id}')">✏ Edit</button>
+            <a href="https://satijapaper.com" target="_blank" class="btn btn-outline btn-sm">View ↗</a>
+          </div></td>
+        </tr>`).join('')
+      : '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px">No brands</td></tr>';
+  }
+
+  window.openAddBrand = function() {
+    document.getElementById('brandModalTitle').textContent = 'Add New Brand';
+    document.getElementById('bId').value = '';
+    ['bName','bOrigin','bTagline','bProducts','bGsm','bDesc','bCerts','bStats'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('bStatus').value = 'active';
+    document.getElementById('brandModal').classList.add('open');
+  };
+
+  window.editBrand = function(id) {
+    const b = allBrands.find(x=>x.id===id); if(!b) return;
+    document.getElementById('brandModalTitle').textContent = 'Edit — '+b.name;
+    document.getElementById('bId').value      = b.id;
+    document.getElementById('bName').value    = b.name||'';
+    document.getElementById('bOrigin').value  = b.origin||'';
+    document.getElementById('bTagline').value = b.tagline||'';
+    document.getElementById('bProducts').value= b.products||'';
+    document.getElementById('bGsm').value     = b.gsm||'';
+    document.getElementById('bStatus').value  = b.status||'active';
+    document.getElementById('bDesc').value    = b.desc||'';
+    document.getElementById('bCerts').value   = b.certs||'';
+    document.getElementById('bStats').value   = b.stats||'';
+    document.getElementById('brandModal').classList.add('open');
+  };
+
+  window.saveBrand = async function() {
+    const id = document.getElementById('bId').value;
+    const data = {
+      name:document.getElementById('bName').value.trim(), origin:document.getElementById('bOrigin').value.trim(),
+      tagline:document.getElementById('bTagline').value.trim(), products:document.getElementById('bProducts').value.trim(),
+      gsm:document.getElementById('bGsm').value.trim(), status:document.getElementById('bStatus').value,
+      desc:document.getElementById('bDesc').value.trim(), certs:document.getElementById('bCerts').value.trim(),
+      stats:document.getElementById('bStats').value.trim(), updatedAt:new Date().toISOString()
+    };
+    if(!data.name){showToast('Brand name required','error');return;}
+    try {
+      if(id){ await updateDoc(doc(db,'brands',id),data); showToast('Brand updated!','success'); }
+      else  { data.createdAt=new Date().toISOString(); await addDoc(collection(db,'brands'),data); showToast('Brand added!','success'); }
+      closeModal('brandModal');
+      await loadBrands();
+    } catch(e){showToast('Error: '+e.message,'error');}
+  };
+
+  // Override showPanel
+  const _origShowPanel = window.showPanel;
+  window.showPanel = function(id) {
+    _origShowPanel(id);
+    if(id==='brands') loadBrands();
+  };
 
 // Close modal on outside click
 document.querySelectorAll('.modal-overlay').forEach(m => {
