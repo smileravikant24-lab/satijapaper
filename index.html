@@ -114,25 +114,32 @@
     </div>
   </div>
 
-  <!-- ===== INTRO VIDEO — Company Story ===== -->
-  <div class="brand-page-video sr" onclick="openVideoPopup('Satija_Paper_Journey.mp4')" style="max-width:100%;margin:40px 0 0;display:flex;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.35s var(--transition);" onmouseover="this.style.borderColor='var(--emerald)';this.style.boxShadow='var(--shadow-card)';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none';this.style.transform='none'">
-    <div style="flex:0 0 220px;background:#0d4a2b;position:relative;display:flex;align-items:center;justify-content:center;min-height:140px;overflow:hidden;">
-      <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 50%);background-size:18px 18px;"></div>
-      <div style="position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:4px;">Our Story</div>
-      <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;flex-shrink:0;">
-        <span style="display:block;width:0;height:0;border-top:11px solid transparent;border-bottom:11px solid transparent;border-left:19px solid #0d4a2b;margin-left:4px;"></span>
+  <!-- ===== INTRO VIDEO — Company Story (Inline Player) ===== -->
+  <div class="sr" style="margin:40px 0 0;display:flex;background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+    <div style="flex:0 0 340px;background:#000;position:relative;min-height:200px;display:flex;align-items:stretch;">
+      <video id="introVideo" src="Satija_Paper_Journey.mp4"
+        style="width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;"
+        preload="metadata"
+        onclick="this.paused ? this.play() : this.pause(); document.getElementById('introPlayBtn').style.display = this.paused ? 'flex' : 'none';"
+        onplay="document.getElementById('introPlayBtn').style.display='none'"
+        onpause="document.getElementById('introPlayBtn').style.display='flex'"
+      ></video>
+      <div id="introPlayBtn" onclick="document.getElementById('introVideo').play()"
+        style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(13,74,43,0.35);">
+        <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;">
+          <span style="display:block;width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid #0d4a2b;margin-left:5px;"></span>
+        </div>
       </div>
-      <div style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.8);font-size:10px;padding:3px 8px;border-radius:3px;letter-spacing:0.5px;">&#9654; Watch</div>
+      <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.45);color:rgba(255,255,255,0.85);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:4px;">Our Story</div>
     </div>
-    <div style="padding:24px 28px;display:flex;flex-direction:column;justify-content:center;gap:10px;flex:1;">
+    <div style="padding:28px 32px;display:flex;flex-direction:column;justify-content:center;gap:12px;flex:1;">
       <span style="display:inline-block;background:rgba(13,74,43,0.08);color:var(--emerald);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:4px;align-self:flex-start;">&#9654; Company Introduction</span>
-      <h3 style="font-family:'Times New Roman',Times,serif;font-size:1.55rem;color:var(--text);line-height:1.25;margin:0;">Delhi's Premier Paper Distributor<br><span style="color:var(--emerald);">Since 2010</span></h3>
-      <p style="color:var(--text-muted);font-size:0.84rem;line-height:1.65;font-weight:300;margin:0;">Mukherjee Nagar se poore India tak — 15 saal ki mehnat, 1800+ trusted clients, aur 6 world-class brands ki kahani ek video mein.</p>
-      <div style="display:flex;gap:20px;padding-top:8px;border-top:1px solid var(--border);">
-        <div style="font-size:11px;color:var(--text-muted);">Years<br><strong style="font-size:15px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">15+</strong></div>
-        <div style="font-size:11px;color:var(--text-muted);">Clients<br><strong style="font-size:15px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">1800+</strong></div>
-        <div style="font-size:11px;color:var(--text-muted);">Brands<br><strong style="font-size:15px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">6</strong></div>
-        <div style="font-size:11px;color:var(--text-muted);">Stock<br><strong style="font-size:15px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">500+ MT</strong></div>
+      <h3 style="font-family:'Times New Roman',Times,serif;font-size:1.7rem;color:var(--text);line-height:1.2;margin:0;">Delhi's Premier Paper Distributor<br><span style="color:var(--emerald);">Since 2010</span></h3>
+      <div style="display:flex;gap:24px;padding-top:12px;border-top:1px solid var(--border);margin-top:4px;">
+        <div style="font-size:11px;color:var(--text-muted);">Years<br><strong style="font-size:16px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">15+</strong></div>
+        <div style="font-size:11px;color:var(--text-muted);">Clients<br><strong style="font-size:16px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">1800+</strong></div>
+        <div style="font-size:11px;color:var(--text-muted);">Brands<br><strong style="font-size:16px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">6</strong></div>
+        <div style="font-size:11px;color:var(--text-muted);">Stock<br><strong style="font-size:16px;color:var(--emerald);font-family:'Times New Roman',Times,serif;">500+ MT</strong></div>
       </div>
     </div>
   </div>
