@@ -142,12 +142,23 @@ function _injectBrandImages(id) {
   }
 
   if (id === 'brand-khanna') {
-    // Cards order in index.html: K BOLD (65), E PRINT (70), E COPY (75)
-    // Use data-badge or card order — index.html has 3 cards in this order
-    var cards = document.querySelectorAll('#brand-khanna .rpl-card-img img');
-    var srcs  = [_I.kbold, _I.eprint, _I.ecopy];
-    cards.forEach(function(el,i){
-      if(srcs[i]){ el.src=srcs[i]; el.style.objectFit='cover'; el.style.width='100%'; el.style.height='100%'; }
+    // Target each card by its sr-scale class (d1=kbold, d2=eprint, d3=ecopy, d4=whitegem)
+    var khMap = {
+      'd1': _I.kbold,
+      'd2': _I.eprint,
+      'd3': _I.ecopy,
+      'd4': _I.whitegem
+    };
+    Object.keys(khMap).forEach(function(cls) {
+      var card = document.querySelector('#brand-khanna .rpl-card.sr-scale.' + cls);
+      if (!card) return;
+      var imgEl = card.querySelector('.rpl-card-img img');
+      if (imgEl && khMap[cls]) {
+        imgEl.src = khMap[cls];
+        imgEl.style.objectFit = 'cover';
+        imgEl.style.width = '100%';
+        imgEl.style.height = '100%';
+      }
     });
   }
 
