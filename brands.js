@@ -30,11 +30,11 @@ var _I = {
 
 // ===== ANDHRA PAPER DATA =====
 var APL = {
-  'ref-80':  { t:'Reflection 80 GSM', img:_I.andhra_80, d:'High brightness white shade for high volume printing. ECF Pulp technology.', f:['High volume multifunctional applications','Pleasant white shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','80 ± 2.5%'],['Thickness','microns','110 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','96 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4'] },
-  'ref-70w': { t:'Reflection 70 GSM – White', img:_I.andhra_70w, d:'High brightness copier in white shade. Brightness 93% ISO, Thickness 98μm. ECF Pulp technology.', f:['High volume printing & double side copying','Pleasant white shade','All printers & copiers','ECF Pulp technology','High cut fidelity'], s:[['Basis Weight','GSM','70 ± 2.5%'],['Thickness','microns','98 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','94 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Premium white shade','Jam-free performance'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4/FS'] },
-  'ref-70':  { t:'Reflection 70 GSM', img:_I.andhra_70, d:'High brightness copier in pink-shade. Brightness 91% ISO, Thickness 98μm. ECF Pulp technology.', f:['High volume multifunctional printing','Pleasant pink-shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','70 ± 2.5%'],['Thickness','microns','98 ± 2'],['CIE Whiteness','–','150 ± 3'],['Brightness','% ISO','91 ± 1'],['Opacity','%','93 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['Inkjet and Laser all-in-one machines','10 Reams Carton A4/FS, 5 reams A3'] },
-  'ref-75':  { t:'Reflection 75 GSM', img:_I.andhra_75, d:'High brightness white shade copier. Brightness 93% ISO, Thickness 103μm. ECF Pulp technology.', f:['High volume multifunctional applications','Pleasant white-shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','75 ± 2.5%'],['Thickness','microns','103 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','96 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4/FS, 5 reams A3'] },
-  'ref-100': { t:'Reflection 100 GSM', img:_I.andhra_100, d:'Premium 100 GSM copier. Brightness 93% ISO. For presentations and professional documents.', f:['Premium feel','Excellent colour reproduction','All laser & inkjet printers','ECF Pulp technology','Superior smoothness'], s:[['Basis Weight','GSM','100 ± 2.5%'],['Thickness','microns','135 ± 3'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','98 ± 1']], b:['Premium thickness for presentations','Professional output quality'], e:['Presentations, charts, letterheads','5 Ream Carton A4'] },
+  'ref-80':  { t:'Reflection 80 GSM',              img:_I.andhra_80,  d:'High brightness white shade for high volume printing. ECF Pulp technology.', f:['High volume multifunctional applications','Pleasant white shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','80 ± 2.5%'],['Thickness','microns','110 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','96 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4'] },
+  'ref-70w': { t:'Reflection 70 GSM – White', img:_I.andhra_70w, d:'High brightness white shade copier. Brightness 93% ISO, Thickness 98μm. ECF Pulp.', f:['High volume printing & double side copying','Pleasant white shade','All printers & copiers','ECF Pulp technology','High cut fidelity'], s:[['Basis Weight','GSM','70 ± 2.5%'],['Thickness','microns','98 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','94 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Premium white shade','Jam-free performance'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4/FS'] },
+  'ref-70':  { t:'Reflection 70 GSM',              img:_I.andhra_70,  d:'High brightness copier in pink-shade. Brightness 91% ISO, Thickness 98μm. ECF Pulp.', f:['High volume multifunctional printing','Pleasant pink-shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','70 ± 2.5%'],['Thickness','microns','98 ± 2'],['CIE Whiteness','–','150 ± 3'],['Brightness','% ISO','91 ± 1'],['Opacity','%','93 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['Inkjet and Laser all-in-one machines','10 Reams Carton A4/FS, 5 reams A3'] },
+  'ref-75':  { t:'Reflection 75 GSM',              img:_I.andhra_75,  d:'High brightness white shade copier. Brightness 93% ISO, Thickness 103μm. ECF Pulp.', f:['High volume multifunctional applications','Pleasant white-shade','All printers & copiers','ECF Pulp technology','Consistent performance'], s:[['Basis Weight','GSM','75 ± 2.5%'],['Thickness','microns','103 ± 2'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','96 ± 1'],['Smoothness','ml/min','300 Max.']], b:['Jam-free, extends equipment life'], e:['All Laserjet, Inkjet & Fax','10 Ream Carton A4/FS, 5 reams A3'] },
+  'ref-100': { t:'Reflection 100 GSM',             img:_I.andhra_100, d:'Premium 100 GSM copier. Brightness 93% ISO. For presentations and professional documents.', f:['Premium feel','Excellent colour reproduction','All laser & inkjet printers','ECF Pulp technology','Superior smoothness'], s:[['Basis Weight','GSM','100 ± 2.5%'],['Thickness','microns','135 ± 3'],['CIE Whiteness','–','156 ± 3'],['Brightness','% ISO','93 ± 1'],['Opacity','%','98 ± 1']], b:['Premium thickness for presentations','Professional output quality'], e:['Presentations, charts, letterheads','5 Ream Carton A4'] },
   'cw-70w':  { t:'Reflection White 70 – Carton 3D', img:_I.andhra_70w, d:'Reflection 70 GSM White in premium 3D retail packaging.', f:['3D carton packaging','70 GSM White','ECF Pulp','Premium shade'], s:[['Weight','GSM','70 ± 2.5%'],['Shade','','White'],['Packaging','','Carton & Wrapper 3D']], b:['Premium white, retail-ready'], e:['Retail display','Premium office supply'] }
 };
 var aplGridMap = { ref: ['ref-80','ref-70w','ref-70','ref-75','ref-100'], cw: ['cw-70w'] };
@@ -80,47 +80,14 @@ function aplToggleAcc(el) {
   ic.textContent = bd.classList.contains('apl-open') ? '−' : '+';
 }
 
-// ===== NR AGARWAL — inject real product images =====
-(function() {
-  var nrImgs = [_I.nr_70, _I.nr_75, _I.nr_80];
-  var nrCards = document.querySelectorAll('#brand-nragarwal .rpl-card-img img');
-  nrCards.forEach(function(img, i){ if (nrImgs[i]) img.src = nrImgs[i]; });
-})();
-
-// ===== SATIA — inject real product images =====
-(function() {
-  var satImgs = [_I.satia_65, _I.satia_70, _I.satia_75, _I.satia_80];
-  var satCards = document.querySelectorAll('#brand-satia .rpl-card-img img');
-  satCards.forEach(function(img, i){ if (satImgs[i]) img.src = satImgs[i]; });
-})();
-
-// ===== KHANNA — inject real product images =====
-(function() {
-  var khImgs = [_I.khanna_kbold, _I.khanna_eprint, _I.khanna_ecopy];
-  var khCards = document.querySelectorAll('#brand-khanna .rpl-card-img img');
-  khCards.forEach(function(img, i){ if (khImgs[i]) img.src = khImgs[i]; });
-})();
-
 // ===== RUCHIRA DATA =====
 var RPL = {
-  'mela':   { t:'MELA',   sub:'Multipurpose Colour Paper',         d:'Vibrant coloured papers for multipurpose printing. Available in Lemon, Mint, Rose, Sky. Perfect for bill books, brochures, leaflets, spiral notebooks, scrapbooks.', v:['Lemon','Mint','Rose','Sky'], gsm:'49–160 GSM', bright:null, u:['Multipurpose colour printing','Bill books & brochures','Leaflets & advertising','Notebooks & scrapbooks'], imgs:[_I.ruchira_mela] },
-  'mogra':  { t:'MOGRA',  sub:'Card & Invitation Paper',           d:'Premium card paper in Natural and White for wedding cards, invitations, and announcements. 145–160 GSM with excellent stiffness.', v:['Natural','White'], gsm:'145–160 GSM', bright:null, u:['Wedding cards','Invitations','Greeting cards','Premium stationery'], imgs:[_I.ruchira_mogra] },
-  'rozana': { t:'ROZANA', sub:'Copier Paper – Economy Range', d:'Economy copier for home, office, and multipurpose use. Made from agro-waste. A4 in 70, 75 & 80 GSM with 88–90% brightness.', v:['70 GSM','75 GSM','80 GSM'], gsm:'70–80 GSM', bright:'88–90%', u:['Home & office copier','Everyday printing','High volume photocopying','All printers'], imgs:[_I.ruchira_rozana] },
-  'tarang': { t:'TARANG', sub:'Executive Colour Range',            d:'Premium multipurpose coloured office paper. Rose, Lemon, Green, Sky. A4 size, 75 GSM. Ideal for colour-coded documents and professional printing.', v:['Rose A4 75 GSM','Lemon A4 75 GSM','Green A4 75 GSM','Sky A4 75 GSM'], gsm:'75 GSM', bright:'+85–90%', u:['Multipurpose office','Professional printing','Presentations','Colour-coded docs'], imgs:[_I.tarang_rose, _I.tarang_lemon, _I.tarang_green, _I.tarang_sky] },
-  'kora':   { t:'KORA',   sub:'Maplitho / Writing & Printing',     d:'Premium maplitho paper for writing, printing, and publishing. White and Cream Wove. Ideal for books, notebooks, textbooks, and commercial printing.', v:['White','Cream Wove'], gsm:'58–120 GSM', bright:'80–85%', u:['Books & publishing','Notebooks & registers','Commercial printing','Writing & stationery'], imgs:[_I.ruchira_kora] }
+  'mela':   { t:'MELA',   sub:'Multipurpose Colour Paper',          d:'Vibrant coloured papers. Available in Lemon, Mint, Rose, Sky. Perfect for bill books, brochures, leaflets, notebooks, scrapbooks.', v:['Lemon','Mint','Rose','Sky'], gsm:'49–160 GSM', bright:null,          u:['Multipurpose colour printing','Bill books & brochures','Leaflets & advertising','Notebooks & scrapbooks'], imgs:[_I.ruchira_mela] },
+  'mogra':  { t:'MOGRA',  sub:'Card & Invitation Paper',            d:'Premium card paper in Natural and White for wedding cards, invitations, and announcements. 145–160 GSM with excellent stiffness.', v:['Natural','White'], gsm:'145–160 GSM', bright:null, u:['Wedding cards','Invitations','Greeting cards','Premium stationery'], imgs:[_I.ruchira_mogra] },
+  'rozana': { t:'ROZANA', sub:'Copier Paper – Economy Range',  d:'Economy copier from agro-waste. A4 in 70, 75 & 80 GSM with 88–90% brightness.', v:['70 GSM','75 GSM','80 GSM'], gsm:'70–80 GSM', bright:'88–90%', u:['Home & office copier','Everyday printing','High volume photocopying','All printers'], imgs:[_I.ruchira_rozana] },
+  'tarang': { t:'TARANG', sub:'Executive Colour Range',             d:'Premium multipurpose coloured office paper. Rose, Lemon, Green, Sky. A4, 75 GSM.', v:['Rose A4 75 GSM','Lemon A4 75 GSM','Green A4 75 GSM','Sky A4 75 GSM'], gsm:'75 GSM', bright:'+85–90%',    u:['Multipurpose office','Professional printing','Presentations','Colour-coded docs'], imgs:[_I.tarang_rose,_I.tarang_lemon,_I.tarang_green,_I.tarang_sky] },
+  'kora':   { t:'KORA',   sub:'Maplitho / Writing & Printing',      d:'Premium maplitho paper. White and Cream Wove. Ideal for books, notebooks, textbooks, and commercial printing.', v:['White','Cream Wove'], gsm:'58–120 GSM', bright:'80–85%',      u:['Books & publishing','Notebooks & registers','Commercial printing','Writing & stationery'], imgs:[_I.ruchira_kora] }
 };
-
-// Update Ruchira catalog card images on page load
-(function() {
-  var rucMap = {mela:_I.ruchira_mela,mogra:_I.ruchira_mogra,rozana:_I.ruchira_rozana,tarang:_I.tarang_rose,kora:_I.ruchira_kora};
-  document.querySelectorAll('#brand-ruchira .rpl-card').forEach(function(card) {
-    var fn = card.getAttribute('onclick') || '';
-    var m = fn.match(/rplShowProd\('([^']+)'/);
-    if (!m) return;
-    var imgEl = card.querySelector('.rpl-card-img img');
-    if (imgEl && rucMap[m[1]]) imgEl.src = rucMap[m[1]];
-  });
-})();
 
 function rplShowCatalog() {
   document.getElementById('rpl-catalog').style.display = 'block';
@@ -160,4 +127,59 @@ function rplSwapImg(thumb, src) {
   document.getElementById('rpl-d-img').src = src;
   document.querySelectorAll('.rpl-gallery-thumb').forEach(function(t){ t.classList.remove('active'); });
   thumb.classList.add('active');
+}
+
+// ===== IMAGE INJECTION =====
+// showPage() ke baad call hota hai — tab DOM ready hota hai
+// Har brand page open hone par inject karo
+
+var _origShowPage = window.showPage;
+window.showPage = function(id) {
+  _origShowPage(id);
+  // Thoda delay do taaki page render ho jaye
+  setTimeout(function() { _injectBrandImages(id); }, 50);
+};
+
+function _injectBrandImages(id) {
+  if (id === 'brand-nragarwal') {
+    // NR Agarwal — 3 cards: 70, 75, 80
+    var nrMap = [_I.nr_70, _I.nr_75, _I.nr_80];
+    document.querySelectorAll('#brand-nragarwal .rpl-card-img img').forEach(function(img, i) {
+      if (nrMap[i]) { img.src = nrMap[i]; img.style.objectFit='cover'; }
+    });
+  }
+  if (id === 'brand-satia') {
+    // Satia — 4 cards: 65, 70, 75, 80
+    var satMap = [_I.satia_65, _I.satia_70, _I.satia_75, _I.satia_80];
+    document.querySelectorAll('#brand-satia .rpl-card-img img').forEach(function(img, i) {
+      if (satMap[i]) { img.src = satMap[i]; img.style.objectFit='cover'; }
+    });
+  }
+  if (id === 'brand-khanna') {
+    // Khanna — 3 cards in order: K Bold (65), E Print (70), E Copy (75)
+    var khMap = [_I.khanna_kbold, _I.khanna_eprint, _I.khanna_ecopy];
+    document.querySelectorAll('#brand-khanna .rpl-card-img img').forEach(function(img, i) {
+      if (khMap[i]) { img.src = khMap[i]; img.style.objectFit='cover'; }
+    });
+  }
+  if (id === 'brand-ruchira') {
+    // Ruchira catalog cards — match by onclick attribute
+    var rucMap = {
+      mela:   _I.ruchira_mela,
+      mogra:  _I.ruchira_mogra,
+      rozana: _I.ruchira_rozana,
+      tarang: _I.tarang_rose,
+      kora:   _I.ruchira_kora
+    };
+    document.querySelectorAll('#brand-ruchira .rpl-card').forEach(function(card) {
+      var fn = card.getAttribute('onclick') || '';
+      var m = fn.match(/rplShowProd\('([^']+)'/);
+      if (!m) return;
+      var imgEl = card.querySelector('.rpl-card-img img');
+      if (imgEl && rucMap[m[1]]) {
+        imgEl.src = rucMap[m[1]];
+        imgEl.style.objectFit = 'cover';
+      }
+    });
+  }
 }
