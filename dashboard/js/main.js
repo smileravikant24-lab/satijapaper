@@ -50,7 +50,10 @@ function _forceLocalCounts() {
     if (tab.cat === 'All' || tab.cat === 'Products') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
-    const n = DB.filter(d => d.cat === tab.cat).length;
+    // Documents counts both 'Documents' and 'Family' (backward compat)
+    const n = tab.cat === 'Documents'
+      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
+      : DB.filter(d => d.cat === tab.cat).length;
     if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
