@@ -21,6 +21,9 @@
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════════════════
+     LOGIN OVERLAY
+════════════════════════════════════════════════════════════ -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-bg"></div>
   <div class="login-dots"></div>
@@ -73,7 +76,13 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP CONTAINER
+════════════════════════════════════════════════════════════ -->
 <div class="app-container" id="appContainer">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
   <div class="sidebar" id="sidebar">
 
     <div class="brand-box">
@@ -83,6 +92,7 @@
       <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
     </div>
 
+    <!-- ── Main navigation ──────────────────────────────── -->
     <div class="sidebar-label" id="navMainLabel">Navigation</div>
 
     <button class="menu-btn active" id="navAll"
@@ -90,48 +100,56 @@
       <i class="fas fa-grid-2"></i> All Processes
       <span class="count-badge" id="cntAll">0</span>
     </button>
+
+    <!-- Sales + Double A sub-folder -->
     <button class="menu-btn" id="navSales"
             onclick="filterCat('Sales',this)">
       <i class="fas fa-chart-mixed"></i> Sales &amp; CRM
       <span class="count-badge" id="cntSales">0</span>
     </button>
-     <!-- Double A collapsible sub-item – hidden until Sales is active -->  
-     <div id="doubleAFolder" style="display:none">
+
+    <button class="menu-btn" id="navDispatch"
+            onclick="filterCat('Dispatch',this)">
+      <i class="fas fa-truck-fast"></i> Dispatch
+      <span class="count-badge" id="cntDispatch">0</span>
+    </button>
+
+    <!-- Double A collapsible sub-item – hidden until Sales is active -->
+    <div id="doubleAFolder" style="display:none">
       <button class="menu-btn doublea-btn" id="navDoubleA"
               onclick="filterGroup('Double A',this)">
         <i class="fas fa-folder-star doublea-icon"></i> Double A
         <span class="count-badge doublea-badge" id="cntDoubleA">0</span>
       </button>
     </div>
-    <button class="menu-btn" id="navDispatch"
-            onclick="filterCat('Dispatch',this)">
-      <i class="fas fa-truck-fast"></i> Dispatch
-      <span class="count-badge" id="cntDispatch">0</span>
-    </button>
+
     <button class="menu-btn" id="navPurchase"
             onclick="filterCat('Purchase',this)">
       <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
       <span class="count-badge" id="cntPurchase">0</span>
     </button>
 
-     <button class="menu-btn" id="navFinance"
-            onclick="filterCat('Finance',this)">
-      <i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts
-      <span class="count-badge" id="cntFinance">0</span>
-    </button>
-
-     <button class="menu-btn" id="navHR"
-            onclick="filterCat('HR',this)">
-      <i class="fas fa-people-group"></i> HR &amp; Admin
-      <span class="count-badge" id="cntHR">0</span>
-    </button>
-       
     <button class="menu-btn" id="navManagement"
             onclick="filterCat('Management',this)">
       <i class="fas fa-clipboard-check"></i> Management (MIS)
       <span class="count-badge" id="cntManagement">0</span>
     </button>
+
+    <button class="menu-btn" id="navHR"
+            onclick="filterCat('HR',this)">
+      <i class="fas fa-people-group"></i> HR &amp; Admin
+      <span class="count-badge" id="cntHR">0</span>
+    </button>
+
+    <button class="menu-btn" id="navFinance"
+            onclick="filterCat('Finance',this)">
+      <i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts
+      <span class="count-badge" id="cntFinance">0</span>
+    </button>
+
+    <!-- ── My System ──────────────────────────────────── -->
     <div class="sidebar-label" id="mySystemLabel">My System</div>
+
     <button class="menu-btn" id="navSupport"
             onclick="filterCat('Support',this)">
       <i class="fas fa-headset"></i> Help &amp; Support
@@ -146,15 +164,15 @@
 
     <button class="menu-btn" id="navFamily"
             onclick="filterCat('Family',this)">
-      <i class="fas fa-house-heart"></i> Family Documents
+      <i class="fas fa-folder-open"></i> Documents
       <span class="count-badge" id="cntFamily">0</span>
     </button>
 
-    <!-- Products page – new -->
+    <!-- Products page – accessible to ALL users -->
     <button class="menu-btn" id="navProducts"
             onclick="showProducts(this)">
       <i class="fas fa-boxes-stacking"></i> Products
-      <span class="count-badge products-badge" id="cntProducts">6</span>
+      <span class="count-badge products-badge" id="cntProducts">9</span>
     </button>
 
     <!-- ── Administration (admin-only) ───────────────── -->
@@ -178,6 +196,8 @@
 
   </div><!-- /sidebar -->
 
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
   <div class="main-content">
 
     <div class="header-bar">
@@ -230,6 +250,10 @@
 
 </div><!-- /app-container -->
 
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADD / EDIT USER MODAL
+════════════════════════════════════════════════════════════ -->
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
     <div class="modal-head">
