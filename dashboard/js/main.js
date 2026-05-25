@@ -16,11 +16,15 @@ import {
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
-
+// ─────────────────────────────────────────────────────────────
+// PATCHED originals — defined FIRST so all functions can use them
+// ─────────────────────────────────────────────────────────────
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
-
+// ─────────────────────────────────────────────────────────────
+// APP BOOT
+// ─────────────────────────────────────────────────────────────
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -369,6 +373,11 @@ function filterCatPatched(cat, btn) {
   _origFilterCat(cat, btn);
   _syncDoubleAFolder(cat);
   _showCardGrid();
+  // Fix pageHeader for Documents
+  if (cat === 'Documents') {
+    const h = document.getElementById('pageHeader');
+    if (h) h.textContent = 'Documents';
+  }
 }
 
 function runFilterPatched() {
