@@ -16,15 +16,11 @@ import {
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
-// ─────────────────────────────────────────────────────────────
-// PATCHED originals — defined FIRST so all functions can use them
-// ─────────────────────────────────────────────────────────────
+
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
-// ─────────────────────────────────────────────────────────────
-// APP BOOT
-// ─────────────────────────────────────────────────────────────
+
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -34,6 +30,12 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
+  // Products button — always visible to ALL users regardless of dept access
+  const _navProd = document.getElementById('navProducts');
+  if (_navProd) _navProd.closest('button') && (_navProd.style.display = '');
+  // Force navProducts parent visible
+  const _prodBtn = document.getElementById('navProducts');
+  if (_prodBtn) { _prodBtn.style.display = ''; _prodBtn.parentElement && (_prodBtn.parentElement.style.display = ''); }
   // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
