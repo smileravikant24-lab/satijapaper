@@ -1,3 +1,34 @@
+import { _IMG } from './images.js';
+
+/**
+ * @typedef {Object} ProcessLinks
+ * @property {1=} fms
+ * @property {1=} form
+ * @property {1=} sheet
+ * @property {1=} check
+ * @property {1=} video
+ * @property {1=} videoBCI
+ * @property {1=} dashEmp
+ * @property {1=} dashPC
+ * @property {1=} admin
+ * @property {1=} gpDash
+ * @property {1=} stockDash
+ * @property {1=} folder
+ * @property {1=} aiqa     AI Q&A ChatGPT link
+ */
+
+/**
+ * @typedef {Object} Process
+ * @property {string} cat
+ * @property {string} name
+ * @property {string} pc      Person In Charge
+ * @property {string} solver  Process solver
+ * @property {string} exec    Executive who runs it
+ * @property {ProcessLinks} links
+ * @property {string=} group  Optional sub-group within category (e.g. "Double A")
+ */
+
+/** @type {Process[]} */
 export const DB = [
   // -------- SALES --------
   {cat:"Dispatch",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,aiqa:1}},
