@@ -1,14 +1,4 @@
-/* ============================================================
-   dispatch-patch.css
-   ADD: <link rel="stylesheet" href="css/dispatch-patch.css">
-   in index.html <head> after other CSS links.
-   Fixes: 1) Dispatch card border + tag colour
-           2) Product variant images fit to box properly
-   ============================================================ */
 
-/* ── Dispatch card — top border + tag colour ─────────────────
-   Matches the pattern of other categories in cards.css
-────────────────────────────────────────────────────────────── */
 .card.cat-Dispatch {
   border-top: 3px solid #f97316;   /* orange — matches truck/logistics feel */
 }
@@ -18,9 +8,6 @@
   border: 1px solid #fed7aa;
 }
 
-/* ── Product variant image — force fill the box ──────────────
-   Fixes images appearing smaller than the card box
-────────────────────────────────────────────────────────────── */
 .prod-variant-img-wrap {
   width: 100% !important;
   height: 160px !important;
@@ -65,4 +52,19 @@
 img.prod-lazy {
   width: 100% !important;
   height: 100% !important;
+}
+
+/* ── CHANGE 7: Website link color ──────────────────────── */
+.brand-url {
+  color: var(--gold, #c49a3c) !important;
+  font-weight: 600 !important;
+}
+.brand-url:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+/* ── CHANGE 12: Documents sidebar label & button ────────── */
+#navFamily .fa-house-heart::before {
+  content: "\f07b"; /* folder icon */
 }
