@@ -3,10 +3,10 @@
 // ============================================================
 
 import { $, escapeHtml, showToast } from './dom.js';
-import { state }                    from '../state.js';
-import { DB }                       from '../data.js';
+import { state }                     from '../state.js';
+import { DB, LINK_META }             from '../data.js'; // 🔥 Updated: LINK_META imported here
 import { canAccessProc, canAccessLink } from './access.js';
-import { resolveProcessUrl }        from '../services/process.service.js';
+import { resolveProcessUrl }         from '../services/process.service.js';
 
 /**
  * Open a process link via the secure Cloud Function.
@@ -39,7 +39,7 @@ export async function secureOpen(procName, linkType){
 /** Build a single action button's HTML, or '' if user has no access. */
 function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
   const isAdmin = state.curUser?.role === 'Admin';
-  if (!hasUrl)                                             return '';
+  if (!hasUrl)                                               return '';
   if (adminOnly && !isAdmin)                               return '';
   if (!canAccessLink(state.curUser, item.name, linkType))  return '';
   const pn = item.name.replace(/'/g, "\\'");
@@ -70,33 +70,34 @@ export function renderCards(data){
   const box = $('cardBox');
   box.innerHTML = '';
 
-  // ── Documents: show as folder tiles with direct Drive links ──
-  // Use DB directly — bypass Firestore cat check (seed may not have run)
+  // ── Documents: show as folder tiles with secure Cloud Function lookup ──
   if (state.curCat === 'Documents') {
     const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
     if (!docItems.length) {
       box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
       return;
     }
-    const DRIVE_URLS = {
-      'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-      'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-      'Satija Family Documents':  'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-    };
+
+    // Dynamic Label and Icon from LINK_META
+    const folderLabel = LINK_META.folder?.label || 'View Folder';
+    const folderIcon = LINK_META.folder?.icon || 'fas fa-folder-open';
+
     box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
-      const url = DRIVE_URLS[it.name] || '#';
       const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
       const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-      return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
-        '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
-          '<i class="fas ' + icon + '"></i>' +
-        '</div>' +
-        '<div class="doc-folder-name">' + it.name + '</div>' +
-        '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
-        '<div class="doc-folder-btn" style="background:' + color + '">' +
-          '<i class="fas fa-folder-open"></i> Open Drive' +
-        '</div>' +
-      '</div>';
+      const safeName = it.name.replace(/'/g, "\\'");
+
+      // 🔥 Updated: Now calls secureOpen() to load URL dynamically from Firestore
+      return `<div class="doc-folder-card" onclick="secureOpen('${safeName}','folder')">
+        <div class="doc-folder-icon" style="background:${color}20;color:${color}">
+          <i class="fas ${icon}"></i>
+        </div>
+        <div class="doc-folder-name">${escapeHtml(it.name)}</div>
+        <div class="doc-folder-sub">Click to open securely</div>
+        <div class="doc-folder-btn" style="background:${color}">
+          <i class="${folderIcon}"></i> ${folderLabel}
+        </div>
+      </div>`;
     }).join('') + '</div>';
     return;
   }
@@ -121,17 +122,17 @@ export function renderCards(data){
       btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
     }
 
-    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
+    btns += buildButton(it, !!it.links.check,       'check',      'btn-check',  'fas fa-square-check',     'Checklist');
+    btns += buildButton(it, !!it.links.video,       'video',      'btn-video',  'fas fa-circle-play',      'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
     btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
     btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
-    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
+    btns += buildButton(it, !!it.links.admin,       'admin',      'btn-admin',  'fas fa-user-gear',        'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
-    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
-    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
-    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
+    btns += buildButton(it, !!it.links.folder,      'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
+    btns += buildButton(it, !!it.links.terms,       'terms',      'btn-form',   'fas fa-file-contract',    'T&amp;C');
+    btns += buildButton(it, !!it.links.drive,       'drive',      'btn-form',   'fab fa-google-drive',     'Drive');
     btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline Form');
 
     // ── AI Q&A button ─────────────────────────────────────────
@@ -163,12 +164,11 @@ export function renderCards(data){
 
 /**
  * Apply current search + category filters and re-render.
- * Sidebar / search input both call this.
  */
 export function renderFiltered(){
   const raw    = $('searchInput').value.toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
-  // Documents — bypass canAccessProc, use DB directly
+  
   if (state.curCat === 'Documents') {
     renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
     return;
