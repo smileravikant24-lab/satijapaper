@@ -1,14 +1,4 @@
-/* ============================================================
-   dispatch-patch.css
-   ADD: <link rel="stylesheet" href="css/dispatch-patch.css">
-   in index.html <head> after other CSS links.
-   Fixes: 1) Dispatch card border + tag colour
-           2) Product variant images fit to box properly
-   ============================================================ */
 
-/* ── Dispatch card — top border + tag colour ─────────────────
-   Matches the pattern of other categories in cards.css
-────────────────────────────────────────────────────────────── */
 .card.cat-Dispatch {
   border-top: 3px solid #f97316;   /* orange — matches truck/logistics feel */
 }
@@ -67,10 +57,13 @@ img.prod-lazy {
   height: 100% !important;
 }
 
-/* ── CHANGE 7: Website link color ──────────────────────── */
+/* ── Website link — color + size ───────────────────────── */
 .brand-url {
   color: var(--gold, #c49a3c) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.5px;
+  display: block;
 }
 .brand-url:hover {
   color: #fff !important;
