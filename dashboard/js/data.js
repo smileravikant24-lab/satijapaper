@@ -146,7 +146,7 @@ export const PRODUCTS = [
   {
     id: 'doublea',
     name: 'Double A',
-    fullName: 'Double A (Thailand)',
+    fullName: 'Double A',
     origin: 'Thailand',
     tagline: 'Premium 30M fibres/gram copier. Jam-free, CIE 167 whiteness.',
     img: 'https://satijapaper.com/doublea.jpg',
