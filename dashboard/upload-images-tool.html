@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Satija Paper — Image Upload Tool</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f4f3ef;color:#1a1a1a;min-height:100vh;padding:28px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font-family:'Times New Roman',serif;font-size:2rem;color:#0d4a2b;margin-bottom:4px}
+.sub{font-size:13px;color:#6b7280;margin-bottom:28px}
+.card{background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:12px;padding:24px;margin-bottom:20px}
+.card h2{font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h2 span{font-size:11px;font-weight:600;background:#dcfce7;color:#15803d;padding:3px 8px;border-radius:10px}
+
+/* DROP ZONE */
+.drop-zone{border:2px dashed #d1d5db;border-radius:10px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;background:#fafaf8}
+.drop-zone:hover,.drop-zone.drag{border-color:#0d4a2b;background:rgba(13,74,43,0.04)}
+.drop-zone svg{width:40px;height:40px;color:#9ca3af;margin:0 auto 12px;display:block}
+.drop-zone p{font-size:13px;color:#6b7280}
+.drop-zone strong{color:#0d4a2b}
+input[type=file]{display:none}
+
+/* MAP TABLE */
+.map-table{width:100%;border-collapse:collapse;font-size:13px}
+.map-table th{background:#f9f9f7;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid rgba(0,0,0,.06)}
+.map-table td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,.04)}
+.map-table tr:last-child td{border-bottom:none}
+.map-table code{background:#f3f4f6;padding:2px 6px;border-radius:4px;font-size:12px;font-family:monospace}
+.status{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:600}
+.s-ok{background:#dcfce7;color:#15803d}
+.s-wait{background:#fef9c3;color:#a16207}
+
+/* PREVIEW */
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:16px}
+.prev-item{border:1px solid rgba(0,0,0,.08);border-radius:8px;overflow:hidden;text-align:center}
+.prev-item img{width:100%;height:100px;object-fit:cover;display:block}
+.prev-item .prev-name{font-size:10px;padding:6px;color:#6b7280;font-weight:600;background:#f9f9f7;border-top:1px solid rgba(0,0,0,.06)}
+.prev-item.matched .prev-name{background:#dcfce7;color:#15803d}
+.prev-item.unmatched .prev-name{background:#fef9c3;color:#a16207}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+.btn-primary{background:#0d4a2b;color:#fff}.btn-primary:hover{background:#1a6b40}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{background:#fff;color:#1a1a1a;border:1px solid rgba(0,0,0,.12)}.btn-outline:hover{background:#f9f9f7}
+
+/* OUTPUT */
+.output-box{background:#1a1a2e;color:#e2e8f0;border-radius:10px;padding:20px;font-family:monospace;font-size:12px;line-height:1.7;max-height:300px;overflow-y:auto;margin-top:16px;display:none}
+.output-box .ok{color:#4ade80}
+.output-box .warn{color:#fbbf24}
+
+.toast{position:fixed;bottom:24px;right:24px;background:#0d4a2b;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📦 Product Image Upload Tool</h1>
+  <p class="sub">Images upload karo — automatically sahi product pe assign ho jaayengi. Phir updated <code>images.js</code> download karo.</p>
+
+  <!-- NAME GUIDE -->
+  <div class="card">
+    <h2>📋 File Naming Guide <span>Important</span></h2>
+    <table class="map-table">
+      <thead><tr><th>File Name</th><th>Product</th><th>Status</th></tr></thead>
+      <tbody id="nameGuide">
+        <tr><td><code>holmen.jpg</code> / <code>holmen_52.jpg</code></td><td>Holmen Creamy 52 GSM</td><td><span class="status s-wait" id="st-holmen">Pending</span></td></tr>
+        <tr><td><code>ik.jpg</code> / <code>ikcopy.jpg</code> / <code>ik_70.jpg</code></td><td>IK Copy A4 70 GSM</td><td><span class="status s-wait" id="st-ik">Pending</span></td></tr>
+        <tr><td><code>paperone_100.jpg</code> / <code>aprilfine_100.jpg</code></td><td>Aprilfine Paper One A4 100 GSM</td><td><span class="status s-wait" id="st-paperone_100">Pending</span></td></tr>
+        <tr><td><code>paperone_a3.jpg</code> / <code>paperone_a3_100.jpg</code></td><td>Paper One A3 100 GSM</td><td><span class="status s-wait" id="st-paperone_a3">Pending</span></td></tr>
+        <tr><td><code>paperone_75.jpg</code></td><td>Paper One A4 75 GSM</td><td><span class="status s-wait" id="st-paperone_75">Pending</span></td></tr>
+        <tr><td><code>paperone_70.jpg</code></td><td>Paper One A4 70 GSM</td><td><span class="status s-wait" id="st-paperone_70">Pending</span></td></tr>
+        <tr><td><code>pplite_70.jpg</code> / <code>pplite.jpg</code></td><td>PP Lite A4 70 GSM</td><td><span class="status s-wait" id="st-pplite">Pending</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="card">
+    <h2>🖼️ Upload Images</h2>
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"
+      ondrop="handleDrop(event)" ondragover="e=>e.preventDefault()" ondragenter="this.classList.add('drag')" ondragleave="this.classList.remove('drag')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <p><strong>Click to upload</strong> ya drag & drop karo</p>
+      <p style="margin-top:6px;font-size:12px">JPG, PNG, WEBP — multiple files ek saath</p>
+    </div>
+    <input type="file" id="fileInput" multiple accept="image/*" onchange="handleFiles(this.files)">
+    <div class="preview-grid" id="previewGrid"></div>
+  </div>
+
+  <!-- GENERATE -->
+  <div class="card">
+    <h2>⚙️ Generate images.js</h2>
+    <p style="font-size:13px;color:#6b7280;margin-bottom:16px">
+      Upload ke baad neeche button click karo — updated <code>images.js</code> generate hoga with new images embedded as base64.
+    </p>
+    <button class="btn btn-primary" id="generateBtn" onclick="generateImagesJS()" disabled>
+      Generate images.js
+    </button>
+    <button class="btn btn-outline" id="downloadBtn" onclick="downloadFile()" style="margin-left:10px;display:none">
+      ⬇️ Download images.js
+    </button>
+    <div class="output-box" id="outputLog"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── NAME → KEY MAPPING ──
+const NAME_MAP = {
+  'holmen':          ['HOLMEN_52'],
+  'holmen_52':       ['HOLMEN_52'],
+  'ik':              ['IK_70'],
+  'ikcopy':          ['IK_70'],
+  'ik_copy':         ['IK_70'],
+  'ik_70':           ['IK_70'],
+  'paperone_100':    ['PAPERONE_A4_100','APRILFINE_100'],
+  'aprilfine_100':   ['PAPERONE_A4_100','APRILFINE_100'],
+  'aprilfine':       ['PAPERONE_A4_100','APRILFINE_100'],
+  'paperone_a3':     ['PAPERONE_A3_100'],
+  'paperone_a3_100': ['PAPERONE_A3_100'],
+  'paperone_75':     ['PAPERONE_75'],
+  'paperone_70':     ['PAPERONE_70'],
+  'pplite_70':       ['PPLITE_70'],
+  'pplite':          ['PPLITE_70'],
+};
+
+// Status badge ID mapping
+const STATUS_MAP = {
+  'HOLMEN_52':       'holmen',
+  'IK_70':           'ik',
+  'PAPERONE_A4_100': 'paperone_100',
+  'APRILFINE_100':   'paperone_100',
+  'PAPERONE_A3_100': 'paperone_a3',
+  'PAPERONE_75':     'paperone_75',
+  'PAPERONE_70':     'paperone_70',
+  'PPLITE_70':       'pplite',
+};
+
+let uploadedImages = {}; // key → base64 data URL
+let uploadedFiles  = []; // for preview
+
+function getKeyFromFilename(filename) {
+  const base = filename.toLowerCase().replace(/\.(jpg|jpeg|png|webp|gif)$/i,'').replace(/[\s-]+/g,'_');
+  return NAME_MAP[base] || null;
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const b64 = e.target.result;
+      const keys = getKeyFromFilename(file.name);
+      const matched = !!keys;
+
+      // Preview
+      const grid = document.getElementById('previewGrid');
+      const div  = document.createElement('div');
+      div.className = 'prev-item ' + (matched ? 'matched' : 'unmatched');
+      const label = matched ? `✅ ${keys.join(', ')}` : `⚠️ ${file.name}`;
+      div.innerHTML = `<img src="${b64}"><div class="prev-name">${label}</div>`;
+      grid.appendChild(div);
+
+      if (matched) {
+        keys.forEach(k => {
+          uploadedImages[k] = b64;
+          // Update status badge
+          const sid = STATUS_MAP[k];
+          if (sid) {
+            const el = document.getElementById('st-' + sid);
+            if (el) { el.textContent = '✅ Uploaded'; el.className = 'status s-ok'; }
+          }
+        });
+        showToast(`✅ ${file.name} → ${keys.join(', ')}`);
+      } else {
+        showToast(`⚠️ ${file.name} — naam match nahi hua`, true);
+      }
+
+      uploadedFiles.push({name: file.name, matched, keys});
+      document.getElementById('generateBtn').disabled = Object.keys(uploadedImages).length === 0;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── GENERATE UPDATED images.js ──
+async function generateImagesJS() {
+  const log = document.getElementById('outputLog');
+  log.style.display = 'block';
+  log.innerHTML = '<span class="ok">⏳ Fetching existing images.js from dashboard...</span>\n';
+
+  // Fetch current images.js
+  let existingContent = '';
+  try {
+    const resp = await fetch('../js/images.js');
+    if (resp.ok) {
+      existingContent = await resp.text();
+      log.innerHTML += '<span class="ok">✅ images.js loaded from server</span>\n';
+    } else {
+      log.innerHTML += '<span class="warn">⚠️ images.js not fetched — will create new snippet only</span>\n';
+    }
+  } catch(e) {
+    log.innerHTML += '<span class="warn">⚠️ Cannot fetch from server (CORS). Creating patch snippet.</span>\n';
+  }
+
+  // Build output
+  let output = '';
+  const keys = Object.keys(uploadedImages);
+  log.innerHTML += `<span class="ok">📦 Embedding ${keys.length} images...</span>\n`;
+
+  keys.forEach(k => {
+    const b64 = uploadedImages[k];
+    log.innerHTML += `<span class="ok">  ✅ ${k}: ${(b64.length/1024).toFixed(0)} KB</span>\n`;
+
+    if (existingContent && existingContent.includes(`'${k}':`)) {
+      // Replace existing key
+      const regex = new RegExp(`'${k}':\\s*'[^']*'`);
+      existingContent = existingContent.replace(regex, `'${k}': '${b64}'`);
+    } else if (existingContent) {
+      // Insert before closing };
+      existingContent = existingContent.replace(/\n};(\s*)$/, `\n  '${k}': '${b64}',\n};$1`);
+    }
+    output += `  '${k}': '${b64}',\n`;
+  });
+
+  window._generatedContent = existingContent || `// Auto-generated — product images as base64\nexport const _IMG = {\n${output}};\n`;
+  window._patchContent = `// ── PASTE IN images.js ──\n${output}`;
+
+  log.innerHTML += `\n<span class="ok">✅ Done! images.js ready (${(window._generatedContent.length/1024).toFixed(0)} KB)</span>`;
+  document.getElementById('downloadBtn').style.display = 'inline-flex';
+  showToast('✅ images.js ready — download karo!');
+}
+
+function downloadFile() {
+  const content = window._generatedContent || window._patchContent;
+  const blob = new Blob([content], {type:'text/javascript'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'images.js';
+  a.click();
+  showToast('⬇️ Download shuru!');
+}
+
+function showToast(msg, warn=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = warn ? '#d97706' : '#0d4a2b';
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Drag over
+document.getElementById('dropZone').addEventListener('dragover', e => e.preventDefault());
+</script>
+</body>
+</html>
