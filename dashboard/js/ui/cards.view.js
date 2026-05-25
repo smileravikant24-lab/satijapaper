@@ -1,17 +1,9 @@
-// ============================================================
-// CARDS VIEW - renders the process card grid
-// ============================================================
-
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
 import { DB }                       from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 
-/**
- * Open a process link via the secure Cloud Function.
- * Exposed on window for inline onclick handlers.
- */
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -69,6 +61,36 @@ function buildRoleCell(cls, icon, label, val){
 export function renderCards(data){
   const box = $('cardBox');
   box.innerHTML = '';
+
+  // ── Documents: show as folder tiles with direct Drive links ──
+  if (state.curCat === 'Documents') {
+    const docItems = data.filter(it => it.cat === 'Documents' || it.cat === 'Family');
+    if (!docItems.length) {
+      box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
+      return;
+    }
+    const DRIVE_URLS = {
+      'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
+      'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
+      'Satija Family Documents':  'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
+    };
+    box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
+      const url = DRIVE_URLS[it.name] || '#';
+      const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
+      const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
+      return \`<div class="doc-folder-card" onclick="window.open('\${url}','_blank','noopener')">
+        <div class="doc-folder-icon" style="background:\${color}20;color:\${color}">
+          <i class="fas \${icon}"></i>
+        </div>
+        <div class="doc-folder-name">\${it.name}</div>
+        <div class="doc-folder-sub">Click to open in Google Drive</div>
+        <div class="doc-folder-btn" style="background:\${color}">
+          <i class="fas fa-folder-open"></i> Open Drive
+        </div>
+      </div>\`;
+    }).join('') + '</div>';
+    return;
+  }
 
   const accessible = data.filter(it => canAccessProc(state.curUser, it));
   if (!accessible.length){
