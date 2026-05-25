@@ -1,12 +1,12 @@
-import { _IMG } from './images.js';
 export const DB = [
   // -------- SALES --------
-  {cat:"Sales",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,aiqa:1}},
+  {cat:"Dispatch",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,aiqa:1}},
   {cat:"Dispatch",name:"O2D Direct Dispatch FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1,aiqa:1}},
+  {cat:"Sales",name:"Ruchira 100 Best Customer",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{sheet:1,aiqa:1}},
   {cat:"Sales",name:"Follow Up Calls",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Scot Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Next Day/ Week Marketing Plan",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{form:1,sheet:1,aiqa:1}},
-  {cat:"Sales",name:"New Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Next Day Market Plan",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rishabh / Pawan",links:{form:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Next Week Marketing Plan",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{form:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Customer Visit",pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"Enquiry Capture FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Neha",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"CRM Payment FMS",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Pooja",links:{fms:1,aiqa:1}},
   {cat:"Sales",name:"Price List",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
@@ -16,7 +16,10 @@ export const DB = [
 
   // -------- SALES → DOUBLE A FOLDER --------
   {cat:"Sales",group:"Double A",name:"Double A Advance Container Booking Form",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1}},
-  {cat:"Sales",group:"Double A",name:"Double A New Distributor Checklist",pc:"Mr. Mukesh",solver:"Mr. Pranav/Ms. Neha",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1}},
+  {cat:"Sales",group:"Double A",name:"Double A New Distributor Form",pc:"Mr. Mukesh",solver:"Mr. Pranav/Ms. Neha",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1,terms:1,drive:1,guidelineForm:1}},
+  {cat:"Sales",group:"Double A",name:"Double A District Distributor",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
+  {cat:"Sales",group:"Double A",name:"Double A Dealer",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
+  {cat:"Sales",group:"Double A",name:"Double A CME Folder",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A CME Payment FMS FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Mukesh/Ms. Preksha",links:{fms:1,form:1,aiqa:1}},
 
   // -------- PURCHASE --------
@@ -35,6 +38,7 @@ export const DB = [
   {cat:"Management",name:"FMS OF FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:1,form:1}},
   {cat:"Management",name:"Home Loan FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Preksha",links:{fms:1,form:1}},
   {cat:"Management",name:"eMail & Password Sheet",pc:"MDO",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1}},
+  {cat:"Management",name:"SCT-FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{form:1,sheet:1}},
   {cat:"Management",name:"Repair & Maintenance System",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1,form:1}},
 
   // -------- SUPPORT --------
@@ -56,11 +60,17 @@ export const DB = [
   {cat:"Finance",name:"GP Sheet",pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Khushi",links:{sheet:1,gpDash:1}},
   {cat:"Finance",name:"Sales Marketing Daily Expense",pc:"Ms. Preksha",solver:"Ms. Neha",exec:"Sale's Team",links:{form:1,sheet:1}},
 
+  {cat:"Finance",name:"Account Checklist",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Ms. Khushi",links:{sheet:1}},
+
   // -------- FAMILY --------
-  {cat:"Family",name:"Satija Family Documents",pc:"Ms. Neha",solver:"Ms. Mukesh",exec:"Ms. Khushi",links:{folder:1}}
+  {cat:"Documents",name:"Satija Paper Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}}
 ];
 
-
+/**
+ * Visual metadata for each link type.
+ * Used by both the process cards and the access-modal proc list.
+ */
 export const LINK_META = {
   fms:       {label:'FMS',            icon:'fas fa-table-cells',      cls:'btn-fms'},
   form:      {label:'Form',           icon:'fab fa-google-drive',     cls:'btn-form'},
@@ -74,11 +84,14 @@ export const LINK_META = {
   gpDash:    {label:'GP Dashboard',   icon:'fas fa-chart-column',     cls:'btn-gp'},
   stockDash: {label:'Stock Dashboard',icon:'fas fa-boxes-stacking',   cls:'btn-stock'},
   folder:    {label:'View Folder',    icon:'fas fa-folder-open',      cls:'btn-folder'},
+  terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},
+  drive:       {label:'Drive',            icon:'fab fa-google-drive',     cls:'btn-form'},
+  guidelineForm:{label:'Guideline Form',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
   aiqa:      {label:'AI Q&A',         icon:'fas fa-robot',            cls:'btn-aiqa',
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'}
 };
 
-
+/** Sidebar navigation tabs config. Drives counts + visibility. */
 export const NAV_TABS = [
   {cat:'All',        nav:'navAll',        cnt:'cntAll'},
   {cat:'Sales',      nav:'navSales',      cnt:'cntSales'},
@@ -89,16 +102,20 @@ export const NAV_TABS = [
   {cat:'Finance',    nav:'navFinance',    cnt:'cntFinance'},
   {cat:'Support',    nav:'navSupport',    cnt:'cntSupport'},
   {cat:'My System',  nav:'navMy',         cnt:'cntMy'},
-  {cat:'Family',     nav:'navFamily',     cnt:'cntFamily'},
+  {cat:'Documents',  nav:'navFamily',     cnt:'cntFamily'},
   {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'}
 ];
 
-
+/**
+ * Product catalogue – all brands stocked by Satija Paper.
+ * productImg keys are GSM numbers → real product ream image URLs.
+ * shareUrl  → WhatsApp share link for that brand/GSM.
+ */
 export const PRODUCTS = [
   {
     id: 'doublea',
     name: 'Double A',
-    fullName: 'Double A',
+    fullName: 'Double A (Thailand)',
     origin: 'Thailand',
     tagline: 'Premium 30M fibres/gram copier. Jam-free, CIE 167 whiteness.',
     img: 'https://satijapaper.com/doublea.jpg',
@@ -360,6 +377,91 @@ export const PRODUCTS = [
         bestFor: 'High-quality office printing, documents',
         color: '#FAFAFA', colorName: 'Bright White',
         img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+      }
+    ]
+  },
+  {
+    id: 'holmen',
+    name: 'Holmen',
+    fullName: 'Holmen Creamy',
+    origin: 'Sweden',
+    tagline: 'Premium creamy newsprint — 52 GSM, 58.5 cm width.',
+    img: 'https://satijapaper.com/logo.png',
+    cert: ['FSC Certified', 'Acid-Free'],
+    shareMsg: 'Hi! I am interested in Holmen Creamy paper from Satija Paper. Please share pricing. www.satijapaper.com',
+    variants: [
+      {
+        name: 'Holmen Creamy 52 GSM', gsm: 52, sizes: ['58.5 cm (23")'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Newsprint, publishing, bulk printing',
+        img: _IMG['HOLMEN_52'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      }
+    ]
+  },
+  {
+    id: 'ik',
+    name: 'IK / i-K Copy',
+    fullName: 'IK i-K Copy',
+    origin: 'India',
+    tagline: 'Economy A4 copier — 70 GSM.',
+    img: 'https://satijapaper.com/logo.png',
+    cert: ['ISO 9001'],
+    shareMsg: 'Hi! I am interested in IK Copy paper from Satija Paper. Please share pricing. www.satijapaper.com',
+    variants: [
+      {
+        name: 'i-K Copy A4 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Daily office, economy printing',
+        img: _IMG['IK_70'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      }
+    ]
+  },
+  {
+    id: 'paperone',
+    name: 'Paper One / Aprilfine',
+    fullName: 'Paper One & Aprilfine',
+    origin: 'Indonesia / Malaysia',
+    tagline: 'Premium A4/A3 copier — 70, 75, 100 GSM.',
+    img: 'https://satijapaper.com/logo.png',
+    cert: ['FSC Certified', 'ISO 9001', 'PEFC'],
+    shareMsg: 'Hi! I am interested in Paper One / Aprilfine from Satija Paper. Please share pricing. www.satijapaper.com',
+    variants: [
+      {
+        name: 'Aprilfine Paper One A4 100 GSM', gsm: 100, sizes: ['A4'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Premium presentations, letterheads',
+        img: _IMG['APRILFINE_100'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      },
+      {
+        name: 'Paper One A3 100 GSM', gsm: 100, sizes: ['A3'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Large format presentations, charts',
+        img: _IMG['PAPERONE_A3_100'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      },
+      {
+        name: 'Paper One A4 75 GSM', gsm: 75, sizes: ['A4'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Reports, official documents',
+        img: _IMG['PAPERONE_75'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      },
+      {
+        name: 'Paper One A4 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Daily office printing',
+        img: _IMG['PAPERONE_70'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
+      },
+      {
+        name: 'PP Lite A4 70 GSM', gsm: 70, sizes: ['A4'],
+        brightness: '—', sheets: 500,
+        bestFor: 'Economy daily printing',
+        img: _IMG['PPLITE_70'],
+        fallbackImg: 'https://satijapaper.com/logo.png'
       }
     ]
   },
