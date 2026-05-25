@@ -139,7 +139,9 @@ export function renderFiltered(){
   const terms  = raw.split(/\s+/).filter(Boolean);
   const filtered = DB.filter(it => {
     if (!canAccessProc(state.curUser, it)) return false;
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
+    // 'Documents' = renamed from 'Family' — match both for backward compat
+    const _docMatch = state.curCat === 'Documents' && (it.cat === 'Documents' || it.cat === 'Family');
+    const matchesCat = state.curCat === 'All' || it.cat === state.curCat || _docMatch;
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
     return matchesCat && terms.every(t => haystack.includes(t));
   });
