@@ -71,8 +71,9 @@ export function renderCards(data){
   box.innerHTML = '';
 
   // ── Documents: show as folder tiles with direct Drive links ──
+  // Use DB directly — bypass Firestore cat check (seed may not have run)
   if (state.curCat === 'Documents') {
-    const docItems = data.filter(it => it.cat === 'Documents' || it.cat === 'Family');
+    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
     if (!docItems.length) {
       box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
       return;
@@ -167,11 +168,15 @@ export function renderCards(data){
 export function renderFiltered(){
   const raw    = $('searchInput').value.toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
+  // Documents — bypass canAccessProc, use DB directly
+  if (state.curCat === 'Documents') {
+    renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
+    return;
+  }
+
   const filtered = DB.filter(it => {
     if (!canAccessProc(state.curUser, it)) return false;
-    // 'Documents' = renamed from 'Family' — match both for backward compat
-    const _docMatch = state.curCat === 'Documents' && (it.cat === 'Documents' || it.cat === 'Family');
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat || _docMatch;
+    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
     return matchesCat && terms.every(t => haystack.includes(t));
   });
