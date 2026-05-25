@@ -1,9 +1,17 @@
+// ============================================================
+// CARDS VIEW - renders the process card grid
+// ============================================================
+
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
 import { DB }                       from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 
+/**
+ * Open a process link via the secure Cloud Function.
+ * Exposed on window for inline onclick handlers.
+ */
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -78,16 +86,16 @@ export function renderCards(data){
       const url = DRIVE_URLS[it.name] || '#';
       const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
       const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-      return \`<div class="doc-folder-card" onclick="window.open('\${url}','_blank','noopener')">
-        <div class="doc-folder-icon" style="background:\${color}20;color:\${color}">
-          <i class="fas \${icon}"></i>
-        </div>
-        <div class="doc-folder-name">\${it.name}</div>
-        <div class="doc-folder-sub">Click to open in Google Drive</div>
-        <div class="doc-folder-btn" style="background:\${color}">
-          <i class="fas fa-folder-open"></i> Open Drive
-        </div>
-      </div>\`;
+      return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
+        '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
+          '<i class="fas ' + icon + '"></i>' +
+        '</div>' +
+        '<div class="doc-folder-name">' + it.name + '</div>' +
+        '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
+        '<div class="doc-folder-btn" style="background:' + color + '">' +
+          '<i class="fas fa-folder-open"></i> Open Drive' +
+        '</div>' +
+      '</div>';
     }).join('') + '</div>';
     return;
   }
