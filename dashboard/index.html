@@ -108,13 +108,7 @@
       <span class="count-badge" id="cntSales">0</span>
     </button>
 
-    <button class="menu-btn" id="navDispatch"
-            onclick="filterCat('Dispatch',this)">
-      <i class="fas fa-truck-fast"></i> Dispatch
-      <span class="count-badge" id="cntDispatch">0</span>
-    </button>
-
-    <!-- Double A collapsible sub-item – hidden until Sales is active -->
+       <!-- Double A collapsible sub-item – hidden until Sales is active -->
     <div id="doubleAFolder" style="display:none">
       <button class="menu-btn doublea-btn" id="navDoubleA"
               onclick="filterGroup('Double A',this)">
@@ -122,6 +116,13 @@
         <span class="count-badge doublea-badge" id="cntDoubleA">0</span>
       </button>
     </div>
+
+    <button class="menu-btn" id="navDispatch"
+            onclick="filterCat('Dispatch',this)">
+      <i class="fas fa-truck-fast"></i> Dispatch
+      <span class="count-badge" id="cntDispatch">0</span>
+    </button>
+
 
     <button class="menu-btn" id="navPurchase"
             onclick="filterCat('Purchase',this)">
