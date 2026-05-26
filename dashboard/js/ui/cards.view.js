@@ -1,17 +1,9 @@
-// ============================================================
-// CARDS VIEW - renders the process card grid
-// ============================================================
-
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
 import { DB }                       from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 
-/**
- * Open a process link via the secure Cloud Function.
- * Exposed on window for inline onclick handlers.
- */
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -81,7 +73,7 @@ export function renderCards(data){
     const DRIVE_URLS = {
       'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
       'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-      'Satija Family Documents':  'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
+      'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
     };
     box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
       const url = DRIVE_URLS[it.name] || '#';
@@ -132,7 +124,7 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline Form');
+    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline');
 
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
