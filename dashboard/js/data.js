@@ -47,7 +47,7 @@ export const DB = [
 
   // -------- SALES → DOUBLE A FOLDER --------
   {cat:"Sales",group:"Double A",name:"Double A Advance Container Booking Form",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1}},
-  {cat:"Sales",group:"Double A",name:"Double A New Distributor Form",pc:"Mr. Mukesh",solver:"Mr. Pranav/Ms. Neha",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1,terms:1,drive:1,guidelineForm:1}},
+  {cat:"Sales",group:"Double A",name:"Double A New Distributor Form",pc:"Mr. Mukesh",solver:"Mr. Pranav/Ms. Neha",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1,terms:1,guidelineForm:1}},
   {cat:"Sales",group:"Double A",name:"Double A District Distributor",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A Dealer",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A CME Folder",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
