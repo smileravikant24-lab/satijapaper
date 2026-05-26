@@ -88,7 +88,7 @@ export const LINK_META = {
   folder:    {label:'View Folder',    icon:'fas fa-folder-open',      cls:'btn-folder'},
   terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},
   drive:       {label:'Drive',            icon:'fab fa-google-drive',     cls:'btn-form'},
-  guidelineForm:{label:'Guideline Form',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
+  guidelineForm:{label:'Guideline',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
   aiqa:      {label:'AI Q&A',         icon:'fas fa-robot',            cls:'btn-aiqa',
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'}
 };
