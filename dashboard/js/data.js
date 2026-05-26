@@ -22,8 +22,8 @@ export const DB = [
   {cat:"Sales",group:"Double A",name:"Double A Dealer",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A CME Folder",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A CME Payment FMS FY 2026-27",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Mukesh/Ms. Preksha",links:{fms:1,form:1,aiqa:1}},
-  {cat:"Sales",group:"Double A",name:"Double A Customer 'Retails'",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
-  {cat:"Sales",group:"Double A",name:"Double A Customer 'Corporate'",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
+  {cat:"Sales",group:"Double A",name:"Double A Customer Retails",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
+  {cat:"Sales",group:"Double A",name:"Double A Customer Corporate",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
   // -------- PURCHASE --------
   {cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:1,form:1,video:1,videoBCI:1}},
   {cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:1,sheet:1,video:1}},
