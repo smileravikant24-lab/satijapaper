@@ -100,7 +100,13 @@
       <i class="fas fa-grid-2"></i> All Processes
       <span class="count-badge" id="cntAll">0</span>
     </button>
-
+       
+   <button class="menu-btn" id="navPurchase"
+            onclick="filterCat('Purchase',this)">
+      <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
+      <span class="count-badge" id="cntPurchase">0</span>
+    </button>
+       
     <!-- Sales + Double A sub-folder -->
     <button class="menu-btn" id="navSales"
             onclick="filterCat('Sales',this)">
@@ -121,13 +127,6 @@
             onclick="filterCat('Dispatch',this)">
       <i class="fas fa-truck-fast"></i> Dispatch
       <span class="count-badge" id="cntDispatch">0</span>
-    </button>
-
-
-    <button class="menu-btn" id="navPurchase"
-            onclick="filterCat('Purchase',this)">
-      <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
-      <span class="count-badge" id="cntPurchase">0</span>
     </button>
 
        <button class="menu-btn" id="navFinance"
