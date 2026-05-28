@@ -185,7 +185,7 @@ export const PRODUCTS = [
     fullName: 'Satia Industries – Superb Copier',
     origin: 'Punjab, India',
     tagline: 'Eco-friendly from agricultural residues. ECF bleached. ISI & FSC certified.',
-    img: 'https://satijapaper.com/satia.jpg',
+    img: 'https://satijapaper.com/satia-logo.jpg',
     cert: ['ECF Bleached', 'ISI BIS Certified', 'FSC Certified'],
     shareMsg: 'Hi! I am interested in Satia Superb Copier paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
