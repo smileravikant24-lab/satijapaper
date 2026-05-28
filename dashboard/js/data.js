@@ -383,7 +383,7 @@ export const PRODUCTS = [
     fullName: 'Holmen Creamy',
     origin: 'Sweden',
     tagline: 'Premium creamy newsprint — 52 GSM, 58.5 cm width.',
-    img: 'https://satijapaper.com/logo.png',
+    img: 'https://satijapaper.com/Holmenlogo.jpg',
     cert: ['FSC Certified', 'Acid-Free'],
     shareMsg: 'Hi! I am interested in Holmen Creamy paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
@@ -421,7 +421,7 @@ export const PRODUCTS = [
     fullName: 'Aprilfine',
     origin: 'Indonesia',
     tagline: 'Premium A4/A3 copier — 70, 75, 100 GSM.',
-    img: 'https://satijapaper.com/logo.png',
+    img: 'https://satijapaper.com/Aprillogo.png',
     cert: ['FSC Certified', 'ISO 9001', 'PEFC'],
     shareMsg: 'Hi! I am interested in Paper One / Aprilfine from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
