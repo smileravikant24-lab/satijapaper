@@ -1,7 +1,3 @@
-// ============================================================
-// LOGIN VIEW - handles the login overlay UI
-// ============================================================
-
 import { $ }                              from './dom.js';
 import { login, resetPassword, logout }   from '../services/auth.service.js';
 import { showToast }                      from './dom.js';
