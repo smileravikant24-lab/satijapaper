@@ -150,10 +150,6 @@ export function renderCards(data){
   box.innerHTML = html;
 }
 
-/**
- * Apply current search + category filters and re-render.
- * Sidebar / search input both call this.
- */
 export function renderFiltered(){
   const raw    = $('searchInput').value.toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
