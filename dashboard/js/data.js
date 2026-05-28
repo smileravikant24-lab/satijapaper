@@ -418,15 +418,15 @@ export const PRODUCTS = [
   {
     id: 'paperone',
     name: 'Paper One / Aprilfine',
-    fullName: 'Paper One & Aprilfine',
-    origin: 'Indonesia / Malaysia',
+    fullName: 'Aprilfine',
+    origin: 'Indonesia',
     tagline: 'Premium A4/A3 copier — 70, 75, 100 GSM.',
     img: 'https://satijapaper.com/logo.png',
     cert: ['FSC Certified', 'ISO 9001', 'PEFC'],
     shareMsg: 'Hi! I am interested in Paper One / Aprilfine from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
       {
-        name: 'Aprilfine Paper One A4 100 GSM', gsm: 100, sizes: ['A4'],
+        name: 'Paper One A4 100 GSM', gsm: 100, sizes: ['A4'],
         brightness: '—', sheets: 500,
         bestFor: 'Premium presentations, letterheads',
         img: _IMG['APRILFINE_100'],
