@@ -1,14 +1,4 @@
-// =============================================================
-// PRODUCTS VIEW – renders the paper brand / product catalogue
-// =============================================================
-
 import { PRODUCTS } from '../data.js';
-
-/**
- * Render the full Products catalogue page.
- * Call this instead of renderCards() when cat === 'Products'.
- * @param {HTMLElement} container  The #cardBox element
- */
 export function renderProducts(container) {
   container.innerHTML = '';
   container.style.display = 'block';   // override grid layout
