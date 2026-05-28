@@ -400,7 +400,7 @@ export const PRODUCTS = [
     id: 'ik',
     name: 'IK / i-K Copy',
     fullName: 'IK i-K Copy',
-    origin: 'India',
+    origin: 'Indonesia',
     tagline: 'Economy A4 copier — 70 GSM.',
     img: 'https://satijapaper.com/APP.png',
     cert: ['ISO 9001'],
