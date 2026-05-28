@@ -16,15 +16,9 @@ import {
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
-// ─────────────────────────────────────────────────────────────
-// PATCHED originals — defined FIRST so all functions can use them
-// ─────────────────────────────────────────────────────────────
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
-// ─────────────────────────────────────────────────────────────
-// APP BOOT
-// ─────────────────────────────────────────────────────────────
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -49,7 +43,6 @@ function enterApp(user) {
 }
 
 
-/** Force sidebar count badges from local DB — ensures Dispatch shows 1 even before seed. */
 function _forceLocalCounts() {
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
@@ -75,9 +68,6 @@ onAuth(async fbUser => {
   } catch (err) { console.error('Profile load failed:', err); showLoginScreen(); }
 });
 
-// ─────────────────────────────────────────────────────────────
-// MOBILE SIDEBAR
-// ─────────────────────────────────────────────────────────────
 function _initMobileSidebar() {
   const headerBar = document.querySelector('.header-bar');
   if (headerBar && !document.getElementById('mobMenuBtn')) {
@@ -115,9 +105,6 @@ function _closeSidebar() {
   document.body.style.overflow = '';
 }
 
-// ─────────────────────────────────────────────────────────────
-// MUTATION OBSERVER — reliable async card visibility
-// ─────────────────────────────────────────────────────────────
 let _observer = null;
 
 function _startCardObserver() {
@@ -152,9 +139,6 @@ function _applyDAVisibility() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────
-// DOUBLE A FOLDER TILE
-// ─────────────────────────────────────────────────────────────
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
@@ -190,9 +174,6 @@ function _injectDoubleAFolderTile(grid) {
   grid.appendChild(tile);
 }
 
-// ─────────────────────────────────────────────────────────────
-// filterGroup — Double A sidebar/tile click
-// ─────────────────────────────────────────────────────────────
 function filterGroup(group, btn) {
   if (btn) {
     document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -208,9 +189,6 @@ function filterGroup(group, btn) {
   _origRunFilter();   // safe now — defined at top of file
 }
 
-// ─────────────────────────────────────────────────────────────
-// AI Q&A — direct link, no Cloud Function
-// ─────────────────────────────────────────────────────────────
 function openAIQA() {
   window.open(
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
@@ -218,9 +196,6 @@ function openAIQA() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────
-// PRODUCTS PAGE
-// ─────────────────────────────────────────────────────────────
 function _setProductsCount() {
   const badge = document.getElementById('cntProducts');
   if (badge) badge.textContent = PRODUCTS.length;
@@ -325,9 +300,6 @@ function _buildVariant(v, brand) {
   </div>`;
 }
 
-// ─────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────
 function _showCardGrid() {
   document.getElementById('adminPanel').style.display    = 'none';
   document.getElementById('productsPanel').style.display = 'none';
@@ -335,7 +307,6 @@ function _showCardGrid() {
   document.getElementById('cardBox').style.display       = '';
 }
 
-/** Wrap showAdmin to always hide productsPanel and show adminPanel */
 function showAdmin(btn) {
   // Deactivate all nav buttons
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
@@ -364,9 +335,6 @@ function showAdmin(btn) {
   _origShowAdmin(btn);
 }
 
-// ─────────────────────────────────────────────────────────────
-// PATCHED filterCat & runFilter
-// ─────────────────────────────────────────────────────────────
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
   state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
@@ -389,12 +357,7 @@ function runFilterPatched() {
 // EXPOSE TO WINDOW
 // ─────────────────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────────────────────
-// SHARE AS IMAGE — html2canvas + Web Share API
-// Images pre-converted to base64 to bypass CORS restrictions
-// ─────────────────────────────────────────────────────────────
 
-/** Cache: url → base64 dataURL */
 const _imgCache = new Map();
 
 /** Fetch an image URL and return a base64 dataURL (bypasses CORS for canvas). */
@@ -418,10 +381,6 @@ async function _toBase64(url) {
   }
 }
 
-/**
- * Replace all <img src="..."> inside a cloned element with base64 versions.
- * Called inside html2canvas onclone so the canvas sees local data.
- */
 async function _replaceImgsWithBase64(clone) {
   const imgs = [...clone.querySelectorAll('img')];
   await Promise.all(imgs.map(async img => {
@@ -430,12 +389,6 @@ async function _replaceImgsWithBase64(clone) {
     img.src = b64;
   }));
 }
-
-/**
- * Capture a product card/variant as image and open native share sheet.
- * @param {string} elementId  - id of the element to capture
- * @param {string} label      - used for filename
- */
 async function shareProductImage(elementId, label) {
   const el = document.getElementById(elementId);
   if (!el) { showToast('Element not found.', 'err'); return; }
@@ -512,11 +465,6 @@ function _loadHtml2Canvas() {
 }
 
 
-// ─────────────────────────────────────────────────────────────
-// LAZY IMAGE LOADER — IntersectionObserver
-// base64 (data:) images → load immediately (already in memory)
-// External URL images → load on scroll
-// ─────────────────────────────────────────────────────────────
 function _lazyLoadImages(container) {
   const imgs = [...container.querySelectorAll('img.prod-lazy[data-src]')];
   if (!imgs.length) return;
