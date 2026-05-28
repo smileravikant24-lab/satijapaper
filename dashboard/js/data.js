@@ -402,7 +402,7 @@ export const PRODUCTS = [
     fullName: 'IK i-K Copy',
     origin: 'India',
     tagline: 'Economy A4 copier — 70 GSM.',
-    img: 'https://satijapaper.com/logo.png',
+    img: 'https://satijapaper.com/APP.png',
     cert: ['ISO 9001'],
     shareMsg: 'Hi! I am interested in IK Copy paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
