@@ -72,10 +72,7 @@ export const DB = [
   {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}}
 ];
 
-/**
- * Visual metadata for each link type.
- * Used by both the process cards and the access-modal proc list.
- */
+
 export const LINK_META = {
   fms:       {label:'FMS',            icon:'fas fa-table-cells',      cls:'btn-fms'},
   form:      {label:'Form',           icon:'fab fa-google-drive',     cls:'btn-form'},
@@ -111,11 +108,7 @@ export const NAV_TABS = [
   {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'}
 ];
 
-/**
- * Product catalogue – all brands stocked by Satija Paper.
- * productImg keys are GSM numbers → real product ream image URLs.
- * shareUrl  → WhatsApp share link for that brand/GSM.
- */
+
 export const PRODUCTS = [
   {
     id: 'doublea',
