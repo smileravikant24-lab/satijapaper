@@ -1,13 +1,6 @@
-// ============================================================
-// DOM HELPERS + TOAST
-// ============================================================
 
 import { TOAST_DURATION_MS } from '../config.js';
-
-/** Shorthand for document.getElementById. */
 export const $ = id => document.getElementById(id);
-
-/** Escape a string for safe insertion into HTML attribute / text. */
 export const escapeHtml = str =>
   String(str ?? '')
     .replace(/&/g, '&amp;')
@@ -17,12 +10,6 @@ export const escapeHtml = str =>
     .replace(/'/g, '&#39;');
 
 let _toastTimer;
-
-/**
- * Show a transient toast notification.
- * @param {string} msg
- * @param {'ok'|'err'|'info'} type
- */
 export function showToast(msg, type = 'info'){
   const t = $('toast');
   if (!t) return;
