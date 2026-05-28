@@ -1,17 +1,9 @@
-// ============================================================
-// SIDEBAR VIEW - counts, active highlight, navigation
-// ============================================================
-
 import { $ }              from './dom.js';
 import { state }          from '../state.js';
 import { DB, NAV_TABS }   from '../data.js';
 import { canAccessProc }  from './access.js';
 import { renderFiltered } from './cards.view.js';
 
-/**
- * Recompute per-category counts based on current user
- * and update the sidebar badges + visibility.
- */
 export function updateCounts(){
   const isAdmin = state.curUser?.role === 'Admin';
 
@@ -47,18 +39,15 @@ export function updateCounts(){
     btn.style.display = visible ? '' : 'none';
   });
 
-  // Admin section
   $('adminNavLabel').style.display = isAdmin ? '' : 'none';
   $('adminNavBtn').style.display   = isAdmin ? '' : 'none';
 }
 
-/** Mark a single sidebar button as active. */
 export function setActive(el){
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
 }
 
-/** Switch the visible category and re-render cards. */
 export function filterCat(cat, el){
   state.curCat = cat;
   setActive(el);
@@ -69,12 +58,10 @@ export function filterCat(cat, el){
   renderFiltered();
 }
 
-/** Re-render based on current search + category. */
 export function runFilter(){
   renderFiltered();
 }
 
-/** Populate the bottom-of-sidebar user widget. */
 export function paintSidebarUser(user){
   $('sAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
   $('sName').textContent   = user.name;
