@@ -115,7 +115,7 @@ export const PRODUCTS = [
     fullName: 'Double A',
     origin: 'Thailand',
     tagline: 'Premium 30M fibres/gram copier. Jam-free, CIE 167 whiteness.',
-    img: 'https://satijapaper.com/doublea.jpg',
+    img: 'https://satijapaper.com/DA-logo.png',
     cert: ['FSC Certified', 'CIE 167', '120+ Countries'],
     shareMsg: 'Hi! I am interested in Double A paper from Satija Paper. Please share pricing. www.satijapaper.com',
     variants: [
