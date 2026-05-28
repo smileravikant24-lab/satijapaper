@@ -389,7 +389,7 @@ export const PRODUCTS = [
     variants: [
       {
         name: 'Holmen Creamy 52 GSM', gsm: 52, sizes: ['58.5 cm (23")'],
-        brightness: '—', sheets: 500,
+        brightness: '-', sheets: '-',
         bestFor: 'Newsprint, publishing, bulk printing',
         img: _IMG['HOLMEN_52'],
         fallbackImg: 'https://satijapaper.com/logo.png'
