@@ -1,8 +1,8 @@
 :root {
-  --primary:        #0A231C;  
-  --accent:         #00a651;  
-  --accent-light:   #1dbf73;  
-  --accent-glow:    rgba(0, 166, 81, 0.15);
+  --primary:       #1A1D20;  /* नया चारकोल ब्लैक बैकग्राउंड */
+  --accent:        #4d94ff;  /* एक्टिव बटन के लिए ब्राइट और साफ़ ब्लू */
+  --accent-light:  #80b3ff;  /* बटन्स का होवर कलर */
+  --accent-glow:   rgba(77,148,255,.13);
   --da-red:         #e60012;
   --da-yellow:      #ffd200;
   --da-green:       #00a651;
