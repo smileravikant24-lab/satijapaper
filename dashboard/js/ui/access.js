@@ -1,12 +1,3 @@
-// ============================================================
-// ACCESS CONTROL (pure functions)
-// Decides what a user can see / open. No DOM. No Firebase.
-// Easy to unit-test if we ever want to.
-// ============================================================
-
-/**
- * Can the user see processes from this category at all?
- */
 export function hasDeptAccess(u, cat){
   if (!u)                        return false;
   if (u.role === 'Admin')        return true;
@@ -16,10 +7,6 @@ export function hasDeptAccess(u, cat){
   return u.deptAccess.includes(cat);
 }
 
-/**
- * Can the user access this specific process?
- * If processAccess is set, it overrides deptAccess.
- */
 export function canAccessProc(u, item){
   if (!u)                                       return false;
   if (u.role === 'Admin')                       return true;
@@ -28,10 +15,6 @@ export function canAccessProc(u, item){
   return hasDeptAccess(u, item.cat);
 }
 
-/**
- * Can the user open this specific link type within a process?
- * If linkAccess[procName] is set, only those are allowed.
- */
 export function canAccessLink(u, procName, linkType){
   if (!u)                                                return false;
   if (u.role === 'Admin')                                return true;
