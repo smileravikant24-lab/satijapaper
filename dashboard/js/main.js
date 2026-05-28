@@ -353,9 +353,6 @@ function runFilterPatched() {
   // Observer handles DA visibility automatically as cards land in DOM
 }
 
-// ─────────────────────────────────────────────────────────────
-// EXPOSE TO WINDOW
-// ─────────────────────────────────────────────────────────────
 
 
 const _imgCache = new Map();
