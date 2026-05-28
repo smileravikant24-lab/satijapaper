@@ -92,7 +92,6 @@ export const LINK_META = {
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'}
 };
 
-/** Sidebar navigation tabs config. Drives counts + visibility. */
 export const NAV_TABS = [
   {cat:'All',        nav:'navAll',        cnt:'cntAll'},
   {cat:'Sales',      nav:'navSales',      cnt:'cntSales'},
