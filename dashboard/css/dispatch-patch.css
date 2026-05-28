@@ -8,9 +8,6 @@
   border: 1px solid #fed7aa;
 }
 
-/* ── Product variant image — force fill the box ──────────────
-   Fixes images appearing smaller than the card box
-────────────────────────────────────────────────────────────── */
 .prod-variant-img-wrap {
   width: 100% !important;
   height: 160px !important;
@@ -30,8 +27,6 @@
   object-position: center !important;
   display: block;
 }
-
-/* Brand header image — also force fill */
 .prod-brand-img-wrap {
   width: 140px !important;
   height: 90px !important;
@@ -46,18 +41,16 @@
 .prod-brand-img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;   /* contain for logos so they don't crop */
+  object-fit: contain !important;   
   object-position: center !important;
   display: block;
 }
 
-/* Shimmer placeholder fills full box */
 img.prod-lazy {
   width: 100% !important;
   height: 100% !important;
 }
 
-/* ── Website link — color + size ───────────────────────── */
 .brand-url {
   color: var(--gold, #c49a3c) !important;
   font-weight: 700 !important;
@@ -70,7 +63,6 @@ img.prod-lazy {
   text-decoration: underline;
 }
 
-/* ── CHANGE 12: Documents sidebar label & button ────────── */
 #navFamily .fa-house-heart::before {
   content: "\f07b"; /* folder icon */
 }
