@@ -12,7 +12,6 @@ export async function secureOpen(procName, linkType){
     showToast('No access to this link.', 'err'); return;
   }
 
-  // ── AI Q&A: direct external link — skip Cloud Function ──────
   if (linkType === 'aiqa'){
     window.open(
       'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
@@ -20,7 +19,6 @@ export async function secureOpen(procName, linkType){
     );
     return;
   }
-  // ────────────────────────────────────────────────────────────
 
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
@@ -28,7 +26,6 @@ export async function secureOpen(procName, linkType){
   else           showToast(result.error, 'err');
 }
 
-/** Build a single action button's HTML, or '' if user has no access. */
 function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
   const isAdmin = state.curUser?.role === 'Admin';
   if (!hasUrl)                                             return '';
