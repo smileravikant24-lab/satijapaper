@@ -239,7 +239,7 @@ function _buildBrandCard(brand) {
         <div class="prod-cert-row">${certs}</div>
       </div>
       <div class="prod-share-wrap">
-        <button class="prod-share-btn" onclick="openShareModal('${brand.name}','${brand.shareMsg || brand.name}')">
+        <button class="prod-share-btn" onclick="shareProductImage('prod-${brand.id}','${brand.name}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
@@ -295,11 +295,8 @@ function _buildVariant(v, brand) {
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <div class="prod-variant-actions">
-        <button class="prod-variant-share" onclick="openShareModal('${v.name}','${brand.shareMsg || v.name}')">
+        <button class="prod-variant-share" onclick="shareProductImage('${varId}','${v.name}')">
           <i class="fas fa-share-nodes"></i> Share
-        </button>
-        <button class="prod-variant-imgshare" onclick="shareProductImage('${varId}','${v.name}')">
-          <i class="fas fa-image"></i> Share Image
         </button>
       </div>
 
@@ -417,9 +414,9 @@ async function shareProductImage(elementId, label) {
       imageTimeout:    12000,
       onclone: async (doc, clone) => {
         // 1. Hide share buttons so they don't appear in the image
-        clone.querySelectorAll('.prod-share-btn, .prod-variant-share').forEach(b => {
-          b.style.display = 'none';
-        });
+        clone.querySelectorAll(
+          '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
+        ).forEach(b => { b.style.display = 'none'; });
         // 2. Convert all images to base64 to bypass CORS
         await _replaceImgsWithBase64(clone);
       }
@@ -555,7 +552,7 @@ function _buildBankSectionHTML() {
     <div class="bank-cards-grid">
 
       <!-- HSBC -->
-      <div class="bank-card">
+      <div class="bank-card" id="hsbc-card">
         <div class="bank-card-header hsbc">
           <i class="fas fa-university"></i> HSBC Bank
         </div>
@@ -573,11 +570,8 @@ function _buildBankSectionHTML() {
               <button class="bank-copy-btn" onclick="copyBankDetails('hsbc')">
                 <i class="fas fa-copy"></i> Copy Details
               </button>
-              <button class="bank-share-btn" onclick="shareBankDetails('hsbc')">
+              <button class="bank-share-btn" onclick="shareProductImage('hsbc-card','Bank Details HSBC')">
                 <i class="fas fa-share-nodes"></i> Share
-              </button>
-              <button class="bank-imgshare-btn" onclick="shareProductImage('bankDetailsSection','Bank Details — HSBC')">
-                <i class="fas fa-image"></i> Share Image
               </button>
             </div>
           </div>
@@ -589,7 +583,7 @@ function _buildBankSectionHTML() {
       </div>
 
       <!-- PNB -->
-      <div class="bank-card">
+      <div class="bank-card" id="pnb-card">
         <div class="bank-card-header pnb">
           <i class="fas fa-university"></i> Punjab National Bank
         </div>
@@ -607,11 +601,8 @@ function _buildBankSectionHTML() {
               <button class="bank-copy-btn" onclick="copyBankDetails('pnb')">
                 <i class="fas fa-copy"></i> Copy Details
               </button>
-              <button class="bank-share-btn" onclick="shareBankDetails('pnb')">
+              <button class="bank-share-btn" onclick="shareProductImage('pnb-card','Bank Details PNB')">
                 <i class="fas fa-share-nodes"></i> Share
-              </button>
-              <button class="bank-imgshare-btn" onclick="shareProductImage('bankDetailsSection','Bank Details — PNB')">
-                <i class="fas fa-image"></i> Share Image
               </button>
             </div>
           </div>
