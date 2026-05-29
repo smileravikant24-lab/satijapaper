@@ -500,6 +500,23 @@ function _lazyLoadImages(container) {
   remaining.forEach(img => obs.observe(img));
 }
 
+
+function showBankDetails(btn) {
+  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  state.curCat   = 'BankDetails';
+  state.curGroup = null;
+  state.daMode   = 'all';
+  document.getElementById('pageHeader').textContent   = 'Bank Details';
+  document.getElementById('searchWrap').style.display = 'none';
+  document.getElementById('cardBox').style.display    = 'none';
+  document.getElementById('adminPanel').style.display = 'none';
+  const panel = document.getElementById('productsPanel');
+  panel.style.display = 'block';
+  panel.innerHTML     = `<div class="products-wrap">` + _buildBankSectionHTML() + `</div>`;
+  _injectShareModal();
+}
+
 Object.assign(window, {
   handleLogin, handleLogout, forgotPass, togglePwd,
   filterCat:     filterCatPatched,
@@ -516,6 +533,7 @@ Object.assign(window, {
   openShareModal,
   spShareHide, spShareVia, spShareClose, spShareCopyLink,
   copyBankDetails,
+  showBankDetails,
 });
 
 
@@ -544,9 +562,14 @@ function _buildBankSectionHTML() {
               <tr><td>IFSC</td><td>:</td><td class="bank-ifsc">HSBC0110002</td></tr>
               <tr><td>Address</td><td>:</td><td>Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi – 110009</td></tr>
             </table>
-            <button class="bank-copy-btn" onclick="copyBankDetails('hsbc')">
-              <i class="fas fa-copy"></i> Copy Details
-            </button>
+            <div class="bank-action-row">
+              <button class="bank-copy-btn" onclick="copyBankDetails('hsbc')">
+                <i class="fas fa-copy"></i> Copy Details
+              </button>
+              <button class="bank-share-btn" onclick="openShareModal('HSBC Bank — Satija Paper', 'Bank Details — SATIJA PAPER\nBank: HSBC Bank\nAccount No.: 166485698001\nIFSC: HSBC0110002\nBranch: Barakhamba Road, C.P.\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com')">
+                <i class="fas fa-share-nodes"></i> Share
+              </button>
+            </div>
           </div>
           <div class="bank-qr-wrap">
             <img src="${HSBC_QR}" alt="HSBC UPI QR">
@@ -570,9 +593,14 @@ function _buildBankSectionHTML() {
               <tr><td>IFSC</td><td>:</td><td class="bank-ifsc">PUNB0498800</td></tr>
               <tr><td>Address</td><td>:</td><td>Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi – 110009</td></tr>
             </table>
-            <button class="bank-copy-btn" onclick="copyBankDetails('pnb')">
-              <i class="fas fa-copy"></i> Copy Details
-            </button>
+            <div class="bank-action-row">
+              <button class="bank-copy-btn" onclick="copyBankDetails('pnb')">
+                <i class="fas fa-copy"></i> Copy Details
+              </button>
+              <button class="bank-share-btn" onclick="openShareModal('PNB — Satija Paper', 'Bank Details — SATIJA PAPER\nBank: Punjab National Bank (India)\nAccount No.: 1524002100033322\nIFSC: PUNB0498800\nBranch: Mukherjee Nagar\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com')">
+                <i class="fas fa-share-nodes"></i> Share
+              </button>
+            </div>
           </div>
           <div class="bank-qr-wrap">
             <img src="${PNB_QR}" alt="PNB UPI QR">
