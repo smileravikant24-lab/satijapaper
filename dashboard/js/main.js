@@ -274,7 +274,7 @@ function _buildVariant(v, brand) {
   const varId = `prod-var-${brand.id}-${v.gsm}`;
   return `
   <div class="prod-variant-card" id="${varId}">
-    <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
+    <div class="prod-variant-img-wrap prod-variant-img-clickable" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}" onclick="openShareModal('${v.name}','${brand.shareMsg || v.name}')" title="Click to share">
       ${v.colorOnly
         ? `<div class="prod-colour-swatch" style="background:${v.color}">
              <span class="prod-colour-name-big">${v.colorName}</span>
@@ -294,9 +294,7 @@ function _buildVariant(v, brand) {
       <div class="prod-sizes-row">${sizes}</div>
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
-      <button class="prod-variant-share" onclick="openShareModal('${v.name}','${brand.shareMsg || v.name}')">
-        <i class="fas fa-share-nodes"></i> Share
-      </button>
+
     </div>
   </div>`;
 }
