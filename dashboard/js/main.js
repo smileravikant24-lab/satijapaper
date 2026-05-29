@@ -533,6 +533,7 @@ Object.assign(window, {
   openShareModal,
   spShareHide, spShareVia, spShareClose, spShareCopyLink,
   copyBankDetails,
+  shareBankDetails,
   showBankDetails,
 });
 
@@ -566,7 +567,7 @@ function _buildBankSectionHTML() {
               <button class="bank-copy-btn" onclick="copyBankDetails('hsbc')">
                 <i class="fas fa-copy"></i> Copy Details
               </button>
-              <button class="bank-share-btn" onclick="openShareModal('HSBC Bank — Satija Paper', 'Bank Details — SATIJA PAPER\nBank: HSBC Bank\nAccount No.: 166485698001\nIFSC: HSBC0110002\nBranch: Barakhamba Road, C.P.\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com')">
+              <button class="bank-share-btn" onclick="shareBankDetails('hsbc')">
                 <i class="fas fa-share-nodes"></i> Share
               </button>
             </div>
@@ -597,7 +598,7 @@ function _buildBankSectionHTML() {
               <button class="bank-copy-btn" onclick="copyBankDetails('pnb')">
                 <i class="fas fa-copy"></i> Copy Details
               </button>
-              <button class="bank-share-btn" onclick="openShareModal('PNB — Satija Paper', 'Bank Details — SATIJA PAPER\nBank: Punjab National Bank (India)\nAccount No.: 1524002100033322\nIFSC: PUNB0498800\nBranch: Mukherjee Nagar\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com')">
+              <button class="bank-share-btn" onclick="shareBankDetails('pnb')">
                 <i class="fas fa-share-nodes"></i> Share
               </button>
             </div>
@@ -611,6 +612,15 @@ function _buildBankSectionHTML() {
 
     </div>
   </div>`;
+}
+
+function shareBankDetails(bank) {
+  const messages = {
+    hsbc: 'Bank Details — SATIJA PAPER\nBank: HSBC Bank\nAccount No.: 166485698001\nIFSC: HSBC0110002\nBranch: Barakhamba Road, C.P.\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com',
+    pnb:  'Bank Details — SATIJA PAPER\nBank: Punjab National Bank (India)\nAccount No.: 1524002100033322\nIFSC: PUNB0498800\nBranch: Mukherjee Nagar\nAddress: Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009\nwww.satijapaper.com'
+  };
+  const titles = { hsbc: 'HSBC Bank — Satija Paper', pnb: 'PNB — Satija Paper' };
+  openShareModal(titles[bank], messages[bank]);
 }
 
 function copyBankDetails(bank) {
