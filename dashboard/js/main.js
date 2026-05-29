@@ -213,7 +213,7 @@ function showProducts(btn) {
   document.getElementById('adminPanel').style.display = 'none';
   const panel = document.getElementById('productsPanel');
   panel.style.display = 'block';
-  panel.innerHTML     = _buildProductsHTML() + _buildBankSectionHTML();
+  panel.innerHTML     = _buildProductsHTML();
   _lazyLoadImages(panel);   // load images as they scroll into view
   _injectShareModal();      // ensure share modal DOM is ready
 }
