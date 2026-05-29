@@ -294,6 +294,14 @@ function _buildVariant(v, brand) {
       <div class="prod-sizes-row">${sizes}</div>
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
+      <div class="prod-variant-actions">
+        <button class="prod-variant-share" onclick="openShareModal('${v.name}','${brand.shareMsg || v.name}')">
+          <i class="fas fa-share-nodes"></i> Share
+        </button>
+        <button class="prod-variant-imgshare" onclick="shareProductImage('${varId}','${v.name}')">
+          <i class="fas fa-image"></i> Share Image
+        </button>
+      </div>
 
     </div>
   </div>`;
@@ -568,6 +576,9 @@ function _buildBankSectionHTML() {
               <button class="bank-share-btn" onclick="shareBankDetails('hsbc')">
                 <i class="fas fa-share-nodes"></i> Share
               </button>
+              <button class="bank-imgshare-btn" onclick="shareProductImage('bankDetailsSection','Bank Details — HSBC')">
+                <i class="fas fa-image"></i> Share Image
+              </button>
             </div>
           </div>
           <div class="bank-qr-wrap">
@@ -598,6 +609,9 @@ function _buildBankSectionHTML() {
               </button>
               <button class="bank-share-btn" onclick="shareBankDetails('pnb')">
                 <i class="fas fa-share-nodes"></i> Share
+              </button>
+              <button class="bank-imgshare-btn" onclick="shareProductImage('bankDetailsSection','Bank Details — PNB')">
+                <i class="fas fa-image"></i> Share Image
               </button>
             </div>
           </div>
