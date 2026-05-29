@@ -1,7 +1,7 @@
 :root {
-  --primary:       #0D1B2A;  /* नया गहरा रॉयल नेवी बैकग्राउंड */
-  --accent:        #0066ff;  /* एक्टिव बटन का ब्राइट ब्लू */
-  --accent-light:  #4d94ff;  /* बटन्स का होवर कलर */
+  --primary:       #0D1B2A;  
+  --accent:        #0066ff; 
+  --accent-light:  #4d94ff; 
   --accent-glow:   rgba(0,102,255,.13);
   --da-red:         #e60012;
   --da-yellow:      #ffd200;
