@@ -22,5 +22,5 @@
   --shadow-m:       0 8px 30px rgba(0,0,0,.10);
   --shadow-l:       0 20px 60px rgba(0,0,0,.15);
   --ease:           cubic-bezier(.4,0,.2,1);
-  --brand-grad:     linear-gradient(135deg, #00a651 0%, #0A231C 100%); /* ग्रीन थीम के लिए अपडेटेड कस्टमाइज्ड ग्रेडिएंट */
+  --brand-grad:     linear-gradient(135deg, #00a651 0%, #0A231C 100%);
 }
