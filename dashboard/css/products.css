@@ -520,6 +520,7 @@ img.prod-lazy {
   font-weight: 600;
   letter-spacing: 0.3px;
 }
+
 /* ═══════════════════════════════════════════════════════════════
    BANK DETAILS SECTION — appended to products.css
    ═══════════════════════════════════════════════════════════════ */
@@ -690,3 +691,32 @@ img.prod-lazy {
   }
   .bank-qr-wrap img { width: 100px; height: 100px; }
 }
+
+/* ── Bank action row (Copy + Share side by side) ──────────────── */
+.bank-action-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.bank-share-btn {
+  background: var(--accent, #4f46e5);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s, transform .1s;
+  font-family: inherit;
+}
+.bank-share-btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+.bank-share-btn i { font-size: 12px; }
