@@ -520,12 +520,15 @@ img.prod-lazy {
   font-weight: 600;
   letter-spacing: 0.3px;
 }
+
+
 .bank-section {
   margin-top: 40px;
   padding: 0 2px 2rem;
 }
+/* Title ko thoda chota aur neat kiya */
 .bank-section-title {
-  font-size: 24px; /* 20px se badhakar 24px kiya */
+  font-size: 20px; /* 24px se wapas balanced 20px kiya */
   font-weight: 800;
   color: var(--text-primary, #1a202c);
   margin-bottom: 20px;
@@ -535,11 +538,12 @@ img.prod-lazy {
   padding-bottom: 12px;
   border-bottom: 2px solid var(--border, #e2e8f0);
 }
-.bank-section-title i { color: var(--accent, #4f46e5); font-size: 22px; } /* Icon size badhaya */
+.bank-section-title i { color: var(--accent, #4f46e5); font-size: 18px; }
 
+/* Grid autofit perfectly adjust kiya taaki bade text ke sath space manage ho sake */
 .bank-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Min-width thoda badhaya takibada text wrap na ho */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 350px se cards screen pe sahi se fit honge */
   gap: 24px;
 }
 .bank-card {
@@ -555,18 +559,18 @@ img.prod-lazy {
   box-shadow: 0 10px 32px rgba(0,0,0,.12);
 }
 .bank-card-header {
-  padding: 16px 20px; /* Padding thodi badhai */
+  padding: 14px 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   color: #fff;
   font-weight: 800;
-  font-size: 17px; /* 15px se badhakar 17px kiya */
+  font-size: 15px; /* Header title card ke hisab se wapas perfect size kiya */
   letter-spacing: .3px;
 }
 .bank-card-header.hsbc { background: linear-gradient(120deg, #db0011 0%, #a0000d 100%); }
 .bank-card-header.pnb  { background: linear-gradient(120deg, #1a5276 0%, #154360 100%); }
-.bank-card-header i    { font-size: 20px; opacity: .9; } /* Icon size badhaya */
+.bank-card-header i    { font-size: 18px; opacity: .9; }
 
 .bank-card-body {
   display: flex;
@@ -579,10 +583,10 @@ img.prod-lazy {
 .bank-details-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14.5px; /* Table content ko 12.5px se 14.5px kiya */
+  font-size: 14.5px; /* Text ka size bada hi rakha hai readability ke liye */
 }
 .bank-details-table td {
-  padding: 6px 0; /* Padding thodi badhai taaki text khula-khula dikhe */
+  padding: 6px 0;
   vertical-align: middle;
   color: var(--text-secondary, #2d3748);
   line-height: 1.5;
@@ -592,8 +596,8 @@ img.prod-lazy {
   color: var(--text-muted, #718096);
   white-space: nowrap;
   padding-right: 10px;
-  width: 110px; /* Width thodi badhai */
-  font-size: 12px; /* Label ko 11px se 12px kiya */
+  width: 110px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: .4px;
 }
@@ -606,22 +610,22 @@ img.prod-lazy {
 .bank-acc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 16px; /* Account number ko 13px se 16px kiya taaki saaf dikhe */
+  font-size: 16px; /* Account number bada aur clear dikhega */
   color: var(--text-primary, #1a202c);
   letter-spacing: 1px;
 }
 .bank-ifsc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 15px; /* IFSC ko 12.5px se 15px kiya */
+  font-size: 15px;
 }
 .bank-copy-btn {
   margin-top: 10px;
   background: none;
   border: 1.5px solid var(--border, #e2e8f0);
   border-radius: 8px;
-  padding: 8px 14px; /* Padding badhai */
-  font-size: 13px; /* 11.5px se 13px kiya */
+  padding: 8px 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--accent, #4f46e5);
   cursor: pointer;
@@ -655,7 +659,7 @@ img.prod-lazy {
   background: #fff;
 }
 .bank-qr-label {
-  font-size: 12px; /* 10.5px se badhakar 12px kiya */
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-muted, #718096);
   text-transform: uppercase;
@@ -683,12 +687,12 @@ img.prod-lazy {
     padding: 0 16px 16px;
     align-items: center;
     min-width: unset;
-    justify-content: center; /* Center align kiya mobile pe */
+    justify-content: center;
   }
-  .bank-qr-wrap img { width: 120px; height: 120px; } /* Mobile pe bhi thoda bada kiya */
+  .bank-qr-wrap img { width: 120px; height: 120px; }
 }
 
-/* ── Bank action row (Copy + Share side by side) ──────────────── */
+/* ── Bank action row ──────────────── */
 .bank-action-row {
   display: flex;
   align-items: center;
@@ -701,8 +705,8 @@ img.prod-lazy {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px; /* Padding badhai */
-  font-size: 13px; /* 11.5px se 13px kiya */
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -717,13 +721,13 @@ img.prod-lazy {
 }
 .bank-share-btn i { font-size: 14px; }
 
-/* ── Variant image — clickable to share ───────────────────── */
+/* ── Variant image ───────────────────── */
 .prod-variant-img-clickable {
   cursor: pointer;
   position: relative;
 }
 .prod-variant-img-clickable::after {
-  content: '\f1e0';  /* fa-share-nodes unicode */
+  content: '\f1e0';
   font-family: 'Font Awesome 6 Free';
   font-weight: 900;
   position: absolute;
@@ -743,7 +747,7 @@ img.prod-lazy {
   background: rgba(79, 70, 229, 0.55);
 }
 
-/* ── Variant action row (Share popup + Share Image) ────────── */
+/* ── Variant action row ────────── */
 .prod-variant-actions {
   display: flex;
   gap: 6px;
@@ -754,11 +758,11 @@ img.prod-lazy {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 13px; /* 11.5px se 13px kiya */
+  font-size: 13px;
   font-weight: 700;
   color: #fff;
   background: #4f46e5;
-  padding: 6px 14px; /* Padding adjustable ki */
+  padding: 6px 14px;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -774,8 +778,8 @@ img.prod-lazy {
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px; /* Padding badhai */
-  font-size: 13px; /* 11.5px se 13px kiya */
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
