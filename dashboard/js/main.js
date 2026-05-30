@@ -574,10 +574,6 @@ function _buildBankSectionHTML() {
               </button>
             </div>
           </div>
-          <div class="bank-qr-wrap">
-            <img src="${HSBC_QR}" alt="HSBC UPI QR">
-            <div class="bank-qr-label">Scan &amp; Pay · HSBC</div>
-          </div>
         </div>
       </div>
 
