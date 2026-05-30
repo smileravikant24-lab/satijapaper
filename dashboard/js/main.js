@@ -563,8 +563,7 @@ function _buildBankSectionHTML() {
               <tr><td>Bank</td><td>:</td><td>HSBC Bank</td></tr>
               <tr><td>Branch</td><td>:</td><td>Barakhamba Road, C.P.</td></tr>
               <tr><td>IFSC</td><td>:</td><td class="bank-ifsc">HSBC0110002</td></tr>
-              <tr><td>Address</td><td>:</td><td>Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi – 110009</td></tr>
-            </table>
+              </table>
             <div class="bank-action-row">
               <button class="bank-copy-btn" onclick="copyBankDetails('hsbc')">
                 <i class="fas fa-copy"></i> Copy Details
@@ -590,8 +589,7 @@ function _buildBankSectionHTML() {
               <tr><td>Bank</td><td>:</td><td>Punjab National Bank (India)</td></tr>
               <tr><td>Branch</td><td>:</td><td>Mukherjee Nagar</td></tr>
               <tr><td>IFSC</td><td>:</td><td class="bank-ifsc">PUNB0498800</td></tr>
-              <tr><td>Address</td><td>:</td><td>Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi – 110009</td></tr>
-            </table>
+              </table>
             <div class="bank-action-row">
               <button class="bank-copy-btn" onclick="copyBankDetails('pnb')">
                 <i class="fas fa-copy"></i> Copy Details
