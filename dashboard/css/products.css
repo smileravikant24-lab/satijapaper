@@ -526,9 +526,8 @@ img.prod-lazy {
   margin-top: 40px;
   padding: 0 2px 2rem;
 }
-/* Title ko thoda chota aur neat kiya */
 .bank-section-title {
-  font-size: 20px; /* 24px se wapas balanced 20px kiya */
+  font-size: 20px;
   font-weight: 800;
   color: var(--text-primary, #1a202c);
   margin-bottom: 20px;
@@ -540,10 +539,11 @@ img.prod-lazy {
 }
 .bank-section-title i { color: var(--accent, #4f46e5); font-size: 18px; }
 
-/* Grid autofit perfectly adjust kiya taaki bade text ke sath space manage ho sake */
+/* Grid autofit configuration */
 .bank-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 350px se cards screen pe sahi se fit honge */
+  /* Minimum width ko 380px kiya taaki columns ko failne ki poori jagah mile */
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); 
   gap: 24px;
 }
 .bank-card {
@@ -565,7 +565,7 @@ img.prod-lazy {
   gap: 10px;
   color: #fff;
   font-weight: 800;
-  font-size: 15px; /* Header title card ke hisab se wapas perfect size kiya */
+  font-size: 15px;
   letter-spacing: .3px;
 }
 .bank-card-header.hsbc { background: linear-gradient(120deg, #db0011 0%, #a0000d 100%); }
@@ -575,6 +575,7 @@ img.prod-lazy {
 .bank-card-body {
   display: flex;
   gap: 0;
+  align-items: stretch; /* Taaki table aur QR wrap equal height pe rahein */
 }
 .bank-details-table {
   flex: 1;
@@ -583,75 +584,56 @@ img.prod-lazy {
 .bank-details-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14.5px; /* Text ka size bada hi rakha hai readability ke liye */
+  font-size: 14px; /* Balanced font size */
 }
 .bank-details-table td {
-  padding: 6px 0;
-  vertical-align: middle;
+  padding: 8px 0; /* Vertical space thoda badhaya taaki layout khula lage */
+  vertical-align: top; /* Text ko top se align rakha taaki wrap hone pe bhi colon saamne rahe */
   color: var(--text-secondary, #2d3748);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 .bank-details-table td:first-child {
   font-weight: 700;
   color: var(--text-muted, #718096);
   white-space: nowrap;
   padding-right: 10px;
-  width: 110px;
-  font-size: 12px;
+  width: 120px; /* Width ko 100px se 120px kiya taaki 'ACCOUNT NO.' bina wrap hue fit ho jaye */
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .4px;
 }
 .bank-details-table td:nth-child(2) {
   color: var(--text-muted, #4a5568);
   font-size: 14px;
-  padding-right: 6px;
-  width: 10px;
+  padding-right: 8px;
+  width: 15px; /* Colon ke spacing ko secure kiya */
 }
 .bank-acc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 16px; /* Account number bada aur clear dikhega */
+  font-size: 15.5px; /* 16px se thoda sa optimize kiya alignment ke liye */
   color: var(--text-primary, #1a202c);
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 .bank-ifsc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 15px;
-}
-.bank-copy-btn {
-  margin-top: 10px;
-  background: none;
-  border: 1.5px solid var(--border, #e2e8f0);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent, #4f46e5);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: background .15s, color .15s;
-  font-family: inherit;
-}
-.bank-copy-btn:hover {
-  background: var(--accent, #4f46e5);
-  color: #fff;
-  border-color: var(--accent, #4f46e5);
+  font-size: 14.5px;
 }
 
+/* QR Code Section Fixes */
 .bank-qr-wrap {
-  padding: 16px 16px 16px 0;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* QR vertical center rahega */
   gap: 8px;
-  min-width: 176px;
+  min-width: 150px; /* Isse QR area compress nahi hoga */
 }
 .bank-qr-wrap img {
-  width: 160px;
-  height: 160px;
+  width: 125px; /* Size perfectly balanced kiya screen layouts ke liye */
+  height: 125px;
   object-fit: contain;
   border-radius: 12px;
   border: 1px solid var(--border, #e2e8f0);
@@ -659,7 +641,7 @@ img.prod-lazy {
   background: #fff;
 }
 .bank-qr-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-muted, #718096);
   text-transform: uppercase;
@@ -679,34 +661,59 @@ img.prod-lazy {
   .bank-section-title { color: #f9fafb; border-color: #2d2d2d; }
 }
 
-/* Responsive */
+/* Responsive (Mobile View) */
 @media (max-width: 600px) {
   .bank-card-body { flex-direction: column; }
   .bank-qr-wrap {
     flex-direction: row;
-    padding: 0 16px 16px;
+    padding: 16px;
     align-items: center;
     min-width: unset;
     justify-content: center;
+    border-top: 1px dashed var(--border, #e2e8f0); /* Table aur QR ke beech clean separator */
   }
-  .bank-qr-wrap img { width: 120px; height: 120px; }
+  .bank-qr-wrap img { width: 110px; height: 110px; }
 }
 
-/* ── Bank action row ──────────────── */
+/* Action Rows & Buttons standard height alignment */
 .bank-action-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 14px;
   flex-wrap: wrap;
+}
+.bank-copy-btn, .bank-share-btn, .bank-imgshare-btn {
+  height: 34px; /* Fixed height se dono buttons ka alignment hamesha barabar rahega */
+  box-sizing: border-box;
+}
+.bank-copy-btn {
+  background: none;
+  border: 1.5px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent, #4f46e5);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s, color .15s;
+  font-family: inherit;
+}
+.bank-copy-btn:hover {
+  background: var(--accent, #4f46e5);
+  color: #fff;
+  border-color: var(--accent, #4f46e5);
 }
 .bank-share-btn {
   background: var(--accent, #4f46e5);
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 0 16px;
+  font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -719,74 +726,4 @@ img.prod-lazy {
   background: #4338ca;
   transform: translateY(-1px);
 }
-.bank-share-btn i { font-size: 14px; }
-
-/* ── Variant image ───────────────────── */
-.prod-variant-img-clickable {
-  cursor: pointer;
-  position: relative;
-}
-.prod-variant-img-clickable::after {
-  content: '\f1e0';
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  color: #fff;
-  background: rgba(79, 70, 229, 0.0);
-  border-radius: .5rem;
-  opacity: 0;
-  transition: opacity .2s, background .2s;
-}
-.prod-variant-img-clickable:hover::after {
-  opacity: 1;
-  background: rgba(79, 70, 229, 0.55);
-}
-
-/* ── Variant action row ────────── */
-.prod-variant-actions {
-  display: flex;
-  gap: 6px;
-  margin-top: 8px;
-  flex-wrap: wrap;
-}
-.prod-variant-imgshare {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-  background: #4f46e5;
-  padding: 6px 14px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background .15s, transform .1s;
-  font-family: inherit;
-}
-.prod-variant-imgshare:hover { background: #4338ca; transform: translateY(-1px); }
-.prod-variant-imgshare i { font-size: 12px; }
-
-/* ── Bank image share button ───────────────────────────────── */
-.bank-imgshare-btn {
-  background: #059669;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: background .15s, transform .1s;
-  font-family: inherit;
-}
-.bank-imgshare-btn:hover { background: #047857; transform: translateY(-1px); }
-.bank-imgshare-btn i { font-size: 14px; }
+.bank-share-btn i { font-size: 13px; }
