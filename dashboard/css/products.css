@@ -41,13 +41,13 @@
 /* ── Brand card ────────────────────────────────────────────── */
 .prod-brand-card {
   background: var(--card-bg, #fff);
-  border: 1px solid var(--border, #e5e7eb);
-  border-radius: 1.1rem;
+  border: 1px solid rgba(0,0,0,.04);
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,.06);
-  transition: box-shadow .2s;
+  box-shadow: var(--shadow-s);
+  transition: all .3s var(--ease);
 }
-.prod-brand-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+.prod-brand-card:hover { box-shadow: var(--shadow-m); transform: translateY(-2px); }
 
 .prod-brand-header {
   display: grid;
@@ -544,16 +544,16 @@ img.prod-lazy {
 }
 .bank-card {
   background: var(--card-bg, #fff);
-  border-radius: 18px;
-  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.04);
   overflow: hidden;
   max-width: 100%;
-  box-shadow: 0 4px 20px rgba(0,0,0,.07);
-  transition: transform .2s, box-shadow .2s;
+  box-shadow: var(--shadow-s);
+  transition: all .3s var(--ease);
 }
 .bank-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 32px rgba(0,0,0,.12);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-m);
 }
 .bank-card-header {
   padding: 16px 20px; /* Padding thodi badhai */
