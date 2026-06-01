@@ -36,7 +36,7 @@ function enterApp(user) {
 
   const navSupport = document.getElementById('navSupport');
   if (navSupport) {
-    const show = hasAll || allowedDepts.includes('Support') || allowedProcs.includes('Help & Support') || allowedProcs.includes('Helpdesk Form');
+    const show = hasAll || allowedDepts.includes('Support') || allowedProcs.includes('Help Ticket') || allowedProcs.includes('Help & Support') || allowedProcs.includes('Helpdesk Form');
     navSupport.style.display = show ? '' : 'none';
     if (show && navSupport.parentElement) navSupport.parentElement.style.display = '';
   }
@@ -58,7 +58,6 @@ function enterApp(user) {
   // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
-  _setProductsCount();
   _startCardObserver();
   _initMobileSidebar();
 }
@@ -73,7 +72,7 @@ function _forceLocalCounts() {
 
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products') return;
+    if (tab.cat === 'All') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
     const n = DB.filter(d => {
@@ -154,6 +153,7 @@ function _applyDAVisibility() {
   const grid = document.getElementById('cardBox');
   if (!grid) return;
   const daNames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
+  const hiddenCats = new Set(['Products', 'Bank Details']);
 
   // User access check for 'Double A' (Sales)
   let hasSalesAccess = false;
@@ -164,23 +164,29 @@ function _applyDAVisibility() {
     }
   }
 
+  grid.querySelectorAll('.card[data-name]').forEach(card => {
+    const name = card.dataset.name;
+    const dbItem = DB.find(x => x.name === name);
+    
+    // Prevent native rendering of special panel categories in the generic grid
+    if (dbItem && hiddenCats.has(dbItem.cat)) {
+      card.style.display = 'none';
+      return;
+    }
+
+    if (state.daMode === 'hidden') {
+      card.style.display = daNames.has(name) ? 'none' : '';
+    } else if (state.daMode === 'only') {
+      card.style.display = daNames.has(name) ? '' : 'none';
+    } else {
+      card.style.display = '';
+    }
+  });
+
   if (state.daMode === 'hidden') {
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
-    });
     if (hasSalesAccess && !grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
-
-  } else if (state.daMode === 'only') {
-    grid.querySelector('.da-folder-tile')?.remove();
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = daNames.has(card.dataset.name) ? '' : 'none';
-    });
-
   } else {
     grid.querySelector('.da-folder-tile')?.remove();
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = '';
-    });
   }
 }
 
@@ -256,20 +262,6 @@ function openAIQA() {
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
     '_blank', 'noopener,noreferrer'
   );
-}
-
-function _setProductsCount() {
-  const badge = document.getElementById('cntProducts');
-  if (badge) {
-    const user = state.curUser;
-    const isAdmin = !user || user.role === 'Admin';
-    const allowedProcs = user ? (user.procs || []) : [];
-    const allowedDepts = user ? (user.depts || []) : [];
-    const hasFullAccess = isAdmin || allowedDepts.includes('All') || allowedDepts.includes('Products');
-    
-    const n = hasFullAccess ? PRODUCTS.length : PRODUCTS.filter(p => allowedProcs.includes(p.name) || allowedProcs.includes(p.id)).length;
-    badge.textContent = n > 0 ? n : '0';
-  }
 }
 
 function showProducts(btn) {
