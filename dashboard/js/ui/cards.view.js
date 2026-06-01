@@ -42,14 +42,14 @@ function buildRoleCell(cls, icon, label, val){
   if (!val || val === '-'){
     return `<div class="role-cell">
               <div class="role-key">${label}</div>
-              <div class="role-val" style="opacity:.35;font-style:italic;font-size:10.5px"><span>—</span></div>
+              <div class="role-val ${cls}" style="opacity:.3;font-style:italic"><span>—</span></div>
             </div>`;
   }
   const safe = escapeHtml(val);
   return `<div class="role-cell">
             <div class="role-key">${label}</div>
             <div class="role-val ${cls}">
-              <i class="${icon}"></i><span title="${safe}">${safe}</span>
+              <span class="role-dot"></span><span title="${safe}">${safe}</span>
             </div>
           </div>`;
 }
