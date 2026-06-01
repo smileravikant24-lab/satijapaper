@@ -8,7 +8,7 @@
   background:var(--bg-card);
   border-radius:var(--r);
   box-shadow:var(--shadow-s);
-  border:1px solid rgba(0,0,0,.04);
+  border:1px solid var(--border);
   display:flex; flex-direction:column;
   transition:.22s var(--ease);
   position:relative; overflow:hidden;
@@ -16,12 +16,11 @@
 .card::before{
   content:''; position:absolute;
   top:0; left:0; right:0; height:4px;
-  opacity: 0.85;
 }
 .card:hover{
-  transform:translateY(-4px) scale(1.01);
+  transform:translateY(-5px);
   box-shadow:var(--shadow-m);
-  border-color:rgba(0,0,0,.08);
+  border-color:#c8d5e8;
 }
 
 .card.cat-Sales::before     { background:linear-gradient(90deg,#0066ff,#60a5fa,#e60012) }
