@@ -29,8 +29,8 @@ function enterApp(user) {
   updateCounts();
   renderFiltered();
   
-  // Force specific sections (Products, Helpdesk/Support, Bank Details) visible to ALL users regardless of dept access
-  ['navProducts', 'navSupport', 'navBankDetails'].forEach(id => {
+  // Force specific sections (Products, Helpdesk/Support) visible to ALL users regardless of dept access
+  ['navProducts', 'navSupport'].forEach(id => {
     const btn = document.getElementById(id);
     if (btn) {
       btn.style.display = '';
@@ -48,19 +48,27 @@ function enterApp(user) {
 
 
 function _forceLocalCounts() {
+  const user = state.curUser;
+  const isAdmin = !user || user.role === 'Admin';
+  const allowedProcs = user ? (user.procs || []) : [];
+
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
     if (tab.cat === 'All' || tab.cat === 'Products') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
-    // Documents counts both 'Documents' and 'Family' (backward compat)
-    const n = tab.cat === 'Documents'
-      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
-      : DB.filter(d => d.cat === tab.cat).length;
-    if (n > 0) cnt.textContent = n;
+    const n = DB.filter(d => {
+      const catMatch = tab.cat === 'Documents' ? (d.cat === 'Documents' || d.cat === 'Family') : d.cat === tab.cat;
+      if (!catMatch) return false;
+      if (isAdmin) return true;
+      return allowedProcs.includes(d.name) || allowedProcs.includes(d.id);
+    }).length;
+    cnt.textContent = n > 0 ? n : '0';
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) cntAll.textContent = DB.length;
+  if (cntAll) {
+    cntAll.textContent = isAdmin ? DB.length : DB.filter(d => allowedProcs.includes(d.name) || allowedProcs.includes(d.id)).length;
+  }
 }
 
 showCheckingSession();
@@ -158,16 +166,23 @@ function _syncDoubleAFolder(activeCat) {
   
   // User access check for 'Double A' (Sales)
   let hasSalesAccess = false;
+  let isAdmin = false;
+  let allowedProcs = [];
   if (state.curUser) {
     const d = state.curUser.depts || [];
-    if (state.curUser.role === 'Admin' || d.includes('All') || d.includes('Sales')) {
+    allowedProcs = state.curUser.procs || [];
+    if (state.curUser.role === 'Admin') isAdmin = true;
+    if (isAdmin || d.includes('All') || d.includes('Sales')) {
       hasSalesAccess = true;
     }
   }
   
   folder.style.display = (hasSalesAccess && (activeCat === 'Sales' || activeCat === 'All')) ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
-  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
+  if (badge) {
+    const daItems = DB.filter(p => p.group === 'Double A');
+    badge.textContent = isAdmin ? daItems.length : daItems.filter(d => allowedProcs.includes(d.name) || allowedProcs.includes(d.id)).length;
+  }
 }
 
 function _injectDoubleAFolderTile(grid) {
