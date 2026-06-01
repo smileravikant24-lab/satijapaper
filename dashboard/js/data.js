@@ -68,22 +68,7 @@ export const DB = [
   // -------- FAMILY --------
   {cat:"Documents",name:"Satija Family Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
   {cat:"Documents",name:"Satija Paper Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-
-  // -------- PRODUCTS --------
-  {cat:"Products",name:"Double A",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"NR Agarwal",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Satia Industries",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Khanna Paper",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Ruchira Papers",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Holmen",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"IK / i-K Copy",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Paper One / Aprilfine",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Products",name:"Andhra Paper",pc:"Admin",solver:"-",exec:"-",links:{}},
-
-  // -------- BANK DETAILS --------
-  {cat:"Bank Details",name:"HSBC Bank",pc:"Admin",solver:"-",exec:"-",links:{}},
-  {cat:"Bank Details",name:"Punjab National Bank",pc:"Admin",solver:"-",exec:"-",links:{}}
+  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}}
 ];
 
 
@@ -118,8 +103,7 @@ export const NAV_TABS = [
   {cat:'Support',    nav:'navSupport',    cnt:'cntSupport'},
   {cat:'My System',  nav:'navMy',         cnt:'cntMy'},
   {cat:'Documents',  nav:'navFamily',     cnt:'cntFamily'},
-  {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'},
-  {cat:'Bank Details',nav:'navBankDetails',cnt:'cntBankDetails'}
+  {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'}
 ];
 
 
