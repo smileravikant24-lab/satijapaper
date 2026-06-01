@@ -28,70 +28,35 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
-  
-  const isAdmin = !user || user.role === 'Admin';
-  const allowedProcs = user ? (user.procs || []) : [];
-  const allowedDepts = user ? (user.depts || []) : [];
-  const hasAll = isAdmin || allowedDepts.includes('All');
-
-  const navSupport = document.getElementById('navSupport');
-  if (navSupport) {
-    const show = hasAll || allowedDepts.includes('Support') || allowedProcs.includes('Help Ticket') || allowedProcs.includes('Help & Support') || allowedProcs.includes('Helpdesk Form');
-    navSupport.style.display = show ? '' : 'none';
-    if (show && navSupport.parentElement) navSupport.parentElement.style.display = '';
-  }
-
-  const navProducts = document.getElementById('navProducts');
-  if (navProducts) {
-    const show = hasAll || allowedDepts.includes('Products') || PRODUCTS.some(p => allowedProcs.includes(p.name) || allowedProcs.includes(p.id));
-    navProducts.style.display = show ? '' : 'none';
-    if (show && navProducts.parentElement) navProducts.parentElement.style.display = '';
-  }
-
-  const navBank = document.getElementById('navBankDetails');
-  if (navBank) {
-    const show = hasAll || allowedDepts.includes('Bank Details') || allowedProcs.includes('HSBC Bank') || allowedProcs.includes('Punjab National Bank') || allowedProcs.includes('HSBC') || allowedProcs.includes('PNB');
-    navBank.style.display = show ? '' : 'none';
-    if (show && navBank.parentElement) navBank.parentElement.style.display = '';
-  }
-  
+  // Products button — always visible to ALL users regardless of dept access
+  const _navProd = document.getElementById('navProducts');
+  if (_navProd) _navProd.closest('button') && (_navProd.style.display = '');
+  // Force navProducts parent visible
+  const _prodBtn = document.getElementById('navProducts');
+  if (_prodBtn) { _prodBtn.style.display = ''; _prodBtn.parentElement && (_prodBtn.parentElement.style.display = ''); }
   // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
+  _setProductsCount();
   _startCardObserver();
   _initMobileSidebar();
 }
 
 
 function _forceLocalCounts() {
-  const user = state.curUser;
-  const isAdmin = !user || user.role === 'Admin';
-  const allowedProcs = user ? (user.procs || []) : [];
-  const allowedDepts = user ? (user.depts || []) : [];
-  const hasAll = isAdmin || allowedDepts.includes('All');
-
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All') return;
+    if (tab.cat === 'All' || tab.cat === 'Products') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
-    const n = DB.filter(d => {
-      const catMatch = tab.cat === 'Documents' ? (d.cat === 'Documents' || d.cat === 'Family') : d.cat === tab.cat;
-      if (!catMatch) return false;
-      if (hasAll || allowedDepts.includes(tab.cat)) return true;
-      return allowedProcs.includes(d.name) || allowedProcs.includes(d.id);
-    }).length;
-    cnt.textContent = n > 0 ? n : '0';
+    // Documents counts both 'Documents' and 'Family' (backward compat)
+    const n = tab.cat === 'Documents'
+      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
+      : DB.filter(d => d.cat === tab.cat).length;
+    if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) {
-    cntAll.textContent = hasAll ? DB.length : DB.filter(d => {
-      if (allowedDepts.includes(d.cat)) return true;
-      if (allowedDepts.includes('Documents') && (d.cat === 'Documents' || d.cat === 'Family')) return true;
-      if (d.group === 'Double A' && allowedDepts.includes('Sales')) return true;
-      return allowedProcs.includes(d.name) || allowedProcs.includes(d.id);
-    }).length;
-  }
+  if (cntAll) cntAll.textContent = DB.length;
 }
 
 showCheckingSession();
@@ -153,66 +118,33 @@ function _applyDAVisibility() {
   const grid = document.getElementById('cardBox');
   if (!grid) return;
   const daNames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
-  const hiddenCats = new Set(['Products', 'Bank Details']);
-
-  // User access check for 'Double A' (Sales)
-  let hasSalesAccess = false;
-  if (state.curUser) {
-    const d = state.curUser.depts || [];
-    if (state.curUser.role === 'Admin' || d.includes('All') || d.includes('Sales')) {
-      hasSalesAccess = true;
-    }
-  }
-
-  grid.querySelectorAll('.card[data-name]').forEach(card => {
-    const name = card.dataset.name;
-    const dbItem = DB.find(x => x.name === name);
-    
-    // Prevent native rendering of special panel categories in the generic grid
-    if (dbItem && hiddenCats.has(dbItem.cat)) {
-      card.style.display = 'none';
-      return;
-    }
-
-    if (state.daMode === 'hidden') {
-      card.style.display = daNames.has(name) ? 'none' : '';
-    } else if (state.daMode === 'only') {
-      card.style.display = daNames.has(name) ? '' : 'none';
-    } else {
-      card.style.display = '';
-    }
-  });
 
   if (state.daMode === 'hidden') {
-    if (hasSalesAccess && !grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
+    grid.querySelectorAll('.card[data-name]').forEach(card => {
+      card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
+    });
+    if (!grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
+
+  } else if (state.daMode === 'only') {
+    grid.querySelector('.da-folder-tile')?.remove();
+    grid.querySelectorAll('.card[data-name]').forEach(card => {
+      card.style.display = daNames.has(card.dataset.name) ? '' : 'none';
+    });
+
   } else {
     grid.querySelector('.da-folder-tile')?.remove();
+    grid.querySelectorAll('.card[data-name]').forEach(card => {
+      card.style.display = '';
+    });
   }
 }
 
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
-  
-  // User access check for 'Double A' (Sales)
-  let hasSalesAccess = false;
-  let isAdmin = false;
-  let allowedProcs = [];
-  if (state.curUser) {
-    const d = state.curUser.depts || [];
-    allowedProcs = state.curUser.procs || [];
-    if (state.curUser.role === 'Admin') isAdmin = true;
-    if (isAdmin || d.includes('All') || d.includes('Sales')) {
-      hasSalesAccess = true;
-    }
-  }
-  
-  folder.style.display = (hasSalesAccess && (activeCat === 'Sales' || activeCat === 'All')) ? 'block' : 'none';
+  folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
-  if (badge) {
-    const daItems = DB.filter(p => p.group === 'Double A');
-    badge.textContent = hasSalesAccess ? daItems.length : daItems.filter(d => allowedProcs.includes(d.name) || allowedProcs.includes(d.id)).length;
-  }
+  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
 
 function _injectDoubleAFolderTile(grid) {
@@ -264,6 +196,11 @@ function openAIQA() {
   );
 }
 
+function _setProductsCount() {
+  const badge = document.getElementById('cntProducts');
+  if (badge) badge.textContent = PRODUCTS.length;
+}
+
 function showProducts(btn) {
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -282,15 +219,7 @@ function showProducts(btn) {
 }
 
 function _buildProductsHTML() {
-  const user = state.curUser;
-  const isAdmin = !user || user.role === 'Admin';
-  const allowedProcs = user ? (user.procs || []) : [];
-  const allowedDepts = user ? (user.depts || []) : [];
-  const hasFullAccess = isAdmin || allowedDepts.includes('All') || allowedDepts.includes('Products');
-  
-  const visibleProducts = hasFullAccess ? PRODUCTS : PRODUCTS.filter(p => allowedProcs.includes(p.name) || allowedProcs.includes(p.id));
-  if (!visibleProducts.length) return `<div class="empty-state" style="padding:40px;text-align:center;color:#6b7280;">No products assigned.</div>`;
-  return `<div class="products-wrap">${visibleProducts.map(_buildBrandCard).join('')}</div>`;
+  return `<div class="products-wrap">${PRODUCTS.map(_buildBrandCard).join('')}</div>`;
 }
 
 function _buildBrandCard(brand) {
@@ -645,11 +574,8 @@ function _buildBankSectionHTML() {
             </div>
           </div>
         </div>
-      </div>`;
-  }
+      </div>
 
-  if (showPNB) {
-    html += `
       <!-- PNB -->
       <div class="bank-card" id="pnb-card">
         <div class="bank-card-header pnb">
