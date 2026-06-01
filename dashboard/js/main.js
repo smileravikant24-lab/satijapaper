@@ -142,7 +142,12 @@ function _applyDAVisibility() {
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
-  folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
+  // Only show Double A if current section is Sales/All AND user has Sales access
+  const hasSalesAccess = state.curUser?.role === 'Admin'
+    || (state.curUser?.deptAccess || []).includes('All')
+    || (state.curUser?.deptAccess || []).includes('Sales');
+  const shouldShow = (activeCat === 'Sales' || activeCat === 'All') && hasSalesAccess;
+  folder.style.display = shouldShow ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
   if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
@@ -326,7 +331,8 @@ function showAdmin(btn) {
   if (cb) cb.style.display = 'none';
 
   // Show admin panel explicitly BEFORE calling orig (which loads users)
-  if (ap) ap.style.display = 'block';
+  // Remove inline style so CSS .visible class works correctly
+  if (ap) { ap.style.display = ''; ap.classList.remove('visible'); }
 
   state.curCat   = '__admin__';
   state.curGroup = null;
