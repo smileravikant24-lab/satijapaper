@@ -525,7 +525,7 @@ img.prod-lazy {
   padding: 0 2px 2rem;
 }
 .bank-section-title {
-  font-size: 24px; /* 20px se badhakar 24px kiya */
+  font-size: 22px;
   font-weight: 800;
   color: var(--text-primary, #1a202c);
   margin-bottom: 20px;
@@ -535,17 +535,16 @@ img.prod-lazy {
   padding-bottom: 12px;
   border-bottom: 2px solid var(--border, #e2e8f0);
 }
-.bank-section-title i { color: var(--accent, #4f46e5); font-size: 22px; } /* Icon size badhaya */
+.bank-section-title i { color: var(--accent, #0066ff); font-size: 20px; }
 
 .bank-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Min-width thoda badhaya takibada text wrap na ho */
-  grid-template-columns: repeat(auto-fit, minmax(340px, 480px)); /* Cap maximum width */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 480px));
   justify-content: start;
   gap: 24px;
 }
 .bank-card {
-  background: var(--card-bg, #fff);
+  background: var(--bg-card, #fff);
   border-radius: 18px;
   border: 1px solid var(--border, #e2e8f0);
   overflow: hidden;
@@ -557,20 +556,18 @@ img.prod-lazy {
   box-shadow: 0 10px 32px rgba(0,0,0,.12);
 }
 .bank-card-header {
-  padding: 16px 20px; /* Padding thodi badhai */
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   color: #fff;
   font-weight: 800;
-  font-size: 17px; /* 15px se badhakar 17px kiya */
-  font-size: 18px; /* Increased font size */
+  font-size: 17px;
   letter-spacing: .3px;
 }
 .bank-card-header.hsbc { background: linear-gradient(120deg, #db0011 0%, #a0000d 100%); }
 .bank-card-header.pnb  { background: linear-gradient(120deg, #1a5276 0%, #154360 100%); }
-.bank-card-header i    { font-size: 20px; opacity: .9; } /* Icon size badhaya */
-.bank-card-header i    { font-size: 22px; opacity: .9; }
+.bank-card-header i    { font-size: 20px; opacity: .9; }
 
 .bank-card-body {
   display: flex;
@@ -583,61 +580,51 @@ img.prod-lazy {
 .bank-details-table table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14.5px; /* Table content ko 12.5px se 14.5px kiya */
-  font-size: 15.5px; /* Increased table text size */
+  font-size: 14px;
 }
 .bank-details-table td {
-  padding: 6px 0; /* Padding thodi badhai taaki text khula-khula dikhe */
-  padding: 8px 0; /* Increased row padding */
+  padding: 7px 0;
   vertical-align: middle;
-  color: var(--text-secondary, #2d3748);
+  color: var(--text, #2d3748);
   line-height: 1.5;
 }
 .bank-details-table td:first-child {
   font-weight: 700;
-  color: var(--text-muted, #718096);
+  color: var(--text-2, #718096);
   white-space: nowrap;
   padding-right: 10px;
-  width: 110px; /* Width thodi badhai */
-  font-size: 12px; /* Label ko 11px se 12px kiya */
-  padding-right: 12px;
-  width: 120px; /* Adjusted for larger text */
-  font-size: 13px; /* Increased label size */
+  width: 110px;
+  font-size: 11.5px;
   text-transform: uppercase;
   letter-spacing: .4px;
 }
 .bank-details-table td:nth-child(2) {
-  color: var(--text-muted, #4a5568);
-  font-size: 14px;
-  font-size: 15px;
+  color: var(--text-2, #4a5568);
+  font-size: 13px;
   padding-right: 6px;
   width: 10px;
 }
 .bank-acc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 16px; /* Account number ko 13px se 16px kiya taaki saaf dikhe */
-  font-size: 18px; /* Increased account number size */
-  color: var(--text-primary, #1a202c);
-  letter-spacing: 1px;
+  font-size: 15px;
+  color: var(--text, #1a202c);
+  letter-spacing: 1.5px;
 }
 .bank-ifsc {
   font-family: 'Courier New', monospace;
   font-weight: 700;
-  font-size: 15px; /* IFSC ko 12.5px se 15px kiya */
-  font-size: 16px; /* Increased IFSC size */
+  font-size: 13.5px;
 }
 .bank-copy-btn {
   margin-top: 10px;
   background: none;
   border: 1.5px solid var(--border, #e2e8f0);
   border-radius: 8px;
-  padding: 8px 14px; /* Padding badhai */
-  font-size: 13px; /* 11.5px se 13px kiya */
-  padding: 10px 16px; 
-  font-size: 14px; 
+  padding: 8px 14px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--accent, #4f46e5);
+  color: var(--accent, #0066ff);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -646,25 +633,23 @@ img.prod-lazy {
   font-family: inherit;
 }
 .bank-copy-btn:hover {
-  background: var(--accent, #4f46e5);
+  background: var(--accent, #0066ff);
   color: #fff;
-  border-color: var(--accent, #4f46e5);
+  border-color: var(--accent, #0066ff);
 }
 
+/* QR Code */
 .bank-qr-wrap {
   padding: 16px 16px 16px 0;
-  padding: 20px 20px 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  min-width: 176px;
+  min-width: 160px;
 }
 .bank-qr-wrap img {
-  width: 160px;
-  height: 160px;
-  width: 170px;
-  height: 170px;
+  width: 148px;
+  height: 148px;
   object-fit: contain;
   border-radius: 12px;
   border: 1px solid var(--border, #e2e8f0);
@@ -672,10 +657,9 @@ img.prod-lazy {
   background: #fff;
 }
 .bank-qr-label {
-  font-size: 12px; /* 10.5px se badhakar 12px kiya */
-  font-size: 13px; /* Increased QR label size */
+  font-size: 11px;
   font-weight: 700;
-  color: var(--text-muted, #718096);
+  color: var(--text-3, #718096);
   text-transform: uppercase;
   letter-spacing: .5px;
   text-align: center;
@@ -688,25 +672,26 @@ img.prod-lazy {
   .bank-details-table td:first-child { color: #9ca3af; }
   .bank-acc, .bank-ifsc { color: #f9fafb; }
   .bank-qr-wrap img { border-color: #2d2d2d; background: #222; }
-  .bank-copy-btn { border-color: #3d3d3d; color: #818cf8; }
-  .bank-copy-btn:hover { background: #4f46e5; color: #fff; }
+  .bank-copy-btn { border-color: #3d3d3d; color: #4d94ff; }
+  .bank-copy-btn:hover { background: #0066ff; color: #fff; }
   .bank-section-title { color: #f9fafb; border-color: #2d2d2d; }
 }
 
-/* Responsive */
+/* Mobile responsive */
 @media (max-width: 600px) {
+  .bank-cards-grid { grid-template-columns: 1fr; }
   .bank-card-body { flex-direction: column; }
   .bank-qr-wrap {
     flex-direction: row;
     padding: 0 16px 16px;
     align-items: center;
     min-width: unset;
-    justify-content: center; /* Center align kiya mobile pe */
+    justify-content: center;
   }
-  .bank-qr-wrap img { width: 120px; height: 120px; } /* Mobile pe bhi thoda bada kiya */
+  .bank-qr-wrap img { width: 130px; height: 130px; }
 }
 
-/* ── Bank action row (Copy + Share side by side) ──────────────── */
+/* Bank action row (Copy + Share side by side) */
 .bank-action-row {
   display: flex;
   align-items: center;
@@ -715,14 +700,12 @@ img.prod-lazy {
   flex-wrap: wrap;
 }
 .bank-share-btn {
-  background: var(--accent, #4f46e5);
+  background: var(--accent, #0066ff);
   color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px; /* Padding badhai */
-  font-size: 13px; /* 11.5px se 13px kiya */
-  padding: 10px 16px; 
-  font-size: 14px; 
+  padding: 8px 14px;
+  font-size: 12.5px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
@@ -731,17 +714,8 @@ img.prod-lazy {
   transition: background .15s, transform .1s;
   font-family: inherit;
 }
-.bank-share-btn:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
-}
-.bank-share-btn i { font-size: 14px; }
-
-/* ── Variant image — clickable to share ───────────────────── */
-.prod-variant-img-clickable {
-  cursor: pointer;
-  position: relative;
-}
+.bank-share-btn:hover { background: #0052cc; transform: translateY(-1px); }
+.bank-share-btn i { font-size: 13px; }
 .prod-variant-img-clickable::after {
   content: '\f1e0';  /* fa-share-nodes unicode */
   font-family: 'Font Awesome 6 Free';
