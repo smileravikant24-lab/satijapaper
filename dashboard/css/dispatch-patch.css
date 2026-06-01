@@ -1,11 +1,12 @@
-
-.card.cat-Dispatch {
-  border-top: 3px solid #f97316;   /* orange — matches truck/logistics feel */
+.card.cat-Dispatch::before {
+  background: linear-gradient(90deg,#f97316,#fb923c);
+}
+.card.cat-Dispatch::after {
+  background: linear-gradient(90deg,rgba(249,115,22,.4),transparent);
 }
 .card-tag.tag-Dispatch {
-  background: #fff7ed;
-  color: #ea6c00;
-  border: 1px solid #fed7aa;
+  background: #fff4ed;
+  color: #c2410c;
 }
 
 .prod-variant-img-wrap {
@@ -19,7 +20,6 @@
   align-items: center;
   justify-content: center;
 }
-
 .prod-variant-img {
   width: 100% !important;
   height: 100% !important;
@@ -41,28 +41,14 @@
 .prod-brand-img {
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;   
+  object-fit: contain !important;
   object-position: center !important;
   display: block;
 }
-
 img.prod-lazy {
   width: 100% !important;
   height: 100% !important;
 }
-
-.brand-url {
-  color: var(--gold, #c49a3c) !important;
-  font-weight: 700 !important;
-  font-size: 12px !important;
-  letter-spacing: 0.5px;
-  display: block;
-}
-.brand-url:hover {
-  color: #fff !important;
-  text-decoration: underline;
-}
-
 #navFamily .fa-house-heart::before {
-  content: "\f07b"; /* folder icon */
+  content: "\f07b";
 }
