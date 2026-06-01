@@ -1,14 +1,19 @@
-
 *{ margin:0; padding:0; box-sizing:border-box }
 
 body{
-  font-family:'Plus Jakarta Sans', sans-serif;
+  font-family: 'DM Sans', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
   height: 100vh;
-  font-size: 14.5px;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* shared spinner used by login + buttons */
+.bank-acc, .bank-ifsc, .count-badge, .role-pill,
+.card-tag, code, .proc-badge {
+  font-family: 'Inter', 'DM Sans', system-ui, sans-serif;
+}
+
 @keyframes spin { to { transform: rotate(360deg) } }
