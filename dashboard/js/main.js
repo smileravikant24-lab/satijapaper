@@ -28,12 +28,16 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
-  // Products button — always visible to ALL users regardless of dept access
-  const _navProd = document.getElementById('navProducts');
-  if (_navProd) _navProd.closest('button') && (_navProd.style.display = '');
-  // Force navProducts parent visible
-  const _prodBtn = document.getElementById('navProducts');
-  if (_prodBtn) { _prodBtn.style.display = ''; _prodBtn.parentElement && (_prodBtn.parentElement.style.display = ''); }
+  
+  // Force specific sections (Products, Helpdesk/Support, Bank Details) visible to ALL users regardless of dept access
+  ['navProducts', 'navSupport', 'navBankDetails'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.style.display = '';
+      if (btn.parentElement) btn.parentElement.style.display = '';
+    }
+  });
+  
   // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
@@ -119,11 +123,20 @@ function _applyDAVisibility() {
   if (!grid) return;
   const daNames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
 
+  // User access check for 'Double A' (Sales)
+  let hasSalesAccess = false;
+  if (state.curUser) {
+    const d = state.curUser.depts || [];
+    if (state.curUser.role === 'Admin' || d.includes('All') || d.includes('Sales')) {
+      hasSalesAccess = true;
+    }
+  }
+
   if (state.daMode === 'hidden') {
     grid.querySelectorAll('.card[data-name]').forEach(card => {
       card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
     });
-    if (!grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
+    if (hasSalesAccess && !grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
 
   } else if (state.daMode === 'only') {
     grid.querySelector('.da-folder-tile')?.remove();
@@ -142,7 +155,17 @@ function _applyDAVisibility() {
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
-  folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
+  
+  // User access check for 'Double A' (Sales)
+  let hasSalesAccess = false;
+  if (state.curUser) {
+    const d = state.curUser.depts || [];
+    if (state.curUser.role === 'Admin' || d.includes('All') || d.includes('Sales')) {
+      hasSalesAccess = true;
+    }
+  }
+  
+  folder.style.display = (hasSalesAccess && (activeCat === 'Sales' || activeCat === 'All')) ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
   if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
