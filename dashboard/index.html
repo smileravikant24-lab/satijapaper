@@ -167,6 +167,7 @@
     <button class="menu-btn" id="navBankDetails"
         onclick="showBankDetails(this)">
   <i class="fas fa-landmark"></i> Bank Details
+  <span class="count-badge" id="cntBankDetails">0</span>
 </button>
 
     <!-- ── Administration (admin-only) ───────────────── -->
@@ -296,6 +297,9 @@
             </label>
             <label class="chk-pill" data-val="Products">
               <input type="checkbox" value="Products"> Products
+            </label>
+            <label class="chk-pill" data-val="Bank Details">
+              <input type="checkbox" value="Bank Details"> Bank Details
             </label>
           </div>
         </div>
