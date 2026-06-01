@@ -28,29 +28,28 @@
 }
 
 .sidebar-label{
-  padding:20px 24px 7px;
+  padding:20px 22px 7px;
   font-size:10px; font-weight:800; text-transform:uppercase;
   color:rgba(255,255,255,.25);
 }
 
 .menu-btn{
-  background:0; border:0; padding:11px 16px; margin: 2px 12px;
-  width: calc(100% - 24px); border-radius: 12px;
+  background:0; border:0; padding:12px 22px;
   text-align:left; font-size:14.5px;
   color:rgba(255,255,255,.52); cursor:pointer;
   display:flex; align-items:center; gap:12px;
+  border-left:3px solid transparent;
   font-weight:600; width:100%;
-  transition: all .2s var(--ease);
 }
 .menu-btn i{ width:20px; text-align:center; font-size:14px }
 .menu-btn:hover{
-  background:rgba(255,255,255,.08);
+  background:rgba(255,255,255,.05);
   color:rgba(255,255,255,.9);
 }
 .menu-btn.active{
-  background:var(--accent);
-  box-shadow: 0 4px 12px var(--accent-glow);
+  background:linear-gradient(90deg,rgba(0,102,255,.2),rgba(0,102,255,.04));
   color:#fff;
+  border-left-color:#4d94ff;
   font-weight:700;
 }
 .menu-btn .count-badge{
@@ -61,7 +60,7 @@
   padding:2px 8px; border-radius:8px;
 }
 .menu-btn.active .count-badge{
-  background:rgba(255,255,255,.2); color:#fff;
+  background:var(--accent); color:#fff;
 }
 
 .sidebar-user{
