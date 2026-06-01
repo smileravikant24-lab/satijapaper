@@ -7,6 +7,8 @@ export async function showAdmin(el){
   setActive(el);
   $('pageHeader').innerText      = 'User Management';
   $('cardBox').style.display     = 'none';
+  // Remove inline style so CSS class controls display correctly
+  $('adminPanel').style.display  = '';
   $('adminPanel').classList.add('visible');
   $('searchWrap').style.display  = 'none';
   await loadAndRenderUsers();
