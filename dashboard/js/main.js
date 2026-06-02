@@ -45,6 +45,7 @@ function enterApp(user) {
 
 
 function _forceLocalCounts() {
+  if (!state.curUser) return;
   let totalAccessible = 0;
   NAV_TABS.forEach(tab => {
     if (tab.cat === 'All' || tab.cat === 'Products') return;
@@ -61,6 +62,9 @@ function _forceLocalCounts() {
   const cntAll = document.getElementById('cntAll');
   if (cntAll) cntAll.textContent = totalAccessible;
 }
+
+// Enforce local accessible counts repeatedly to override any async fetch
+setInterval(_forceLocalCounts, 1000);
 
 showCheckingSession();
 onAuth(async fbUser => {
@@ -120,12 +124,13 @@ function _startCardObserver() {
 function _applyDAVisibility() {
   const grid = document.getElementById('cardBox');
   if (!grid) return;
+  const allDANames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
   const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
   const daNames = new Set(daItems.map(d => d.name));
 
   if (state.daMode === 'hidden') {
     grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
+      card.style.display = allDANames.has(card.dataset.name) ? 'none' : '';
     });
     if (!grid.querySelector('.da-folder-tile') && daItems.length > 0) _injectDoubleAFolderTile(grid);
 
