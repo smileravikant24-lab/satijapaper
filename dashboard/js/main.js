@@ -41,16 +41,32 @@ function _forceLocalCounts() {
   if (!state.curUser) return;
   let totalAccessible = 0;
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
+    if (tab.cat === 'All') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
-    // Documents counts both 'Documents' and 'Family' (backward compat)
-    const n = tab.cat === 'Documents'
-      ? DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length
-      : DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
-      
+
+    let n = 0;
+    if (tab.cat === 'Products') {
+      const hasAccess = DB.some(d => d.cat === 'Products' && canAccessProc(state.curUser, d));
+      n = hasAccess ? PRODUCTS.length : 0;
+    } else if (tab.cat === 'Bank Details') {
+      const hasAccess = DB.some(d => d.cat === 'Bank Details' && canAccessProc(state.curUser, d));
+      n = hasAccess ? 2 : 0; // 2 bank cards hardcoded
+    } else if (tab.cat === 'Documents') {
+      n = DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length;
+    } else {
+      n = DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
+    }
+
     cnt.textContent = n > 0 ? n : '';
-    totalAccessible += n;
+    if (tab.cat !== 'Products' && tab.cat !== 'Bank Details') totalAccessible += n;
+
+    // Auto hide/show the sidebar tab button based on access
+    const navEl = document.getElementById(tab.nav);
+    if (navEl) {
+      const target = navEl.tagName === 'BUTTON' ? navEl : (navEl.closest('button') || navEl.parentElement);
+      if (target) target.style.display = n > 0 ? '' : 'none';
+    }
   });
   const cntAll = document.getElementById('cntAll');
   if (cntAll) cntAll.textContent = totalAccessible;
@@ -209,7 +225,7 @@ function _setProductsCount() {
 
 function showProducts(btn) {
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   state.curCat   = 'Products';
   state.curGroup = null;
   state.daMode   = 'all';
