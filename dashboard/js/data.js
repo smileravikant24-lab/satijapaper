@@ -103,7 +103,8 @@ export const NAV_TABS = [
   {cat:'Support',    nav:'navSupport',    cnt:'cntSupport'},
   {cat:'My System',  nav:'navMy',         cnt:'cntMy'},
   {cat:'Documents',  nav:'navFamily',     cnt:'cntFamily'},
-  {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'}
+  {cat:'Products',   nav:'navProducts',   cnt:'cntProducts'},
+  {cat:'Bank Details', nav:'navBankDetails', cnt:'cntBankDetails'}
 ];
 
 
