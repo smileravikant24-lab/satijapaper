@@ -29,13 +29,6 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
-  // Products button — always visible to ALL users regardless of dept access
-  const _navProd = document.getElementById('navProducts');
-  if (_navProd) _navProd.closest('button') && (_navProd.style.display = '');
-  // Force navProducts parent visible
-  const _prodBtn = document.getElementById('navProducts');
-  if (_prodBtn) { _prodBtn.style.display = ''; _prodBtn.parentElement && (_prodBtn.parentElement.style.display = ''); }
-  // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
   _setProductsCount();
@@ -48,7 +41,7 @@ function _forceLocalCounts() {
   if (!state.curUser) return;
   let totalAccessible = 0;
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products') return;
+    if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
     // Documents counts both 'Documents' and 'Family' (backward compat)
