@@ -1,6 +1,6 @@
 import { $ }              from './dom.js';
 import { state }          from '../state.js';
-import { DB, NAV_TABS }   from '../data.js';
+import { DB, NAV_TABS, PRODUCTS }   from '../data.js';
 import { canAccessProc }  from './access.js';
 import { renderFiltered } from './cards.view.js';
 
@@ -26,6 +26,8 @@ export function updateCounts(){
     let n = counts[tab.cat] ?? 0;
     if (tab.cat === 'Documents') {
       n += counts['Family'] ?? 0;
+    } else if (tab.cat === 'Products') {
+      n = PRODUCTS.length;
     }
 
     const cnt = $(tab.cnt);
@@ -38,6 +40,8 @@ export function updateCounts(){
       visible = isAdmin || activeDepts.length >= 2;
     } else if (tab.cat === 'Documents' || tab.cat === 'Family'){
       visible = n > 0;
+    } else if (tab.cat === 'Products') {
+      visible = true; // Always visible to all users
     } else {
       visible = isAdmin || n > 0;
     }
