@@ -8,8 +8,8 @@ export function updateCounts(){
   const isAdmin = state.curUser?.role === 'Admin';
 
   const counts = {
-    All:0, Sales:0, Purchase:0, Management:0,
-    HR:0, Finance:0, Support:0, 'My System':0, Family:0
+    All:0, Sales:0, Dispatch:0, Purchase:0, Management:0,
+    HR:0, Finance:0, Support:0, 'My System':0, Documents:0, Family:0
   };
 
   DB.forEach(d => {
@@ -22,16 +22,21 @@ export function updateCounts(){
   NAV_TABS.forEach(tab => {
     const btn = $(tab.nav);
     if (!btn) return;
-    const n   = counts[tab.cat] ?? 0;
+
+    let n = counts[tab.cat] ?? 0;
+    if (tab.cat === 'Documents') {
+      n += counts['Family'] ?? 0;
+    }
+
     const cnt = $(tab.cnt);
     if (cnt) cnt.textContent = n;
 
     let visible;
     if (tab.cat === 'All'){
-      const activeDepts = ['Sales','Purchase','Management','HR','Finance','Support','My System']
+      const activeDepts = ['Sales','Dispatch','Purchase','Management','HR','Finance','Support','My System']
         .filter(c => (counts[c] ?? 0) > 0);
       visible = isAdmin || activeDepts.length >= 2;
-    } else if (tab.cat === 'Family'){
+    } else if (tab.cat === 'Documents' || tab.cat === 'Family'){
       visible = n > 0;
     } else {
       visible = isAdmin || n > 0;
