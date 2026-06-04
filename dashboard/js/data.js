@@ -1,7 +1,7 @@
 import { _IMG } from './images.js';
 export const DB = [
   // -------- SALES --------
-  {cat:"Dispatch",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,aiqa:1}},
+  {cat:"Dispatch",name:"Order to Delivery FMS",pc:"Ms. Preksha",solver:"Mukesh",exec:"Khushi",links:{fms:1,form:1,videoBCI:1,videoAI:1,aiqa:1}},
   {cat:"Dispatch",name:"O2D Direct Dispatch FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1,aiqa:1}},
   {cat:"Dispatch",name:"Sale Report",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{sheet:1}},
   {cat:"Sales",name:"Ruchira 100 Best Customer",pc:"Ms. Preksha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{sheet:1,aiqa:1}},
@@ -32,7 +32,8 @@ export const DB = [
   {cat:"Purchase",name:"Godown Stock Report",pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Preksha/Ms. Khushi",links:{form:1,sheet:1}},
   {cat:"Purchase",name:"Godown Inward Report",pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Preksha/Ms. Khushi",links:{sheet:1}},
   {cat:"Purchase",name:"Stock Transfer FMS",pc:"Ms. Preksha",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{fms:1,form:1}},
-    // -------- MANAGEMENT --------
+
+  // -------- MANAGEMENT --------
   {cat:"Management",name:"Ultimate Checklist",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{check:1,video:1,dashEmp:1,dashPC:1}},
   {cat:"Management",name:"Delegation Sheet",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha",links:{form:1,sheet:1,video:1}},
   {cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:1,sheet:1}},
@@ -80,6 +81,7 @@ export const LINK_META = {
   check:     {label:'Checklist',      icon:'fas fa-square-check',     cls:'btn-check'},
   video:     {label:'Training',       icon:'fas fa-circle-play',      cls:'btn-video'},
   videoBCI:  {label:'Training (BCI)', icon:'fas fa-circle-play',      cls:'btn-video'},
+  videoAI:   {label:'Training Video AI', icon:'fas fa-circle-play',   cls:'btn-video', url:'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing'},
   dashEmp:   {label:'Emp Dashboard',  icon:'fas fa-chart-pie',        cls:'btn-dash'},
   dashPC:    {label:'PC Dashboard',   icon:'fas fa-chart-line',       cls:'btn-dash'},
   admin:     {label:'Admin Panel',    icon:'fas fa-user-gear',        cls:'btn-admin'},
