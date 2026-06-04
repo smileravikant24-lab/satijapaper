@@ -15,7 +15,6 @@ import {
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
-import { canAccessProc }                   from './ui/access.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -29,35 +28,29 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
+  // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
-  _setProductsCount();
   _startCardObserver();
   _initMobileSidebar();
 }
 
 
 function _forceLocalCounts() {
-  if (!state.curUser) return;
-  let totalAccessible = 0;
+  // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
+    if (tab.cat === 'All' || tab.cat === 'Products') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
     // Documents counts both 'Documents' and 'Family' (backward compat)
     const n = tab.cat === 'Documents'
-      ? DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length
-      : DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
-      
-    cnt.textContent = n > 0 ? n : '';
-    totalAccessible += n;
+      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
+      : DB.filter(d => d.cat === tab.cat).length;
+    if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) cntAll.textContent = totalAccessible;
+  if (cntAll) cntAll.textContent = DB.length;
 }
-
-// Enforce local accessible counts repeatedly to override any async fetch
-setInterval(_forceLocalCounts, 1000);
 
 showCheckingSession();
 onAuth(async fbUser => {
@@ -117,15 +110,13 @@ function _startCardObserver() {
 function _applyDAVisibility() {
   const grid = document.getElementById('cardBox');
   if (!grid) return;
-  const allDANames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
-  const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
-  const daNames = new Set(daItems.map(d => d.name));
+  const daNames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
 
   if (state.daMode === 'hidden') {
     grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = allDANames.has(card.dataset.name) ? 'none' : '';
+      card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
     });
-    if (!grid.querySelector('.da-folder-tile') && daItems.length > 0) _injectDoubleAFolderTile(grid);
+    if (!grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
 
   } else if (state.daMode === 'only') {
     grid.querySelector('.da-folder-tile')?.remove();
@@ -144,23 +135,19 @@ function _applyDAVisibility() {
 function _syncDoubleAFolder(activeCat) {
   const folder = document.getElementById('doubleAFolder');
   if (!folder) return;
-  const daItems = DB.filter(p => p.group === 'Double A' && canAccessProc(state.curUser, p));
-  folder.style.display = (daItems.length > 0 && (activeCat === 'Sales' || activeCat === 'All')) ? 'block' : 'none';
+  folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
-  if (badge) badge.textContent = daItems.length;
+  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
 
 function _injectDoubleAFolderTile(grid) {
   if (!grid) grid = document.getElementById('cardBox');
   if (!grid || grid.querySelector('.da-folder-tile')) return;
-  const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
+  const daItems = DB.filter(d => d.group === 'Double A');
   if (!daItems.length) return;
 
   const listItems = daItems.map(d =>
-    `<div class="da-folder-item" style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#5b21b6; background:rgba(255,255,255,0.7); border-radius:6px; padding:6px 10px; border:1px solid rgba(124,58,237,0.15); transition:all 0.2s; box-shadow:0 1px 2px rgba(0,0,0,0.02);">
-       <i class="fas fa-file-lines" style="color:#7c3aed; font-size:13px;"></i>
-       <span style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${d.name}</span>
-     </div>`
+    `<div class="da-folder-item"><i class="fas fa-file-lines"></i>${d.name}</div>`
   ).join('');
 
   const tile = document.createElement('div');
@@ -168,13 +155,13 @@ function _injectDoubleAFolderTile(grid) {
   tile.dataset.name = '__doubleA_folder__';
   tile.innerHTML = `
     <div class="da-folder-icon-row">
-      <span class="da-folder-icon" style="box-shadow: 0 4px 12px rgba(124,58,237,0.3);"><i class="fas fa-folder-star"></i></span>
-      <span class="da-folder-label" style="font-size:18px; letter-spacing:0.3px;">Double A</span>
-      <span class="da-folder-count" style="box-shadow: 0 2px 6px rgba(124,58,237,0.2);">${daItems.length}</span>
+      <span class="da-folder-icon"><i class="fas fa-folder-star"></i></span>
+      <span class="da-folder-label">Double A</span>
+      <span class="da-folder-count">${daItems.length}</span>
     </div>
-    <div class="da-folder-desc" style="opacity:0.85;">Premium Double A processes & forms</div>
+    <div class="da-folder-desc">Container Booking · Distributor Checklist · CME Payment</div>
     <div class="da-folder-items">${listItems}</div>
-    <div class="da-folder-footer" style="margin-top:12px; display:inline-flex; align-items:center; gap:6px; background:#7c3aed; color:#fff; padding:6px 12px; border-radius:20px; font-size:11.5px; font-weight:600; box-shadow:0 4px 10px rgba(124,58,237,0.25);"><i class="fas fa-arrow-right"></i> Open Double A</div>`;
+    <div class="da-folder-footer"><i class="fas fa-arrow-right"></i> Click to open Double A processes</div>`;
 
   tile.addEventListener('click', () => filterGroup('Double A', document.getElementById('navDoubleA')));
   grid.appendChild(tile);
@@ -200,11 +187,6 @@ function openAIQA() {
     'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
     '_blank', 'noopener,noreferrer'
   );
-}
-
-function _setProductsCount() {
-  const badge = document.getElementById('cntProducts');
-  if (badge) badge.textContent = PRODUCTS.length;
 }
 
 function showProducts(btn) {
