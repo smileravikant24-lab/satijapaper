@@ -20,6 +20,14 @@ export async function secureOpen(procName, linkType){
     return;
   }
 
+  if (linkType === 'videoAI'){
+    window.open(
+      'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing',
+      '_blank', 'noopener,noreferrer'
+    );
+    return;
+  }
+
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
   if (result.ok) window.open(result.url, '_blank', 'noopener');
@@ -42,14 +50,14 @@ function buildRoleCell(cls, icon, label, val){
   if (!val || val === '-'){
     return `<div class="role-cell">
               <div class="role-key">${label}</div>
-              <div class="role-val ${cls}" style="opacity:.3;font-style:italic"><span>—</span></div>
+              <div class="role-val" style="opacity:.35;font-style:italic;font-size:10.5px"><span>—</span></div>
             </div>`;
   }
   const safe = escapeHtml(val);
   return `<div class="role-cell">
             <div class="role-key">${label}</div>
             <div class="role-val ${cls}">
-              <span class="role-dot"></span><span title="${safe}">${safe}</span>
+              <i class="${icon}"></i><span title="${safe}">${safe}</span>
             </div>
           </div>`;
 }
@@ -113,6 +121,7 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
     btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
+    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
     btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
     btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
