@@ -87,3 +87,14 @@ export function showCheckingSession(){
   $('loginForm').style.display    = 'none';
   $('loadingState').style.display = '';
 }
+
+const _loginUser = $('loginUser');
+const _loginPass = $('loginPass');
+const _onEnter = (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    handleLogin();
+  }
+};
+if (_loginUser) _loginUser.addEventListener('keypress', _onEnter);
+if (_loginPass) _loginPass.addEventListener('keypress', _onEnter);
