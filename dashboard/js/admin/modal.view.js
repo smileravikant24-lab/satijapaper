@@ -5,25 +5,8 @@ import { saveUserProfile, deleteUserProfile } from '../services/users.service.js
 import { loadAndRenderUsers }                 from './admin.view.js';
 import {
   buildProcList,
-  selectAllProcs,
-  updateAccessModeNote
+  selectAllProcs
 } from './proc-builder.js';
-
-function resetDeptChecks(){
-  document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
-    p.classList.remove('checked');
-    p.querySelector('input').checked = false;
-  });
-}
-
-function applyDeptChecks(deptAccess){
-  document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
-    if (deptAccess.includes(p.dataset.val)){
-      p.classList.add('checked');
-      p.querySelector('input').checked = true;
-    }
-  });
-}
 
 
 export function onRoleChange(){
@@ -36,7 +19,6 @@ export function openModal(uid){
   $('mUser').value            = '';
   $('mRole').value            = 'Team Member';
   $('modalTitle').textContent = 'Add User Profile';
-  resetDeptChecks();
 
   if (uid){
     const u = state.cachedUsers.find(x => x.id === uid);
@@ -46,7 +28,6 @@ export function openModal(uid){
       $('mUser').value            = u.email;
       $('mRole').value            = u.role;
       $('modalTitle').textContent = 'Edit User Profile';
-      applyDeptChecks(u.deptAccess || []);
 
       const seed = {...(u.linkAccess || {}), __procs__: u.processAccess || []};
       buildProcList(seed);
@@ -78,9 +59,6 @@ export async function saveUser(){
   if (role === 'Admin'){
     deptAccess = ['All'];
   } else {
-    document.querySelectorAll('#deptChks .chk-pill.checked')
-      .forEach(p => deptAccess.push(p.dataset.val));
-
     document.querySelectorAll('#procListContainer .proc-master-cb:checked').forEach(cb => {
       const pName = cb.value;
       processAccess.push(pName);
@@ -124,29 +102,4 @@ export async function deleteUserAct(id, name){
   }
 }
 
-document.querySelectorAll('#deptChks .chk-pill').forEach(pill => {
-  pill.addEventListener('click', function(e){
-    e.preventDefault();
-    const cb     = this.querySelector('input');
-    const nv     = !cb.checked;
-    cb.checked   = nv;
-    this.classList.toggle('checked', nv);
-
-    if (this.dataset.val === 'All' && nv){
-      document.querySelectorAll('#deptChks .chk-pill').forEach(p => {
-        if (p.dataset.val !== 'All'){
-          p.classList.remove('checked');
-          p.querySelector('input').checked = false;
-        }
-      });
-    } else if (this.dataset.val !== 'All' && nv){
-      const all = document.querySelector('#deptChks .chk-pill[data-val="All"]');
-      if (all){
-        all.classList.remove('checked');
-        all.querySelector('input').checked = false;
-      }
-    }
-    updateAccessModeNote();
-  });
-});
 export { selectAllProcs };
