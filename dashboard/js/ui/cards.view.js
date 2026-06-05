@@ -98,7 +98,7 @@ export function renderCards(data){
     return;
   }
 
-  const accessible = data.filter(it => canAccessProc(state.curUser, it) && it.cat !== 'Products' && it.cat !== 'Bank Details');
+  const accessible = data.filter(it => canAccessProc(state.curUser, it));
   if (!accessible.length){
     box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
     return;
@@ -109,6 +109,11 @@ export function renderCards(data){
     const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
 
     let btns = '';
+    if (it.cat === 'Products') {
+      btns = `<button onclick="showProducts(document.getElementById('navProducts'))" class="btn btn-folder"><i class="fas fa-cubes"></i> Open Catalogue</button>`;
+    } else if (it.cat === 'Bank Details') {
+      btns = `<button onclick="showBankDetails(document.getElementById('navBankDetails'))" class="btn btn-folder"><i class="fas fa-landmark"></i> View Bank Details</button>`;
+    } else {
     btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
     btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
 
@@ -135,6 +140,7 @@ export function renderCards(data){
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
+    }
 
     if (!btns){
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
@@ -169,7 +175,6 @@ export function renderFiltered(){
   }
 
   const filtered = DB.filter(it => {
-    if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
     if (!canAccessProc(state.curUser, it)) return false;
     const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
