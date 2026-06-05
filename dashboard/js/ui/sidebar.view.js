@@ -13,7 +13,6 @@ export function updateCounts(){
   };
 
   DB.forEach(d => {
-    if (d.cat === 'Products' || d.cat === 'Bank Details') return;
     if (canAccessProc(state.curUser, d)){
       counts.All++;
       if (counts[d.cat] !== undefined) counts[d.cat]++;
@@ -42,11 +41,8 @@ export function updateCounts(){
     } else if (tab.cat === 'Documents' || tab.cat === 'Family'){
       visible = n > 0;
     } else if (tab.cat === 'Products') {
-      const procs = state.curUser?.processAccess || [];
-      visible = isAdmin || procs.includes('Products Catalogue');
-    } else if (tab.cat === 'Bank Details') {
-      const procs = state.curUser?.processAccess || [];
-      visible = isAdmin || procs.includes('Company Bank Details');
+      const depts = state.curUser?.deptAccess || [];
+      visible = isAdmin || depts.includes('All') || depts.includes(tab.cat);
     } else {
       visible = isAdmin || n > 0;
     }
@@ -77,3 +73,7 @@ export function runFilter(){
 }
 
 export function paintSidebarUser(user){
+  $('sAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+  $('sName').textContent   = user.name;
+  $('sRole').textContent   = user.role;
+}
