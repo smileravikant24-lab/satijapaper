@@ -40,7 +40,7 @@ function enterApp(user) {
 function _forceLocalCounts() {
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products') return;
+    if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
     // Documents counts both 'Documents' and 'Family' (backward compat)
