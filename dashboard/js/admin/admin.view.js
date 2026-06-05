@@ -1,179 +1,77 @@
-import { $, escapeHtml, showToast } from './dom.js';
-import { state }                    from '../state.js';
-import { DB }                       from '../data.js';
-import { canAccessProc, canAccessLink } from './access.js';
-import { resolveProcessUrl }        from '../services/process.service.js';
-
-export async function secureOpen(procName, linkType){
-  const item = DB.find(d => d.name === procName);
-  if (!item){                               showToast('Process not found.',  'err'); return; }
-  if (!canAccessProc(state.curUser, item)){ showToast('Access denied.',      'err'); return; }
-  if (!canAccessLink(state.curUser, procName, linkType)){
-    showToast('No access to this link.', 'err'); return;
-  }
-
-  if (linkType === 'aiqa'){
-    window.open(
-      'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
-  if (linkType === 'videoAI'){
-    window.open(
-      'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
-  showToast('Opening...', 'info');
-  const result = await resolveProcessUrl(procName, linkType);
-  if (result.ok) window.open(result.url, '_blank', 'noopener');
-  else           showToast(result.error, 'err');
+import { $, escapeHtml }  from '../ui/dom.js';
+import { state }          from '../state.js';
+import { setActive }      from '../ui/sidebar.view.js';
+import { listUsers }      from '../services/users.service.js';
+export async function showAdmin(el){
+  if (state.curUser?.role !== 'Admin') return;
+  setActive(el);
+  $('pageHeader').innerText      = 'User Management';
+  $('cardBox').style.display     = 'none';
+  $('adminPanel').classList.add('visible');
+  $('searchWrap').style.display  = 'none';
+  await loadAndRenderUsers();
 }
 
-function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
-  const isAdmin = state.curUser?.role === 'Admin';
-  if (!hasUrl)                                             return '';
-  if (adminOnly && !isAdmin)                               return '';
-  if (!canAccessLink(state.curUser, item.name, linkType))  return '';
-  const pn = item.name.replace(/'/g, "\\'");
-  return `<button onclick="secureOpen('${pn}','${linkType}')" class="btn ${cls}">
-            <i class="${icon}"></i>${label}
-          </button>`;
-}
-
-/** Build a role cell (PC / Solver / Executive). */
-function buildRoleCell(cls, icon, label, val){
-  if (!val || val === '-'){
-    return `<div class="role-cell">
-              <div class="role-key">${label}</div>
-              <div class="role-val" style="opacity:.35;font-style:italic;font-size:10.5px"><span>—</span></div>
-            </div>`;
+export async function loadAndRenderUsers(){
+  const tb = $('tblBody');
+  tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-3)">
+                    <i class="fas fa-circle-notch fa-spin"></i> Loading...
+                  </td></tr>`;
+  try {
+    state.cachedUsers = await listUsers();
+    renderTable();
+  } catch(e){
+    tb.innerHTML = `<tr><td colspan="5" style="color:var(--danger);padding:16px;text-align:center">
+                      Failed: ${escapeHtml(e.message)}
+                    </td></tr>`;
   }
-  const safe = escapeHtml(val);
-  return `<div class="role-cell">
-            <div class="role-key">${label}</div>
-            <div class="role-val ${cls}">
-              <i class="${icon}"></i><span title="${safe}">${safe}</span>
-            </div>
-          </div>`;
 }
 
-/** Render a list of processes into #cardBox. */
-export function renderCards(data){
-  const box = $('cardBox');
-  box.innerHTML = '';
 
-  // ── Documents: show as folder tiles with direct Drive links ──
-  // Use DB directly — bypass Firestore cat check (seed may not have run)
-  if (state.curCat === 'Documents') {
-    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
-    if (!docItems.length) {
-      box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
-      return;
-    }
-    const DRIVE_URLS = {
-      'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-      'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-      'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
-    };
-    box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
-      const url = DRIVE_URLS[it.name] || '#';
-      const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
-      const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-      return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
-        '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
-          '<i class="fas ' + icon + '"></i>' +
-        '</div>' +
-        '<div class="doc-folder-name">' + it.name + '</div>' +
-        '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
-        '<div class="doc-folder-btn" style="background:' + color + '">' +
-          '<i class="fas fa-folder-open"></i> Open Drive' +
-        '</div>' +
-      '</div>';
-    }).join('') + '</div>';
+function renderTable(){
+  const tb = $('tblBody');
+  tb.innerHTML = '';
+
+  if (!state.cachedUsers.length){
+    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-3)">
+                      No users found.
+                    </td></tr>`;
     return;
   }
 
-  const accessible = data.filter(it => canAccessProc(state.curUser, it) && it.cat !== 'Products' && it.cat !== 'Bank Details');
-  if (!accessible.length){
-    box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
-    return;
-  }
-
-  const isAdmin = state.curUser?.role === 'Admin';
-  const html    = accessible.map((it, i) => {
-    const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
-
-    let btns = '';
-    btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
-
-    if (it.name === 'Help Ticket'){
-      btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
+  const html = state.cachedUsers.map(u => {
+    let procHtml = '';
+    if (u.role === 'Admin'){
+      procHtml = '<span style="font-size:10px;color:var(--text-3)">Full access</span>';
+    } else if (u.processAccess && u.processAccess.length){
+      procHtml = u.processAccess.map(p => {
+        const la = u.linkAccess && u.linkAccess[p];
+        const li = la && la.length
+          ? ` <span style="font-size:9px;color:#0369a1;font-weight:600">[${la.join(',')}]</span>`
+          : '';
+        return `<span class="proc-badge">${escapeHtml(p)}${li}</span>`;
+      }).join('');
     } else {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
+      procHtml = '<span style="font-size:10px;color:var(--text-3)">All in dept</span>';
     }
 
-    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
-    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
-    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
-    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
-    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
-    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
-    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
-    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline');
-
-    // ── AI Q&A button ─────────────────────────────────────────
-    btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
-    // ────────────────────────────────────────────────────────
-
-    if (!btns){
-      btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
-    }
-
-    // ── data-name added for MutationObserver DA-hiding ───────
-    return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
-      <div class="card-inner">
-        <span class="card-tag tag-${cc}">${escapeHtml(it.cat)}</span>
-        <div class="card-title">${escapeHtml(it.name)}</div>
-        <div class="roles-grid">
-          ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
-          ${buildRoleCell('rv-sv','fas fa-wrench',       'Solver',    it.solver)}
-          ${buildRoleCell('rv-ex','fas fa-user-tie',     'Executive', it.exec)}
-        </div>
-        <div class="card-divider"></div>
-        <div class="actions">${btns}</div>
-      </div>
-    </div>`;
+    const isSelf  = u.id === state.curUser.id;
+    const roleCls = u.role.toLowerCase().replace(' ', '.');
+    return `<tr>
+      <td><strong>${escapeHtml(u.email || '—')}</strong></td>
+      <td>${escapeHtml(u.name || '—')}</td>
+      <td><span class="role-pill ${roleCls}">${escapeHtml(u.role)}</span></td>
+      <td style="max-width:220px">${procHtml}</td>
+      <td style="white-space:nowrap">
+        <button class="tbl-act edit" onclick="editUser('${u.id}')"><i class="fas fa-pen"></i></button>
+        ${!isSelf
+          ? `<button class="tbl-act delete" onclick="deleteUserAct('${u.id}','${escapeHtml(u.name || u.email)}')">
+               <i class="fas fa-trash-can"></i>
+             </button>`
+          : ''}
+      </td>
+    </tr>`;
   }).join('');
 
-  box.innerHTML = html;
-}
-
-export function renderFiltered(){
-  const raw    = $('searchInput').value.toLowerCase();
-  const terms  = raw.split(/\s+/).filter(Boolean);
-  // Documents — bypass canAccessProc, use DB directly
-  if (state.curCat === 'Documents') {
-    renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
-    return;
-  }
-
-  const filtered = DB.filter(it => {
-    if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
-    if (!canAccessProc(state.curUser, it)) return false;
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
-    const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
-    return matchesCat && terms.every(t => haystack.includes(t));
-  });
-  renderCards(filtered);
+  tb.innerHTML = html;
 }
