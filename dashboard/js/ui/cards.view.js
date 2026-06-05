@@ -1,184 +1,79 @@
-import { $, escapeHtml, showToast } from './dom.js';
-import { state }                    from '../state.js';
-import { DB }                       from '../data.js';
-import { canAccessProc, canAccessLink } from './access.js';
-import { resolveProcessUrl }        from '../services/process.service.js';
+import { $ }              from './dom.js';
+import { state }          from '../state.js';
+import { DB, NAV_TABS, PRODUCTS }   from '../data.js';
+import { canAccessProc }  from './access.js';
+import { renderFiltered } from './cards.view.js';
 
-export async function secureOpen(procName, linkType){
-  const item = DB.find(d => d.name === procName);
-  if (!item){                               showToast('Process not found.',  'err'); return; }
-  if (!canAccessProc(state.curUser, item)){ showToast('Access denied.',      'err'); return; }
-  if (!canAccessLink(state.curUser, procName, linkType)){
-    showToast('No access to this link.', 'err'); return;
-  }
-
-  if (linkType === 'aiqa'){
-    window.open(
-      'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
-  if (linkType === 'videoAI'){
-    window.open(
-      'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
-  showToast('Opening...', 'info');
-  const result = await resolveProcessUrl(procName, linkType);
-  if (result.ok) window.open(result.url, '_blank', 'noopener');
-  else           showToast(result.error, 'err');
-}
-
-function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
+export function updateCounts(){
   const isAdmin = state.curUser?.role === 'Admin';
-  if (!hasUrl)                                             return '';
-  if (adminOnly && !isAdmin)                               return '';
-  if (!canAccessLink(state.curUser, item.name, linkType))  return '';
-  const pn = item.name.replace(/'/g, "\\'");
-  return `<button onclick="secureOpen('${pn}','${linkType}')" class="btn ${cls}">
-            <i class="${icon}"></i>${label}
-          </button>`;
-}
 
-/** Build a role cell (PC / Solver / Executive). */
-function buildRoleCell(cls, icon, label, val){
-  if (!val || val === '-'){
-    return `<div class="role-cell">
-              <div class="role-key">${label}</div>
-              <div class="role-val" style="opacity:.35;font-style:italic;font-size:10.5px"><span>—</span></div>
-            </div>`;
-  }
-  const safe = escapeHtml(val);
-  return `<div class="role-cell">
-            <div class="role-key">${label}</div>
-            <div class="role-val ${cls}">
-              <i class="${icon}"></i><span title="${safe}">${safe}</span>
-            </div>
-          </div>`;
-}
+  const counts = {
+    All:0, Sales:0, Dispatch:0, Purchase:0, Management:0,
+    HR:0, Finance:0, Support:0, 'My System':0, Documents:0, Family:0
+  };
 
-/** Render a list of processes into #cardBox. */
-export function renderCards(data){
-  const box = $('cardBox');
-  box.innerHTML = '';
-
-  // ── Documents: show as folder tiles with direct Drive links ──
-  // Use DB directly — bypass Firestore cat check (seed may not have run)
-  if (state.curCat === 'Documents') {
-    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
-    if (!docItems.length) {
-      box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
-      return;
+  DB.forEach(d => {
+    if (d.cat === 'Products' || d.cat === 'Bank Details') return;
+    if (canAccessProc(state.curUser, d)){
+      counts.All++;
+      if (counts[d.cat] !== undefined) counts[d.cat]++;
     }
-    const DRIVE_URLS = {
-      'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-      'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-      'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
-    };
-    box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
-      const url = DRIVE_URLS[it.name] || '#';
-      const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
-      const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-      return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
-        '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
-          '<i class="fas ' + icon + '"></i>' +
-        '</div>' +
-        '<div class="doc-folder-name">' + it.name + '</div>' +
-        '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
-        '<div class="doc-folder-btn" style="background:' + color + '">' +
-          '<i class="fas fa-folder-open"></i> Open Drive' +
-        '</div>' +
-      '</div>';
-    }).join('') + '</div>';
-    return;
-  }
-
-  const accessible = data.filter(it => canAccessProc(state.curUser, it));
-  if (!accessible.length){
-    box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
-    return;
-  }
-
-  const isAdmin = state.curUser?.role === 'Admin';
-  const html    = accessible.map((it, i) => {
-    const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
-
-    let btns = '';
-    if (it.cat === 'Products') {
-      btns = `<button onclick="showProducts(document.getElementById('navProducts'))" class="btn btn-folder"><i class="fas fa-cubes"></i> Open Catalogue</button>`;
-    } else if (it.cat === 'Bank Details') {
-      btns = `<button onclick="showBankDetails(document.getElementById('navBankDetails'))" class="btn btn-folder"><i class="fas fa-landmark"></i> View Bank Details</button>`;
-    } else {
-    btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
-
-    if (it.name === 'Help Ticket'){
-      btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
-    } else {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
-    }
-
-    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
-    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
-    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
-    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
-    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
-    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
-    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
-    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline');
-
-    // ── AI Q&A button ─────────────────────────────────────────
-    btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
-    // ────────────────────────────────────────────────────────
-    }
-
-    if (!btns){
-      btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
-    }
-
-    // ── data-name added for MutationObserver DA-hiding ───────
-    return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
-      <div class="card-inner">
-        <span class="card-tag tag-${cc}">${escapeHtml(it.cat)}</span>
-        <div class="card-title">${escapeHtml(it.name)}</div>
-        <div class="roles-grid">
-          ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
-          ${buildRoleCell('rv-sv','fas fa-wrench',       'Solver',    it.solver)}
-          ${buildRoleCell('rv-ex','fas fa-user-tie',     'Executive', it.exec)}
-        </div>
-        <div class="card-divider"></div>
-        <div class="actions">${btns}</div>
-      </div>
-    </div>`;
-  }).join('');
-
-  box.innerHTML = html;
-}
-
-export function renderFiltered(){
-  const raw    = $('searchInput').value.toLowerCase();
-  const terms  = raw.split(/\s+/).filter(Boolean);
-  // Documents — bypass canAccessProc, use DB directly
-  if (state.curCat === 'Documents') {
-    renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
-    return;
-  }
-
-  const filtered = DB.filter(it => {
-    if (!canAccessProc(state.curUser, it)) return false;
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
-    const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
-    return matchesCat && terms.every(t => haystack.includes(t));
   });
-  renderCards(filtered);
+
+  NAV_TABS.forEach(tab => {
+    const btn = $(tab.nav);
+    if (!btn) return;
+
+    let n = counts[tab.cat] ?? 0;
+    if (tab.cat === 'Documents') {
+      n += counts['Family'] ?? 0;
+    } else if (tab.cat === 'Products') {
+      n = PRODUCTS.length;
+    }
+
+    const cnt = $(tab.cnt);
+    if (cnt) cnt.textContent = n;
+
+    let visible;
+    if (tab.cat === 'All'){
+      const activeDepts = ['Sales','Dispatch','Purchase','Management','HR','Finance','Support','My System']
+        .filter(c => (counts[c] ?? 0) > 0);
+      visible = isAdmin || activeDepts.length >= 2;
+    } else if (tab.cat === 'Documents' || tab.cat === 'Family'){
+      visible = n > 0;
+    } else if (tab.cat === 'Products') {
+      const procs = state.curUser?.processAccess || [];
+      visible = isAdmin || procs.includes('Products Catalogue');
+    } else if (tab.cat === 'Bank Details') {
+      const procs = state.curUser?.processAccess || [];
+      visible = isAdmin || procs.includes('Company Bank Details');
+    } else {
+      visible = isAdmin || n > 0;
+    }
+    btn.style.display = visible ? '' : 'none';
+  });
+
+  $('adminNavLabel').style.display = isAdmin ? '' : 'none';
+  $('adminNavBtn').style.display   = isAdmin ? '' : 'none';
 }
+
+export function setActive(el){
+  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+export function filterCat(cat, el){
+  state.curCat = cat;
+  setActive(el);
+  $('pageHeader').innerText      = cat === 'All' ? 'All Processes' : cat;
+  $('cardBox').style.display     = '';
+  $('adminPanel').classList.remove('visible');
+  $('searchWrap').style.display  = '';
+  renderFiltered();
+}
+
+export function runFilter(){
+  renderFiltered();
+}
+
+export function paintSidebarUser(user){
