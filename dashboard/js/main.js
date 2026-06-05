@@ -28,9 +28,29 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
+  // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
+  _forceLocalCounts();
   _syncDoubleAFolder('All');
+  _setProductsCount();
   _startCardObserver();
   _initMobileSidebar();
+}
+
+
+function _forceLocalCounts() {
+  // DB and NAV_TABS are imported at top of this file — use them directly
+  NAV_TABS.forEach(tab => {
+    if (tab.cat === 'All' || tab.cat === 'Products') return;
+    const cnt = document.getElementById(tab.cnt);
+    if (!cnt) return;
+    // Documents counts both 'Documents' and 'Family' (backward compat)
+    const n = tab.cat === 'Documents'
+      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
+      : DB.filter(d => d.cat === tab.cat).length;
+    if (n > 0) cnt.textContent = n;
+  });
+  const cntAll = document.getElementById('cntAll');
+  if (cntAll) cntAll.textContent = DB.length;
 }
 
 showCheckingSession();
@@ -170,7 +190,16 @@ function openAIQA() {
   );
 }
 
+function _setProductsCount() {
+  const badge = document.getElementById('cntProducts');
+  if (badge) badge.textContent = PRODUCTS.length;
+}
+
 function showProducts(btn) {
+  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Products'))) {
+    showToast('Access Denied.', 'err');
+    return;
+  }
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
@@ -474,6 +503,10 @@ function _lazyLoadImages(container) {
 
 
 function showBankDetails(btn) {
+  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Bank Details'))) {
+    showToast('Access Denied.', 'err');
+    return;
+  }
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   state.curCat   = 'BankDetails';
