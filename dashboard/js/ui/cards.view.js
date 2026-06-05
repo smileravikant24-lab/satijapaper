@@ -98,7 +98,7 @@ export function renderCards(data){
     return;
   }
 
-  const accessible = data.filter(it => canAccessProc(state.curUser, it));
+  const accessible = data.filter(it => canAccessProc(state.curUser, it) && it.cat !== 'Products' && it.cat !== 'Bank Details');
   if (!accessible.length){
     box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
     return;
@@ -169,6 +169,7 @@ export function renderFiltered(){
   }
 
   const filtered = DB.filter(it => {
+    if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
     if (!canAccessProc(state.curUser, it)) return false;
     const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
