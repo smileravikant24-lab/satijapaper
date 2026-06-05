@@ -5,21 +5,30 @@ import { showToast }                      from './dom.js';
 // ---- Status messages -----------------------------------------------------
 
 function showError(msg){
-  $('loginErrorMsg').textContent = msg;
-  $('loginError').classList.add('show');
-  $('loginSuccess').classList.remove('show');
+  if ($('loginErrorMsg')) {
+    $('loginErrorMsg').textContent = msg;
+  } else if ($('loginError')) {
+    $('loginError').textContent = msg;
+  }
+  $('loginError')?.classList.add('show');
+  $('loginSuccess')?.classList.remove('show');
 }
 function showSuccess(msg){
-  $('loginSuccessMsg').textContent = msg;
-  $('loginSuccess').classList.add('show');
-  $('loginError').classList.remove('show');
+  if ($('loginSuccessMsg')) {
+    $('loginSuccessMsg').textContent = msg;
+  } else if ($('loginSuccess')) {
+    $('loginSuccess').textContent = msg;
+  }
+  $('loginSuccess')?.classList.add('show');
+  $('loginError')?.classList.remove('show');
 }
 function clearMessages(){
-  $('loginError').classList.remove('show');
-  $('loginSuccess').classList.remove('show');
+  $('loginError')?.classList.remove('show');
+  $('loginSuccess')?.classList.remove('show');
 }
 function setLoading(on){
   const b = $('loginBtn');
+  if (!b) return;
   b.disabled = on;
   b.innerHTML = on
     ? '<i class="fas fa-circle-notch fa-spin"></i> Signing in...'
@@ -31,8 +40,12 @@ function setLoading(on){
 export async function handleLogin(e){
   if (e && e.preventDefault) e.preventDefault();
   clearMessages();
-  const email = $('loginUser').value.trim();
-  const pass  = $('loginPass').value;
+  
+  const userField = $('loginUser') || $('loginEmail');
+  const passField = $('loginPass');
+  const email = userField ? userField.value.trim() : '';
+  const pass  = passField ? passField.value : '';
+  
   if (!email || !pass){ showError('Enter email and password.'); return; }
   setLoading(true);
   try {
@@ -45,7 +58,8 @@ export async function handleLogin(e){
 
 export async function forgotPass(e){
   if (e && e.preventDefault) e.preventDefault();
-  const email = $('loginUser').value.trim();
+  const userField = $('loginUser') || $('loginEmail');
+  const email = userField ? userField.value.trim() : '';
   if (!email){ showError('Enter your email first.'); return; }
   try {
     await resetPassword(email);
@@ -63,6 +77,7 @@ export async function handleLogout(){
 export function togglePwd(){
   const input = $('loginPass');
   const eye   = $('pwdEye');
+  if (!input || !eye) return;
   if (input.type === 'password'){
     input.type = 'text';
     eye.className = 'fas fa-eye-slash';
@@ -74,23 +89,26 @@ export function togglePwd(){
 
 /** Reset the login overlay to its initial empty state. */
 export function showLoginScreen(){
-  $('appContainer').classList.remove('visible');
-  $('loginOverlay').classList.remove('hidden');
-  $('loginForm').style.display    = '';
-  $('loadingState').style.display = 'none';
-  $('loginUser').value = '';
-  $('loginPass').value = '';
+  $('appContainer')?.classList.remove('visible');
+  $('loginOverlay')?.classList.remove('hidden');
+  if ($('loginForm')) $('loginForm').style.display = '';
+  if ($('loadingState')) $('loadingState').style.display = 'none';
+  
+  const userField = $('loginUser') || $('loginEmail');
+  if (userField) userField.value = '';
+  if ($('loginPass')) $('loginPass').value = '';
+  
   setLoading(false);
   clearMessages();
 }
 
 /** Switch from form view to spinner ("checking session"). */
 export function showCheckingSession(){
-  $('loginForm').style.display    = 'none';
-  $('loadingState').style.display = '';
+  if ($('loginForm')) $('loginForm').style.display = 'none';
+  if ($('loadingState')) $('loadingState').style.display = '';
 }
 
-const _loginUser = $('loginUser');
+const _loginUser = $('loginUser') || $('loginEmail');
 const _loginPass = $('loginPass');
 const _onEnter = (e) => {
   if (e.key === 'Enter') {
