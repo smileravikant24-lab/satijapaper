@@ -6,7 +6,7 @@
 <title>Satija Paper System Master</title>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/login.css">
@@ -224,9 +224,7 @@
         </div>
         <div class="info-box">
           <i class="fas fa-info-circle"></i>
-          <strong>Access Rules:</strong> Add user → Create in Firebase Auth with same email. &nbsp;|&nbsp;
-          <strong>Products</strong>: needs <em>Products</em> dept access. &nbsp;|&nbsp;
-          <strong>Bank Details</strong>: needs <em>Finance</em> or <em>All Depts</em> access.
+          <strong>New user workflow:</strong> Add user here → Create user in Firebase Auth with same email.
         </div>
         <div class="tbl-wrap">
           <table class="tbl">
@@ -281,9 +279,6 @@
             <label class="chk-pill" data-val="Sales">
               <input type="checkbox" value="Sales"> Sales
             </label>
-            <label class="chk-pill" data-val="Dispatch">
-              <input type="checkbox" value="Dispatch"> Dispatch
-            </label>
             <label class="chk-pill" data-val="Purchase">
               <input type="checkbox" value="Purchase"> Purchase
             </label>
@@ -301,6 +296,9 @@
             </label>
             <label class="chk-pill" data-val="Products">
               <input type="checkbox" value="Products"> Products
+            </label>
+            <label class="chk-pill" data-val="Bank Details">
+              <input type="checkbox" value="Bank Details"> Bank Details
             </label>
           </div>
         </div>
