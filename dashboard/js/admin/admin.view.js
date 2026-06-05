@@ -14,14 +14,14 @@ export async function showAdmin(el){
 
 export async function loadAndRenderUsers(){
   const tb = $('tblBody');
-  tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-3)">
+  tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-3)">
                     <i class="fas fa-circle-notch fa-spin"></i> Loading...
                   </td></tr>`;
   try {
     state.cachedUsers = await listUsers();
     renderTable();
   } catch(e){
-    tb.innerHTML = `<tr><td colspan="5" style="color:var(--danger);padding:16px;text-align:center">
+    tb.innerHTML = `<tr><td colspan="6" style="color:var(--danger);padding:16px;text-align:center">
                       Failed: ${escapeHtml(e.message)}
                     </td></tr>`;
   }
@@ -33,13 +33,17 @@ function renderTable(){
   tb.innerHTML = '';
 
   if (!state.cachedUsers.length){
-    tb.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--text-3)">
+    tb.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-3)">
                       No users found.
                     </td></tr>`;
     return;
   }
 
   const html = state.cachedUsers.map(u => {
+    const deptPills = (u.deptAccess || [])
+      .map(d => `<span class="ap ap-${d}">${d === 'Management' ? 'MIS' : d}</span>`)
+      .join('');
+
     let procHtml = '';
     if (u.role === 'Admin'){
       procHtml = '<span style="font-size:10px;color:var(--text-3)">Full access</span>';
@@ -61,6 +65,7 @@ function renderTable(){
       <td><strong>${escapeHtml(u.email || '—')}</strong></td>
       <td>${escapeHtml(u.name || '—')}</td>
       <td><span class="role-pill ${roleCls}">${escapeHtml(u.role)}</span></td>
+      <td><div class="access-pills">${deptPills || '<span style="font-size:10px;color:var(--text-3)">None</span>'}</div></td>
       <td style="max-width:220px">${procHtml}</td>
       <td style="white-space:nowrap">
         <button class="tbl-act edit" onclick="editUser('${u.id}')"><i class="fas fa-pen"></i></button>
