@@ -41,7 +41,8 @@ export function updateCounts(){
     } else if (tab.cat === 'Documents' || tab.cat === 'Family'){
       visible = n > 0;
     } else if (tab.cat === 'Products') {
-      visible = true; // Always visible to all users
+      const depts = state.curUser?.deptAccess || [];
+      visible = isAdmin || depts.includes('All') || depts.includes(tab.cat);
     } else {
       visible = isAdmin || n > 0;
     }
