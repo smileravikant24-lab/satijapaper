@@ -70,11 +70,7 @@ export const DB = [
   // -------- FAMILY --------
   {cat:"Documents",name:"Satija Family Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
   {cat:"Documents",name:"Satija Paper Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-
-  // -------- SYSTEM TABS (For User Management) --------
-  {cat:"Products",name:"Products Catalogue",pc:"-",solver:"-",exec:"-",links:{}},
-  {cat:"Bank Details",name:"Company Bank Details",pc:"-",solver:"-",exec:"-",links:{}}
+  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}}
 ];
 
 
@@ -508,3 +504,7 @@ export const PRODUCTS = [
         brightness: '93% ISO', sheets: 500,
         bestFor: 'Digital printing, premium office paper',
         img: _IMG['ANDHRA_100'], fallbackImg: 'https://satijapaper.com/andhra.jpg'
+      }
+    ]
+  }
+];
