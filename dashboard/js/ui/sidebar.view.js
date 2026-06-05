@@ -77,3 +77,7 @@ export function runFilter(){
 }
 
 export function paintSidebarUser(user){
+  $('sAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+  $('sName').textContent   = user.name;
+  $('sRole').textContent   = user.role;
+}
