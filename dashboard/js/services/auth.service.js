@@ -50,10 +50,6 @@ export async function fetchOrCreateProfile(fbUser){
     deptAccess:    isAdmin ? ['All'] : [],
     processAccess: []
   };
-  try {
-    await setDoc(ref, profile);
-  } catch (err) {
-    console.warn('Non-fatal: could not create profile in Firestore. Check security rules.', err);
-  }
+  await setDoc(ref, profile);
   return profile;
 }
