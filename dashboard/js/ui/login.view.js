@@ -28,7 +28,8 @@ function setLoading(on){
 
 // ---- Public actions ------------------------------------------------------
 
-export async function handleLogin(){
+export async function handleLogin(e){
+  if (e && e.preventDefault) e.preventDefault();
   clearMessages();
   const email = $('loginUser').value.trim();
   const pass  = $('loginPass').value;
@@ -42,7 +43,8 @@ export async function handleLogin(){
   }
 }
 
-export async function forgotPass(){
+export async function forgotPass(e){
+  if (e && e.preventDefault) e.preventDefault();
   const email = $('loginUser').value.trim();
   if (!email){ showError('Enter your email first.'); return; }
   try {
@@ -98,3 +100,11 @@ const _onEnter = (e) => {
 };
 if (_loginUser) _loginUser.addEventListener('keypress', _onEnter);
 if (_loginPass) _loginPass.addEventListener('keypress', _onEnter);
+
+const _loginForm = $('loginForm');
+if (_loginForm) {
+  _loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    handleLogin();
+  });
+}
