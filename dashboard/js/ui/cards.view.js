@@ -109,17 +109,17 @@ export function renderCards(data){
     const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
 
     let btns = '';
-    btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
+    btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    'fas fa-table-cells',      'FMS');
+    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   'fab fa-google-drive',     'Form');
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
     } else {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
+      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
     }
 
-    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
+    btns += buildButton(it, !!it.links.check,      'check',      'btn-check',  'fas fa-square-check',     'Checklist');
+    btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fas fa-circle-play',      'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
     btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
     btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
