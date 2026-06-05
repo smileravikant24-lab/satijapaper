@@ -14,6 +14,7 @@ import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
+import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
 const _origFilterCat = filterCat;
@@ -45,12 +46,12 @@ function _forceLocalCounts() {
     if (!cnt) return;
     // Documents counts both 'Documents' and 'Family' (backward compat)
     const n = tab.cat === 'Documents'
-      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
-      : DB.filter(d => d.cat === tab.cat).length;
+      ? DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length
+      : DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
     if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) cntAll.textContent = DB.length;
+  if (cntAll) cntAll.textContent = DB.filter(d => canAccessProc(state.curUser, d)).length;
 }
 
 showCheckingSession();
@@ -138,13 +139,13 @@ function _syncDoubleAFolder(activeCat) {
   if (!folder) return;
   folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
-  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
+  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A' && canAccessProc(state.curUser, p)).length;
 }
 
 function _injectDoubleAFolderTile(grid) {
   if (!grid) grid = document.getElementById('cardBox');
   if (!grid || grid.querySelector('.da-folder-tile')) return;
-  const daItems = DB.filter(d => d.group === 'Double A');
+  const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
   if (!daItems.length) return;
 
   const listItems = daItems.map(d =>
