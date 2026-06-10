@@ -15,6 +15,7 @@ export const DB = [
   {cat:"Sales",name:"Stock Dashboard",pc:"Ms. Preksha",solver:"Ravi",exec:"All Sales",links:{stockDash:1,aiqa:1}},
   {cat:"Sales",name:"Mr. Mukesh Debtors List",pc:"Ms. Preksha",solver:"Ravi",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
   {cat:"Sales",name:"Mr. Pranav Satija Debtors List",pc:"Ms. Preksha",solver:"Ravi",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Party Name",pc:"Ms. Preksha",solver:"Ravi",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
 
   // -------- SALES → DOUBLE A FOLDER --------
   {cat:"Sales",group:"Double A",name:"Double A Advance Container Booking Form",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{form:1,sheet:1,aiqa:1}},
