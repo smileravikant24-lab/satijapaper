@@ -51,7 +51,7 @@ function renderTable(){
       procHtml = u.processAccess.map(p => {
         const la = u.linkAccess && u.linkAccess[p];
         const li = la && la.length
-          ? ` <span style="font-size:9px;color:var(--text-2);font-weight:600">[${la.join(',')}]</span>`
+          ? ` <span style="font-size:9px;color:#0369a1;font-weight:600">[${la.join(',')}]</span>`
           : '';
         return `<span class="proc-badge">${escapeHtml(p)}${li}</span>`;
       }).join('');
