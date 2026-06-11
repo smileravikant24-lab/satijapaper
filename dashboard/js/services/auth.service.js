@@ -48,7 +48,8 @@ export async function fetchOrCreateProfile(fbUser){
     name:          fbUser.email.split('@')[0],
     role:          isAdmin ? 'Admin' : 'Team Member',
     deptAccess:    isAdmin ? ['All'] : [],
-    processAccess: []
+    processAccess: [],
+    linkAccess:    {}
   };
   await setDoc(ref, profile);
   return profile;
