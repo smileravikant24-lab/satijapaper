@@ -20,14 +20,6 @@ export async function secureOpen(procName, linkType){
     return;
   }
 
-  if (linkType === 'videoAI'){
-    window.open(
-      'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
   if (result.ok) window.open(result.url, '_blank', 'noopener');
@@ -98,7 +90,7 @@ export function renderCards(data){
     return;
   }
 
-  const accessible = data.filter(it => canAccessProc(state.curUser, it) && it.cat !== 'Products' && it.cat !== 'Bank Details');
+  const accessible = data.filter(it => canAccessProc(state.curUser, it));
   if (!accessible.length){
     box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
     return;
@@ -109,19 +101,18 @@ export function renderCards(data){
     const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
 
     let btns = '';
-    btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   'fab fa-google-drive',     'Form');
+    btns += buildButton(it, !!it.links.fms,       'fms',       'btn-fms',    'fas fa-table-cells',      'FMS');
+    btns += buildButton(it, !!it.links.form,       'form',      'btn-form',   'fab fa-google-drive',     'Form');
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
     } else {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
+      btns += buildButton(it, !!it.links.sheet,    'sheet',     'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
     }
 
-    btns += buildButton(it, !!it.links.check,      'check',      'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fas fa-circle-play',      'Training');
+    btns += buildButton(it, !!it.links.check,      'check',     'btn-check',  'fas fa-square-check',     'Checklist');
+    btns += buildButton(it, !!it.links.video,      'video',     'btn-video',  'fas fa-circle-play',      'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
-    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
     btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
     btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
@@ -137,7 +128,7 @@ export function renderCards(data){
     // ────────────────────────────────────────────────────────
 
     if (!btns){
-      btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
+      btns = '<div style="grid-column:span 2;text-align:center;color:var(--text-3);font-size:11px;padding:6px">No links configured</div>';
     }
 
     // ── data-name added for MutationObserver DA-hiding ───────
@@ -169,7 +160,6 @@ export function renderFiltered(){
   }
 
   const filtered = DB.filter(it => {
-    if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
     if (!canAccessProc(state.curUser, it)) return false;
     const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
