@@ -132,6 +132,14 @@
   color:var(--text-2);
 }
 .link-pill.link-checked{ border-color:currentColor }
-.link-pill.btn-fms.link-checked  { background:#1e40af; color:#fff !important }
-.link-pill.btn-form.link-checked { background:#4c1d95; color:#fff !important }
-.link-pill.btn-sheet.link-checked{ background:#065f46; color:#fff !important }
+.link-pill.btn-fms.link-checked   { background:#1e40af; color:#fff !important }
+.link-pill.btn-form.link-checked  { background:#4c1d95; color:#fff !important }
+.link-pill.btn-sheet.link-checked { background:#065f46; color:#fff !important }
+.link-pill.btn-dash.link-checked  { background:#075985; color:#fff !important }
+.link-pill.btn-video.link-checked { background:#991b1b; color:#fff !important }
+.link-pill.btn-check.link-checked { background:#854d0e; color:#fff !important }
+.link-pill.btn-admin.link-checked { background:#713f12; color:#fff !important }
+.link-pill.btn-gp.link-checked    { background:#4c1d95; color:#fff !important }
+.link-pill.btn-folder.link-checked{ background:#9d174d; color:#fff !important }
+.link-pill.btn-stock.link-checked { background:#134e4a; color:#fff !important }
+.link-pill.btn-aiqa.link-checked  { background:#0c7d5c; color:#fff !important }
