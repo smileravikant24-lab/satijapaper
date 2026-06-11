@@ -14,7 +14,6 @@ import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
-import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 
 const _origFilterCat = filterCat;
@@ -29,6 +28,21 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
+
+  // ── Products & Bank Details access enforcement ──
+  const isAdmin = user.role === 'Admin';
+  const hasProd = isAdmin || (user.deptAccess && (user.deptAccess.includes('Products') || user.deptAccess.includes('All')));
+  const hasBank = isAdmin || (user.deptAccess && (user.deptAccess.includes('BankDetails') || user.deptAccess.includes('All')));
+
+  const _navProd = document.getElementById('navProducts');
+  if (_navProd) {
+    const pBtn = _navProd.closest('button') || _navProd.parentElement;
+    if (pBtn) pBtn.style.display = hasProd ? '' : 'none';
+  }
+
+  const _navBank = document.querySelector('button[onclick*="showBankDetails"]');
+  if (_navBank) _navBank.style.display = hasBank ? '' : 'none';
+
   // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
   _syncDoubleAFolder('All');
@@ -41,17 +55,17 @@ function enterApp(user) {
 function _forceLocalCounts() {
   // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
-    if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
+    if (tab.cat === 'All' || tab.cat === 'Products') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
     // Documents counts both 'Documents' and 'Family' (backward compat)
     const n = tab.cat === 'Documents'
-      ? DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length
-      : DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
+      ? DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length
+      : DB.filter(d => d.cat === tab.cat).length;
     if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) cntAll.textContent = DB.filter(d => canAccessProc(state.curUser, d)).length;
+  if (cntAll) cntAll.textContent = DB.length;
 }
 
 showCheckingSession();
@@ -139,13 +153,13 @@ function _syncDoubleAFolder(activeCat) {
   if (!folder) return;
   folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
   const badge = document.getElementById('cntDoubleA');
-  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A' && canAccessProc(state.curUser, p)).length;
+  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A').length;
 }
 
 function _injectDoubleAFolderTile(grid) {
   if (!grid) grid = document.getElementById('cardBox');
   if (!grid || grid.querySelector('.da-folder-tile')) return;
-  const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
+  const daItems = DB.filter(d => d.group === 'Double A');
   if (!daItems.length) return;
 
   const listItems = daItems.map(d =>
@@ -197,10 +211,13 @@ function _setProductsCount() {
 }
 
 function showProducts(btn) {
-  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Products'))) {
-    showToast('Access Denied.', 'err');
+  const isAdmin = state.curUser?.role === 'Admin';
+  const hasAccess = isAdmin || (state.curUser?.deptAccess && (state.curUser.deptAccess.includes('Products') || state.curUser.deptAccess.includes('All')));
+  if (!hasAccess) {
+    showToast('Access denied.', 'err');
     return;
   }
+
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
@@ -504,10 +521,13 @@ function _lazyLoadImages(container) {
 
 
 function showBankDetails(btn) {
-  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Bank Details'))) {
-    showToast('Access Denied.', 'err');
+  const isAdmin = state.curUser?.role === 'Admin';
+  const hasAccess = isAdmin || (state.curUser?.deptAccess && (state.curUser.deptAccess.includes('BankDetails') || state.curUser.deptAccess.includes('All')));
+  if (!hasAccess) {
+    showToast('Access denied.', 'err');
     return;
   }
+
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   state.curCat   = 'BankDetails';
