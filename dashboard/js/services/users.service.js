@@ -12,7 +12,7 @@ export async function listUsers(){
 }
 
 export function saveUserProfile(docId, profile){
-  return setDoc(doc(db, 'users', docId), profile, {merge: true});
+  return setDoc(doc(db, 'users', docId), profile);
 }
 
 export function deleteUserProfile(docId){
