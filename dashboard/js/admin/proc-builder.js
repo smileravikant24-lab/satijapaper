@@ -52,7 +52,7 @@ function buildProcRow(item, existingLinkAccess){
     const existingLinks = existingLinkAccess[item.name] || [];
     availLinks.forEach(lk => {
       const meta = LINK_META[lk];
-      const pill = document.createElement('label');
+      const pill = document.createElement('div');
       pill.className = `link-pill ${meta.cls}`;
       const cb = document.createElement('input');
       cb.type           = 'checkbox';
@@ -65,8 +65,7 @@ function buildProcRow(item, existingLinkAccess){
       }
       pill.innerHTML = `<i class="${meta.icon}"></i> ${meta.label}`;
       pill.prepend(cb);
-      pill.addEventListener('click', e => {
-        e.preventDefault();
+      pill.addEventListener('click', () => {
         cb.checked = !cb.checked;
         pill.classList.toggle('link-checked', cb.checked);
       });
@@ -77,7 +76,7 @@ function buildProcRow(item, existingLinkAccess){
     procCb.addEventListener('change', () => {
       linkRow.style.display = procCb.checked ? 'flex' : 'none';
       if (procCb.checked){
-        linkRow.querySelectorAll('label.link-pill').forEach(p => {
+        linkRow.querySelectorAll('.link-pill').forEach(p => {
           p.querySelector('input').checked = true;
           p.classList.add('link-checked');
         });
@@ -96,7 +95,7 @@ export function selectAllProcs(value){
     if (lr){
       lr.style.display = value ? 'flex' : 'none';
       if (value){
-        lr.querySelectorAll('label.link-pill').forEach(p => {
+        lr.querySelectorAll('.link-pill').forEach(p => {
           p.querySelector('input').checked = true;
           p.classList.add('link-checked');
         });

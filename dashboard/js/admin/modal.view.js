@@ -12,6 +12,15 @@ export function onRoleChange(){
   $('accessSection').style.display = $('mRole').value === 'Admin' ? 'none' : '';
 }
 
+function _setDeptPills(deptAccess = []){
+  document.querySelectorAll('#deptChkGroup .chk-pill').forEach(pill => {
+    const cb = pill.querySelector('input');
+    const on = deptAccess.includes(cb.value);
+    cb.checked = on;
+    pill.classList.toggle('checked', on);
+  });
+}
+
 export function openModal(uid){
   $('editUserId').value       = '';
   $('mName').value            = '';
@@ -28,12 +37,15 @@ export function openModal(uid){
       $('mRole').value            = u.role;
       $('modalTitle').textContent = 'Edit User Profile';
 
+      _setDeptPills(u.deptAccess || []);
       const seed = {...(u.linkAccess || {}), __procs__: u.processAccess || []};
       buildProcList(seed);
     } else {
+      _setDeptPills();
       buildProcList();
     }
   } else {
+    _setDeptPills();
     buildProcList();
   }
 
@@ -51,10 +63,14 @@ export async function saveUser(){
 
   if (!name || !email){ showToast('Fill in name and email.', 'err'); return; }
 
+  const deptAccess  = [];
   let processAccess = [];
   let linkAccess    = {};
 
   if (role !== 'Admin') {
+    document.querySelectorAll('#deptChkGroup .chk-pill input:checked').forEach(cb => {
+      deptAccess.push(cb.value);
+    });
     document.querySelectorAll('#procListContainer .proc-master-cb:checked').forEach(cb => {
       const pName = cb.value;
       processAccess.push(pName);
@@ -75,7 +91,7 @@ export async function saveUser(){
   saveBtn.disabled  = true;
   try {
     const docId = id || emailToId(email);
-    await saveUserProfile(docId, {name, email, role, processAccess, linkAccess});
+    await saveUserProfile(docId, {name, email, role, deptAccess, processAccess, linkAccess});
     closeModal();
     await loadAndRenderUsers();
     showToast('User saved', 'ok');
