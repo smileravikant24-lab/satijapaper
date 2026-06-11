@@ -60,7 +60,7 @@ function renderTable(){
     }
 
     const isSelf  = u.id === state.curUser.id;
-    const roleCls = u.role.toLowerCase().replace(' ', '.');
+    const roleCls = u.role.toLowerCase().replace(/\s+/g, '.');
     return `<tr>
       <td><strong>${escapeHtml(u.email || '—')}</strong></td>
       <td>${escapeHtml(u.name || '—')}</td>

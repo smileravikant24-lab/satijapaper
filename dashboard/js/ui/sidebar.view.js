@@ -8,14 +8,16 @@ export function updateCounts(){
   const isAdmin = state.curUser?.role === 'Admin';
 
   const counts = {
-    All:0, Sales:0, Purchase:0, Management:0,
-    HR:0, Finance:0, Support:0, 'My System':0, Family:0
+    All:0, Sales:0, Dispatch:0, Purchase:0, Management:0,
+    HR:0, Finance:0, Support:0, 'My System':0, Documents:0, Family:0
   };
 
   DB.forEach(d => {
     if (canAccessProc(state.curUser, d)){
       counts.All++;
-      if (counts[d.cat] !== undefined) counts[d.cat]++;
+      // Map legacy 'Family' entries to 'Documents' for backward compatibility
+      const key = d.cat === 'Family' ? 'Documents' : d.cat;
+      if (counts[key] !== undefined) counts[key]++;
     }
   });
 
@@ -36,11 +38,16 @@ export function updateCounts(){
                 cnt.style.display = 'none';
             }
         }
+    } else if (tab.cat === 'Documents') {
+        // Documents are shown to all logged-in users regardless of dept access
+        const docCount = DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length;
+        if (cnt && docCount) cnt.textContent = docCount;
+        visible = docCount > 0;
     } else {
         const n = counts[tab.cat] ?? 0;
         if (cnt) cnt.textContent = n;
         if (tab.cat === 'All'){
-            const activeDepts = ['Sales','Purchase','Management','HR','Finance','Support','My System'].filter(c => (counts[c] ?? 0) > 0);
+            const activeDepts = ['Sales','Dispatch','Purchase','Management','HR','Finance','Support','My System'].filter(c => (counts[c] ?? 0) > 0);
             visible = isAdmin || activeDepts.length >= 2;
         } else {
             visible = isAdmin || n > 0;
