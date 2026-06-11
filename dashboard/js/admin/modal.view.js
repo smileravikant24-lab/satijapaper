@@ -12,15 +12,6 @@ export function onRoleChange(){
   $('accessSection').style.display = $('mRole').value === 'Admin' ? 'none' : '';
 }
 
-function _setDeptPills(deptAccess = []){
-  document.querySelectorAll('#deptChkGroup .chk-pill').forEach(pill => {
-    const cb = pill.querySelector('input');
-    const on = deptAccess.includes(cb.value);
-    cb.checked = on;
-    pill.classList.toggle('checked', on);
-  });
-}
-
 export function openModal(uid){
   $('editUserId').value       = '';
   $('mName').value            = '';
@@ -37,15 +28,12 @@ export function openModal(uid){
       $('mRole').value            = u.role;
       $('modalTitle').textContent = 'Edit User Profile';
 
-      _setDeptPills(u.deptAccess || []);
       const seed = {...(u.linkAccess || {}), __procs__: u.processAccess || []};
-      buildProcList(seed);
+      buildProcList(seed, u.deptAccess || []);
     } else {
-      _setDeptPills();
       buildProcList();
     }
   } else {
-    _setDeptPills();
     buildProcList();
   }
 
@@ -55,6 +43,7 @@ export function openModal(uid){
 
 export const editUser   = id => openModal(id);
 export const closeModal = () => $('userModal').classList.remove('show');
+
 export async function saveUser(){
   const id    = $('editUserId').value;
   const name  = $('mName').value.trim();
@@ -68,10 +57,10 @@ export async function saveUser(){
   let linkAccess    = {};
 
   if (role !== 'Admin') {
-    document.querySelectorAll('#deptChkGroup .chk-pill input:checked').forEach(cb => {
+    document.querySelectorAll('#procListContainer .dept-access-cb:checked').forEach(cb => {
       deptAccess.push(cb.value);
     });
-    document.querySelectorAll('#procListContainer .proc-master-cb:checked').forEach(cb => {
+    document.querySelectorAll('#procListContainer .proc-master-cb:not(.dept-access-cb):checked').forEach(cb => {
       const pName = cb.value;
       processAccess.push(pName);
       const lr = cb.closest('.proc-row').querySelector('.proc-link-row');
@@ -79,7 +68,6 @@ export async function saveUser(){
         const checked = [];
         lr.querySelectorAll('input[data-link]:checked').forEach(lcb => checked.push(lcb.dataset.link));
         const total = lr.querySelectorAll('input[data-link]').length;
-        // Only store subset if user deselected at least one link
         if (checked.length > 0 && checked.length < total) linkAccess[pName] = checked;
       }
     });

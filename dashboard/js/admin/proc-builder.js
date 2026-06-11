@@ -3,14 +3,48 @@ import { DB, LINK_META }      from '../data.js';
 
 const getAvailableLinks = item =>
 Object.keys(LINK_META).filter(k => !!item.links[k]);
+
 export function updateAccessModeNote(){
-  const any = document.querySelectorAll('#procListContainer .proc-master-cb:checked').length > 0;
+  const any = document.querySelectorAll('#procListContainer .proc-master-cb:not(.dept-access-cb):checked').length > 0;
   $('accessModeNote').style.display = any ? '' : 'none';
 }
 
-export function buildProcList(existingLinkAccess = {}){
+const SPECIAL_ACCESS = [
+  { name: 'Products Catalogue', dept: 'Products'     },
+  { name: 'Bank Details',       dept: 'Bank Details' }
+];
+
+export function buildProcList(existingLinkAccess = {}, deptAccess = []){
   const container = $('procListContainer');
   container.innerHTML = '';
+
+  // Special access section (Products, Bank Details)
+  const specialGroup = document.createElement('div');
+  specialGroup.className = 'proc-group';
+  specialGroup.innerHTML = `<div class="proc-group-label"
+       style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;">
+    Special Access
+  </div>`;
+  SPECIAL_ACCESS.forEach(si => {
+    const row    = document.createElement('div');
+    row.className = 'proc-row';
+    const header = document.createElement('div');
+    header.className = 'proc-row-header';
+    const cb = document.createElement('input');
+    cb.type      = 'checkbox';
+    cb.className = 'proc-master-cb dept-access-cb';
+    cb.value     = si.dept;
+    cb.dataset.dept = si.dept;
+    if (deptAccess.includes(si.dept)) cb.checked = true;
+    header.innerHTML = `<span class="proc-name">${si.name}</span>`;
+    header.prepend(cb);
+    row.appendChild(header);
+    cb.addEventListener('change', updateAccessModeNote);
+    specialGroup.appendChild(row);
+  });
+  container.appendChild(specialGroup);
+
+  // Regular process groups
   const cats = [...new Set(DB.map(d => d.cat))];
   cats.forEach(cat => {
     const items   = DB.filter(d => d.cat === cat);
@@ -88,8 +122,9 @@ function buildProcRow(item, existingLinkAccess){
   }
   return procRow;
 }
+
 export function selectAllProcs(value){
-  document.querySelectorAll('#procListContainer .proc-master-cb').forEach(cb => {
+  document.querySelectorAll('#procListContainer .proc-master-cb:not(.dept-access-cb)').forEach(cb => {
     cb.checked = value;
     const lr = cb.closest('.proc-row').querySelector('.proc-link-row');
     if (lr){
