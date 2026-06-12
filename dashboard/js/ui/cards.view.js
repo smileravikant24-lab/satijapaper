@@ -81,9 +81,9 @@ export function renderCards(data){
       'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
     };
     const LINK_STYLES = {
-      sheet:  {icon:'fa-file-spreadsheet', color:'#065f46', sub:'Click to open Sheet',     btnIcon:'fa-file-spreadsheet', btnLabel:'Open Sheet'},
-      fms:    {icon:'fa-table-cells',       color:'#1e40af', sub:'Click to open FMS',       btnIcon:'fa-table-cells',       btnLabel:'Open FMS'},
-      form:   {icon:'fa-clipboard-list',    color:'#4338ca', sub:'Click to open Form',      btnIcon:'fa-clipboard-list',    btnLabel:'Open Form'},
+      sheet:  {icon:'fa-table-cells-large', color:'#065f46', sub:'Click to open Sheet', btnIcon:'fa-table-cells-large', btnLabel:'Open Sheet'},
+      fms:    {icon:'fa-table-cells',       color:'#1e40af', sub:'Click to open FMS',   btnIcon:'fa-table-cells',       btnLabel:'Open FMS'},
+      form:   {icon:'fa-clipboard-list',    color:'#4338ca', sub:'Click to open Form',  btnIcon:'fa-clipboard-list',    btnLabel:'Open Form'},
     };
     box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
       const pn = it.name.replace(/'/g, "\\'");

@@ -476,6 +476,8 @@ img.prod-lazy {
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   padding: 8px 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 .doc-folder-card {
   background: var(--bg-card, #fff);
