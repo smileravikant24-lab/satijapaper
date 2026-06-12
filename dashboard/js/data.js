@@ -70,10 +70,10 @@ export const DB = [
   {cat:"Finance",name:"Account Checklist",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Ms. Khushi",links:{sheet:1}},
 
   // -------- FAMILY --------
-  {cat:"Documents",name:"Satija Family Documents",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-  {cat:"Documents",name:"Satija Paper Documents",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
-  {cat:"Documents",name:"Policy Details",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{sheet:1}},
+  {cat:"Documents",name:"Satija Family Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+  {cat:"Documents",name:"Satija Paper Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+  {cat:"Documents",name:"SP Team Members Documents",pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+  {cat:"Documents",name:"Policy Details",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{sheet:1}}
 ];
 
 

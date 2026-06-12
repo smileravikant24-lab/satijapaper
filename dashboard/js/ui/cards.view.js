@@ -80,18 +80,38 @@ export function renderCards(data){
       'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
       'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
     };
+    const LINK_STYLES = {
+      sheet:  {icon:'fa-file-spreadsheet', color:'#065f46', sub:'Click to open Sheet',     btnIcon:'fa-file-spreadsheet', btnLabel:'Open Sheet'},
+      fms:    {icon:'fa-table-cells',       color:'#1e40af', sub:'Click to open FMS',       btnIcon:'fa-table-cells',       btnLabel:'Open FMS'},
+      form:   {icon:'fa-clipboard-list',    color:'#4338ca', sub:'Click to open Form',      btnIcon:'fa-clipboard-list',    btnLabel:'Open Form'},
+    };
     box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
-      const url = DRIVE_URLS[it.name] || '#';
-      const icon = it.name.includes('Team') ? 'fa-users' : 'fa-building';
-      const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-      return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
-        '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
-          '<i class="fas ' + icon + '"></i>' +
+      const pn = it.name.replace(/'/g, "\\'");
+      if (it.links.folder){
+        const url   = DRIVE_URLS[it.name] || '#';
+        const icon  = it.name.includes('Team') ? 'fa-users' : 'fa-building';
+        const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
+        return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
+          '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
+            '<i class="fas ' + icon + '"></i>' +
+          '</div>' +
+          '<div class="doc-folder-name">' + it.name + '</div>' +
+          '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
+          '<div class="doc-folder-btn" style="background:' + color + '">' +
+            '<i class="fas fa-folder-open"></i> Open Drive' +
+          '</div>' +
+        '</div>';
+      }
+      const lk   = Object.keys(it.links)[0];
+      const st   = LINK_STYLES[lk] || {icon:'fa-file',color:'#374151',sub:'Click to open',btnIcon:'fa-arrow-up-right-from-square',btnLabel:'Open'};
+      return '<div class="doc-folder-card" onclick="secureOpen(\'' + pn + '\',\'' + lk + '\')">' +
+        '<div class="doc-folder-icon" style="background:' + st.color + '20;color:' + st.color + '">' +
+          '<i class="fas ' + st.icon + '"></i>' +
         '</div>' +
         '<div class="doc-folder-name">' + it.name + '</div>' +
-        '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
-        '<div class="doc-folder-btn" style="background:' + color + '">' +
-          '<i class="fas fa-folder-open"></i> Open Drive' +
+        '<div class="doc-folder-sub">' + st.sub + '</div>' +
+        '<div class="doc-folder-btn" style="background:' + st.color + '">' +
+          '<i class="fas ' + st.btnIcon + '"></i> ' + st.btnLabel +
         '</div>' +
       '</div>';
     }).join('') + '</div>';
