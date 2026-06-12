@@ -11,7 +11,8 @@ export function updateAccessModeNote(){
 
 const SPECIAL_ACCESS = [
   { name: 'Products Catalogue', dept: 'Products'     },
-  { name: 'Bank Details',       dept: 'Bank Details' }
+  { name: 'Bank Details',       dept: 'Bank Details' },
+  { name: 'Documents',          dept: 'Documents'    }
 ];
 
 export function buildProcList(existingLinkAccess = {}, deptAccess = []){

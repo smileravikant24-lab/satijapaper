@@ -74,7 +74,7 @@ export function renderCards(data){
       'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
       'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
     };
-    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
+    const docItems = DB.filter(it => (it.cat === 'Documents' || it.cat === 'Family') && canAccessProc(state.curUser, it));
     if (!docItems.length){
       box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
       return;
@@ -174,7 +174,6 @@ export function renderCards(data){
 export function renderFiltered(){
   const raw    = $('searchInput').value.toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
-  // Documents — bypass canAccessProc, use DB directly
   if (state.curCat === 'Documents') {
     renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
     return;

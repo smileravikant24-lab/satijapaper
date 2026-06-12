@@ -39,10 +39,9 @@ export function updateCounts(){
             }
         }
     } else if (tab.cat === 'Documents') {
-        // Documents are shown to all logged-in users regardless of dept access
-        const docCount = DB.filter(d => d.cat === 'Documents' || d.cat === 'Family').length;
-        if (cnt && docCount) cnt.textContent = docCount;
-        visible = docCount > 0;
+        const n = counts['Documents'] ?? 0;
+        if (cnt) cnt.textContent = n;
+        visible = isAdmin || n > 0;
     } else {
         const n = counts[tab.cat] ?? 0;
         if (cnt) cnt.textContent = n;
