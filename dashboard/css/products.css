@@ -473,8 +473,8 @@ img.prod-lazy {
 /* ── Documents Folder Tiles ─────────────────────────────── */
 .doc-folder-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
   padding: 8px 0;
   width: 100%;
   box-sizing: border-box;
