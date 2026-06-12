@@ -67,54 +67,46 @@ export function renderCards(data){
   const box = $('cardBox');
   box.innerHTML = '';
 
-  // ── Documents: show as folder tiles with direct Drive links ──
-  // Use DB directly — bypass Firestore cat check (seed may not have run)
+  // ── Documents: render as normal process cards ──
   if (state.curCat === 'Documents') {
-    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
-    if (!docItems.length) {
-      box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
-      return;
-    }
     const DRIVE_URLS = {
       'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
       'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
       'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
     };
-    const LINK_STYLES = {
-      sheet:  {icon:'fa-table-cells-large', color:'#065f46', sub:'Click to open Sheet', btnIcon:'fa-table-cells-large', btnLabel:'Open Sheet'},
-      fms:    {icon:'fa-table-cells',       color:'#1e40af', sub:'Click to open FMS',   btnIcon:'fa-table-cells',       btnLabel:'Open FMS'},
-      form:   {icon:'fa-clipboard-list',    color:'#4338ca', sub:'Click to open Form',  btnIcon:'fa-clipboard-list',    btnLabel:'Open Form'},
-    };
-    box.innerHTML = '<div class="doc-folder-grid">' + docItems.map(it => {
-      const pn = it.name.replace(/'/g, "\\'");
+    const docItems = DB.filter(it => it.cat === 'Documents' || it.cat === 'Family');
+    if (!docItems.length){
+      box.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>No documents found.</p></div>';
+      return;
+    }
+    const html = docItems.map((it, i) => {
+      let btns = '';
       if (it.links.folder){
-        const url   = DRIVE_URLS[it.name] || '#';
-        const icon  = it.name.includes('Team') ? 'fa-users' : 'fa-building';
-        const color = it.name.includes('Team') ? '#6366f1' : '#0d4a2b';
-        return '<div class="doc-folder-card" onclick="window.open(\'' + url + '\',\'_blank\',\'noopener\')">' +
-          '<div class="doc-folder-icon" style="background:' + color + '20;color:' + color + '">' +
-            '<i class="fas ' + icon + '"></i>' +
-          '</div>' +
-          '<div class="doc-folder-name">' + it.name + '</div>' +
-          '<div class="doc-folder-sub">Click to open in Google Drive</div>' +
-          '<div class="doc-folder-btn" style="background:' + color + '">' +
-            '<i class="fas fa-folder-open"></i> Open Drive' +
-          '</div>' +
-        '</div>';
+        const url = DRIVE_URLS[it.name] || '#';
+        btns = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-folder">
+                  <i class="fas fa-folder-open"></i> View Folder
+                </a>`;
+      } else {
+        btns += buildButton(it, !!it.links.sheet,  'sheet',  'btn-sheet',  'fas fa-table-cells-large', 'Sheet');
+        btns += buildButton(it, !!it.links.fms,    'fms',    'btn-fms',    'fas fa-table-cells',       'FMS');
+        btns += buildButton(it, !!it.links.form,   'form',   'btn-form',   'fab fa-google-drive',      'Form');
+        btns += buildButton(it, !!it.links.folder, 'folder', 'btn-folder', 'fas fa-folder-open',       'View Folder');
       }
-      const lk   = Object.keys(it.links)[0];
-      const st   = LINK_STYLES[lk] || {icon:'fa-file',color:'#374151',sub:'Click to open',btnIcon:'fa-arrow-up-right-from-square',btnLabel:'Open'};
-      return '<div class="doc-folder-card" onclick="secureOpen(\'' + pn + '\',\'' + lk + '\')">' +
-        '<div class="doc-folder-icon" style="background:' + st.color + '20;color:' + st.color + '">' +
-          '<i class="fas ' + st.icon + '"></i>' +
-        '</div>' +
-        '<div class="doc-folder-name">' + it.name + '</div>' +
-        '<div class="doc-folder-sub">' + st.sub + '</div>' +
-        '<div class="doc-folder-btn" style="background:' + st.color + '">' +
-          '<i class="fas ' + st.btnIcon + '"></i> ' + st.btnLabel +
-        '</div>' +
-      '</div>';
-    }).join('') + '</div>';
+      return `<div class="card cat-Family" style="animation-delay:${i*.028}s">
+        <div class="card-inner">
+          <span class="card-tag tag-Family">Documents</span>
+          <div class="card-title">${escapeHtml(it.name)}</div>
+          <div class="roles-grid">
+            ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
+            ${buildRoleCell('rv-sv','fas fa-wrench',       'Solver',    it.solver)}
+            ${buildRoleCell('rv-ex','fas fa-user-tie',     'Executive', it.exec)}
+          </div>
+          <div class="card-divider"></div>
+          <div class="actions">${btns}</div>
+        </div>
+      </div>`;
+    }).join('');
+    box.innerHTML = html;
     return;
   }
 
