@@ -26,6 +26,7 @@ export const DB = [
   {cat:"Sales",group:"Double A",name:"Double A CME Folder",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",group:"Double A",name:"Double A Retail Customer",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
   {cat:"Sales",group:"Double A",name:"Double A Corporate Customer",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
+  {cat:"Sales",group:"Double A",name:"Double A Display Links",pc:"Ms. Preksha",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   // -------- PURCHASE --------
   {cat:"Purchase",name:"Purchase FMS",pc:"Ms. Preksha",solver:"Neha / Pranav",exec:"Khushi",links:{fms:1,form:1,video:1,videoBCI:1}},
   {cat:"Purchase",name:"IMS (Inventory System)",pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:1,sheet:1,video:1}},
