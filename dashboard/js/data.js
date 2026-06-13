@@ -24,7 +24,7 @@ export const DB = [
   {cat:"Sales",group:"Double A",name:"Double A CME Payment FMS FY 2026-27",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Mukesh/Ms. Richa",links:{fms:1,form:1,aiqa:1}},
   {cat:"Sales",group:"Double A",name:"Double A Dealer",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
   {cat:"Sales",group:"Double A",name:"Double A CME Folder",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
-  {cat:"Sales",group:"Double A",name:"Double A Retail Customer",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
+  {cat:"Sales",group:"Double A",name:"Double A Retail Customer",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1,guidelineForm:1}},
   {cat:"Sales",group:"Double A",name:"Double A Corporate Customer",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Rishabh",links:{sheet:1}},
   {cat:"Sales",group:"Double A",name:"Double A Display Links",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   // -------- PURCHASE --------
