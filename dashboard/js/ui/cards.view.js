@@ -149,7 +149,7 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Guideline');
+    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', 'Marketing Guideline');
 
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
