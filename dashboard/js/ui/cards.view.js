@@ -107,8 +107,6 @@ export function renderCards(data){
         <div class="doc-list-body">
           <div class="doc-list-name">${escapeHtml(it.name)}</div>
           <div class="doc-list-meta">
-            <span><i class="fas fa-shield-halved"></i> ${escapeHtml(it.pc || '—')}</span>
-            <span><i class="fas fa-wrench"></i> ${escapeHtml(it.solver || '—')}</span>
             <span class="doc-list-type">${st.label}</span>
           </div>
         </div>
