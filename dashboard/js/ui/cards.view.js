@@ -40,8 +40,11 @@ function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false
   if (adminOnly && !isAdmin)                               return '';
   if (!canAccessLink(state.curUser, item.name, linkType))  return '';
   const pn = item.name.replace(/'/g, "\\'");
+  const iconHtml = icon.startsWith('http')
+    ? `<img src="${icon}" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;flex-shrink:0">`
+    : `<i class="${icon}"></i>`;
   return `<button onclick="secureOpen('${pn}','${linkType}')" class="btn ${cls}">
-            <i class="${icon}"></i>${label}
+            ${iconHtml}${label}
           </button>`;
 }
 
@@ -146,7 +149,7 @@ export function renderCards(data){
     if (it.name === 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-table-cells-large','PC Sheet');
     }
-    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    'fas fa-bolt',             'Form');
+    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    'https://www.gstatic.com/images/branding/product/1x/apps_script_48dp.png', 'Form');
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
