@@ -221,6 +221,8 @@ function _buildProductsHTML() {
   return `<div class="products-wrap">${PRODUCTS.map(_buildBrandCard).join('')}</div>`;
 }
 
+const _jsq = s => String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
 function _buildBrandCard(brand) {
   const certs    = brand.cert.map(c => `<span class="prod-cert">${c}</span>`).join('');
   const variants = brand.variants.map(v => _buildVariant(v, brand)).join('');
@@ -238,7 +240,7 @@ function _buildBrandCard(brand) {
         <div class="prod-cert-row">${certs}</div>
       </div>
       <div class="prod-share-wrap">
-        <button class="prod-share-btn" onclick="shareProductImage('prod-${brand.id}','${brand.name}')">
+        <button class="prod-share-btn" onclick="shareProductImage('prod-${brand.id}','${_jsq(brand.name)}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
@@ -273,7 +275,7 @@ function _buildVariant(v, brand) {
   const varId = `prod-var-${brand.id}-${v.gsm}`;
   return `
   <div class="prod-variant-card" id="${varId}">
-    <div class="prod-variant-img-wrap prod-variant-img-clickable" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}" onclick="openShareModal('${v.name}','${brand.shareMsg || v.name}')" title="Click to share">
+    <div class="prod-variant-img-wrap prod-variant-img-clickable" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}" onclick="openShareModal('${_jsq(v.name)}','${_jsq(brand.shareMsg || v.name)}')" title="Click to share">
       ${v.colorOnly
         ? `<div class="prod-colour-swatch" style="background:${v.color}">
              <span class="prod-colour-name-big">${v.colorName}</span>
@@ -294,7 +296,7 @@ function _buildVariant(v, brand) {
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <div class="prod-variant-actions">
-        <button class="prod-variant-share" onclick="shareProductImage('${varId}','${v.name}')">
+        <button class="prod-variant-share" onclick="shareProductImage('${varId}','${_jsq(v.name)}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
