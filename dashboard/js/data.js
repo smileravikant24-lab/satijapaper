@@ -47,7 +47,7 @@ export const DB = [
   {cat:"Management",name:"FMS OF FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:1,form:1}},
   {cat:"Management",name:"Home Loan FMS",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,form:1}},
   {cat:"Management",name:"eMail & Password Sheet",pc:"MDO",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1}},
-  {cat:"Management",name:"SCT-FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{form:1,sheet:1}},
+  {cat:"Management",name:"SCT-FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{form:1,fms:1}},
   {cat:"Management",name:"Repair & Maintenance System",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1,form:1}},
 
   // -------- SUPPORT --------
@@ -60,15 +60,14 @@ export const DB = [
   {cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{form:1,sheet:1}},
   {cat:"HR",name:"Attendances Sheet",pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{form:1,sheet:1,admin:1}},
   {cat:"HR",name:"Sales Meeting Attendances Sheet",pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{form:1,sheet:1}},
-  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{sheet:1,form:1}},
+  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{fms:1,form:1}},
 
   // -------- FINANCE --------
   {cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
-  {cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{sheet:1,form:1}},
+  {cat:"Finance",name:"Cheque Payment",pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{fms:1,form:1}},
   {cat:"Finance",name:"Company Payment",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Sandeep/Ms. Neha",links:{fms:1,form:1}},
   {cat:"Finance",name:"GP Sheet",pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Khushi",links:{sheet:1,gpDash:1}},
   {cat:"Finance",name:"Sales Marketing Daily Expense",pc:"Ms. Richa",solver:"Ms. Neha",exec:"Sale's Team",links:{form:1,sheet:1}},
-
   {cat:"Finance",name:"Account Checklist",pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Ms. Khushi",links:{sheet:1}},
 
   // -------- FAMILY --------
