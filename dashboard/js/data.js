@@ -34,6 +34,8 @@ export const DB = [
   {cat:"Purchase",name:"Godown Stock Report",pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{form:1,sheet:1}},
   {cat:"Purchase",name:"Godown Inward Report",pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{sheet:1}},
   {cat:"Purchase",name:"Stock Transfer FMS",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{fms:1,form:1}},
+  {cat:"Purchase",name:"Shop Stock Report",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{form:1,sheet:1}},
+
 
   // -------- MANAGEMENT --------
   {cat:"Management",name:"Ultimate Checklist",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{check:1,video:1,dashEmp:1,dashPC:1}},
