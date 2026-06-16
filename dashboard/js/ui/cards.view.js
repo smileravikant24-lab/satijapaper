@@ -182,7 +182,7 @@ export function renderCards(data){
 }
 
 export function renderFiltered(){
-  const raw    = $('searchInput').value.toLowerCase();
+  const raw    = ($('searchInput')?.value || '').toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
   if (state.curCat === 'Documents') {
     renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
