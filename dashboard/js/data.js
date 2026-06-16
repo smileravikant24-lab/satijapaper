@@ -95,6 +95,7 @@ export const LINK_META = {
   terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},
   drive:       {label:'Drive',            icon:'fab fa-google-drive',     cls:'btn-form'},
   guidelineForm:{label:'Guideline Form',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
+  gasForm:   {label:'GAS Form',        icon:'fas fa-bolt',             cls:'btn-gas'},
   aiqa:      {label:'AI Q&A',         icon:'fas fa-robot',            cls:'btn-aiqa',
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'}
 };
