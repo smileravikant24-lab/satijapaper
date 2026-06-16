@@ -134,15 +134,16 @@ export function renderCards(data){
   }
 
   const CAT_ICON = {
-    Sales:      'fas fa-handshake',
-    Dispatch:   'fas fa-truck-fast',
-    Purchase:   'fas fa-cart-shopping',
-    Management: 'fas fa-briefcase',
-    HR:         'fas fa-users',
-    Finance:    'fas fa-indian-rupee-sign',
-    Support:    'fas fa-headset',
-    My:         'fas fa-gear',
-    Family:     'fas fa-folder-open',
+    Sales:        'fas fa-handshake',
+    Dispatch:     'fas fa-truck-fast',
+    Purchase:     'fas fa-cart-shopping',
+    Management:   'fas fa-briefcase',
+    HR:           'fas fa-users',
+    Finance:      'fas fa-indian-rupee-sign',
+    Support:      'fas fa-headset',
+    My:           'fas fa-gear',
+    Family:       'fas fa-folder-open',
+    'Bank Details':'fas fa-building-columns',
   };
 
   const isAdmin = state.curUser?.role === 'Admin';
