@@ -146,7 +146,7 @@ export function renderCards(data){
     if (it.name === 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-table-cells-large','PC Sheet');
     }
-    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    'fas fa-bolt',             'GAS Form');
+    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    'fas fa-bolt',             'Form');
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
