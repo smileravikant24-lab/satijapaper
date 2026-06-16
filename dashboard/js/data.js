@@ -43,7 +43,7 @@ export const DB = [
   {cat:"Management",name:"To Do (MIS)",pc:"Ms. Neha",solver:"Khushi / Pranav",exec:"Neha / Khushi",links:{form:1,sheet:1}},
   {cat:"Management",name:"To Do (EA)",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Neha / Pranav",links:{form:1,sheet:1}},
   {cat:"Management",name:"MIS Score",pc:"Ms. Neha",solver:"Ms. Khushi",exec:"Ms. Neha/Ms. Khushi",links:{sheet:1}},
-  {cat:"Management",name:"Dashboard of All FMS",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team Members",links:{sheet:1,dashEmp:1,dashPC:1}},
+  {cat:"Management",name:"Dashboard of All FMS",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team Members",links:{dashPC:1,dashEmp:1,sheet:1}},
   {cat:"Management",name:"FMS OF FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:1,form:1}},
   {cat:"Management",name:"Home Loan FMS",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,form:1}},
   {cat:"Management",name:"eMail & Password Sheet",pc:"MDO",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1}},
