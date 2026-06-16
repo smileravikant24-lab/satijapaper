@@ -133,17 +133,75 @@ export function renderCards(data){
     return;
   }
 
-  const CAT_ICON = {
-    Sales:        'fas fa-handshake',
-    Dispatch:     'fas fa-truck-fast',
-    Purchase:     'fas fa-cart-shopping',
-    Management:   'fas fa-briefcase',
-    HR:           'fas fa-users',
-    Finance:      'fas fa-indian-rupee-sign',
-    Support:      'fas fa-headset',
-    My:           'fas fa-gear',
-    Family:       'fas fa-folder-open',
-    'Bank Details':'fas fa-building-columns',
+  const PROC_ICON = {
+    // ── Dispatch ──────────────────────────────────────────────
+    'Order to Delivery FMS':              'fas fa-route',
+    'O2D Direct Dispatch FMS':            'fas fa-box-open',
+    'Sale Report':                        'fas fa-chart-bar',
+    // ── Sales ─────────────────────────────────────────────────
+    'Ruchira 100 Best Customer':          'fas fa-trophy',
+    'Follow Up Calls':                    'fas fa-phone-volume',
+    'Next Week/ Day Marketing Plan':      'fas fa-calendar-days',
+    'New Customer Visit':                 'fas fa-user-plus',
+    'Enquiry Capture FY 2026-27':         'fas fa-magnifying-glass',
+    'CRM Payment FMS':                    'fas fa-money-bill-wave',
+    'Price List':                         'fas fa-tags',
+    'Scot Sheet':                         'fas fa-file-lines',
+    'Stock Dashboard':                    'fas fa-boxes-stacking',
+    'Mr. Mukesh Debtors List':            'fas fa-file-invoice-dollar',
+    'Mr. Pranav Satija Debtors List':     'fas fa-file-invoice',
+    'All Party Name':                     'fas fa-address-book',
+    // ── Sales → Double A ──────────────────────────────────────
+    'Double A Advance Container Booking Form': 'fas fa-ship',
+    'Double A New Distributor Form':      'fas fa-store',
+    'Double A District Distributor':      'fas fa-map-location-dot',
+    'Double A CME Payment FMS FY 2026-27':'fas fa-receipt',
+    'Double A Dealer':                    'fas fa-handshake',
+    'Double A CME Folder':                'fas fa-folder-open',
+    'Double A Retail Customer':           'fas fa-shop',
+    'Double A Corporate Customer':        'fas fa-building',
+    'Double A Display Links':             'fas fa-link',
+    // ── Purchase ──────────────────────────────────────────────
+    'Purchase FMS':                       'fas fa-cart-plus',
+    'IMS (Inventory System)':             'fas fa-warehouse',
+    'WMS':                                'fas fa-pallet',
+    'Godown Stock Report':                'fas fa-cubes',
+    'Godown Inward Report':               'fas fa-truck',
+    'Stock Transfer FMS':                 'fas fa-arrows-left-right',
+    'Shop Stock Report':                  'fas fa-shop',
+    // ── Management ────────────────────────────────────────────
+    'Ultimate Checklist':                 'fas fa-list-check',
+    'Delegation Sheet':                   'fas fa-user-check',
+    'To Do (MIS)':                        'fas fa-circle-check',
+    'To Do (EA)':                         'fas fa-clipboard-check',
+    'MIS Score':                          'fas fa-star',
+    'Dashboard of All FMS':               'fas fa-gauge-high',
+    'FMS OF FMS':                         'fas fa-layer-group',
+    'Home Loan FMS':                      'fas fa-house',
+    'eMail & Password Sheet':             'fas fa-envelope',
+    'SCT-FMS':                            'fas fa-truck-moving',
+    'Repair & Maintenance System':        'fas fa-wrench',
+    // ── Support ───────────────────────────────────────────────
+    'Help Ticket':                        'fas fa-ticket',
+    // ── My System ─────────────────────────────────────────────
+    'Google Site':                        'fas fa-globe',
+    // ── HR ────────────────────────────────────────────────────
+    'Office Chores Form':                 'fas fa-broom',
+    'Attendances Sheet':                  'fas fa-fingerprint',
+    'Sales Meeting Attendances Sheet':    'fas fa-people-group',
+    'Courier FMS':                        'fas fa-motorcycle',
+    // ── Finance ───────────────────────────────────────────────
+    'Petrol/Rider Form':                  'fas fa-gas-pump',
+    'Cheque Payment':                     'fas fa-money-check-dollar',
+    'Company Payment':                    'fas fa-building-columns',
+    'GP Sheet':                           'fas fa-percent',
+    'Sales Marketing Daily Expense':      'fas fa-wallet',
+    'Account Checklist':                  'fas fa-calculator',
+    // ── Documents ─────────────────────────────────────────────
+    'Satija Family Documents':            'fas fa-house-user',
+    'Satija Paper Documents':             'fas fa-file-contract',
+    'SP Team Members Documents':          'fas fa-id-card',
+    'Policy Details':                     'fas fa-shield-halved',
   };
 
   const isAdmin = state.curUser?.role === 'Admin';
@@ -186,7 +244,7 @@ export function renderCards(data){
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
     }
 
-    const catIcon = CAT_ICON[cc] || 'fas fa-circle';
+    const catIcon = PROC_ICON[it.name] || 'fas fa-circle-dot';
 
     // ── data-name added for MutationObserver DA-hiding ───────
     return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
