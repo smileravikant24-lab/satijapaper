@@ -133,7 +133,7 @@ export function renderCards(data){
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
-    } else {
+    } else if (it.name !== 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
     }
 
@@ -143,6 +143,9 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
     btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
     btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
+    if (it.name === 'Dashboard of All FMS') {
+      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-table-cells-large','Sheet');
+    }
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
