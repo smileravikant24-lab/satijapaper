@@ -4,6 +4,13 @@ import { DB }                       from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 
+const _G = {
+  SHEETS: 'https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png',
+  FORMS:  'https://www.gstatic.com/images/branding/product/1x/forms_48dp.png',
+  GAS:    'https://www.gstatic.com/images/branding/product/1x/apps_script_48dp.png',
+  DRIVE:  'https://www.gstatic.com/images/branding/product/1x/drive_48dp.png',
+  LOOKER: 'https://www.gstatic.com/images/branding/product/1x/looker_studio_48dp.png',
+};
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -131,32 +138,32 @@ export function renderCards(data){
     const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
 
     let btns = '';
-    btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    'fas fa-table-cells',      'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   'fab fa-google-drive',     'Form');
+    btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    _G.SHEETS,                 'FMS');
+    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  'Form');
 
     if (it.name === 'Help Ticket'){
-      btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', 'fas fa-file-spreadsheet', 'All Tickets');
+      btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', _G.SHEETS, 'All Tickets');
     } else if (it.name !== 'Dashboard of All FMS') {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-file-spreadsheet', 'Sheet');
+      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'Sheet');
     }
 
-    btns += buildButton(it, !!it.links.check,      'check',      'btn-check',  'fas fa-square-check',     'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fas fa-circle-play',      'Training');
-    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fas fa-circle-play',      'Training (BCI)');
-    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  'fas fa-circle-play',      'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-chart-pie',        'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-chart-line',       'PC Dashboard');
+    btns += buildButton(it, !!it.links.check,      'check',      'btn-check',  _G.SHEETS,                 'Checklist');
+    btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fab fa-youtube',          'Training');
+    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fab fa-youtube',          'Training (BCI)');
+    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  _G.DRIVE,                  'Training Video AI');
+    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   _G.LOOKER,                 'Emp Dashboard');
+    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   _G.LOOKER,                 'PC Dashboard');
     if (it.name === 'Dashboard of All FMS') {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  'fas fa-table-cells-large','PC Sheet');
+      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'PC Sheet');
     }
-    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    'https://www.gstatic.com/images/branding/product/1x/apps_script_48dp.png', 'Form');
-    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  'fas fa-user-gear',        'Admin Panel');
-    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     'fas fa-chart-column',     'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-boxes-stacking',   'Stock Dash');
-    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', 'fas fa-folder-open',      'View Folder');
-    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   'fas fa-file-contract',    'T&amp;C');
-    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   'fab fa-google-drive',     'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form','fas fa-clipboard-list', it.name === 'Double A Retail Customer' ? 'Marketing Guideline' : 'Guideline');
+    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    _G.GAS,                    'Form');
+    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  _G.GAS,                    'Admin Panel');
+    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
+    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  _G.GAS,                    'Stock Dash');
+    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
+    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
+    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
+    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer' ? 'Marketing Guideline' : 'Guideline');
 
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
