@@ -162,6 +162,8 @@
 .btn-folder:hover{ background:#9d174d; color:#fff }
 .btn-stock { background:#ccfbf1; color:#134e4a }
 .btn-stock:hover { background:#134e4a; color:#fff }
+.btn-gas   { background:#fef3c7; color:#92400e }
+.btn-gas:hover   { background:#92400e; color:#fff }
 
 .btn-aiqa{
   background: linear-gradient(135deg,#0ea47b,#0c7d5c);
