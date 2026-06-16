@@ -56,6 +56,15 @@
 .card-inner{
   padding: 16px 16px 14px;
   display: flex; flex-direction: column; flex: 1; gap: 10px;
+  position: relative;
+}
+.card-cat-icon{
+  position: absolute;
+  top: 12px; right: 14px;
+  font-size: 36px;
+  opacity: 0.07;
+  pointer-events: none;
+  color: var(--text);
 }
 
 .card-tag{

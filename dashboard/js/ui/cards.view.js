@@ -133,6 +133,19 @@ export function renderCards(data){
     return;
   }
 
+  const CAT_ICON = {
+    Sales:        'fas fa-handshake',
+    Dispatch:     'fas fa-truck-fast',
+    Purchase:     'fas fa-cart-shopping',
+    Management:   'fas fa-briefcase',
+    HR:           'fas fa-users',
+    Finance:      'fas fa-indian-rupee-sign',
+    Support:      'fas fa-headset',
+    My:           'fas fa-gear',
+    Family:       'fas fa-folder-open',
+    'Bank Details':'fas fa-building-columns',
+  };
+
   const isAdmin = state.curUser?.role === 'Admin';
   const html    = accessible.map((it, i) => {
     const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
@@ -173,9 +186,12 @@ export function renderCards(data){
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
     }
 
+    const catIcon = CAT_ICON[cc] || 'fas fa-circle';
+
     // ── data-name added for MutationObserver DA-hiding ───────
     return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
       <div class="card-inner">
+        <i class="card-cat-icon ${catIcon}"></i>
         <span class="card-tag tag-${cc}">${escapeHtml(it.cat)}</span>
         <div class="card-title">${escapeHtml(it.name)}</div>
         <div class="roles-grid">
