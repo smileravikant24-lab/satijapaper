@@ -79,11 +79,6 @@ export function renderCards(data){
 
   // ── Documents: horizontal file-list design ──
   if (state.curCat === 'Documents') {
-    const DRIVE_URLS = {
-      'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-      'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-      'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
-    };
     const DOC_STYLE = {
       folder: { icon:'fa-folder-open',      bg:'#be185d', light:'#fdf2f8', label:'Google Drive' },
       sheet:  { icon:'fa-table-cells-large', bg:'#065f46', light:'#ecfdf5', label:'Spreadsheet'  },
@@ -99,17 +94,9 @@ export function renderCards(data){
       const lk  = Object.keys(it.links)[0] || 'folder';
       const st  = DOC_STYLE[lk] || DOC_STYLE.folder;
       const pn  = it.name.replace(/'/g, "\\'");
-      let action = '';
-      if (it.links.folder){
-        const url = DRIVE_URLS[it.name] || '#';
-        action = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="doc-open-btn" style="background:${st.bg}">
-                    <i class="fas fa-arrow-up-right-from-square"></i> Open
-                  </a>`;
-      } else {
-        action = `<button onclick="secureOpen('${pn}','${lk}')" class="doc-open-btn" style="background:${st.bg}">
-                    <i class="fas fa-arrow-up-right-from-square"></i> Open
-                  </button>`;
-      }
+      const action = `<button onclick="secureOpen('${pn}','${lk}')" class="doc-open-btn" style="background:${st.bg}">
+                        <i class="fas fa-arrow-up-right-from-square"></i> Open
+                      </button>`;
       return `<div class="doc-list-item" style="animation-delay:${i*.04}s;border-left-color:${st.bg}">
         <div class="doc-list-icon" style="background:${st.light};color:${st.bg}">
           <i class="fas ${st.icon}"></i>
@@ -222,8 +209,8 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fab fa-youtube',          'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fab fa-youtube',          'Training (BCI)');
     btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  _G.DRIVE,                  'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   _G.LOOKER,                 'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   _G.LOOKER,                 'PC Dashboard');
+    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-gauge-high',       'Emp Dashboard');
+    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-gauge-high',       'PC Dashboard');
     if (it.name === 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'PC Sheet');
     }
