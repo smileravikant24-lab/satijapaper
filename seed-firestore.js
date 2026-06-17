@@ -102,7 +102,6 @@ async function seed() {
   });
 
   const oldEntries = [
-    'Satija Family Documents',
     'Double A New Distributor Checklist',
   ];
   oldEntries.forEach(id => {
