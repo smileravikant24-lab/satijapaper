@@ -73,12 +73,6 @@ function buildRoleCell(cls, icon, label, val){
 }
 
 /** Render a list of processes into #cardBox. */
-const DRIVE_URLS = {
-  'Satija Paper Documents':   'https://drive.google.com/drive/folders/1TY7m4KyQqF2l9yHfy8ZcaM8rWUHlgZLr?usp=sharing',
-  'SP Team Members Documents':'https://drive.google.com/drive/folders/1jtkH6QsT8MzMmOwnkrtWdFzWU6vWvQ1z?usp=sharing',
-  'Satija Family Documents':  'https://drive.google.com/drive/folders/18UcntWtEEj9mB0av6Zk4kABstyKqXwaj?usp=sharing',
-};
-
 export function renderCards(data){
   const box = $('cardBox');
   box.innerHTML = '';
@@ -100,17 +94,9 @@ export function renderCards(data){
       const lk  = Object.keys(it.links)[0] || 'folder';
       const st  = DOC_STYLE[lk] || DOC_STYLE.folder;
       const pn  = it.name.replace(/'/g, "\\'");
-      let action = '';
-      if (it.links.folder){
-        const url = DRIVE_URLS[it.name] || '#';
-        action = `<a href="${url}" target="_blank" rel="noopener noreferrer" class="doc-open-btn" style="background:${st.bg}">
-                    <i class="fas fa-arrow-up-right-from-square"></i> Open
-                  </a>`;
-      } else {
-        action = `<button onclick="secureOpen('${pn}','${lk}')" class="doc-open-btn" style="background:${st.bg}">
-                    <i class="fas fa-arrow-up-right-from-square"></i> Open
-                  </button>`;
-      }
+      const action = `<button onclick="secureOpen('${pn}','${lk}')" class="doc-open-btn" style="background:${st.bg}">
+                        <i class="fas fa-arrow-up-right-from-square"></i> Open
+                      </button>`;
       return `<div class="doc-list-item" style="animation-delay:${i*.04}s;border-left-color:${st.bg}">
         <div class="doc-list-icon" style="background:${st.light};color:${st.bg}">
           <i class="fas ${st.icon}"></i>
@@ -232,16 +218,7 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  _G.GAS,                    'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  _G.LOOKER,                 'Dashboard');
-    if (it.links.folder && DRIVE_URLS[it.name]) {
-      const driveUrl = DRIVE_URLS[it.name];
-      if (canAccessLink(state.curUser, it.name, 'folder')) {
-        btns += `<a href="${driveUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-folder">
-                   <img src="${_G.DRIVE}" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;flex-shrink:0"> View Folder
-                 </a>`;
-      }
-    } else {
-      btns += buildButton(it, !!it.links.folder,   'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
-    }
+    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
     btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer' ? 'Marketing Guideline' : 'Guideline');
