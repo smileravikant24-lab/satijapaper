@@ -612,16 +612,22 @@ img.prod-lazy {
   width: 10px;
 }
 .bank-acc {
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
-  font-size: 15px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', 'Liberation Mono', monospace;
+  font-weight: 600;
+  font-size: 14.5px;
   color: var(--text, #1a202c);
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
 }
 .bank-ifsc {
-  font-family: 'Courier New', monospace;
-  font-weight: 700;
-  font-size: 13.5px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', 'Liberation Mono', monospace;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1.2px;
+  background: var(--bg-2, #f1f5f9);
+  color: var(--accent, #0055cc);
+  padding: 2px 7px;
+  border-radius: 5px;
+  display: inline-block;
 }
 .bank-copy-btn {
   margin-top: 10px;
