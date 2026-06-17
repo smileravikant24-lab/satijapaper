@@ -528,7 +528,8 @@ async function showBankDetails(btn) {
     const banks = await fetchBankDetails();
     panel.innerHTML = `<div class="products-wrap">` + _buildBankSectionHTML(banks) + `</div>`;
   } catch(e) {
-    panel.innerHTML = `<div class="products-wrap"><div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Failed to load bank details.</p></div></div>`;
+    const msg = (e.code || '') + ' ' + (e.message || e);
+    panel.innerHTML = `<div class="products-wrap"><div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>${msg}</p></div></div>`;
   }
   _injectShareModal();
 }
