@@ -19,22 +19,6 @@ export async function secureOpen(procName, linkType){
     showToast('No access to this link.', 'err'); return;
   }
 
-  if (linkType === 'aiqa'){
-    window.open(
-      'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
-  if (linkType === 'videoAI'){
-    window.open(
-      'https://drive.google.com/file/d/1cDYnQ2xb6-y0HgZdXtd8W5cci5sZrGO_/view?usp=sharing',
-      '_blank', 'noopener,noreferrer'
-    );
-    return;
-  }
-
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
   if (result.ok) window.open(result.url, '_blank', 'noopener');

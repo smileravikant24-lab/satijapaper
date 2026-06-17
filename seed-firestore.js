@@ -89,6 +89,36 @@ const PROCESS_LINKS = [
   { name:"Policy Details", cat:"Documents", links:{ sheet:"https://docs.google.com/spreadsheets/d/1JpnwjPYjJME74hhn4TLNi1SjYTUGuoC4F_Ma-V9Uh-I/edit?gid=0#gid=0" }},
 ];
 
+const BANK_DETAILS = [
+  { id:'hsbc',      group:'satija_paper', groupLabel:'Satija Paper', order:1,
+    bankName:'HSBC Bank',            holderName:'SATIJA PAPER',
+    accountNo:'166485698001',        bank:'HSBC Bank',
+    branch:'Barakhamba Road, C.P.',  ifsc:'HSBC0110002',
+    address:'Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009',
+    hasQR:false },
+  { id:'pnb',       group:'satija_paper', groupLabel:'Satija Paper', order:2,
+    bankName:'Punjab National Bank', holderName:'SATIJA PAPER',
+    accountNo:'1524002100033322',    bank:'Punjab National Bank (India)',
+    branch:'Mukherjee Nagar',        ifsc:'PUNB0498800',
+    address:'Office 787, GF, Dr. Mukherjee Nagar, Near Batra Cinema, Delhi - 110009',
+    hasQR:true },
+  { id:'pnb_veena', group:'personal', groupLabel:'Personal', order:3,
+    bankName:'Punjab National Bank', holderName:'VEENA SATIJA',
+    accountNo:'0991-000100-329435',  bank:'Punjab National Bank',
+    branch:'Dr Mukherjee Nagar',     ifsc:'PUNB0498800',
+    hasQR:false },
+  { id:'pnb_silky', group:'personal', groupLabel:'Personal', order:4,
+    bankName:'Punjab National Bank', holderName:'SILKY GROVER SATIJA',
+    accountNo:'4988-0001000-37648',  bank:'Punjab National Bank',
+    branch:'Dr Mukherjee Nagar',     ifsc:'PUNB0498800',
+    hasQR:false },
+  { id:'yes_bank',  group:'personal', groupLabel:'Personal', order:5,
+    bankName:'YES BANK',             holderName:'SILKY GROVER SATIJA',
+    accountNo:'0-231902-00002302',   bank:'YES BANK',
+    branch:'Prashant Vihar, Rohini', ifsc:'YESB00-00231',
+    hasQR:false },
+];
+
 async function seed() {
   console.log(`Uploading ${PROCESS_LINKS.length} processes to Firestore...`);
   const batch = db.batch();
@@ -110,6 +140,14 @@ async function seed() {
 
   await batch.commit();
   console.log(`✅ All ${PROCESS_LINKS.length} processes uploaded to Firestore successfully!`);
+
+  // Seed bank_details collection
+  const bankBatch = db.batch();
+  BANK_DETAILS.forEach(b => {
+    bankBatch.set(db.collection('bank_details').doc(b.id), b);
+  });
+  await bankBatch.commit();
+  console.log(`✅ Bank details seeded (${BANK_DETAILS.length} accounts)`);
   process.exit(0);
 }
 
