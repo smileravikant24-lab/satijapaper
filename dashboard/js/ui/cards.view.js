@@ -209,8 +209,8 @@ export function renderCards(data){
     btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fab fa-youtube',          'Training');
     btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fab fa-youtube',          'Training (BCI)');
     btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  _G.DRIVE,                  'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   _G.LOOKER,                 'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   _G.LOOKER,                 'PC Dashboard');
+    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-gauge-high',       'Emp Dashboard');
+    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-gauge-high',       'PC Dashboard');
     if (it.name === 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'PC Sheet');
     }
