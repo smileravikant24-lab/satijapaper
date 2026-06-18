@@ -342,16 +342,41 @@ function showAdmin(btn) {
   _origShowAdmin(btn);
 }
 
+async function _showPersonalBanks() {
+  const panel = document.getElementById('personalBankPanel');
+  if (!panel) return;
+  const hasAccess = state.curUser?.role === 'Admin'
+    || state.curUser?.deptAccess?.includes('All')
+    || state.curUser?.deptAccess?.includes('Bank Details');
+  if (!hasAccess) return;
+
+  panel.innerHTML = `<div class="bank-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>`;
+  panel.style.display = 'block';
+  try {
+    const banks = await fetchBankDetails();
+    const personal = banks.filter(b => b.group === 'personal');
+    if (!personal.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
+    panel.innerHTML = _buildBankSectionHTML(banks, 'personal', 'Personal Bank Accounts');
+    _injectShareModal();
+  } catch(e) {
+    panel.style.display = 'none';
+    panel.innerHTML = '';
+  }
+}
+
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
   state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
   _origFilterCat(cat, btn);
   _syncDoubleAFolder(cat);
   _showCardGrid();
-  // Fix pageHeader for Documents
   if (cat === 'Documents') {
     const h = document.getElementById('pageHeader');
     if (h) h.textContent = 'Documents';
+    _showPersonalBanks();
+  } else {
+    const p = document.getElementById('personalBankPanel');
+    if (p) { p.style.display = 'none'; p.innerHTML = ''; }
   }
 }
 
@@ -523,10 +548,12 @@ async function showBankDetails(btn) {
   document.getElementById('adminPanel').style.display = 'none';
   const panel = document.getElementById('productsPanel');
   panel.style.display = 'block';
+  const pbp = document.getElementById('personalBankPanel');
+  if (pbp) { pbp.style.display = 'none'; pbp.innerHTML = ''; }
   panel.innerHTML = `<div class="products-wrap"><div class="bank-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>`;
   try {
     const banks = await fetchBankDetails();
-    panel.innerHTML = `<div class="products-wrap">` + _buildBankSectionHTML(banks) + `</div>`;
+    panel.innerHTML = `<div class="products-wrap">` + _buildBankSectionHTML(banks, 'satija_paper') + `</div>`;
   } catch(e) {
     const msg = (e.code || '') + ' ' + (e.message || e);
     panel.innerHTML = `<div class="products-wrap"><div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>${msg}</p></div></div>`;
@@ -555,9 +582,10 @@ Object.assign(window, {
 });
 
 
-function _buildBankSectionHTML(banks) {
+function _buildBankSectionHTML(banks, groupFilter, sectionTitle) {
+  const list = groupFilter ? banks.filter(b => b.group === groupFilter) : banks;
   const groups = {};
-  banks.forEach(b => {
+  list.forEach(b => {
     if (!groups[b.group]) groups[b.group] = { label: b.groupLabel, items: [] };
     groups[b.group].items.push(b);
   });
@@ -601,8 +629,9 @@ function _buildBankSectionHTML(banks) {
     return `<div class="bank-group-header"><i class="fas fa-landmark"></i> ${g.label}</div>
 <div class="bank-cards-grid">${cardsHtml}</div>`;
   }).join('');
+  const title = sectionTitle || 'Bank Details';
   return `<div class="bank-section" id="bankDetailsSection">
-    <div class="bank-section-title"><i class="fas fa-landmark"></i> Bank Details</div>
+    <div class="bank-section-title"><i class="fas fa-landmark"></i> ${title}</div>
     ${groupsHtml}
   </div>`;
 }
