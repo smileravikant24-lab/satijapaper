@@ -526,6 +526,9 @@ img.prod-lazy {
   margin-top: 40px;
   padding: 0 2px 2rem;
 }
+#personalBankPanel .bank-section {
+  margin-top: 20px;
+}
 .bank-section-title {
   font-size: 22px;
   font-weight: 800;
