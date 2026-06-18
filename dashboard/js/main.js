@@ -198,11 +198,17 @@ function _setProductsCount() {
   if (badge) badge.textContent = PRODUCTS.length;
 }
 
+function _hidePersonalBankPanel() {
+  const p = document.getElementById('personalBankPanel');
+  if (p) { p.style.display = 'none'; p.innerHTML = ''; }
+}
+
 function showProducts(btn) {
   if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Products'))) {
     showToast('Access Denied.', 'err');
     return;
   }
+  _hidePersonalBankPanel();
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
@@ -315,7 +321,7 @@ function _showCardGrid() {
 }
 
 function showAdmin(btn) {
-  // Deactivate all nav buttons
+  _hidePersonalBankPanel();
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
@@ -373,8 +379,7 @@ function filterCatPatched(cat, btn) {
     if (h) h.textContent = 'Documents';
     _showPersonalBanks();
   } else {
-    const p = document.getElementById('personalBankPanel');
-    if (p) { p.style.display = 'none'; p.innerHTML = ''; }
+    _hidePersonalBankPanel();
   }
 }
 
@@ -531,6 +536,7 @@ function _lazyLoadImages(container) {
 
 
 async function showBankDetails(btn) {
+  _hidePersonalBankPanel();
   if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Bank Details'))) {
     showToast('Access Denied.', 'err');
     return;
@@ -546,8 +552,6 @@ async function showBankDetails(btn) {
   document.getElementById('adminPanel').style.display = 'none';
   const panel = document.getElementById('productsPanel');
   panel.style.display = 'block';
-  const pbp = document.getElementById('personalBankPanel');
-  if (pbp) { pbp.style.display = 'none'; pbp.innerHTML = ''; }
   panel.innerHTML = `<div class="products-wrap"><div class="bank-loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div></div>`;
   try {
     const banks = await fetchBankDetails();
