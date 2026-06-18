@@ -60,7 +60,7 @@ export const DB = [
   {cat:"HR",name:"Office Chores Form",pc:"Ms. Neha",solver:"Neha / Pranav",exec:"Rashmi",links:{gasForm:1,sheet:1}},
   {cat:"HR",name:"Attendances Sheet",pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{gasForm:1,sheet:1,admin:1}},
   {cat:"HR",name:"Sales Meeting Attendances Sheet",pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{gasForm:1,sheet:1}},
-  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{fms:1,form:1}},
+  {cat:"HR",name:"Courier FMS",pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{fms:1,form:1,videoAI:1}},
 
   // -------- FINANCE --------
   {cat:"Finance",name:"Petrol/Rider Form",pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
