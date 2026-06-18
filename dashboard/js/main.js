@@ -355,12 +355,8 @@ async function _showPersonalBanks() {
   try {
     const banks = await fetchBankDetails();
     const personal = banks.filter(b => b.group === 'personal');
-    if (!personal.length) {
-      panel.innerHTML = `<div class="bank-loading" style="color:#e53e3e"><i class="fas fa-exclamation-circle"></i> Personal accounts not found in Firestore (${banks.length} total records fetched)</div>`;
-      return;
-    }
+    if (!personal.length) { panel.style.display = 'none'; panel.innerHTML = ''; return; }
     panel.innerHTML = _buildBankSectionHTML(banks, 'personal', 'Personal Bank Accounts');
-    _injectShareModal();
   } catch(e) {
     panel.innerHTML = `<div class="bank-loading" style="color:#e53e3e"><i class="fas fa-exclamation-circle"></i> Error: ${e.code || ''} ${e.message || e}</div>`;
   }
