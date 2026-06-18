@@ -1,1 +1,5 @@
 node_modules/
+seed-firestore.js
+serviceAccountKey.json
+*.env
+.env*
