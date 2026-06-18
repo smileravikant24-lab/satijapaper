@@ -591,12 +591,14 @@ function _buildBankSectionHTML(banks, groupFilter, sectionTitle) {
     if (!groups[b.group]) groups[b.group] = { label: b.groupLabel, items: [] };
     groups[b.group].items.push(b);
   });
-  const HEADER_CLS = { hsbc:'hsbc', pnb:'pnb', pnb_veena:'pnb', pnb_silky:'pnb', yes_bank:'yes' };
+  const HEADER_CLS = { hsbc:'hsbc', pnb:'pnb', pnb_veena:'pnb', pnb_silky:'pnb', yes_bank:'yes', pnb_pranav:'pnb', pnb_pranav_ppf:'pnb', pnb_joint_all:'pnb', kotak_joint:'kotak' };
   const groupsHtml = Object.entries(groups).map(([, g]) => {
     const cardsHtml = g.items.map(b => {
       const hcls  = HEADER_CLS[b.id] || 'pnb';
       const cardId = b.id + '-card';
-      const nameRow = b.holderName ? `<tr><td>${b.holderName.includes('SATIJA PAPER') ? 'Beneficiary' : 'Name'}</td><td>:</td><td><strong>${b.holderName}</strong></td></tr>` : '';
+      const nameLabel = b.holderName?.includes('SATIJA PAPER') ? 'Beneficiary' : 'Name';
+      const nameRow = b.holderName ? `<tr><td>${nameLabel}</td><td>:</td><td><strong>${b.holderName}</strong></td></tr>` : '';
+      const typeRow = b.accountType ? `<tr><td>Type</td><td>:</td><td>${b.accountType}</td></tr>` : '';
       const addrRow = b.address ? `<tr><td>Address</td><td>:</td><td>${b.address}</td></tr>` : '';
       const qrHtml  = b.hasQR && BANK_QR[b.id]
         ? `<div class="bank-qr-wrap"><img src="${BANK_QR[b.id]}" alt="${b.bankName} UPI QR"><div class="bank-qr-label">Scan &amp; Pay · ${b.bankName}</div></div>`
@@ -609,6 +611,7 @@ function _buildBankSectionHTML(banks, groupFilter, sectionTitle) {
           <div class="bank-details-table">
             <table>
               ${nameRow}
+              ${typeRow}
               <tr><td>A/C No.</td><td>:</td><td class="bank-acc">${b.accountNo}</td></tr>
               <tr><td>Bank</td><td>:</td><td>${b.bank}</td></tr>
               <tr><td>Branch</td><td>:</td><td>${b.branch}</td></tr>
