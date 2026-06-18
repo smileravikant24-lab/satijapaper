@@ -45,7 +45,7 @@ export const DB = [
   {cat:"Management",name:"MIS Score",pc:"Ms. Neha",solver:"Ms. Khushi",exec:"Ms. Neha/Ms. Khushi",links:{sheet:1}},
   {cat:"Management",name:"Dashboard of All FMS",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team Members",links:{dashEmp:1,dashPC:1,sheet:1}},
   {cat:"Management",name:"FMS OF FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{sheet:1,form:1}},
-  {cat:"Management",name:"Home Loan FMS",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,gasForm:1}},
+  {cat:"Management",name:"Home Loan/OD FMS",pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,gasForm:1}},
   {cat:"Management",name:"eMail & Password Sheet",pc:"MDO",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1}},
   {cat:"Management",name:"SCT-FMS",pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{form:1,fms:1}},
   {cat:"Management",name:"Repair & Maintenance System",pc:"Ms. Richa",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1,gasForm:1}},
