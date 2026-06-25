@@ -226,7 +226,8 @@ function _buildVariant(v, brand) {
 }
 
 function _showCardGrid() {
-  document.getElementById('adminPanel').style.display    = 'none';
+  const ap = document.getElementById('adminPanel');
+  if (ap) { ap.classList.remove('visible'); ap.style.removeProperty('display'); }
   document.getElementById('productsPanel').style.display = 'none';
   document.getElementById('searchWrap').style.display    = '';
   document.getElementById('cardBox').style.display       = '';
@@ -234,29 +235,13 @@ function _showCardGrid() {
 
 function showAdmin(btn) {
   _hidePersonalBankPanel();
-  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  // Hide everything else
   const pp = document.getElementById('productsPanel');
-  const sw = document.getElementById('searchWrap');
-  const cb = document.getElementById('cardBox');
-  const ap = document.getElementById('adminPanel');
   if (pp) pp.style.display = 'none';
-  if (sw) sw.style.display = 'none';
-  if (cb) cb.style.display = 'none';
-
-  // Show admin panel explicitly BEFORE calling orig (which loads users)
-  if (ap) ap.style.display = 'block';
-
+  const ap = document.getElementById('adminPanel');
+  if (ap) ap.style.removeProperty('display');
   state.curCat   = '__admin__';
   state.curGroup = null;
   state.daMode   = 'all';
-
-  // Update page header
-  const header = document.getElementById('pageHeader');
-  if (header) header.textContent = 'User Management';
-
   _origShowAdmin(btn);
 }
 
@@ -299,11 +284,7 @@ function filterCatPatched(cat, btn) {
   _showCardGrid();
   const header = document.getElementById('pageHeader');
   if (header) header.textContent = _CAT_FULL_LABEL[cat] || cat;
-  if (cat === 'Family') {
-    _showPersonalBanks();
-  } else {
-    _hidePersonalBankPanel();
-  }
+  _hidePersonalBankPanel();
 }
 
 function runFilterPatched() {
