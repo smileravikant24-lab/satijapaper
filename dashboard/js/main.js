@@ -121,7 +121,7 @@ function showProducts(btn) {
     return;
   }
   _hidePersonalBankPanel();
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
   state.curGroup = null;
@@ -234,7 +234,7 @@ function _showCardGrid() {
 
 function showAdmin(btn) {
   _hidePersonalBankPanel();
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
   // Hide everything else
@@ -464,7 +464,7 @@ async function showBankDetails(btn) {
     showToast('Access Denied.', 'err');
     return;
   }
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   state.curCat   = 'BankDetails';
   state.curGroup = null;
@@ -503,6 +503,7 @@ Object.assign(window, {
   copyBankDetails,
   shareBankDetails,
   showBankDetails,
+  showPersonalAccounts: _showPersonalBanks,
 });
 
 

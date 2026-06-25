@@ -26,7 +26,7 @@
   flex-shrink:0; text-decoration:none;
 }
 .top-brand-logo{
-  width:36px; height:36px; border-radius:9px;
+  width:46px; height:46px; border-radius:11px;
   object-fit:contain;
 }
 .top-brand-name{
@@ -99,8 +99,8 @@
 .tab-row{
   display:flex; align-items:center;
   gap:2px; padding:0 18px;
-  height:44px;
-  background:#fff;
+  height:52px;
+  background:var(--bg);
   border-bottom:1px solid var(--border);
   overflow-x:auto; overflow-y:hidden;
   flex-shrink:0;
@@ -110,15 +110,15 @@
 
 .tab-btn{
   display:inline-flex; align-items:center; gap:6px;
-  padding:5px 12px; border:0; background:0;
-  border-radius:8px;
-  font-size:12.5px; font-weight:600;
+  padding:7px 14px; border:0; background:0;
+  border-radius:9px;
+  font-size:13px; font-weight:600;
   font-family:inherit;
   color:var(--text-2); cursor:pointer;
   white-space:nowrap; flex-shrink:0;
   transition:background .15s, color .15s, box-shadow .15s;
 }
-.tab-btn i{ font-size:12px; opacity:.7; transition:opacity .15s }
+.tab-btn i{ font-size:13px; opacity:.7; transition:opacity .15s }
 .tab-btn:hover{
   background:var(--bg);
   color:var(--text);
@@ -139,7 +139,7 @@
   min-width:18px; text-align:center; letter-spacing:.2px;
 }
 .tab-btn:not(.active) .tab-count{
-  background:var(--bg);
+  background:#fff;
   color:var(--text-3);
 }
 

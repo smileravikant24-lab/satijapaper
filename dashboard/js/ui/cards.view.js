@@ -172,7 +172,9 @@ export function renderCards(data){
     'Help Ticket':                       'fas fa-ticket',
     'Google Site':                       'fas fa-globe',
     // ── Family ───────────────────────────────────────────────
-    'Policy Details':                    'fas fa-file-shield',
+    'Personal Documents':                'fas fa-folder-heart',
+    'Teams Member Document':             'fas fa-users-rectangle',
+    'Satija Paper Document':             'fas fa-building',
   };
 
   const CAT_TAG = {
@@ -237,6 +239,14 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', _G.SHEETS, 'All Tickets');
+    } else if (it.name === 'Personal Documents') {
+      btns += buildButton(it, !!it.links.sheet, 'sheet', 'btn-sheet', _G.SHEETS, 'Policy Details');
+      const hasBankAccess = state.curUser?.role === 'Admin'
+        || state.curUser?.deptAccess?.includes('All')
+        || state.curUser?.deptAccess?.includes('Bank Details');
+      if (hasBankAccess) {
+        btns += `<button onclick="showPersonalAccounts()" class="btn btn-dash"><i class="fas fa-university"></i> Personal Accounts</button>`;
+      }
     } else if (it.name !== 'Dashboard of All FMS') {
       btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'Sheet');
     }
