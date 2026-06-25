@@ -76,121 +76,105 @@
 
 <div class="app-container" id="appContainer">
 
-  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
-  <div class="sidebar" id="sidebar">
+  <!-- ── TOP NAV BAR ────────────────────────────────────── -->
+  <header class="top-nav">
+    <a href="https://www.satijapaper.com" target="_blank" class="top-brand">
+      <img src="logo.png" alt="SP" class="top-brand-logo"
+           onerror="this.src='https://via.placeholder.com/36x36?text=SP'">
+      <div class="top-brand-name">SATIJA PAPER</div>
+    </a>
 
-    <div class="brand-box">
-      <img src="logo.png" alt="Satija Paper" class="brand-logo"
-           onerror="this.src='https://via.placeholder.com/66x66?text=SP'">
-      <div class="brand-text">SATIJA PAPER</div>
-      <a href="https://www.satijapaper.com" target="_blank" class="brand-url">www.satijapaper.com</a>
+    <div class="top-search" id="searchWrap">
+      <i class="fas fa-magnifying-glass top-search-icon"></i>
+      <input type="text" class="top-search-input" placeholder="Search processes…"
+             id="searchInput" oninput="runFilter()">
     </div>
 
-    <!-- ── Main navigation ──────────────────────────────── -->
-    <div class="sidebar-label" id="navMainLabel">All</div>
-
-    <button class="menu-btn active" id="navAll" onclick="filterCat('All',this)">
-      <i class="fas fa-grid-2"></i> All Processes
-      <span class="count-badge" id="cntAll">0</span>
-    </button>
-
-    <div class="sidebar-label">Operations</div>
-
-    <button class="menu-btn" id="navImport" onclick="filterCat('Import',this)">
-      <i class="fas fa-ship"></i> Import &amp; Procurement
-      <span class="count-badge" id="cntImport">0</span>
-    </button>
-
-    <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)">
-      <i class="fas fa-chart-line"></i> Sales &amp; Marketing
-      <span class="count-badge" id="cntSales">0</span>
-    </button>
-
-    <button class="menu-btn" id="navWarehouse" onclick="filterCat('Warehouse',this)">
-      <i class="fas fa-warehouse"></i> Warehouse &amp; Logistics
-      <span class="count-badge" id="cntWarehouse">0</span>
-    </button>
-
-    <button class="menu-btn" id="navPurchase" onclick="filterCat('Purchase',this)">
-      <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
-      <span class="count-badge" id="cntPurchase">0</span>
-    </button>
-
-    <button class="menu-btn" id="navAccounts" onclick="filterCat('Accounts',this)">
-      <i class="fas fa-calculator"></i> Accounts, GST &amp; Tax
-      <span class="count-badge" id="cntAccounts">0</span>
-    </button>
-
-    <button class="menu-btn" id="navAdminMIS" onclick="filterCat('AdminMIS',this)">
-      <i class="fas fa-clipboard-check"></i> Admin &amp; MIS
-      <span class="count-badge" id="cntAdminMIS">0</span>
-    </button>
-
-    <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)">
-      <i class="fas fa-headset"></i> Team / Support
-      <span class="count-badge" id="cntSupport">0</span>
-    </button>
-
-    <!-- ── Resources ──────────────────────────────────── -->
-    <div class="sidebar-label" id="mySystemLabel">Resources</div>
-
-    <button class="menu-btn" id="navFamily" onclick="filterCat('Family',this)">
-      <i class="fas fa-folder-open"></i> SP Family
-      <span class="count-badge" id="cntFamily">0</span>
-    </button>
-
-    <button class="menu-btn" id="navProducts" onclick="showProducts(this)">
-      <i class="fas fa-cubes"></i> Products
-      <span class="count-badge products-badge" id="cntProducts">9</span>
-    </button>
-
-    <button class="menu-btn" id="navBankDetails" onclick="showBankDetails(this)">
-      <i class="fas fa-landmark"></i> Bank Details
-    </button>
-
-    <!-- ── Administration (admin-only) ───────────────── -->
-    <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
-    <button class="menu-btn" id="adminNavBtn" style="display:none"
-            onclick="showAdmin(this)">
-      <i class="fas fa-user-gear"></i> User Management
-    </button>
-
-    <!-- ── Sidebar user strip ────────────────────────── -->
-    <div class="sidebar-user">
-      <div class="sidebar-avatar" id="sAvatar">A</div>
-      <div class="sidebar-uinfo">
-        <div class="sidebar-uname" id="sName">Admin</div>
-        <div class="sidebar-urole" id="sRole">Admin</div>
+    <div class="top-user">
+      <div class="top-avatar" id="sAvatar">A</div>
+      <div class="top-uinfo">
+        <div class="top-uname" id="sName">Admin</div>
+        <div class="top-urole" id="sRole">Admin</div>
       </div>
-      <button class="sidebar-logout" onclick="handleLogout()" title="Logout">
+      <button class="top-logout" onclick="handleLogout()" title="Logout">
         <i class="fas fa-right-from-bracket"></i>
       </button>
     </div>
+  </header>
 
-  </div><!-- /sidebar -->
+  <!-- ── TAB ROW ────────────────────────────────────────── -->
+  <nav class="tab-row">
+    <button class="tab-btn active" id="navAll" onclick="filterCat('All',this)">
+      <i class="fas fa-grid-2"></i> All
+      <span class="tab-count" id="cntAll">0</span>
+    </button>
 
+    <div class="tab-sep"></div>
 
-  <!-- ── MAIN CONTENT ─────────────────────────────────────── -->
+    <button class="tab-btn" id="navImport" onclick="filterCat('Import',this)">
+      <i class="fas fa-ship"></i> Import
+      <span class="tab-count" id="cntImport">0</span>
+    </button>
+    <button class="tab-btn" id="navSales" onclick="filterCat('Sales',this)">
+      <i class="fas fa-chart-line"></i> Sales
+      <span class="tab-count" id="cntSales">0</span>
+    </button>
+    <button class="tab-btn" id="navWarehouse" onclick="filterCat('Warehouse',this)">
+      <i class="fas fa-warehouse"></i> Warehouse
+      <span class="tab-count" id="cntWarehouse">0</span>
+    </button>
+    <button class="tab-btn" id="navPurchase" onclick="filterCat('Purchase',this)">
+      <i class="fas fa-cart-shopping"></i> Purchase
+      <span class="tab-count" id="cntPurchase">0</span>
+    </button>
+    <button class="tab-btn" id="navAccounts" onclick="filterCat('Accounts',this)">
+      <i class="fas fa-calculator"></i> Accounts
+      <span class="tab-count" id="cntAccounts">0</span>
+    </button>
+    <button class="tab-btn" id="navAdminMIS" onclick="filterCat('AdminMIS',this)">
+      <i class="fas fa-clipboard-check"></i> Admin MIS
+      <span class="tab-count" id="cntAdminMIS">0</span>
+    </button>
+    <button class="tab-btn" id="navSupport" onclick="filterCat('Support',this)">
+      <i class="fas fa-headset"></i> Support
+      <span class="tab-count" id="cntSupport">0</span>
+    </button>
+
+    <div class="tab-sep"></div>
+
+    <button class="tab-btn" id="navFamily" onclick="filterCat('Family',this)">
+      <i class="fas fa-folder-heart"></i> SP Family
+      <span class="tab-count" id="cntFamily">0</span>
+    </button>
+    <button class="tab-btn" id="navProducts" onclick="showProducts(this)">
+      <i class="fas fa-cubes"></i> Products
+      <span class="tab-count products-badge" id="cntProducts">9</span>
+    </button>
+    <button class="tab-btn" id="navBankDetails" onclick="showBankDetails(this)">
+      <i class="fas fa-landmark"></i> Bank Details
+    </button>
+
+    <!-- Admin-only (hidden by default, shown by sidebar.view.js) -->
+    <div class="tab-sep" id="adminNavLabel" style="display:none"></div>
+    <button class="tab-btn tab-btn-admin" id="adminNavBtn" style="display:none"
+            onclick="showAdmin(this)">
+      <i class="fas fa-user-gear"></i> Admin
+    </button>
+  </nav>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────── -->
   <div class="main-content">
-
-    <div class="header-bar">
-      <h2 class="page-title" id="pageHeader">All Processes</h2>
-      <div class="search-wrap" id="searchWrap">
-        <i class="fas fa-magnifying-glass search-icon"></i>
-        <input type="text" class="search-box" placeholder="Search processes…"
-               id="searchInput" oninput="runFilter()">
-      </div>
-    </div>
-
     <div class="content">
+
+      <h2 class="page-title" id="pageHeader">All Processes</h2>
 
       <!-- Process card grid -->
       <div class="grid" id="cardBox"></div>
 
-      <!-- Personal bank accounts (shown in Documents for authorized users) -->
+      <!-- Personal bank accounts -->
       <div id="personalBankPanel" style="display:none"></div>
 
-      <!-- Products catalogue (hidden until navProducts clicked) -->
+      <!-- Products catalogue -->
       <div id="productsPanel" style="display:none"></div>
 
       <!-- Admin panel -->

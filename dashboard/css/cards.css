@@ -121,7 +121,7 @@
   line-height: 1.35; word-break: break-word;
   transition: background .15s;
 }
-.role-val:hover{ background: #e8f0fb }
+.role-val:hover{ background: #e2eaf6 }
 .role-dot{
   width: 5px; height: 5px; border-radius: 50%;
   flex-shrink: 0; margin-top: 4px;
