@@ -105,79 +105,131 @@ export function renderCards(data){
   }
 
   const PROC_ICON = {
-    // ── Dispatch ──────────────────────────────────────────────
-    'Order to Delivery FMS':              'fas fa-route',
-    'O2D Direct Dispatch FMS':            'fas fa-box-open',
-    'Sale Report':                        'fas fa-chart-bar',
-    // ── Sales ─────────────────────────────────────────────────
-    'Ruchira 100 Best Customer':          'fas fa-trophy',
-    'Follow Up Calls':                    'fas fa-phone-volume',
-    'Next Week/ Day Marketing Plan':      'fas fa-calendar-days',
-    'New Customer Visit':                 'fas fa-user-plus',
-    'Enquiry Capture FY 2026-27':         'fas fa-magnifying-glass',
-    'CRM Payment FMS':                    'fas fa-money-bill-wave',
-    'Price List':                         'fas fa-tags',
-    'Scot Sheet':                         'fas fa-file-lines',
-    'Stock Dashboard':                    'fas fa-boxes-stacking',
-    'Mr. Mukesh Debtors List':            'fas fa-file-invoice-dollar',
-    'Mr. Pranav Satija Debtors List':     'fas fa-file-invoice',
-    'All Party Name':                     'fas fa-address-book',
-    // ── Sales → Double A ──────────────────────────────────────
+    // ── Import & Procurement ──────────────────────────────────
+    'Custom Clearance Checklist':        'fas fa-clipboard-list',
+    'Shipping Document Checklist':       'fas fa-file-lines',
+    // ── Sales & Marketing ────────────────────────────────────
+    'CRM Payment FMS':                   'fas fa-money-bill-wave',
+    'Price List':                        'fas fa-tags',
+    'Next Week/ Day Marketing Plan':     'fas fa-calendar-days',
+    'Sales Report':                      'fas fa-chart-bar',
+    'New Customer Visit':                'fas fa-user-plus',
+    'Follow Up Calls':                   'fas fa-phone-volume',
+    'Scott Sheet':                       'fas fa-file-lines',
+    'All Party Name':                    'fas fa-address-book',
+    'Mukesh Debtor List':                'fas fa-file-invoice-dollar',
+    'Pranav Debtor List':                'fas fa-file-invoice',
+    'Ruchira 100 Best Customer':         'fas fa-trophy',
+    'Sales Meeting Attendance Sheet':    'fas fa-people-group',
+    'Bank Details':                      'fas fa-landmark',
     'Double A Advance Container Booking Form': 'fas fa-ship',
-    'Double A New Distributor Form':      'fas fa-store',
-    'Double A District Distributor':      'fas fa-map-location-dot',
-    'Double A CME Payment FMS FY 2026-27':'fas fa-receipt',
-    'Double A Dealer':                    'fas fa-handshake',
-    'Double A CME Folder':                'fas fa-folder-open',
-    'Double A Retail Customer':           'fas fa-shop',
-    'Double A Corporate Customer':        'fas fa-building',
-    'Double A Display Links':             'fas fa-link',
-    // ── Purchase ──────────────────────────────────────────────
-    'Purchase FMS':                       'fas fa-cart-plus',
-    'IMS (Inventory System)':             'fas fa-warehouse',
-    'WMS':                                'fas fa-pallet',
-    'Godown Stock Report':                'fas fa-cubes',
-    'Godown Inward Report':               'fas fa-truck',
-    'Stock Transfer FMS':                 'fas fa-arrows-left-right',
-    'Shop Stock Report':                  'fas fa-shop',
-    // ── Management ────────────────────────────────────────────
-    'Ultimate Checklist':                 'fas fa-list-check',
-    'Delegation Sheet':                   'fas fa-user-check',
-    'To Do (MIS)':                        'fas fa-circle-check',
-    'To Do (EA)':                         'fas fa-clipboard-check',
-    'MIS Score':                          'fas fa-star',
-    'Dashboard of All FMS':               'fas fa-gauge-high',
-    'FMS OF FMS':                         'fas fa-layer-group',
-    'Home Loan FMS':                      'fas fa-house',
-    'eMail & Password Sheet':             'fas fa-envelope',
-    'SCT-FMS':                            'fas fa-truck-moving',
-    'Repair & Maintenance System':        'fas fa-wrench',
-    // ── Support ───────────────────────────────────────────────
-    'Help Ticket':                        'fas fa-ticket',
-    // ── My System ─────────────────────────────────────────────
-    'Google Site':                        'fas fa-globe',
-    // ── HR ────────────────────────────────────────────────────
-    'Office Chores Form':                 'fas fa-broom',
-    'Attendances Sheet':                  'fas fa-fingerprint',
-    'Sales Meeting Attendances Sheet':    'fas fa-people-group',
-    'Courier FMS':                        'fas fa-motorcycle',
-    // ── Finance ───────────────────────────────────────────────
-    'Petrol/Rider Form':                  'fas fa-gas-pump',
-    'Cheque Payment':                     'fas fa-money-check-dollar',
-    'Company Payment':                    'fas fa-building-columns',
-    'GP Sheet':                           'fas fa-percent',
-    'Sales Marketing Daily Expense':      'fas fa-wallet',
-    'Account Checklist':                  'fas fa-calculator',
-    // ── Documents ─────────────────────────────────────────────
-    'Satija Family Documents':            'fas fa-house-user',
-    'Satija Paper Documents':             'fas fa-file-contract',
-    'SP Team Members Documents':          'fas fa-id-card',
-    'Policy Details':                     'fas fa-shield-halved',
+    'Double A New Distributor Form':     'fas fa-handshake',
+    'Double A District Distributor':     'fas fa-map-location-dot',
+    'Double A CME Payment FMS FY 2026-27':'fas fa-money-bill-transfer',
+    'Double A Dealer':                   'fas fa-store',
+    'Double A CME Folder':               'fas fa-folder-open',
+    'Double A Retail Customer':          'fas fa-users',
+    'Double A Corporate Customer':       'fas fa-building',
+    'Double A Display Links':            'fas fa-link',
+    'Enquiry Capture FY 2026-27':        'fas fa-magnifying-glass-chart',
+    'Stock Dashboard':                   'fas fa-boxes-stacking',
+    // ── Warehouse & Logistics ────────────────────────────────
+    'Order to Delivery FMS':             'fas fa-route',
+    'O2D Direct Dispatch FMS':           'fas fa-box-open',
+    'Warehouse Stock Report Form':       'fas fa-cubes',
+    'Shop Stock Report Form':            'fas fa-shop',
+    'Transporter Details':               'fas fa-truck',
+    'Products Photos':                   'fas fa-images',
+    // ── Purchase & Inventory ─────────────────────────────────
+    'Purchase FMS':                      'fas fa-cart-plus',
+    'Stock Transfer FMS':                'fas fa-arrows-left-right',
+    'IMS (Inventory System)':            'fas fa-warehouse',
+    'WMS':                               'fas fa-pallet',
+    'Godown Inward Report':              'fas fa-truck-ramp-box',
+    // ── Accounts, GST & Taxation ─────────────────────────────
+    'Account Checklist':                 'fas fa-calculator',
+    'Company Payment':                   'fas fa-building-columns',
+    'GP Sheet':                          'fas fa-percent',
+    'Cheque Payment':                    'fas fa-money-check-dollar',
+    'Sales Marketing Daily Expense':     'fas fa-wallet',
+    'Courier FMS':                       'fas fa-motorcycle',
+    'Home Loan/ OD FMS':                 'fas fa-house',
+    'Petrol & Rider Form':               'fas fa-gas-pump',
+    // ── Admin & MIS ──────────────────────────────────────────
+    'Attendance Sheet':                  'fas fa-fingerprint',
+    'Office Chores Form':                'fas fa-broom',
+    'Ultimate Checklist':                'fas fa-list-check',
+    'Delegation Sheet':                  'fas fa-user-check',
+    'To Do (MIS)':                       'fas fa-circle-check',
+    'To Do (EA)':                        'fas fa-clipboard-check',
+    'MIS Score':                         'fas fa-star',
+    'Dashboard of All FMS':              'fas fa-gauge-high',
+    'FMS of FMS':                        'fas fa-layer-group',
+    'Email & Password Sheet':            'fas fa-envelope',
+    'SCT FMS':                           'fas fa-truck-moving',
+    'Repair & Maintenance System':       'fas fa-wrench',
+    // ── Support ──────────────────────────────────────────────
+    'Help Ticket':                       'fas fa-ticket',
+    'Google Site':                       'fas fa-globe',
+    // ── Family ───────────────────────────────────────────────
+    'Policy Details':                    'fas fa-file-shield',
+  };
+
+  const CAT_TAG = {
+    Import:   'A · Import & Procurement',
+    Sales:    'B · Sales & Marketing',
+    Warehouse:'C · Warehouse & Logistics',
+    Purchase: 'D · Purchase & Inventory',
+    Accounts: 'E · Accounts, GST & Tax',
+    AdminMIS: 'F · Admin & MIS',
+    Support:  'G · Team / Support',
+    Family:   'H · SP Family',
   };
 
   const isAdmin = state.curUser?.role === 'Admin';
-  const html    = accessible.map((it, i) => {
-    const cc = it.cat === 'My System' ? 'My' : (it.cat === 'Documents' ? 'Family' : it.cat);
+
+  // In All view: group by category with section headers
+  const showingAll = state.curCat === 'All';
+  const CAT_ORDER  = ['Import','Sales','Warehouse','Purchase','Accounts','AdminMIS','Support'];
+
+  if (showingAll) {
+    const grouped = {};
+    accessible.forEach(it => {
+      if (!grouped[it.cat]) grouped[it.cat] = [];
+      grouped[it.cat].push(it);
+    });
+    let allHtml = '';
+    let globalIdx = 0;
+    CAT_ORDER.filter(c => grouped[c]?.length).forEach(cat => {
+      const label = CAT_TAG[cat] || cat;
+      const realCount = grouped[cat].filter(x => !x.navTo).length;
+      allHtml += `<div class="cat-section-header">
+        <span class="cat-section-label">${label}</span>
+        <span class="cat-section-count">${realCount}</span>
+      </div>`;
+      allHtml += grouped[cat].map(it => _buildCardHTML(it, globalIdx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
+    });
+    box.innerHTML = allHtml || '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
+    return;
+  }
+
+  const html    = accessible.map((it, i) => _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  box.innerHTML = html || '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
+}
+
+function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
+    if (it.navTo === 'BankDetails') {
+      return `<div class="bank-nav-card" onclick="showBankDetails(document.getElementById('navBankDetails'))" style="animation-delay:${i*.028}s">
+        <div class="bank-nav-icon"><i class="fas fa-landmark"></i></div>
+        <div class="bank-nav-text">
+          <div class="bank-nav-title">Bank Details</div>
+          <div class="bank-nav-sub">View company &amp; personal bank accounts</div>
+        </div>
+        <i class="fas fa-arrow-right" style="color:#93c5fd;font-size:13px"></i>
+      </div>`;
+    }
+
+    const cc = it.cat === 'Documents' ? 'Family' : it.cat;
 
     let btns = '';
     btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    _G.SHEETS,                 'FMS');
@@ -217,11 +269,10 @@ export function renderCards(data){
 
     const catIcon = PROC_ICON[it.name] || 'fas fa-circle-dot';
 
-    // ── data-name added for MutationObserver DA-hiding ───────
     return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
       <div class="card-inner">
         <i class="card-cat-icon ${catIcon}"></i>
-        <span class="card-tag tag-${cc}">${escapeHtml(it.cat)}</span>
+        <span class="card-tag tag-${cc}">${CAT_TAG[cc] || cc}</span>
         <div class="card-title">${escapeHtml(it.name)}</div>
         <div class="roles-grid">
           ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
@@ -232,16 +283,13 @@ export function renderCards(data){
         <div class="actions">${btns}</div>
       </div>
     </div>`;
-  }).join('');
-
-  box.innerHTML = html;
 }
 
 export function renderFiltered(){
   const raw    = ($('searchInput')?.value || '').toLowerCase();
   const terms  = raw.split(/\s+/).filter(Boolean);
-  if (state.curCat === 'Documents') {
-    renderCards(DB.filter(it => it.cat === 'Documents' || it.cat === 'Family'));
+  if (state.curCat === 'Family') {
+    renderCards(DB.filter(it => it.cat === 'Family' || it.cat === 'Documents'));
     return;
   }
 

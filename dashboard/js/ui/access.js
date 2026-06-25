@@ -3,7 +3,11 @@ export function hasDeptAccess(u, cat){
   if (u.role === 'Admin')        return true;
   if (cat === 'Family')          return false;
   if (u.deptAccess.includes('All'))                  return true;
-  if (cat === 'Support' || cat === 'My System')      return true;
+  if (cat === 'Support')                             return true;
+  // Backward compat for renamed categories
+  if (cat === 'Accounts'  && (u.deptAccess.includes('Finance')    || u.deptAccess.includes('HR')))         return true;
+  if (cat === 'AdminMIS'  && (u.deptAccess.includes('Management') || u.deptAccess.includes('HR')))         return true;
+  if (cat === 'Warehouse' &&  u.deptAccess.includes('Dispatch'))   return true;
   return u.deptAccess.includes(cat);
 }
 

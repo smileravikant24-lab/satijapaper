@@ -87,87 +87,66 @@
     </div>
 
     <!-- ── Main navigation ──────────────────────────────── -->
-    <div class="sidebar-label" id="navMainLabel">Navigation</div>
+    <div class="sidebar-label" id="navMainLabel">All</div>
 
-    <button class="menu-btn active" id="navAll"
-            onclick="filterCat('All',this)">
+    <button class="menu-btn active" id="navAll" onclick="filterCat('All',this)">
       <i class="fas fa-grid-2"></i> All Processes
       <span class="count-badge" id="cntAll">0</span>
     </button>
-       
-   <button class="menu-btn" id="navPurchase"
-            onclick="filterCat('Purchase',this)">
+
+    <div class="sidebar-label">Operations</div>
+
+    <button class="menu-btn" id="navImport" onclick="filterCat('Import',this)">
+      <i class="fas fa-ship"></i> Import &amp; Procurement
+      <span class="count-badge" id="cntImport">0</span>
+    </button>
+
+    <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)">
+      <i class="fas fa-chart-line"></i> Sales &amp; Marketing
+      <span class="count-badge" id="cntSales">0</span>
+    </button>
+
+    <button class="menu-btn" id="navWarehouse" onclick="filterCat('Warehouse',this)">
+      <i class="fas fa-warehouse"></i> Warehouse &amp; Logistics
+      <span class="count-badge" id="cntWarehouse">0</span>
+    </button>
+
+    <button class="menu-btn" id="navPurchase" onclick="filterCat('Purchase',this)">
       <i class="fas fa-cart-shopping"></i> Purchase &amp; Inventory
       <span class="count-badge" id="cntPurchase">0</span>
     </button>
-       
-    <button class="menu-btn" id="navSales" onclick="filterCat('Sales',this)">
-  <i class="fas fa-chart-line"></i> Sales &amp; CRM
-  <span class="count-badge" id="cntSales">0</span>
-</button>
-       <!-- Double A collapsible sub-item – hidden until Sales is active -->
-    <div id="doubleAFolder" style="display:none">
-  <button class="menu-btn doublea-btn" id="navDoubleA" onclick="filterGroup('Double A',this)" style="display: inline-flex; align-items: center; gap: 8px;">
-    <img src="https://satijapaper.com/DA-logo.png" alt="Double A" class="doublea-icon-img" style="width: 20px; height: auto; max-height: 20px; object-fit: contain;">Double A
-    <span class="count-badge doublea-badge" id="cntDoubleA">0</span>
-  </button>
-</div>
-    <button class="menu-btn" id="navDispatch"
-            onclick="filterCat('Dispatch',this)">
-      <i class="fas fa-truck-fast"></i> Dispatch
-      <span class="count-badge" id="cntDispatch">0</span>
+
+    <button class="menu-btn" id="navAccounts" onclick="filterCat('Accounts',this)">
+      <i class="fas fa-calculator"></i> Accounts, GST &amp; Tax
+      <span class="count-badge" id="cntAccounts">0</span>
     </button>
 
-       <button class="menu-btn" id="navFinance"
-            onclick="filterCat('Finance',this)">
-      <i class="fas fa-indian-rupee-sign"></i> Finance &amp; Accounts
-      <span class="count-badge" id="cntFinance">0</span>
-    </button>
-    
-
-    <button class="menu-btn" id="navHR"
-            onclick="filterCat('HR',this)">
-      <i class="fas fa-people-group"></i> HR &amp; Admin
-      <span class="count-badge" id="cntHR">0</span>
+    <button class="menu-btn" id="navAdminMIS" onclick="filterCat('AdminMIS',this)">
+      <i class="fas fa-clipboard-check"></i> Admin &amp; MIS
+      <span class="count-badge" id="cntAdminMIS">0</span>
     </button>
 
-       <button class="menu-btn" id="navManagement"
-            onclick="filterCat('Management',this)">
-      <i class="fas fa-clipboard-check"></i> Management (MIS)
-      <span class="count-badge" id="cntManagement">0</span>
-    </button>
-    
-
-    <!-- ── My System ──────────────────────────────────── -->
-    <div class="sidebar-label" id="mySystemLabel">My System</div>
-
-    <button class="menu-btn" id="navSupport"
-            onclick="filterCat('Support',this)">
-      <i class="fas fa-headset"></i> Help &amp; Support
+    <button class="menu-btn" id="navSupport" onclick="filterCat('Support',this)">
+      <i class="fas fa-headset"></i> Team / Support
       <span class="count-badge" id="cntSupport">0</span>
     </button>
 
-    <button class="menu-btn" id="navMy"
-            onclick="filterCat('My System',this)">
-      <i class="fas fa-globe"></i> Google Site
-      <span class="count-badge" id="cntMy">0</span>
-    </button>
+    <!-- ── Resources ──────────────────────────────────── -->
+    <div class="sidebar-label" id="mySystemLabel">Resources</div>
 
-    <button class="menu-btn" id="navFamily"
-            onclick="filterCat('Documents',this)">
-      <i class="fas fa-folder-open"></i> Documents
+    <button class="menu-btn" id="navFamily" onclick="filterCat('Family',this)">
+      <i class="fas fa-folder-open"></i> SP Family
       <span class="count-badge" id="cntFamily">0</span>
     </button>
 
     <button class="menu-btn" id="navProducts" onclick="showProducts(this)">
-  <i class="fas fa-cubes"></i> Products
-  <span class="count-badge products-badge" id="cntProducts">9</span>
-</button>
-    
-    <button class="menu-btn" id="navBankDetails"
-        onclick="showBankDetails(this)">
-  <i class="fas fa-landmark"></i> Bank Details
-</button>
+      <i class="fas fa-cubes"></i> Products
+      <span class="count-badge products-badge" id="cntProducts">9</span>
+    </button>
+
+    <button class="menu-btn" id="navBankDetails" onclick="showBankDetails(this)">
+      <i class="fas fa-landmark"></i> Bank Details
+    </button>
 
     <!-- ── Administration (admin-only) ───────────────── -->
     <div class="sidebar-label" id="adminNavLabel" style="display:none">Administration</div>
