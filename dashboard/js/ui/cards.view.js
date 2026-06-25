@@ -122,6 +122,17 @@ export function renderCards(data){
     'Ruchira 100 Best Customer':         'fas fa-trophy',
     'Sales Meeting Attendance Sheet':    'fas fa-people-group',
     'Bank Details':                      'fas fa-landmark',
+    'Double A Advance Container Booking Form': 'fas fa-ship',
+    'Double A New Distributor Form':     'fas fa-handshake',
+    'Double A District Distributor':     'fas fa-map-location-dot',
+    'Double A CME Payment FMS FY 2026-27':'fas fa-money-bill-transfer',
+    'Double A Dealer':                   'fas fa-store',
+    'Double A CME Folder':               'fas fa-folder-open',
+    'Double A Retail Customer':          'fas fa-users',
+    'Double A Corporate Customer':       'fas fa-building',
+    'Double A Display Links':            'fas fa-link',
+    'Enquiry Capture FY 2026-27':        'fas fa-magnifying-glass-chart',
+    'Stock Dashboard':                   'fas fa-boxes-stacking',
     // ── Warehouse & Logistics ────────────────────────────────
     'Order to Delivery FMS':             'fas fa-route',
     'O2D Direct Dispatch FMS':           'fas fa-box-open',
@@ -159,6 +170,9 @@ export function renderCards(data){
     'Repair & Maintenance System':       'fas fa-wrench',
     // ── Support ──────────────────────────────────────────────
     'Help Ticket':                       'fas fa-ticket',
+    'Google Site':                       'fas fa-globe',
+    // ── Family ───────────────────────────────────────────────
+    'Policy Details':                    'fas fa-file-shield',
   };
 
   const CAT_TAG = {

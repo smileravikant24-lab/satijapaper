@@ -16,6 +16,32 @@ export const DB = [
    pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{gasForm:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"Sales Report",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{sheet:1}},
+
+  // Double A ─────────────────────────────────────────────────────
+  {cat:"Sales",name:"Double A Advance Container Booking Form",
+   pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{gasForm:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Double A New Distributor Form",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{form:1,sheet:1,terms:1,drive:1,guidelineForm:1,aiqa:1}},
+  {cat:"Sales",name:"Double A District Distributor",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
+  {cat:"Sales",name:"Double A CME Payment FMS FY 2026-27",
+   pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{fms:1,gasForm:1,aiqa:1}},
+  {cat:"Sales",name:"Double A Dealer",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
+  {cat:"Sales",name:"Double A CME Folder",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
+  {cat:"Sales",name:"Double A Retail Customer",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1}},
+  {cat:"Sales",name:"Double A Corporate Customer",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
+  {cat:"Sales",name:"Double A Display Links",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1}},
+  // ──────────────────────────────────────────────────────────────
+  {cat:"Sales",name:"Enquiry Capture FY 2026-27",
+   pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{gasForm:1,sheet:1,aiqa:1}},
+  {cat:"Sales",name:"Stock Dashboard",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"All Team",links:{stockDash:1,aiqa:1}},
+
   {cat:"Sales",name:"New Customer Visit",
    pc:"Neha",solver:"Neha / Pranav",exec:"Sonu, Pawan, Rishabh",links:{form:1,sheet:1,aiqa:1}},
   {cat:"Sales",name:"Follow Up Calls",
@@ -110,6 +136,8 @@ export const DB = [
   // ── G) TEAM / SUPPORT SYSTEM ──────────────────────────────────
   {cat:"Support",name:"Help Ticket",
    pc:"Ms. Richa",solver:"Khushi/Ravi",exec:"Ravi",links:{form:1,sheet:1}},
+  {cat:"Support",name:"Google Site",
+   pc:"-",solver:"-",exec:"All Team",links:{form:1,sheet:1}},
 
   // ── H) SP FAMILY ──────────────────────────────────────────────
   {cat:"Family",name:"Personal Documents",
@@ -118,6 +146,8 @@ export const DB = [
    pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
   {cat:"Family",name:"Satija Paper Document",
    pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+  {cat:"Family",name:"Policy Details",
+   pc:"MDO",solver:"Mr. Pranav",exec:"All Staff",links:{sheet:1}},
 ];
 
 
