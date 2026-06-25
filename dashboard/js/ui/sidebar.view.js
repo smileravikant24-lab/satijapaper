@@ -60,7 +60,7 @@ export function updateCounts(){
 }
 
 export function setActive(el){
-  document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
 }
 
