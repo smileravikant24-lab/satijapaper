@@ -31,29 +31,24 @@ function enterApp(user) {
   paintSidebarUser(user);
   updateCounts();
   renderFiltered();
-  // Force Dispatch count from local DB (in case Firestore hasn't been seeded yet)
   _forceLocalCounts();
-  _syncDoubleAFolder('All');
   _setProductsCount();
-  _startCardObserver();
   _initMobileSidebar();
 }
 
 
 function _forceLocalCounts() {
-  // DB and NAV_TABS are imported at top of this file — use them directly
   NAV_TABS.forEach(tab => {
     if (tab.cat === 'All' || tab.cat === 'Products' || tab.cat === 'Bank Details') return;
     const cnt = document.getElementById(tab.cnt);
     if (!cnt) return;
-    // Documents counts both 'Documents' and 'Family' (backward compat)
-    const n = tab.cat === 'Documents'
-      ? DB.filter(d => (d.cat === 'Documents' || d.cat === 'Family') && canAccessProc(state.curUser, d)).length
-      : DB.filter(d => d.cat === tab.cat && canAccessProc(state.curUser, d)).length;
+    const n = tab.cat === 'Family'
+      ? DB.filter(d => (d.cat === 'Family' || d.cat === 'Documents') && !d.navTo && canAccessProc(state.curUser, d)).length
+      : DB.filter(d => d.cat === tab.cat && !d.navTo && canAccessProc(state.curUser, d)).length;
     if (n > 0) cnt.textContent = n;
   });
   const cntAll = document.getElementById('cntAll');
-  if (cntAll) cntAll.textContent = DB.filter(d => canAccessProc(state.curUser, d)).length;
+  if (cntAll) cntAll.textContent = DB.filter(d => !d.navTo && canAccessProc(state.curUser, d)).length;
 }
 
 showCheckingSession();
@@ -102,89 +97,6 @@ function _closeSidebar() {
   document.body.style.overflow = '';
 }
 
-let _observer = null;
-
-function _startCardObserver() {
-  const grid = document.getElementById('cardBox');
-  if (!grid || _observer) return;
-  _observer = new MutationObserver(_applyDAVisibility);
-  _observer.observe(grid, { childList: true });
-}
-
-function _applyDAVisibility() {
-  const grid = document.getElementById('cardBox');
-  if (!grid) return;
-  const daNames = new Set(DB.filter(d => d.group === 'Double A').map(d => d.name));
-
-  if (state.daMode === 'hidden') {
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = daNames.has(card.dataset.name) ? 'none' : '';
-    });
-    if (!grid.querySelector('.da-folder-tile')) _injectDoubleAFolderTile(grid);
-
-  } else if (state.daMode === 'only') {
-    grid.querySelector('.da-folder-tile')?.remove();
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = daNames.has(card.dataset.name) ? '' : 'none';
-    });
-
-  } else {
-    grid.querySelector('.da-folder-tile')?.remove();
-    grid.querySelectorAll('.card[data-name]').forEach(card => {
-      card.style.display = '';
-    });
-  }
-}
-
-function _syncDoubleAFolder(activeCat) {
-  const folder = document.getElementById('doubleAFolder');
-  if (!folder) return;
-  folder.style.display = (activeCat === 'Sales' || activeCat === 'All') ? 'block' : 'none';
-  const badge = document.getElementById('cntDoubleA');
-  if (badge) badge.textContent = DB.filter(p => p.group === 'Double A' && canAccessProc(state.curUser, p)).length;
-}
-
-function _injectDoubleAFolderTile(grid) {
-  if (!grid) grid = document.getElementById('cardBox');
-  if (!grid || grid.querySelector('.da-folder-tile')) return;
-  const daItems = DB.filter(d => d.group === 'Double A' && canAccessProc(state.curUser, d));
-  if (!daItems.length) return;
-
-  const listItems = daItems.map(d =>
-    `<div class="da-folder-item"><i class="fas fa-file-lines"></i>${d.name}</div>`
-  ).join('');
-
-  const tile = document.createElement('div');
-  tile.className    = 'da-folder-tile';
-  tile.dataset.name = '__doubleA_folder__';
-  tile.innerHTML = `
-    <div class="da-folder-icon-row">
-      <span class="da-folder-icon"><i class="fas fa-folder-star"></i></span>
-      <span class="da-folder-label">Double A</span>
-      <span class="da-folder-count">${daItems.length}</span>
-    </div>
-    <div class="da-folder-desc">Container Booking · Distributor Checklist · CME Payment</div>
-    <div class="da-folder-items">${listItems}</div>
-    <div class="da-folder-footer"><i class="fas fa-arrow-right"></i> Click to open Double A processes</div>`;
-
-  tile.addEventListener('click', () => filterGroup('Double A', document.getElementById('navDoubleA')));
-  grid.appendChild(tile);
-}
-
-function filterGroup(group, btn) {
-  if (btn) {
-    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-  _syncDoubleAFolder('Sales');
-  _showCardGrid();
-  state.curCat   = 'Sales';
-  state.curGroup = group;
-  state.daMode   = 'only';
-  const header = document.getElementById('pageHeader');
-  if (header) header.textContent = 'Double A — Sales';
-  _origRunFilter();   // safe now — defined at top of file
-}
 
 function openAIQA() {
   window.open(
@@ -368,15 +280,26 @@ async function _showPersonalBanks() {
   }
 }
 
+const _CAT_FULL_LABEL = {
+  'All':      'All Processes',
+  'Import':   'Import & Procurement',
+  'Sales':    'Sales & Marketing',
+  'Warehouse':'Warehouse & Logistics',
+  'Purchase': 'Purchase & Inventory',
+  'Accounts': 'Accounts, GST & Taxation',
+  'AdminMIS': 'Admin & MIS',
+  'Support':  'Team / Support System',
+  'Family':   'SP Family',
+};
+
 function filterCatPatched(cat, btn) {
   state.curGroup = null;
-  state.daMode   = (cat === 'Sales' || cat === 'All') ? 'hidden' : 'all';
+  state.daMode   = 'all';
   _origFilterCat(cat, btn);
-  _syncDoubleAFolder(cat);
   _showCardGrid();
-  if (cat === 'Documents') {
-    const h = document.getElementById('pageHeader');
-    if (h) h.textContent = 'Documents';
+  const header = document.getElementById('pageHeader');
+  if (header) header.textContent = _CAT_FULL_LABEL[cat] || cat;
+  if (cat === 'Family') {
     _showPersonalBanks();
   } else {
     _hidePersonalBankPanel();
@@ -567,7 +490,6 @@ Object.assign(window, {
   handleLogin, handleLogout, forgotPass, togglePwd,
   filterCat:     filterCatPatched,
   runFilter:     runFilterPatched,
-  filterGroup,
   showProducts,
   openAIQA,
   secureOpen,
