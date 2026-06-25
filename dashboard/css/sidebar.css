@@ -158,6 +158,35 @@
   color:#78350f;
 }
 
+/* ── Category fill colours for the 8 dept tabs ────────────── */
+#navImport    { background:rgba(30,58,138,.10);  color:#1e3a8a }
+#navSales     { background:rgba(0,85,224,.10);   color:#1d4ed8 }
+#navWarehouse { background:rgba(194,65,12,.10);  color:#c2410c }
+#navPurchase  { background:rgba(5,150,105,.10);  color:#065f46 }
+#navAccounts  { background:rgba(153,27,27,.10);  color:#991b1b }
+#navAdminMIS  { background:rgba(91,33,182,.10);  color:#5b21b6 }
+#navSupport   { background:rgba(2,132,199,.10);  color:#0284c7 }
+#navFamily    { background:rgba(190,24,93,.10);  color:#be185d }
+
+#navImport.active    { background:#1e3a8a; color:#fff; box-shadow:0 3px 10px rgba(30,58,138,.35) }
+#navSales.active     { background:#0055e0; color:#fff; box-shadow:0 3px 10px rgba(0,85,224,.35) }
+#navWarehouse.active { background:#c2410c; color:#fff; box-shadow:0 3px 10px rgba(194,65,12,.35) }
+#navPurchase.active  { background:#059669; color:#fff; box-shadow:0 3px 10px rgba(5,150,105,.35) }
+#navAccounts.active  { background:#991b1b; color:#fff; box-shadow:0 3px 10px rgba(153,27,27,.35) }
+#navAdminMIS.active  { background:#5b21b6; color:#fff; box-shadow:0 3px 10px rgba(91,33,182,.35) }
+#navSupport.active   { background:#0284c7; color:#fff; box-shadow:0 3px 10px rgba(2,132,199,.35) }
+#navFamily.active    { background:#be185d; color:#fff; box-shadow:0 3px 10px rgba(190,24,93,.35) }
+
+/* Count badge text matches category colour when inactive */
+#navImport:not(.active) .tab-count    { color:#1e3a8a }
+#navSales:not(.active) .tab-count     { color:#1d4ed8 }
+#navWarehouse:not(.active) .tab-count { color:#c2410c }
+#navPurchase:not(.active) .tab-count  { color:#065f46 }
+#navAccounts:not(.active) .tab-count  { color:#991b1b }
+#navAdminMIS:not(.active) .tab-count  { color:#5b21b6 }
+#navSupport:not(.active) .tab-count   { color:#0284c7 }
+#navFamily:not(.active) .tab-count    { color:#be185d }
+
 /* ── MAIN CONTENT ─────────────────────────────────────────── */
 .main-content{
   flex:1; overflow-y:auto;
