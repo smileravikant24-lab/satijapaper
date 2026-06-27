@@ -12,7 +12,7 @@
 .top-nav{
   display:flex; align-items:center; gap:16px;
   padding:0 24px;
-  height:60px;
+  height:70px;
   background:#fff;
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 8px rgba(51,65,85,.05);
@@ -22,16 +22,16 @@
 
 /* Brand */
 .top-brand{
-  display:flex; align-items:center; gap:10px;
+  display:flex; align-items:center; gap:12px;
   flex-shrink:0; text-decoration:none;
 }
 .top-brand-logo{
-  width:46px; height:46px; border-radius:11px;
+  width:56px; height:56px; border-radius:14px;
   object-fit:contain;
 }
 .top-brand-name{
   font-family:'Fraunces',serif;
-  font-size:15.5px; font-weight:900;
+  font-size:18px; font-weight:900;
   color:var(--text); letter-spacing:-.3px;
   white-space:nowrap;
 }
@@ -70,10 +70,10 @@
   margin-left:auto; flex-shrink:0;
 }
 .top-avatar{
-  width:34px; height:34px; border-radius:9px;
+  width:40px; height:40px; border-radius:11px;
   background:var(--brand-grad);
   display:flex; align-items:center; justify-content:center;
-  color:#fff; font-weight:800; font-size:13px;
+  color:#fff; font-weight:800; font-size:14px;
   flex-shrink:0;
 }
 .top-uinfo{ line-height:1.25 }
@@ -98,8 +98,9 @@
 /* ── TAB ROW ──────────────────────────────────────────────── */
 .tab-row{
   display:flex; align-items:center;
-  gap:2px; padding:0 18px;
-  height:52px;
+  justify-content:space-between;
+  gap:0; padding:0 14px;
+  height:62px;
   background:var(--bg);
   border-bottom:1px solid var(--border);
   overflow-x:auto; overflow-y:hidden;
@@ -109,16 +110,16 @@
 .tab-row::-webkit-scrollbar{ display:none }
 
 .tab-btn{
-  display:inline-flex; align-items:center; gap:6px;
-  padding:7px 14px; border:0; background:0;
-  border-radius:9px;
-  font-size:13px; font-weight:600;
+  display:inline-flex; align-items:center; gap:7px;
+  padding:10px 16px; border:0; background:0;
+  border-radius:10px;
+  font-size:13.5px; font-weight:600;
   font-family:inherit;
   color:var(--text-2); cursor:pointer;
   white-space:nowrap; flex-shrink:0;
   transition:background .15s, color .15s, box-shadow .15s;
 }
-.tab-btn i{ font-size:13px; opacity:.7; transition:opacity .15s }
+.tab-btn i{ font-size:14px; opacity:.7; transition:opacity .15s }
 .tab-btn:hover{
   background:var(--bg);
   color:var(--text);
@@ -192,7 +193,7 @@
   flex:1; overflow-y:auto;
   display:flex; flex-direction:column;
 }
-.content{ padding:22px 26px 60px; flex:1 }
+.content{ padding:clamp(16px,2vh,26px) clamp(16px,2vw,32px) 60px; flex:1 }
 
 /* Page title lives inside .content now */
 .page-title{

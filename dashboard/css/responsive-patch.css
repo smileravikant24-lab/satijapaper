@@ -73,8 +73,23 @@
 }
 .sidebar-backdrop.open { display: block; }
 
+/* ── Tablet / mid-screen ─────────────────────────────────── */
+@media (max-width: 1024px) {
+  .top-brand-name { font-size: 15px !important; }
+  .top-brand-logo { width: 44px !important; height: 44px !important; }
+  .top-nav { height: 62px !important; }
+  .tab-row { height: 54px !important; }
+  .tab-btn { padding: 8px 12px !important; font-size: 12.5px !important; }
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .mob-menu-btn { display: flex; }
+  .top-brand-name { display: none; }
+  .top-brand-logo { width: 38px !important; height: 38px !important; }
+  .top-nav { height: 56px !important; gap: 10px !important; padding: 0 14px !important; }
+  .tab-row { height: 48px !important; padding: 0 8px !important; }
+  .tab-btn { padding: 6px 10px !important; font-size: 12px !important; }
   .app-container {
     flex-direction: column !important;
     height: 100dvh;
