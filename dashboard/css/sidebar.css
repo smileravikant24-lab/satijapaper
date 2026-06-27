@@ -8,11 +8,20 @@
 }
 .app-container.visible{ display:flex }
 
+/* Body below the top nav — sidebar + content side by side */
+.app-body{
+  display:flex;
+  flex-direction:row;
+  flex:1;
+  overflow:hidden;
+  min-height:0;
+}
+
 /* ── TOP NAV BAR ─────────────────────────────────────────── */
 .top-nav{
   display:flex; align-items:center; gap:16px;
   padding:0 24px;
-  height:70px;
+  height:64px;
   background:#fff;
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 8px rgba(51,65,85,.05);
@@ -26,19 +35,19 @@
   flex-shrink:0; text-decoration:none;
 }
 .top-brand-logo{
-  width:56px; height:56px; border-radius:14px;
+  width:46px; height:46px; border-radius:12px;
   object-fit:contain;
 }
 .top-brand-name{
   font-family:'Fraunces',serif;
-  font-size:18px; font-weight:900;
+  font-size:17px; font-weight:900;
   color:var(--text); letter-spacing:-.3px;
   white-space:nowrap;
 }
 
 /* Search */
 .top-search{
-  flex:1; max-width:360px;
+  flex:1; max-width:380px;
   position:relative; margin:0 auto;
 }
 .top-search-input{
@@ -70,7 +79,7 @@
   margin-left:auto; flex-shrink:0;
 }
 .top-avatar{
-  width:40px; height:40px; border-radius:11px;
+  width:38px; height:38px; border-radius:10px;
   background:var(--brand-grad);
   display:flex; align-items:center; justify-content:center;
   color:#fff; font-weight:800; font-size:14px;
@@ -95,119 +104,117 @@
   background:rgba(220,38,38,.08);
 }
 
-/* ── TAB ROW ──────────────────────────────────────────────── */
+/* ── VERTICAL SIDEBAR NAV ─────────────────────────────────── */
 .tab-row{
-  display:flex; align-items:center;
-  justify-content:space-between;
-  gap:0; padding:0 14px;
-  height:62px;
-  background:var(--bg);
-  border-bottom:1px solid var(--border);
-  overflow-x:auto; overflow-y:hidden;
-  flex-shrink:0;
-  scrollbar-width:none;
+  display:flex; flex-direction:column;
+  align-items:stretch; justify-content:flex-start;
+  gap:2px; padding:14px 10px 28px;
+  width:215px; flex-shrink:0;
+  background:#fff;
+  border-right:1px solid var(--border);
+  box-shadow:2px 0 18px rgba(30,58,138,.06);
+  overflow-y:auto; overflow-x:hidden;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
 }
-.tab-row::-webkit-scrollbar{ display:none }
+.tab-row::-webkit-scrollbar{ width:4px }
+.tab-row::-webkit-scrollbar-track{ background:transparent }
+.tab-row::-webkit-scrollbar-thumb{ background:var(--border); border-radius:4px }
 
+/* Sidebar section separator — horizontal rule */
+.tab-sep{
+  width:auto; height:1px;
+  background:var(--border);
+  flex-shrink:0; margin:6px 4px;
+}
+
+/* Nav item buttons */
 .tab-btn{
-  display:inline-flex; align-items:center; gap:7px;
-  padding:10px 16px; border:0; background:0;
+  display:flex; align-items:center; gap:10px;
+  padding:10px 13px; border:0;
   border-radius:10px;
-  font-size:13.5px; font-weight:600;
+  font-size:13px; font-weight:600;
   font-family:inherit;
   color:var(--text-2); cursor:pointer;
   white-space:nowrap; flex-shrink:0;
-  transition:background .15s, color .15s, box-shadow .15s;
+  width:100%; text-align:left;
+  transition:background .15s, color .15s, box-shadow .15s, transform .12s;
 }
-.tab-btn i{ font-size:14px; opacity:.7; transition:opacity .15s }
+.tab-btn i{ font-size:15px; opacity:.75; transition:opacity .15s; flex-shrink:0; width:18px; text-align:center }
 .tab-btn:hover{
-  background:var(--bg);
+  background:var(--bg-subtle);
   color:var(--text);
+  transform:translateX(2px);
 }
 .tab-btn:hover i{ opacity:1 }
 .tab-btn.active{
   background:var(--accent);
   color:#fff;
-  box-shadow:0 2px 8px rgba(0,85,224,.22);
+  box-shadow:0 3px 10px rgba(0,85,224,.25);
 }
 .tab-btn.active i{ opacity:1 }
 
+/* Count badge — pushed to right edge */
 .tab-count{
-  background:rgba(255,255,255,.22);
+  margin-left:auto;
+  background:rgba(255,255,255,.25);
   color:rgba(255,255,255,.9);
   font-size:9.5px; font-weight:800;
-  padding:1px 6px; border-radius:20px;
-  min-width:18px; text-align:center; letter-spacing:.2px;
+  padding:1px 7px; border-radius:20px;
+  min-width:20px; text-align:center; letter-spacing:.2px;
+  flex-shrink:0;
 }
 .tab-btn:not(.active) .tab-count{
-  background:#fff;
+  background:var(--bg-subtle);
   color:var(--text-3);
 }
 
-.tab-sep{
-  width:1px; height:18px;
-  background:var(--border);
-  flex-shrink:0; margin:0 4px;
-}
+/* Admin-only tab */
+.tab-btn-admin{ color:#92400e }
+.tab-btn-admin:hover{ background:#fef3c7; color:#78350f }
 
-/* Admin-only tab — styled distinctly */
-.tab-btn-admin{
-  color:#92400e;
-}
-.tab-btn-admin:hover{
-  background:#fef3c7;
-  color:#78350f;
-}
+/* ── Category fill colours ────────────────────────────────── */
+#navImport    { background:rgba(30,58,138,.08);  color:#1e3a8a }
+#navSales     { background:rgba(0,85,224,.08);   color:#1d4ed8 }
+#navWarehouse { background:rgba(194,65,12,.08);  color:#c2410c }
+#navPurchase  { background:rgba(5,150,105,.08);  color:#065f46 }
+#navAccounts  { background:rgba(153,27,27,.08);  color:#991b1b }
+#navAdminMIS  { background:rgba(91,33,182,.08);  color:#5b21b6 }
+#navSupport   { background:rgba(2,132,199,.08);  color:#0284c7 }
+#navFamily    { background:rgba(190,24,93,.08);  color:#be185d }
 
-/* ── Category fill colours for the 8 dept tabs ────────────── */
-#navImport    { background:rgba(30,58,138,.10);  color:#1e3a8a }
-#navSales     { background:rgba(0,85,224,.10);   color:#1d4ed8 }
-#navWarehouse { background:rgba(194,65,12,.10);  color:#c2410c }
-#navPurchase  { background:rgba(5,150,105,.10);  color:#065f46 }
-#navAccounts  { background:rgba(153,27,27,.10);  color:#991b1b }
-#navAdminMIS  { background:rgba(91,33,182,.10);  color:#5b21b6 }
-#navSupport   { background:rgba(2,132,199,.10);  color:#0284c7 }
-#navFamily    { background:rgba(190,24,93,.10);  color:#be185d }
+#navImport.active    { background:#1e3a8a; color:#fff; box-shadow:0 3px 12px rgba(30,58,138,.35) }
+#navSales.active     { background:#0055e0; color:#fff; box-shadow:0 3px 12px rgba(0,85,224,.35) }
+#navWarehouse.active { background:#c2410c; color:#fff; box-shadow:0 3px 12px rgba(194,65,12,.35) }
+#navPurchase.active  { background:#059669; color:#fff; box-shadow:0 3px 12px rgba(5,150,105,.35) }
+#navAccounts.active  { background:#991b1b; color:#fff; box-shadow:0 3px 12px rgba(153,27,27,.35) }
+#navAdminMIS.active  { background:#5b21b6; color:#fff; box-shadow:0 3px 12px rgba(91,33,182,.35) }
+#navSupport.active   { background:#0284c7; color:#fff; box-shadow:0 3px 12px rgba(2,132,199,.35) }
+#navFamily.active    { background:#be185d; color:#fff; box-shadow:0 3px 12px rgba(190,24,93,.35) }
 
-#navImport.active    { background:#1e3a8a; color:#fff; box-shadow:0 3px 10px rgba(30,58,138,.35) }
-#navSales.active     { background:#0055e0; color:#fff; box-shadow:0 3px 10px rgba(0,85,224,.35) }
-#navWarehouse.active { background:#c2410c; color:#fff; box-shadow:0 3px 10px rgba(194,65,12,.35) }
-#navPurchase.active  { background:#059669; color:#fff; box-shadow:0 3px 10px rgba(5,150,105,.35) }
-#navAccounts.active  { background:#991b1b; color:#fff; box-shadow:0 3px 10px rgba(153,27,27,.35) }
-#navAdminMIS.active  { background:#5b21b6; color:#fff; box-shadow:0 3px 10px rgba(91,33,182,.35) }
-#navSupport.active   { background:#0284c7; color:#fff; box-shadow:0 3px 10px rgba(2,132,199,.35) }
-#navFamily.active    { background:#be185d; color:#fff; box-shadow:0 3px 10px rgba(190,24,93,.35) }
-
-/* Count badge text matches category colour when inactive */
-#navImport:not(.active) .tab-count    { color:#1e3a8a }
-#navSales:not(.active) .tab-count     { color:#1d4ed8 }
-#navWarehouse:not(.active) .tab-count { color:#c2410c }
-#navPurchase:not(.active) .tab-count  { color:#065f46 }
-#navAccounts:not(.active) .tab-count  { color:#991b1b }
-#navAdminMIS:not(.active) .tab-count  { color:#5b21b6 }
-#navSupport:not(.active) .tab-count   { color:#0284c7 }
-#navFamily:not(.active) .tab-count    { color:#be185d }
+/* Count badge category colour when inactive */
+#navImport:not(.active) .tab-count    { color:#1e3a8a; background:rgba(30,58,138,.1) }
+#navSales:not(.active) .tab-count     { color:#1d4ed8; background:rgba(0,85,224,.1) }
+#navWarehouse:not(.active) .tab-count { color:#c2410c; background:rgba(194,65,12,.1) }
+#navPurchase:not(.active) .tab-count  { color:#065f46; background:rgba(5,150,105,.1) }
+#navAccounts:not(.active) .tab-count  { color:#991b1b; background:rgba(153,27,27,.1) }
+#navAdminMIS:not(.active) .tab-count  { color:#5b21b6; background:rgba(91,33,182,.1) }
+#navSupport:not(.active) .tab-count   { color:#0284c7; background:rgba(2,132,199,.1) }
+#navFamily:not(.active) .tab-count    { color:#be185d; background:rgba(190,24,93,.1) }
 
 /* ── MAIN CONTENT ─────────────────────────────────────────── */
 .main-content{
-  flex:1; overflow-y:auto;
+  flex:1; overflow-y:auto; overflow-x:hidden;
   display:flex; flex-direction:column;
+  min-width:0;
 }
 .content{ padding:clamp(16px,2vh,26px) clamp(16px,2vw,32px) 60px; flex:1 }
 
-/* Page title lives inside .content now */
 .page-title{
   font-size:20px; font-weight:800; letter-spacing:-.35px;
   color:var(--text); margin-bottom:18px;
 }
 
-/* ── KEEP header-bar class for JS compat ─────────────────── */
+/* ── JS compat stubs ──────────────────────────────────────── */
 .header-bar{ display:none }
-
-/* ── Mobile-only elements hidden on desktop ──────────────── */
-.mob-menu-btn{ display:none }
-.sidebar-panel-head{ display:none }
-
-/* ── Backward compat: old search-wrap in header-bar ─────── */
-/* searchWrap is now inside top-nav; hide/show via JS still works */
 .top-search.hidden{ visibility:hidden; pointer-events:none }

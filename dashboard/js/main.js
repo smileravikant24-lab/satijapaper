@@ -61,18 +61,8 @@ onAuth(async fbUser => {
 });
 
 function _initMobileSidebar() {
-  // #mobMenuBtn is in HTML — just wire up the backdrop and auto-close on tab click
-  const bd = document.getElementById('sidebarBackdrop');
-  if (bd) bd.addEventListener('click', _closeSidebar);
-
-  document.querySelectorAll('.tab-btn').forEach(b =>
-    b.addEventListener('click', () => { if (window.innerWidth <= 768) _closeSidebar(); })
-  );
-
-  // Close sidebar on orientation change / resize to desktop width
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) _closeSidebar();
-  }, { passive: true });
+  // Mobile uses horizontal tab row (no sidebar drawer needed).
+  // Keep toggle functions available in case of future use.
 }
 function _toggleSidebar() {
   document.querySelector('.tab-row')?.classList.contains('sidebar-open')
