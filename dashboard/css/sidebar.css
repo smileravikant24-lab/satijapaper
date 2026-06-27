@@ -204,6 +204,10 @@
 /* ── KEEP header-bar class for JS compat ─────────────────── */
 .header-bar{ display:none }
 
+/* ── Mobile-only elements hidden on desktop ──────────────── */
+.mob-menu-btn{ display:none }
+.sidebar-panel-head{ display:none }
+
 /* ── Backward compat: old search-wrap in header-bar ─────── */
 /* searchWrap is now inside top-nav; hide/show via JS still works */
 .top-search.hidden{ visibility:hidden; pointer-events:none }

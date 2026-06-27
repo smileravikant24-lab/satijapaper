@@ -78,6 +78,9 @@
 
   <!-- ── TOP NAV BAR ────────────────────────────────────── -->
   <header class="top-nav">
+    <button id="mobMenuBtn" class="mob-menu-btn" onclick="toggleSidebar()" title="Menu">
+      <i class="fas fa-bars"></i>
+    </button>
     <a href="https://www.satijapaper.com" target="_blank" class="top-brand">
       <img src="logo.png" alt="SP" class="top-brand-logo"
            onerror="this.src='https://via.placeholder.com/36x36?text=SP'">
@@ -104,6 +107,19 @@
 
   <!-- ── TAB ROW ────────────────────────────────────────── -->
   <nav class="tab-row">
+
+    <!-- Mobile sidebar header (hidden on desktop) -->
+    <div class="sidebar-panel-head">
+      <div class="sidebar-brand-mini">
+        <img src="logo.png" alt="SP" class="sidebar-logo-mini"
+             onerror="this.src='https://via.placeholder.com/32x32?text=SP'">
+        <span>SATIJA PAPER</span>
+      </div>
+      <button class="sidebar-close-btn" onclick="toggleSidebar()">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+
     <button class="tab-btn active" id="navAll" onclick="filterCat('All',this)">
       <i class="fas fa-grid-2"></i> All
       <span class="tab-count" id="cntAll">0</span>
@@ -264,6 +280,8 @@
     </div>
   </div>
 </div>
+
+<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
 
 <script type="module" src="js/main.js"></script>
 </body>

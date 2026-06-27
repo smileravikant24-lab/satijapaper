@@ -61,38 +61,30 @@ onAuth(async fbUser => {
 });
 
 function _initMobileSidebar() {
-  const headerBar = document.querySelector('.header-bar');
-  if (headerBar && !document.getElementById('mobMenuBtn')) {
-    const btn = document.createElement('button');
-    btn.id        = 'mobMenuBtn';
-    btn.className = 'mob-menu-btn';
-    btn.title     = 'Menu';
-    btn.innerHTML = '<i class="fas fa-bars"></i>';
-    btn.addEventListener('click', _toggleSidebar);
-    headerBar.insertBefore(btn, headerBar.firstChild);
-  }
-  if (!document.getElementById('sidebarBackdrop')) {
-    const bd = document.createElement('div');
-    bd.id        = 'sidebarBackdrop';
-    bd.className = 'sidebar-backdrop';
-    bd.addEventListener('click', _closeSidebar);
-    document.body.appendChild(bd);
-  }
-  document.querySelectorAll('.menu-btn').forEach(b =>
+  // #mobMenuBtn is in HTML — just wire up the backdrop and auto-close on tab click
+  const bd = document.getElementById('sidebarBackdrop');
+  if (bd) bd.addEventListener('click', _closeSidebar);
+
+  document.querySelectorAll('.tab-btn').forEach(b =>
     b.addEventListener('click', () => { if (window.innerWidth <= 768) _closeSidebar(); })
   );
+
+  // Close sidebar on orientation change / resize to desktop width
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) _closeSidebar();
+  }, { passive: true });
 }
 function _toggleSidebar() {
-  document.getElementById('sidebar')?.classList.contains('sidebar-open')
+  document.querySelector('.tab-row')?.classList.contains('sidebar-open')
     ? _closeSidebar() : _openSidebar();
 }
 function _openSidebar() {
-  document.getElementById('sidebar')?.classList.add('sidebar-open');
+  document.querySelector('.tab-row')?.classList.add('sidebar-open');
   document.getElementById('sidebarBackdrop')?.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function _closeSidebar() {
-  document.getElementById('sidebar')?.classList.remove('sidebar-open');
+  document.querySelector('.tab-row')?.classList.remove('sidebar-open');
   document.getElementById('sidebarBackdrop')?.classList.remove('open');
   document.body.style.overflow = '';
 }

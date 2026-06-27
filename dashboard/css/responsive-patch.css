@@ -54,22 +54,26 @@
   max-width: 100%;
 }
 
+/* ── Hamburger button (hidden on desktop, shown on mobile) ── */
 .mob-menu-btn {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 36px;
-  border: none; border-radius: 8px;
-  background: var(--primary);
-  color: #fff; font-size: 15px;
+  width: 38px; height: 38px;
+  border: none; border-radius: 10px;
+  background: var(--bg-subtle);
+  color: var(--text-2); font-size: 16px;
   cursor: pointer; flex-shrink: 0;
-  margin-right: 8px;
+  transition: background .15s, color .15s;
 }
+.mob-menu-btn:hover { background: var(--border); color: var(--text); }
+
+/* ── Sidebar backdrop ────────────────────────────────────── */
 .sidebar-backdrop {
   display: none;
   position: fixed; inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 199;
+  background: rgba(0,0,0,.42);
+  z-index: 290;
 }
 .sidebar-backdrop.open { display: block; }
 
@@ -82,86 +86,170 @@
   .tab-btn { padding: 8px 12px !important; font-size: 12.5px !important; }
 }
 
-/* ── Mobile ──────────────────────────────────────────────── */
+/* ── Mobile — full sidebar layout ───────────────────────── */
 @media (max-width: 768px) {
-  .mob-menu-btn { display: flex; }
-  .top-brand-name { display: none; }
-  .top-brand-logo { width: 38px !important; height: 38px !important; }
-  .top-nav { height: 56px !important; gap: 10px !important; padding: 0 14px !important; }
-  .tab-row { height: 48px !important; padding: 0 8px !important; }
-  .tab-btn { padding: 6px 10px !important; font-size: 12px !important; }
+
+  /* App shell */
   .app-container {
     flex-direction: column !important;
     height: 100dvh;
     overflow: hidden;
   }
-  .sidebar {
-    position: fixed !important;
-    top: 0; left: 0;
-    height: 100dvh;
-    width: 260px !important;
-    min-width: unset !important;
-    transform: translateX(-100%);
-    transition: transform .25s cubic-bezier(.4,0,.2,1);
-    z-index: 200;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    box-shadow: 4px 0 24px rgba(0,0,0,.25);
+
+  /* ── TOP NAV (compact) ───────────────────────────────── */
+  #mobMenuBtn { display: flex !important; }
+  .top-brand-name { display: none; }
+  .top-brand-logo { width: 38px !important; height: 38px !important; }
+  .top-nav {
+    height: 56px !important;
+    gap: 8px !important;
+    padding: 0 14px !important;
   }
-  .sidebar.sidebar-open { transform: translateX(0); }
-  .sidebar.open { transform: translateX(0); }
+  .top-uinfo { display: none; }
+
+  /* Search bar — collapses to icon, expands on focus */
+  .top-search {
+    max-width: 42px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    border-radius: 22px;
+    transition: max-width .2s ease !important;
+    flex: 0 0 auto !important;
+  }
+  .top-search:focus-within {
+    max-width: 180px !important;
+    flex: 1 !important;
+  }
+  .top-search-input {
+    padding-right: 10px !important;
+    font-size: 13px !important;
+  }
+
+  /* ── TAB ROW → SIDEBAR DRAWER ────────────────────────── */
+  .tab-row {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+    height: 100dvh !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 0 0 24px !important;
+    background: #fff !important;
+    border-bottom: none !important;
+    border-right: 1px solid var(--border) !important;
+    box-shadow: 6px 0 32px rgba(0,0,0,.18) !important;
+    z-index: 300 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    scrollbar-width: none;
+  }
+  .tab-row::-webkit-scrollbar { display: none; }
+  .tab-row.sidebar-open { transform: translateX(0) !important; }
+
+  /* ── Sidebar panel header (logo + close) ─────────────── */
+  .sidebar-panel-head {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: #fff;
+    position: sticky; top: 0; z-index: 1;
+  }
+  .sidebar-brand-mini {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo-mini {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  .sidebar-brand-mini span {
+    font-family: 'Fraunces', serif;
+    font-size: 14px; font-weight: 900;
+    color: var(--text); letter-spacing: -.2px;
+  }
+  .sidebar-close-btn {
+    background: none; border: none;
+    cursor: pointer; font-size: 17px;
+    color: var(--text-3);
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
+    transition: background .15s, color .15s;
+  }
+  .sidebar-close-btn:hover { background: var(--bg-subtle); color: var(--text); }
+
+  /* ── Tab buttons → sidebar list items ────────────────── */
+  .tab-btn {
+    width: calc(100% - 16px) !important;
+    margin: 2px 8px !important;
+    padding: 12px 14px !important;
+    justify-content: flex-start !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    gap: 10px !important;
+  }
+  .tab-btn i { font-size: 15px !important; }
+  .tab-btn .tab-count { margin-left: auto; }
+
+  .tab-sep {
+    width: calc(100% - 24px) !important;
+    height: 1px !important;
+    margin: 6px 12px !important;
+  }
+
+  /* ── Main content ─────────────────────────────────────── */
   .main-content {
     flex: 1; width: 100% !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .header-bar {
-    display: flex !important;
-    align-items: center;
-    padding: 10px 14px !important;
-    gap: 8px; flex-wrap: nowrap;
-    position: sticky; top: 0; z-index: 10;
-  }
-  .page-title {
-    font-size: 15px !important;
-    flex: 1; white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-    margin: 0 !important;
-  }
-  .search-wrap {
-    width: 36px !important;
-    transition: width .2s ease;
-    overflow: hidden; border-radius: 22px;
-  }
-  .search-wrap:focus-within { width: 180px !important; }
-  .search-box { font-size: 13px !important; }
-  .content { padding: 12px !important; }
+  .content { padding: 14px 14px 60px !important; }
+  .page-title { font-size: 16px !important; margin-bottom: 14px !important; }
+
+  /* ── Cards ────────────────────────────────────────────── */
   .grid {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
   }
   .card { width: 100% !important; }
-  .roles-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-  }
+  .roles-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .actions .btn {
     min-width: 66px;
     font-size: 10.5px !important;
     padding: 6px 8px !important;
   }
+
+  /* ── Products / Bank / DA ─────────────────────────────── */
   .da-folder-tile { width: 100%; }
   .prod-brand-header { grid-template-columns: 1fr !important; }
   .prod-brand-img-wrap { width: 100% !important; height: 140px !important; }
   .prod-variants-grid { grid-template-columns: 1fr 1fr !important; }
   .prod-share-wrap { justify-content: flex-start; }
   .tbl-wrap { overflow-x: auto; }
+
+  /* ── Modal (full screen on mobile) ───────────────────── */
   .modal-box {
     width: 100% !important; max-width: 100% !important;
     height: 100dvh !important; border-radius: 0 !important;
     margin: 0 !important;
   }
 }
+
 @media (max-width: 400px) {
   .roles-grid { grid-template-columns: 1fr !important; gap: 3px; }
   .prod-variants-grid { grid-template-columns: 1fr !important; }
