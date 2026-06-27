@@ -90,11 +90,11 @@ export const DB = [
   // ── E) ACCOUNTS, GST & TAXATION ──────────────────────────────
   {cat:"Accounts",name:"Account Checklist",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Ms. Khushi",links:{sheet:1}},
-  {cat:"Accounts",name:"Company Payment",
+  {cat:"Accounts",name:"Company Payment FMS",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Sandeep/Ms. Neha",links:{fms:1,form:1}},
   {cat:"Accounts",name:"GP Sheet",
    pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Khushi",links:{sheet:1,gpDash:1}},
-  {cat:"Accounts",name:"Cheque Payment",
+  {cat:"Accounts",name:"Cheque Payment FMS",
    pc:"Neha / Mukesh",solver:"Mukesh",exec:"Indresh",links:{fms:1,form:1}},
   {cat:"Accounts",name:"Sales Marketing Daily Expense",
    pc:"Ms. Richa",solver:"Ms. Neha",exec:"Sale's Team",links:{gasForm:1,sheet:1}},
