@@ -45,10 +45,11 @@ export function buildProcList(existingLinkAccess = {}, deptAccess = []){
   });
   container.appendChild(specialGroup);
 
-  // Regular process groups
-  const cats = [...new Set(DB.map(d => d.cat))];
+  // Regular process groups — exclude navTo shortcuts (they are not real processes)
+  const cats = [...new Set(DB.filter(d => !d.navTo).map(d => d.cat))];
   cats.forEach(cat => {
-    const items   = DB.filter(d => d.cat === cat);
+    const items = DB.filter(d => d.cat === cat && !d.navTo);
+    if (!items.length) return;
     const grpDiv  = document.createElement('div');
     grpDiv.className = 'proc-group';
     grpDiv.innerHTML = `
