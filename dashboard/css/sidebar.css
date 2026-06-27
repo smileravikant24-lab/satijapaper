@@ -193,7 +193,7 @@
   flex:1; overflow-y:auto;
   display:flex; flex-direction:column;
 }
-.content{ padding:22px 26px 60px; flex:1 }
+.content{ padding:clamp(16px,2vh,26px) clamp(16px,2vw,32px) 60px; flex:1 }
 
 /* Page title lives inside .content now */
 .page-title{
