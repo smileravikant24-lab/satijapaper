@@ -178,14 +178,14 @@ export function renderCards(data){
   };
 
   const CAT_TAG = {
-    Import:   'A · Import & Procurement',
-    Sales:    'B · Sales & Marketing',
-    Warehouse:'C · Warehouse & Logistics',
-    Purchase: 'D · Purchase & Inventory',
-    Accounts: 'E · Accounts, GST & Tax',
-    AdminMIS: 'F · Admin & MIS',
-    Support:  'G · Team / Support',
-    Family:   'H · SP Family',
+    Import:   'Import & Procurement',
+    Sales:    'Sales & Marketing',
+    Warehouse:'Warehouse & Logistics',
+    Purchase: 'Purchase & Inventory',
+    Accounts: 'Accounts, GST & Tax',
+    AdminMIS: 'Admin & MIS',
+    Support:  'Team / Support',
+    Family:   'SP Family',
   };
 
   const isAdmin = state.curUser?.role === 'Admin';

@@ -66,13 +66,12 @@
   .top-brand-name { display: none; }
   .top-uinfo { display: none; }
   .top-avatar { width: 34px !important; height: 34px !important; font-size: 13px !important; }
+  /* Search bar — always visible, fills available space */
   .top-search {
-    max-width: 44px !important; flex: 0 0 auto !important;
-    overflow: hidden !important; min-width: 0 !important;
-    transition: max-width .2s ease !important;
-  }
-  .top-search:focus-within {
-    max-width: 180px !important; flex: 1 !important;
+    flex: 1 !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
   }
 
   /* ── HORIZONTAL TAB ROW ────────────────────────────────── */
