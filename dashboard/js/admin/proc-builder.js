@@ -29,7 +29,7 @@ export function buildProcList(existingLinkAccess = {}, deptAccess = []){
   SPECIAL_ACCESS.forEach(si => {
     const row    = document.createElement('div');
     row.className = 'proc-row';
-    const header = document.createElement('div');
+    const header = document.createElement('label');
     header.className = 'proc-row-header';
     const cb = document.createElement('input');
     cb.type      = 'checkbox';
@@ -37,8 +37,11 @@ export function buildProcList(existingLinkAccess = {}, deptAccess = []){
     cb.value     = si.dept;
     cb.dataset.dept = si.dept;
     if (deptAccess.includes(si.dept)) cb.checked = true;
-    header.innerHTML = `<span class="proc-name">${si.name}</span>`;
-    header.prepend(cb);
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'proc-name';
+    nameSpan.textContent = si.name;
+    header.appendChild(cb);
+    header.appendChild(nameSpan);
     row.appendChild(header);
     cb.addEventListener('change', updateAccessModeNote);
     specialGroup.appendChild(row);
@@ -69,15 +72,18 @@ function buildProcRow(item, existingLinkAccess){
   const procRow    = document.createElement('div');
   procRow.className = 'proc-row';
   const isChecked  = existingLinkAccess.__procs__?.includes(item.name);
-  const procHeader = document.createElement('div');
+  const procHeader = document.createElement('label');
   procHeader.className = 'proc-row-header';
   const procCb = document.createElement('input');
   procCb.type      = 'checkbox';
   procCb.className = 'proc-master-cb';
   procCb.value     = item.name;
   if (isChecked) procCb.checked = true;
-  procHeader.innerHTML = `<span class="proc-name">${item.name}</span>`;
-  procHeader.prepend(procCb);
+  const procName = document.createElement('span');
+  procName.className   = 'proc-name';
+  procName.textContent = item.name;
+  procHeader.appendChild(procCb);
+  procHeader.appendChild(procName);
   procRow.appendChild(procHeader);
 
   if (availLinks.length > 0){
