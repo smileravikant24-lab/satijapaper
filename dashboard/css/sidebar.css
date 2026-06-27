@@ -130,17 +130,17 @@
 
 /* Nav item buttons */
 .tab-btn{
-  display:flex; align-items:center; gap:10px;
-  padding:10px 13px; border:0;
+  display:flex; align-items:center; gap:11px;
+  padding:11px 14px; border:0;
   border-radius:10px;
-  font-size:13px; font-weight:600;
+  font-size:14px; font-weight:700;
   font-family:inherit;
   color:var(--text-2); cursor:pointer;
   white-space:nowrap; flex-shrink:0;
   width:100%; text-align:left;
   transition:background .15s, color .15s, box-shadow .15s, transform .12s;
 }
-.tab-btn i{ font-size:15px; opacity:.75; transition:opacity .15s; flex-shrink:0; width:18px; text-align:center }
+.tab-btn i{ font-size:16px; opacity:.75; transition:opacity .15s; flex-shrink:0; width:20px; text-align:center }
 .tab-btn:hover{
   background:var(--bg-subtle);
   color:var(--text);
