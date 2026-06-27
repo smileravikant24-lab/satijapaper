@@ -1,168 +1,149 @@
+/* ── Global card/role helpers ────────────────────────────── */
 .roles-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
   align-items: start;
 }
-.role-cell {
-  min-width: 0;
-  overflow: visible;
-}
+.role-cell { min-width: 0; overflow: visible; }
 .role-val {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  word-break: break-word;
-  font-size: 11px !important;
-  line-height: 1.35;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  white-space: normal !important; overflow: visible !important;
+  text-overflow: unset !important; word-break: break-word;
+  font-size: 11px !important; line-height: 1.35;
+  display: flex; align-items: flex-start; gap: 6px;
 }
 .role-val span {
-  overflow: visible !important;
-  text-overflow: unset !important;
-  white-space: normal !important;
-  word-break: break-word;
+  overflow: visible !important; text-overflow: unset !important;
+  white-space: normal !important; word-break: break-word;
 }
 .role-key {
-  font-size: 8px !important;
-  font-weight: 700;
-  letter-spacing: .05em;
-  margin-bottom: 3px;
-  opacity: .55;
-  text-transform: uppercase;
+  font-size: 8px !important; font-weight: 700;
+  letter-spacing: .05em; margin-bottom: 3px;
+  opacity: .55; text-transform: uppercase;
 }
 .actions {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 6px !important;
-  align-items: center;
+  display: flex !important; flex-wrap: wrap !important;
+  gap: 6px !important; align-items: center;
 }
 .actions .btn {
-  flex: 1 1 auto;
-  min-width: 76px;
-  max-width: calc(50% - 3px);
-  font-size: 11px !important;
-  padding: 7px 9px !important;
-  white-space: nowrap;
-  text-align: center;
-  justify-content: center;
+  flex: 1 1 auto; min-width: 76px; max-width: calc(50% - 3px);
+  font-size: 11px !important; padding: 7px 9px !important;
+  white-space: nowrap; text-align: center; justify-content: center;
 }
-.actions .btn-aiqa {
-  flex: 1 1 100%;
-  max-width: 100%;
-}
+.actions .btn-aiqa { flex: 1 1 100%; max-width: 100%; }
 
-.mob-menu-btn {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 36px; height: 36px;
-  border: none; border-radius: 8px;
-  background: var(--primary);
-  color: #fff; font-size: 15px;
-  cursor: pointer; flex-shrink: 0;
-  margin-right: 8px;
-}
-.sidebar-backdrop {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 199;
-}
-.sidebar-backdrop.open { display: block; }
-
-/* ── Tablet / mid-screen ─────────────────────────────────── */
-@media (max-width: 1024px) {
+/* ── Tablet — narrower sidebar ───────────────────────────── */
+@media (max-width: 1080px) {
+  .tab-row { width: 185px !important; padding: 12px 8px 24px !important; }
+  .tab-btn { font-size: 12.5px !important; padding: 9px 11px !important; }
   .top-brand-name { font-size: 15px !important; }
-  .top-brand-logo { width: 44px !important; height: 44px !important; }
-  .top-nav { height: 62px !important; }
-  .tab-row { height: 54px !important; }
-  .tab-btn { padding: 8px 12px !important; font-size: 12.5px !important; }
+  .top-brand-logo { width: 40px !important; height: 40px !important; }
+  .top-nav { height: 58px !important; }
 }
 
-/* ── Mobile ──────────────────────────────────────────────── */
+/* ── Mobile — horizontal top tab row ────────────────────── */
 @media (max-width: 768px) {
-  .mob-menu-btn { display: flex; }
-  .top-brand-name { display: none; }
-  .top-brand-logo { width: 38px !important; height: 38px !important; }
-  .top-nav { height: 56px !important; gap: 10px !important; padding: 0 14px !important; }
-  .tab-row { height: 48px !important; padding: 0 8px !important; }
-  .tab-btn { padding: 6px 10px !important; font-size: 12px !important; }
-  .app-container {
+
+  /* Stack layout: nav below top bar */
+  .app-container.visible {
+    display: flex !important;
     flex-direction: column !important;
     height: 100dvh;
     overflow: hidden;
   }
-  .sidebar {
-    position: fixed !important;
-    top: 0; left: 0;
-    height: 100dvh;
-    width: 260px !important;
-    min-width: unset !important;
-    transform: translateX(-100%);
-    transition: transform .25s cubic-bezier(.4,0,.2,1);
-    z-index: 200;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  .app-body {
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
-  .sidebar.sidebar-open { transform: translateX(0); }
-  .sidebar.open { transform: translateX(0); }
-  .main-content {
-    flex: 1; width: 100% !important;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+
+  /* ── TOP NAV (compact) ─────────────────────────────────── */
+  .top-nav {
+    height: 54px !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
   }
-  .header-bar {
-    display: flex !important;
-    align-items: center;
-    padding: 10px 14px !important;
-    gap: 8px; flex-wrap: nowrap;
-    position: sticky; top: 0; z-index: 10;
+  .top-brand-logo { width: 36px !important; height: 36px !important; }
+  .top-brand-name { display: none; }
+  .top-uinfo { display: none; }
+  .top-avatar { width: 34px !important; height: 34px !important; font-size: 13px !important; }
+  .top-search {
+    max-width: 44px !important; flex: 0 0 auto !important;
+    overflow: hidden !important; min-width: 0 !important;
+    transition: max-width .2s ease !important;
   }
-  .page-title {
-    font-size: 15px !important;
-    flex: 1; white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-    margin: 0 !important;
+  .top-search:focus-within {
+    max-width: 180px !important; flex: 1 !important;
   }
-  .search-wrap {
-    width: 36px !important;
-    transition: width .2s ease;
-    overflow: hidden; border-radius: 22px;
+
+  /* ── HORIZONTAL TAB ROW ────────────────────────────────── */
+  .tab-row {
+    width: auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    padding: 0 10px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    background: var(--bg) !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    box-shadow: none !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    flex-shrink: 0 !important;
+    transform: none !important;
   }
-  .search-wrap:focus-within { width: 180px !important; }
-  .search-box { font-size: 13px !important; }
-  .content { padding: 12px !important; }
-  .grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+  .tab-row::-webkit-scrollbar { display: none; }
+
+  .tab-sep {
+    width: 1px !important; height: 16px !important;
+    margin: 0 3px !important;
   }
+
+  /* Tab buttons — compact horizontal chips */
+  .tab-btn {
+    width: auto !important;
+    padding: 7px 11px !important;
+    font-size: 12px !important;
+    gap: 6px !important;
+    justify-content: center !important;
+    transform: none !important;
+  }
+  .tab-btn:hover { transform: none !important; }
+  .tab-btn i { font-size: 13px !important; width: auto !important; }
+  .tab-btn .tab-count { margin-left: 0 !important; }
+
+  /* ── Main content ─────────────────────────────────────── */
+  .main-content { flex: 1 !important; overflow-y: auto !important; }
+  .content { padding: 14px 14px 60px !important; }
+  .page-title { font-size: 16px !important; margin-bottom: 12px !important; }
+
+  /* ── Cards ────────────────────────────────────────────── */
+  .grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   .card { width: 100% !important; }
-  .roles-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-  }
-  .actions .btn {
-    min-width: 66px;
-    font-size: 10.5px !important;
-    padding: 6px 8px !important;
-  }
+  .roles-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .actions .btn { min-width: 66px; font-size: 10.5px !important; padding: 6px 8px !important; }
+
+  /* ── Products / Bank / DA ─────────────────────────────── */
   .da-folder-tile { width: 100%; }
   .prod-brand-header { grid-template-columns: 1fr !important; }
   .prod-brand-img-wrap { width: 100% !important; height: 140px !important; }
   .prod-variants-grid { grid-template-columns: 1fr 1fr !important; }
   .prod-share-wrap { justify-content: flex-start; }
   .tbl-wrap { overflow-x: auto; }
+
+  /* ── Modal (full screen on mobile) ───────────────────── */
   .modal-box {
     width: 100% !important; max-width: 100% !important;
     height: 100dvh !important; border-radius: 0 !important;
     margin: 0 !important;
   }
 }
+
 @media (max-width: 400px) {
   .roles-grid { grid-template-columns: 1fr !important; gap: 3px; }
   .prod-variants-grid { grid-template-columns: 1fr !important; }
+  .tab-btn { padding: 6px 8px !important; font-size: 11.5px !important; }
 }

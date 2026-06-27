@@ -60,8 +60,11 @@ export async function saveUser(){
     document.querySelectorAll('#procListContainer .dept-access-cb:checked').forEach(cb => {
       deptAccess.push(cb.value);
     });
+    const seen = new Set();
     document.querySelectorAll('#procListContainer .proc-master-cb:not(.dept-access-cb):checked').forEach(cb => {
       const pName = cb.value;
+      if (seen.has(pName)) return; // deduplicate (guard against stale navTo duplicates)
+      seen.add(pName);
       processAccess.push(pName);
       const lr = cb.closest('.proc-row').querySelector('.proc-link-row');
       if (lr){

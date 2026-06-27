@@ -109,6 +109,7 @@
 .proc-row-header{
   display:flex; align-items:center; gap:9px;
   padding:9px 12px; background:#f8fafc;
+  cursor:pointer; user-select:none;
 }
 .proc-master-cb{
   width:16px; height:16px;
