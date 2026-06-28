@@ -44,14 +44,19 @@ export function parseSheetTable(table) {
     })
   );
 
-  // Find header row: first row where col 0-3 contains a period/mode keyword
+  // Find header row: a row where col 0-3 has a short period/mode keyword AND
+  // the row has at least 2 non-null cells (rules out merged title rows like
+  // "Monthly Dispatch & Financial Summary" which match "month" but have 1 cell).
   const KW = /^(week|month|period|mode|day|transport|date)/i;
   let hIdx = -1, startCol = 0;
-  outer: for (let i = 0; i < Math.min(raw.length, 12); i++) {
+  outer: for (let i = 0; i < Math.min(raw.length, 15); i++) {
     for (let c = 0; c < Math.min((raw[i] || []).length, 4); c++) {
-      if (KW.test(String(raw[i][c] ?? '').trim())) {
-        hIdx = i; startCol = c; break outer;
-      }
+      const cell = String(raw[i][c] ?? '').trim();
+      if (!KW.test(cell)) continue;
+      if (cell.length > 30) continue;                               // skip long title strings
+      const nonNull = (raw[i] || []).filter(v => v != null && String(v).trim() !== '').length;
+      if (nonNull < 2) continue;                                    // skip merged/single-cell rows
+      hIdx = i; startCol = c; break outer;
     }
   }
   if (hIdx === -1) { hIdx = 0; startCol = 0; }
