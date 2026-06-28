@@ -18,7 +18,7 @@ import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { BANK_QR }                        from './bank-qr.js';
-import { renderSalesDashboard, sdashSetView, sdashSetPeriod, sdashSetMonth } from './ui/sales.view.js';
+import { renderSalesDashboard, sdashSetView, sdashSetPeriod, sdashSetMonth, sdashRefresh } from './ui/sales.view.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -502,6 +502,7 @@ Object.assign(window, {
   sdashSetView,
   sdashSetPeriod,
   sdashSetMonth,
+  sdashRefresh,
 });
 
 
