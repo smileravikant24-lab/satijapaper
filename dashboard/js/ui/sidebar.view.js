@@ -55,6 +55,14 @@ export function updateCounts(){
     btn.style.display = visible ? '' : 'none';
   });
 
+  // Sales Dashboard — visible to Admin, Sales dept, or All access
+  const hasAllAccess     = state.curUser?.deptAccess?.includes('All');
+  const canSeeSalesDash  = isAdmin || hasAllAccess || state.curUser?.deptAccess?.includes('Sales');
+  const sdBtn = document.getElementById('navSalesDash');
+  const sdSep = document.getElementById('salesDashSep');
+  if (sdBtn) sdBtn.style.display = canSeeSalesDash ? '' : 'none';
+  if (sdSep) sdSep.style.display = canSeeSalesDash ? '' : 'none';
+
   $('adminNavLabel').style.display = isAdmin ? '' : 'none';
   $('adminNavBtn').style.display   = isAdmin ? '' : 'none';
 }
