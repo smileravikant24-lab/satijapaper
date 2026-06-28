@@ -36,10 +36,28 @@
   background: #0055e0; color: #fff; border-color: #0055e0;
 }
 
-/* Date range line */
-.sdash-daterange {
-  font-size: 12px; font-weight: 600; color: var(--text-3);
-  display: flex; align-items: center; gap: 7px;
+/* Month / Period filter pills */
+.sdash-month-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 10px 14px; background: var(--bg-subtle);
+  border-radius: 12px; border: 1px solid var(--border);
+}
+.sdash-month-label {
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.sdash-month-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.sdash-mpill {
+  padding: 5px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  cursor: pointer; background: var(--bg); font-family: inherit;
+  transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
+}
+.sdash-mpill:hover { background: var(--bg-subtle); color: var(--text); }
+.sdash-mpill.active {
+  background: #0055e0; color: #fff; border-color: #0055e0;
+  box-shadow: 0 2px 8px rgba(0,85,224,.25);
 }
 
 /* Charts row */
@@ -55,7 +73,33 @@
   font-size: 13px; font-weight: 800; color: var(--text);
   display: flex; align-items: center; gap: 7px;
 }
-.sdash-canvas-wrap { height: 230px; position: relative; }
+/* Top bar: date range + refresh */
+.sdash-top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.sdash-daterange {
+  font-size: 12px; font-weight: 600; color: var(--text-3);
+  display: flex; align-items: center; gap: 7px;
+}
+.sdash-refresh-info {
+  display: flex; align-items: center; gap: 8px; margin-left: auto;
+}
+.sdash-last-updated {
+  font-size: 11px; font-weight: 600; color: #16a34a;
+  display: flex; align-items: center; gap: 5px;
+}
+.sdash-refresh-btn {
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  color: var(--text-2); cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s, transform .2s;
+}
+.sdash-refresh-btn:hover { background: var(--bg-subtle); color: var(--accent); }
+.sdash-refresh-btn:active { transform: rotate(180deg); }
+
+.sdash-gchart-wrap { height: 240px; width: 100%; }
 
 /* Data table */
 .sdash-table-card {
@@ -116,7 +160,7 @@
   .sdash-header-row { flex-direction: column; align-items: flex-start; }
   .sdash-period-tabs { margin-left: 0; }
   .sdash-vtab { font-size: 12px; padding: 8px 13px; }
-  .sdash-canvas-wrap { height: 190px; }
+  .sdash-gchart-wrap { height: 190px; }
   .sdash-tbl { font-size: 11.5px; }
   .sdash-tbl thead th,
   .sdash-tbl tbody td { padding: 7px 10px; }
