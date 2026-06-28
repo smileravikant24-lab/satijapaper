@@ -42,6 +42,30 @@
   display: flex; align-items: center; gap: 7px;
 }
 
+/* Month / Period filter pills */
+.sdash-month-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 10px 14px; background: var(--bg-subtle);
+  border-radius: 12px; border: 1px solid var(--border);
+}
+.sdash-month-label {
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.sdash-month-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.sdash-mpill {
+  padding: 5px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  cursor: pointer; background: var(--bg); font-family: inherit;
+  transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
+}
+.sdash-mpill:hover { background: var(--bg-subtle); color: var(--text); }
+.sdash-mpill.active {
+  background: #0055e0; color: #fff; border-color: #0055e0;
+  box-shadow: 0 2px 8px rgba(0,85,224,.25);
+}
+
 /* Charts row */
 .sdash-charts-row {
   display: grid; grid-template-columns: 1fr 1fr; gap: 14px;

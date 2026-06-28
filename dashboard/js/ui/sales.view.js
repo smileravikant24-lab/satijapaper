@@ -2,6 +2,10 @@ import { getSalesDashConfig, fetchGvizSheet, parseSheetTable } from '../services
 
 let _view   = 'manager';
 let _period = 'monthly';
+let _month  = '';        // '' = all/current; set by month pill
+let _allRows = [];       // full parsed rows (for client-side month filter)
+let _allCols = [];
+let _allMeta = {};
 let _charts = [];
 let _busy   = false;
 let _chartJsReady = false;
@@ -10,6 +14,8 @@ const SHEET_KEY = {
   manager: { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' },
   md:      { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' }
 };
+
+const PERIOD_LABEL = { monthly: 'Month', biweekly: 'Period', weekly: 'Week' };
 
 async function _ensureChartJs() {
   if (_chartJsReady || window.Chart) { _chartJsReady = true; return; }
@@ -47,8 +53,7 @@ function _shellHTML() {
 }
 
 export async function renderSalesDashboard(container) {
-  _view   = 'manager';
-  _period = 'monthly';
+  _view = 'manager'; _period = 'monthly'; _month = '';
   container.innerHTML = _shellHTML();
   await _load();
 }
@@ -76,7 +81,11 @@ async function _load() {
     const gid   = typeof gidEntry === 'object' ? gidEntry.gid : String(gidEntry);
     const table = await fetchGvizSheet(cfg.spreadsheetId, gid);
     const { cols, rows, meta } = parseSheetTable(table);
-    _render(body, cols, rows, meta);
+
+    console.log('[SalesDash] cols:', cols, '| rows:', rows.length, '| key:', key);
+
+    _allCols = cols; _allRows = rows; _allMeta = meta; _month = '';
+    _renderAll(body, cols, rows, meta);
   } catch (err) {
     body.innerHTML = `
       <div class="sdash-error">
@@ -88,13 +97,24 @@ async function _load() {
   }
 }
 
-function _render(container, cols, rows, meta) {
-  // Temporary: log columns so we can verify detection is correct
-  console.log('[SalesDash] cols:', cols, '| rows:', rows.length);
+function _renderAll(container, cols, rows, meta) {
   if (!rows.length) {
     container.innerHTML = '<div class="sdash-error"><i class="fas fa-table"></i><p>No data rows found in this sheet.</p></div>';
     return;
   }
+
+  // Build month/period selector pills from col-0 values
+  const periods = [...new Set(rows.map(r => String(r[0] ?? '').trim()).filter(Boolean))];
+  const periodLabel = PERIOD_LABEL[_period] || 'Period';
+  const pillsHtml = periods.length > 1
+    ? `<div class="sdash-month-row">
+         <span class="sdash-month-label"><i class="fas fa-filter"></i> ${periodLabel}:</span>
+         <div class="sdash-month-pills">
+           <button class="sdash-mpill active" onclick="sdashSetMonth('',this)">All</button>
+           ${periods.map(p => `<button class="sdash-mpill" onclick="sdashSetMonth('${_esc(p)}',this)">${p}</button>`).join('')}
+         </div>
+       </div>`
+    : '';
 
   const dateRange = (meta.startDate && meta.endDate)
     ? `<div class="sdash-daterange"><i class="fas fa-calendar-days"></i> ${meta.startDate} – ${meta.endDate}</div>`
@@ -102,13 +122,14 @@ function _render(container, cols, rows, meta) {
 
   container.innerHTML = `
     ${dateRange}
+    ${pillsHtml}
     <div class="sdash-charts-row">
       <div class="sdash-chart-card">
-        <div class="sdash-chart-title"><i class="fas fa-truck-fast"></i> Dispatch Summary</div>
+        <div class="sdash-chart-title"><i class="fas fa-truck-fast"></i> Dispatch Comparison</div>
         <div class="sdash-canvas-wrap"><canvas id="sdashChartDispatch"></canvas></div>
       </div>
       <div class="sdash-chart-card">
-        <div class="sdash-chart-title"><i class="fas fa-indian-rupee-sign"></i> Amount Summary</div>
+        <div class="sdash-chart-title"><i class="fas fa-indian-rupee-sign"></i> Amount Comparison</div>
         <div class="sdash-canvas-wrap"><canvas id="sdashChartAmount"></canvas></div>
       </div>
     </div>
@@ -122,53 +143,61 @@ function _render(container, cols, rows, meta) {
   });
 }
 
-// Find column index — tries combined keyword match first, then any keyword
+function _renderFiltered() {
+  const body = document.getElementById('sdashBody');
+  if (!body || !_allCols.length) return;
+  _destroyCharts();
+  const rows = _month
+    ? _allRows.filter(r => String(r[0] ?? '').trim() === _month)
+    : _allRows;
+  // Re-render charts + table, keep pills/daterange intact
+  const dispCanvas = document.getElementById('sdashChartDispatch');
+  const amtCanvas  = document.getElementById('sdashChartAmount');
+  const tblWrap    = body.querySelector('.sdash-table-card');
+  if (dispCanvas) requestAnimationFrame(() => {
+    _makeChart('sdashChartDispatch', _allCols, rows, false);
+    _makeChart('sdashChartAmount',   _allCols, rows, true);
+  });
+  if (tblWrap) tblWrap.innerHTML = _buildTable(_allCols, rows);
+}
+
+// --- Column detection (no greedy fallback — must match ALL keywords) ---
 function _findCol(cols, ...keywords) {
   const kws = keywords.map(k => k.toLowerCase());
-  let idx = cols.findIndex(c => kws.every(k => c.toLowerCase().includes(k)));
-  if (idx !== -1) return idx;
-  return cols.findIndex(c => kws.some(k => c.toLowerCase().includes(k)));
+  return cols.findIndex(c => kws.every(k => c.toLowerCase().includes(k)));
 }
 
 function _makeChart(canvasId, cols, rows, isAmount) {
   const canvas = document.getElementById(canvasId);
   if (!canvas || !window.Chart) return;
 
-  const labels = rows.map(r => String(r[0] ?? '').trim());
-  let colA, colB, labelA, labelB, colorA, colorB;
+  const labels = rows.map(r => String(r[0] ?? '').trim() || '—');
+  let colA, colB, colTot, labelA, labelB, colorA, colorB;
 
   if (!isAmount) {
-    // On Time Dispatch — try many naming variants
+    // On Time Dispatch
     colA = _findCol(cols, 'on time', 'dispatch');
     if (colA === -1) colA = _findCol(cols, 'ontime', 'dispatch');
-    if (colA === -1) colA = _findCol(cols, 'ot dispatch');
-    if (colA === -1) colA = _findCol(cols, 'on time', 'qty');
-    if (colA === -1) colA = _findCol(cols, 'on time');
-    if (colA === -1) colA = _findCol(cols, 'ontime');
+    if (colA === -1) colA = _findCol(cols, 'ot', 'dispatch');
     // Delay Dispatch
     colB = _findCol(cols, 'delay', 'dispatch');
     if (colB === -1) colB = _findCol(cols, 'delayed', 'dispatch');
     if (colB === -1) colB = _findCol(cols, 'late', 'dispatch');
-    if (colB === -1) colB = _findCol(cols, 'delayed');
-    if (colB === -1) colB = _findCol(cols, 'delay');
-    if (colB === -1) colB = _findCol(cols, 'late');
+    // Total Dispatch (optional 3rd bar)
+    colTot = _findCol(cols, 'total', 'dispatch');
     labelA = 'On Time Dispatch'; colorA = '#22c55e';
     labelB = 'Delay Dispatch';   colorB = '#ef4444';
   } else {
     // Total Amount
     colA = _findCol(cols, 'total', 'amount');
     if (colA === -1) colA = _findCol(cols, 'total', 'amt');
-    if (colA === -1) colA = _findCol(cols, 'total', 'value');
     if (colA === -1) colA = _findCol(cols, 'gross', 'amount');
-    if (colA === -1) colA = _findCol(cols, 'total');
     // On Time Amount
     colB = _findCol(cols, 'on time', 'amount');
     if (colB === -1) colB = _findCol(cols, 'ontime', 'amount');
-    if (colB === -1) colB = _findCol(cols, 'on time', 'amt');
-    if (colB === -1) colB = _findCol(cols, 'ot amount');
-    if (colB === -1) colB = _findCol(cols, 'received', 'amount');
-    labelA = 'Total Amount';   colorA = '#3b82f6';
-    labelB = 'On Time Amount'; colorB = '#22c55e';
+    if (colB === -1) colB = _findCol(cols, 'ot', 'amount');
+    labelA = 'Total Amount';   colorA = '#22c55e';  // green — matches Google Sheet chart
+    labelB = 'On Time Amount'; colorB = '#ef4444';  // red   — matches Google Sheet chart
   }
 
   const dataA = (colA !== -1) ? rows.map(r => _toNum(r[colA])) : null;
@@ -176,13 +205,22 @@ function _makeChart(canvasId, cols, rows, isAmount) {
 
   if (!dataA && !dataB) {
     const card = canvas.closest('.sdash-chart-card');
-    if (card) card.insertAdjacentHTML('beforeend', '<div class="sdash-no-col">Column not found — check sheet column names.</div>');
+    if (card) card.insertAdjacentHTML('beforeend',
+      `<div class="sdash-no-col">Columns not detected. Found: ${cols.join(', ')}</div>`);
     return;
   }
 
   const datasets = [];
-  if (dataA) datasets.push({ label: labelA, data: dataA, backgroundColor: colorA + 'bb', borderColor: colorA, borderWidth: 1.5, borderRadius: 5, borderSkipped: false });
-  if (dataB) datasets.push({ label: labelB, data: dataB, backgroundColor: colorB + 'bb', borderColor: colorB, borderWidth: 1.5, borderRadius: 5, borderSkipped: false });
+  if (dataA) datasets.push({
+    label: labelA, data: dataA,
+    backgroundColor: colorA + 'cc', borderColor: colorA,
+    borderWidth: 1.5, borderRadius: 5, borderSkipped: false
+  });
+  if (dataB) datasets.push({
+    label: labelB, data: dataB,
+    backgroundColor: colorB + 'cc', borderColor: colorB,
+    borderWidth: 1.5, borderRadius: 5, borderSkipped: false
+  });
 
   const chart = new window.Chart(canvas, {
     type: 'bar',
@@ -202,6 +240,7 @@ function _makeChart(canvasId, cols, rows, isAmount) {
         x: { ticks: { font: { size: 10 }, maxRotation: 40, color: '#64748b' }, grid: { display: false } },
         y: {
           beginAtZero: true,
+          title: { display: true, text: isAmount ? 'Amount (₹)' : 'Dispatch Count', font: { size: 10 }, color: '#94a3b8' },
           ticks: { font: { size: 10 }, color: '#64748b', callback: v => isAmount ? '₹' + _fmtK(v) : v },
           grid: { color: 'rgba(0,0,0,.06)' }
         }
@@ -217,7 +256,7 @@ function _buildTable(cols, rows) {
     const cells = cols.map((c, i) => {
       const v = r[i];
       if (v == null || v === '') return '<td class="sdash-td-na">—</td>';
-      const isAmt = /amount|value|rate|inr|₹/i.test(c);
+      const isAmt = /amount|value|inr|₹/i.test(c);
       if (typeof v === 'number') {
         return `<td class="sdash-num">${isAmt ? '₹' + _fmt(v) : v}</td>`;
       }
@@ -225,7 +264,6 @@ function _buildTable(cols, rows) {
     }).join('');
     return `<tr>${cells}</tr>`;
   }).join('');
-
   return `
     <div class="sdash-tbl-scroll">
       <table class="sdash-tbl">
@@ -243,10 +281,10 @@ function _fmtK(n) {
   if (n >= 1e3) return (n / 1e3).toFixed(0) + 'K';
   return n;
 }
+function _esc(s) { return String(s).replace(/'/g, "\\'"); }
 
 export function sdashSetView(view, btn) {
-  _view   = view;
-  _period = 'monthly';
+  _view = view; _period = 'monthly'; _month = '';
   document.querySelectorAll('.sdash-vtab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   document.querySelectorAll('.sdash-ptab').forEach((b, i) => b.classList.toggle('active', i === 0));
@@ -254,8 +292,15 @@ export function sdashSetView(view, btn) {
 }
 
 export function sdashSetPeriod(period, btn) {
-  _period = period;
+  _period = period; _month = '';
   document.querySelectorAll('.sdash-ptab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   _load();
+}
+
+export function sdashSetMonth(month, btn) {
+  _month = month;
+  document.querySelectorAll('.sdash-mpill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  _renderFiltered();
 }
