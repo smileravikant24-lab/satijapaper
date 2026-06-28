@@ -18,6 +18,7 @@ import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { BANK_QR }                        from './bank-qr.js';
+import { renderSalesDashboard, sdashSetView, sdashSetPeriod } from './ui/sales.view.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -97,11 +98,38 @@ function _hidePersonalBankPanel() {
   if (p) { p.style.display = 'none'; p.innerHTML = ''; }
 }
 
+function _hideSalesPanel() {
+  const sp = document.getElementById('salesPanel');
+  if (sp) sp.style.display = 'none';
+}
+
+async function showSalesDashboard(btn) {
+  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Sales'))) {
+    showToast('Access Denied.', 'err');
+    return;
+  }
+  _hidePersonalBankPanel();
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  state.curCat   = 'SalesDash';
+  state.curGroup = null;
+  state.daMode   = 'all';
+  document.getElementById('pageHeader').textContent   = 'Sales Dashboard';
+  document.getElementById('searchWrap').style.display = 'none';
+  document.getElementById('cardBox').style.display    = 'none';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('productsPanel').style.display = 'none';
+  const sp = document.getElementById('salesPanel');
+  sp.style.display = 'block';
+  await renderSalesDashboard(sp);
+}
+
 function showProducts(btn) {
   if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Products'))) {
     showToast('Access Denied.', 'err');
     return;
   }
+  _hideSalesPanel();
   _hidePersonalBankPanel();
   document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -211,12 +239,14 @@ function _showCardGrid() {
   const ap = document.getElementById('adminPanel');
   if (ap) { ap.classList.remove('visible'); ap.style.removeProperty('display'); }
   document.getElementById('productsPanel').style.display = 'none';
+  _hideSalesPanel();
   document.getElementById('searchWrap').style.display    = '';
   document.getElementById('cardBox').style.display       = '';
 }
 
 function showAdmin(btn) {
   _hidePersonalBankPanel();
+  _hideSalesPanel();
   const pp = document.getElementById('productsPanel');
   if (pp) pp.style.display = 'none';
   const ap = document.getElementById('adminPanel');
@@ -423,6 +453,7 @@ function _lazyLoadImages(container) {
 
 async function showBankDetails(btn) {
   _hidePersonalBankPanel();
+  _hideSalesPanel();
   if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Bank Details'))) {
     showToast('Access Denied.', 'err');
     return;
@@ -467,6 +498,9 @@ Object.assign(window, {
   shareBankDetails,
   showBankDetails,
   showPersonalAccounts: _showPersonalBanks,
+  showSalesDashboard,
+  sdashSetView,
+  sdashSetPeriod,
 });
 
 
