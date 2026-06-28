@@ -68,7 +68,8 @@ export function parseSheetTable(table) {
 
   const dataRows = raw.slice(hIdx + 1)
     .map(r => (r || []).slice(startCol, startCol + cols.length))
-    .filter(r => r[0] != null && String(r[0]).trim() !== '');
+    // Keep rows that have at least one non-null, non-empty cell (removes blank spacer rows)
+    .filter(r => r.some(v => v != null && String(v).trim() !== ''));
 
   // Extract metadata (Start Date / End Date) from rows above header
   const meta = {};
@@ -80,5 +81,7 @@ export function parseSheetTable(table) {
       if (k === 'enddate'   && row[j + 1] != null) meta.endDate   = String(row[j + 1]);
     }
   }
+  console.log('[Sheet] hIdx:', hIdx, '| startCol:', startCol, '| cols:', cols, '| dataRows:', dataRows.length);
+  if (dataRows.length === 0) console.log('[Sheet] first 5 raw rows:', raw.slice(0, 5));
   return { cols, rows: dataRows, meta };
 }
