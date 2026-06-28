@@ -89,6 +89,8 @@ async function _load() {
 }
 
 function _render(container, cols, rows, meta) {
+  // Temporary: log columns so we can verify detection is correct
+  console.log('[SalesDash] cols:', cols, '| rows:', rows.length);
   if (!rows.length) {
     container.innerHTML = '<div class="sdash-error"><i class="fas fa-table"></i><p>No data rows found in this sheet.</p></div>';
     return;
@@ -136,20 +138,34 @@ function _makeChart(canvasId, cols, rows, isAmount) {
   let colA, colB, labelA, labelB, colorA, colorB;
 
   if (!isAmount) {
+    // On Time Dispatch — try many naming variants
     colA = _findCol(cols, 'on time', 'dispatch');
-    if (colA === -1) colA = _findCol(cols, 'ontime', 'qty');
+    if (colA === -1) colA = _findCol(cols, 'ontime', 'dispatch');
+    if (colA === -1) colA = _findCol(cols, 'ot dispatch');
+    if (colA === -1) colA = _findCol(cols, 'on time', 'qty');
     if (colA === -1) colA = _findCol(cols, 'on time');
+    if (colA === -1) colA = _findCol(cols, 'ontime');
+    // Delay Dispatch
     colB = _findCol(cols, 'delay', 'dispatch');
+    if (colB === -1) colB = _findCol(cols, 'delayed', 'dispatch');
+    if (colB === -1) colB = _findCol(cols, 'late', 'dispatch');
     if (colB === -1) colB = _findCol(cols, 'delayed');
     if (colB === -1) colB = _findCol(cols, 'delay');
+    if (colB === -1) colB = _findCol(cols, 'late');
     labelA = 'On Time Dispatch'; colorA = '#22c55e';
     labelB = 'Delay Dispatch';   colorB = '#ef4444';
   } else {
+    // Total Amount
     colA = _findCol(cols, 'total', 'amount');
-    if (colA === -1) colA = _findCol(cols, 'total amt');
+    if (colA === -1) colA = _findCol(cols, 'total', 'amt');
+    if (colA === -1) colA = _findCol(cols, 'total', 'value');
+    if (colA === -1) colA = _findCol(cols, 'gross', 'amount');
     if (colA === -1) colA = _findCol(cols, 'total');
+    // On Time Amount
     colB = _findCol(cols, 'on time', 'amount');
     if (colB === -1) colB = _findCol(cols, 'ontime', 'amount');
+    if (colB === -1) colB = _findCol(cols, 'on time', 'amt');
+    if (colB === -1) colB = _findCol(cols, 'ot amount');
     if (colB === -1) colB = _findCol(cols, 'received', 'amount');
     labelA = 'Total Amount';   colorA = '#3b82f6';
     labelB = 'On Time Amount'; colorB = '#22c55e';
