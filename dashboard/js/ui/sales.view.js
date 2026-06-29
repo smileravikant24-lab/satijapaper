@@ -1,119 +1,73 @@
 import { getSalesDashConfig } from '../services/sales.service.js';
 import { state } from '../state.js';
 
-let _view = 'dispatch';
 let _busy = false;
 let _cfg  = null;
 
-const SHEET_KEY = {
-  dispatch: { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' },
-  Sales:      { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' }
+// Manager → Mode sheets, MD → Time sheets
+const SHEETS = {
+  manager: { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' },
+  md:      { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime'  }
 };
 
-const VIEW_META = {
-  dispatch: {
-    cards: [
-      { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch & financial data' },
-      { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch & financial data' },
-      { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch & financial data' },
-    ],
-    color: 'dispatch'
-  },
-  Sales: {
-    cards: [
-      { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch & financial data' },
-      { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch & financial data' },
-      { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch & financial data' },
-    ],
-    color: 'Sales'
-  }
-};
+const PERIOD_BTNS = [
+  { key: 'monthly',  label: 'Monthly', icon: 'fa-calendar-days' },
+  { key: 'biweekly', label: '15-Day',  icon: 'fa-calendar-week' },
+  { key: 'weekly',   label: 'Weekly',  icon: 'fa-calendar'      },
+];
 
-function _canSalesView() {
+function _canMDView() {
   const u = state.curUser;
   return u?.role === 'Admin'
     || u?.deptAccess?.includes('All')
-    || u?.deptAccess?.includes('SalesDashSales');
+    || u?.deptAccess?.includes('SalesDashMD');
 }
 
-function _shellHTML() {
-  const SalesTab = _canSalesView()
-    ? `<button class="sdash-vtab" id="sdashVSales" onclick="sdashSetView('Sales',this)">
-         <i class="fas fa-crown"></i> Sales View
-       </button>`
-    : '';
+function _buildCard(view) {
+  const sid   = _cfg.spreadsheetId;
+  const isManager = view === 'manager';
+
+  const btns = PERIOD_BTNS.map(({ key, label, icon }) => {
+    const gidEntry = _cfg.sheets?.[SHEETS[view][key]];
+    const gid = typeof gidEntry === 'object' ? gidEntry.gid : String(gidEntry ?? '');
+    const url = gid ? `https://docs.google.com/spreadsheets/d/${sid}/edit#gid=${gid}` : '#';
+    return `<a class="btn sdash-btn-${view}" href="${url}" target="_blank" rel="noopener noreferrer">
+              <i class="fas ${icon}"></i> ${label}
+            </a>`;
+  }).join('');
+
   return `
-<div class="sdash-wrap">
-  <div class="sdash-header-row">
-    <div class="sdash-view-tabs">
-      <button class="sdash-vtab active" id="sdashVdispatch" onclick="sdashSetView('dispatch',this)">
-        <i class="fas fa-user-tie"></i> Dispatch View
-      </button>
-      ${SalesTab}
-    </div>
-  </div>
-  <div id="sdashBody">
-    <div class="sdash-loader"><i class="fas fa-spinner fa-spin"></i> Loading…</div>
-  </div>
-</div>`;
+    <div class="card sdash-card-${view}">
+      <div class="card-inner">
+        <i class="card-cat-icon fas ${isManager ? 'fa-user-tie' : 'fa-crown'}"></i>
+        <span class="card-tag sdash-tag-${view}">${isManager ? 'Manager View' : 'MD View'}</span>
+        <div class="card-title">${isManager ? 'Sales Dashboard — Manager' : 'Sales Dashboard — MD'}</div>
+        <div class="card-divider"></div>
+        <div class="actions">${btns}</div>
+      </div>
+    </div>`;
 }
 
 export async function renderSalesDashboard(container) {
-  _view = 'dispatch';
-  container.innerHTML = _shellHTML();
-  await _load();
-}
-
-async function _load() {
+  container.innerHTML = '<div class="sdash-grid"><div class="sdash-loader"><i class="fas fa-spinner fa-spin"></i> Loading…</div></div>';
   if (_busy) return;
   _busy = true;
-  const body = document.getElementById('sdashBody');
-  if (!body) { _busy = false; return; }
-  body.innerHTML = '<div class="sdash-loader"><i class="fas fa-spinner fa-spin"></i> Loading…</div>';
   try {
     _cfg = await getSalesDashConfig();
-    _renderCards();
+    let html = _buildCard('manager');
+    if (_canMDView()) html += _buildCard('md');
+    container.innerHTML = `<div class="sdash-grid">${html}</div>`;
   } catch (err) {
-    body.innerHTML = `
-      <div class="sdash-error">
-        <i class="fas fa-circle-exclamation"></i>
-        <p>${err.message || String(err)}</p>
+    container.innerHTML = `
+      <div class="sdash-grid">
+        <div class="sdash-error">
+          <i class="fas fa-circle-exclamation"></i>
+          <p>${err.message || String(err)}</p>
+        </div>
       </div>`;
   } finally {
     _busy = false;
   }
 }
 
-function _renderCards() {
-  const body = document.getElementById('sdashBody');
-  if (!body || !_cfg) return;
-
-  const { cards, color } = VIEW_META[_view];
-
-  const html = cards.map(({ key, label, icon, desc }) => {
-    const gidEntry = _cfg.sheets?.[SHEET_KEY[_view][key]];
-    const gid = typeof gidEntry === 'object' ? gidEntry.gid : String(gidEntry ?? '');
-    const url = gid
-      ? `https://docs.google.com/spreadsheets/d/${_cfg.spreadsheetId}/edit#gid=${gid}`
-      : '#';
-    return `
-      <a class="sdash-sheet-card sdash-card-${color}" href="${url}" target="_blank" rel="noopener noreferrer">
-        <div class="sdash-sheet-card-icon"><i class="fas ${icon}"></i></div>
-        <div class="sdash-sheet-card-info">
-          <div class="sdash-sheet-card-label">${label}</div>
-          <div class="sdash-sheet-card-desc">${desc}</div>
-        </div>
-        <i class="fas fa-arrow-up-right-from-square sdash-sheet-card-arrow"></i>
-      </a>`;
-  }).join('');
-
-  body.innerHTML = `<div class="sdash-sheet-cards">${html}</div>`;
-}
-
-export function sdashSetView(view, btn) {
-  if (view === 'Sales' && !_canSalesView()) return;
-  _view = view;
-  document.querySelectorAll('.sdash-vtab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  if (_cfg) _renderCards(); else _load();
-}
+export function sdashSetView() {} // window compat stub

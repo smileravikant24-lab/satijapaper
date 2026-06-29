@@ -1,85 +1,68 @@
 /* ── Sales Dashboard ──────────────────────────────────────── */
-.sdash-wrap { display: flex; flex-direction: column; gap: 20px; }
 
-.sdash-header-row {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
-}
-
-/* View toggle */
-.sdash-view-tabs { display: flex; gap: 6px; }
-.sdash-vtab {
-  display: flex; align-items: center; gap: 7px;
-  padding: 9px 18px; border: 2px solid var(--border); border-radius: 10px;
-  background: var(--bg); font-size: 13px; font-weight: 700;
-  color: var(--text-2); cursor: pointer; font-family: inherit;
-  transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
-}
-.sdash-vtab:hover { background: var(--bg-subtle); color: var(--text); }
-.sdash-vtab.active {
-  background: var(--accent); color: #fff; border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(0,85,224,.28);
+/* Grid — matches existing .grid layout */
+.sdash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(240px, 20vw, 360px), 1fr));
+  gap: clamp(12px, 1.2vw, 20px);
 }
 
-/* Sheet cards grid */
-.sdash-sheet-cards { display: flex; flex-direction: column; gap: 14px; }
-
-.sdash-sheet-card {
-  display: flex; align-items: center; gap: 16px;
-  padding: 20px 22px; border-radius: 16px;
-  border: 2px solid transparent; background: var(--bg);
-  text-decoration: none; color: var(--text);
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
-  transition: border-color .18s, box-shadow .2s, transform .15s, background .15s;
+/* ── Manager card — Teal ──────────────────────────────────── */
+.card.sdash-card-manager::before {
+  background: linear-gradient(90deg, #0f766e, #2dd4bf);
 }
-.sdash-sheet-card:hover { transform: translateY(-2px); }
-
-/* Manager View — Teal */
-.sdash-card-manager .sdash-sheet-card-icon {
-  background: linear-gradient(135deg, #0d9488, #0f766e);
-  box-shadow: 0 4px 14px rgba(13,148,136,.35);
+.card.sdash-card-manager::after {
+  background: linear-gradient(90deg, rgba(15,118,110,.4), transparent);
 }
-.sdash-card-manager { border-color: rgba(13,148,136,.15); }
-.sdash-card-manager:hover {
-  border-color: #0d9488;
-  background: rgba(13,148,136,.04);
-  box-shadow: 0 6px 22px rgba(13,148,136,.18);
+.sdash-card-manager .card-cat-icon {
+  background: rgba(13,148,136,.12);
+  color: #0d9488;
 }
-.sdash-card-manager .sdash-sheet-card-arrow { color: #0d9488; }
-
-/* MD View — Amber/Gold */
-.sdash-card-md .sdash-sheet-card-icon {
-  background: linear-gradient(135deg, #d97706, #b45309);
-  box-shadow: 0 4px 14px rgba(217,119,6,.35);
-}
-.sdash-card-md { border-color: rgba(217,119,6,.15); }
-.sdash-card-md:hover {
-  border-color: #d97706;
-  background: rgba(217,119,6,.04);
-  box-shadow: 0 6px 22px rgba(217,119,6,.18);
-}
-.sdash-card-md .sdash-sheet-card-arrow { color: #d97706; }
-
-/* Card internals */
-.sdash-sheet-card-icon {
-  width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff;
-}
-.sdash-sheet-card-info { flex: 1; min-width: 0; }
-.sdash-sheet-card-label {
-  font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px;
-}
-.sdash-sheet-card-desc { font-size: 12px; color: var(--text-3); font-weight: 500; }
-.sdash-sheet-card-arrow {
-  font-size: 14px; flex-shrink: 0;
-  opacity: 0; transition: opacity .15s, transform .15s;
-  transform: translate(-4px, -4px);
-}
-.sdash-sheet-card:hover .sdash-sheet-card-arrow {
-  opacity: 1; transform: translate(0, 0);
+.sdash-tag-manager {
+  background: #ccfbf1;
+  color: #0f766e;
 }
 
-/* States */
+/* ── MD card — Amber ──────────────────────────────────────── */
+.card.sdash-card-md::before {
+  background: linear-gradient(90deg, #b45309, #fbbf24);
+}
+.card.sdash-card-md::after {
+  background: linear-gradient(90deg, rgba(180,83,9,.4), transparent);
+}
+.sdash-card-md .card-cat-icon {
+  background: rgba(217,119,6,.12);
+  color: #d97706;
+}
+.sdash-tag-md {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ── Card title color overrides ───────────────────────────── */
+.sdash-card-manager .card-title { color: #0f766e; }
+.sdash-card-md      .card-title { color: #b45309; }
+
+/* ── Period buttons ───────────────────────────────────────── */
+.sdash-btn-manager {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+.sdash-btn-manager:hover {
+  background: #0f766e;
+  color: #fff;
+}
+
+.sdash-btn-md {
+  background: #fef3c7;
+  color: #92400e;
+}
+.sdash-btn-md:hover {
+  background: #92400e;
+  color: #fff;
+}
+
+/* ── States ───────────────────────────────────────────────── */
 .sdash-loader {
   display: flex; align-items: center; justify-content: center;
   gap: 10px; padding: 60px 20px;
@@ -94,16 +77,12 @@
 .sdash-error i { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
 .sdash-error p { margin: 0; line-height: 1.5; }
 
-/* Sidebar nav button */
+/* ── Sidebar nav button ───────────────────────────────────── */
 #navSalesDash { background: rgba(37,99,235,.08); color: #1d4ed8; }
 #navSalesDash.active { background: #1d4ed8; color: #fff; box-shadow: 0 3px 12px rgba(29,78,216,.35); }
 #navSalesDash:not(.active) .tab-count { color: #1d4ed8; background: rgba(29,78,216,.1); }
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .sdash-header-row { flex-direction: column; align-items: flex-start; }
-  .sdash-vtab { font-size: 12px; padding: 8px 13px; }
-  .sdash-sheet-card { padding: 15px 16px; gap: 12px; }
-  .sdash-sheet-card-icon { width: 42px; height: 42px; font-size: 17px; }
-  .sdash-sheet-card-label { font-size: 13px; }
+  .sdash-grid { grid-template-columns: 1fr; }
 }
