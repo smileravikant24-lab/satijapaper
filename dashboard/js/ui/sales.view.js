@@ -6,8 +6,8 @@ let _busy = false;
 let _cfg  = null;
 
 const SHEET_KEY = {
-  manager: { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' },
-  md:      { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' }
+  manager: { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' },
+  md:      { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' }
 };
 
 const VIEW_META = {
