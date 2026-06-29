@@ -408,21 +408,21 @@ export const PRODUCTS = [
         brightness: '88–90% ISO', sheets: 500,
         bestFor: 'Daily home & office copier/xerox use',
         color: '#6B8E9F', colorName: 'Blue-Grey',
-        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        img: _IMG['RUCHIRA_ROZANA_70'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
         name: 'Rozana 75 GSM', gsm: 75, sizes: ['A4'],
         brightness: '88–90% ISO', sheets: 500,
         bestFor: 'Economy range multipurpose printing',
         color: '#7B9E6B', colorName: 'Olive Green',
-        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        img: _IMG['RUCHIRA_ROZANA_75'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
         name: 'Rozana 80 GSM', gsm: 80, sizes: ['A4'],
         brightness: '88–90% ISO', sheets: 500,
         bestFor: 'Economy range, all printers & copiers',
         color: '#5B7FA6', colorName: 'Blue',
-        img: _IMG['RUCHIRA_ROZANA'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
+        img: _IMG['RUCHIRA_ROZANA_80'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
       {
         name: 'Mela — Colour Printing', gsm: 75, sizes: ['A4'],
