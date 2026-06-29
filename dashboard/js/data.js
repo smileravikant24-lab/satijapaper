@@ -3,9 +3,9 @@ import { _IMG } from './images.js';
 export const DB = [
   // ── A) IMPORT & PROCUREMENT ──────────────────────────────────
   {cat:"Import",name:"Custom Clearance Checklist",
-   pc:"-",solver:"-",exec:"-",links:{check:1}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"Import",name:"Shipping Document Checklist",
-   pc:"-",solver:"-",exec:"-",links:{check:1}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1}},
 
   // ── B) SALES & MARKETING ─────────────────────────────────────
   {cat:"Sales",name:"CRM Payment FMS",
