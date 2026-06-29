@@ -39,7 +39,9 @@ export const DB = [
   // ──────────────────────────────────────────────────────────────
   {cat:"Sales",name:"Enquiry Capture FY 2026-27",
    pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{gasForm:1,sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Stock Dashboard",
+  {cat:"Sales",name:"Stock Dashboard Khera",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"All Team",links:{stockDash:1,aiqa:1}},
+  {cat:"Sales",name:"Stock Dashboard Mukherjee Nagar",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"All Team",links:{stockDash:1,aiqa:1}},
 
   {cat:"Sales",name:"New Customer Visit",

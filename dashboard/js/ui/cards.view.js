@@ -132,7 +132,8 @@ export function renderCards(data){
     'Double A Corporate Customer':       'fas fa-building',
     'Double A Display Links':            'fas fa-link',
     'Enquiry Capture FY 2026-27':        'fas fa-magnifying-glass-chart',
-    'Stock Dashboard':                   'fas fa-boxes-stacking',
+    'Stock Dashboard Khera':             'fas fa-boxes-stacking',
+    'Stock Dashboard Mukherjee Nagar':   'fas fa-boxes-stacking',
     // ── Warehouse & Logistics ────────────────────────────────
     'Order to Delivery FMS':             'fas fa-route',
     'O2D Direct Dispatch FMS':           'fas fa-box-open',
