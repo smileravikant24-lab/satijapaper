@@ -40,8 +40,8 @@ function _buildCard(view) {
     <div class="card sdash-card-${view}">
       <div class="card-inner">
         <i class="card-cat-icon fas ${isManager ? 'fa-user-tie' : 'fa-crown'}"></i>
-        <span class="card-tag sdash-tag-${view}">${isManager ? 'Manager View' : 'MD View'}</span>
-        <div class="card-title">${isManager ? 'Sales Dashboard — Manager' : 'Sales Dashboard — MD'}</div>
+        <span class="card-tag sdash-tag-${view}">${isManager ? 'Dispatch View' : 'Sales View'}</span>
+        <div class="card-title">${isManager ? 'Dispatch' : 'Sales'}</div>
         <div class="card-divider"></div>
         <div class="actions">${btns}</div>
       </div>
