@@ -5,7 +5,7 @@ export const DB = [
   {cat:"Import",name:"Custom Clearance Checklist",
    pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"Import",name:"Shipping Document Checklist",
-   pc:"-",solver:"-",exec:"-",links:{sheet:1}},
+   pc:"-",solver:"-",exec:"-",links:{}},
 
   // ── B) SALES & MARKETING ─────────────────────────────────────
   {cat:"Sales",name:"CRM Payment FMS",
