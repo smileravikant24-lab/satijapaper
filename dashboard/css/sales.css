@@ -33,31 +33,31 @@
 }
 .sdash-sheet-card:hover { transform: translateY(-2px); }
 
-/* Manager View — Blue */
+/* Manager View — Teal */
 .sdash-card-manager .sdash-sheet-card-icon {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af);
-  box-shadow: 0 4px 14px rgba(29,78,216,.35);
+  background: linear-gradient(135deg, #0d9488, #0f766e);
+  box-shadow: 0 4px 14px rgba(13,148,136,.35);
 }
-.sdash-card-manager { border-color: rgba(29,78,216,.12); }
+.sdash-card-manager { border-color: rgba(13,148,136,.15); }
 .sdash-card-manager:hover {
-  border-color: #1d4ed8;
-  background: rgba(29,78,216,.03);
-  box-shadow: 0 6px 22px rgba(29,78,216,.16);
+  border-color: #0d9488;
+  background: rgba(13,148,136,.04);
+  box-shadow: 0 6px 22px rgba(13,148,136,.18);
 }
-.sdash-card-manager .sdash-sheet-card-arrow { color: #1d4ed8; }
+.sdash-card-manager .sdash-sheet-card-arrow { color: #0d9488; }
 
-/* MD View — Purple */
+/* MD View — Amber/Gold */
 .sdash-card-md .sdash-sheet-card-icon {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
-  box-shadow: 0 4px 14px rgba(124,58,237,.35);
+  background: linear-gradient(135deg, #d97706, #b45309);
+  box-shadow: 0 4px 14px rgba(217,119,6,.35);
 }
-.sdash-card-md { border-color: rgba(124,58,237,.12); }
+.sdash-card-md { border-color: rgba(217,119,6,.15); }
 .sdash-card-md:hover {
-  border-color: #7c3aed;
-  background: rgba(124,58,237,.03);
-  box-shadow: 0 6px 22px rgba(124,58,237,.16);
+  border-color: #d97706;
+  background: rgba(217,119,6,.04);
+  box-shadow: 0 6px 22px rgba(217,119,6,.18);
 }
-.sdash-card-md .sdash-sheet-card-arrow { color: #7c3aed; }
+.sdash-card-md .sdash-sheet-card-arrow { color: #d97706; }
 
 /* Card internals */
 .sdash-sheet-card-icon {
