@@ -47,7 +47,7 @@ function _shellHTML() {
   <div class="sdash-header-row">
     <div class="sdash-view-tabs">
       <button class="sdash-vtab active" id="sdashVdispatch" onclick="sdashSetView('dispatch',this)">
-        <i class="fas fa-user-tie"></i> dispatch View
+        <i class="fas fa-user-tie"></i> Dispatch View
       </button>
       ${SalesTab}
     </div>
