@@ -21,9 +21,9 @@ const VIEW_META = {
   },
   md: {
     cards: [
-      { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch by transport mode' },
-      { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch by transport mode' },
-      { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch by transport mode' },
+      { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch & financial data' },
+      { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch & financial data' },
+      { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch & financial data' },
     ],
     color: 'md'
   }
