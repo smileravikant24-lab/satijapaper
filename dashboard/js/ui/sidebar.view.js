@@ -57,7 +57,9 @@ export function updateCounts(){
 
   // Sales Dashboard — visible to Admin, Sales dept, or All access
   const hasAllAccess     = state.curUser?.deptAccess?.includes('All');
-  const canSeeSalesDash  = isAdmin || hasAllAccess || state.curUser?.deptAccess?.includes('Sales');
+  const canSeeSalesDash  = isAdmin || hasAllAccess
+    || state.curUser?.deptAccess?.includes('Sales')
+    || state.curUser?.deptAccess?.includes('SalesDash');
   const sdBtn = document.getElementById('navSalesDash');
   const sdSep = document.getElementById('salesDashSep');
   if (sdBtn) sdBtn.style.display = canSeeSalesDash ? '' : 'none';

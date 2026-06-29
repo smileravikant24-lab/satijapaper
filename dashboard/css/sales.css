@@ -1,7 +1,7 @@
 /* ── Sales Dashboard ──────────────────────────────────────── */
-.sdash-wrap { display: flex; flex-direction: column; gap: 20px; }
+.sdash-wrap { display: flex; flex-direction: column; gap: 16px; }
 
-/* Header row: view tabs */
+/* Header row */
 .sdash-header-row {
   display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
 }
@@ -10,8 +10,7 @@
 .sdash-view-tabs { display: flex; gap: 6px; }
 .sdash-vtab {
   display: flex; align-items: center; gap: 7px;
-  padding: 9px 18px;
-  border: 2px solid var(--border); border-radius: 10px;
+  padding: 9px 18px; border: 2px solid var(--border); border-radius: 10px;
   background: var(--bg); font-size: 13px; font-weight: 700;
   color: var(--text-2); cursor: pointer; font-family: inherit;
   transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
@@ -22,49 +21,113 @@
   box-shadow: 0 4px 12px rgba(0,85,224,.28);
 }
 
-/* Sheet link cards */
-.sdash-sheet-cards {
-  display: flex; flex-direction: column; gap: 12px;
+/* Period pills (Monthly / 15-Day / Weekly) */
+.sdash-period-tabs { display: flex; gap: 5px; margin-left: auto; }
+.sdash-ptab {
+  padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  cursor: pointer; background: var(--bg); font-family: inherit;
+  transition: background .15s, color .15s, border-color .15s;
 }
-.sdash-sheet-card {
-  display: flex; align-items: center; gap: 16px;
-  padding: 18px 20px; border-radius: 14px;
+.sdash-ptab:hover { background: var(--bg-subtle); }
+.sdash-ptab.active { background: #0055e0; color: #fff; border-color: #0055e0; }
+
+/* Top bar: date range + refresh + open sheet */
+.sdash-top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.sdash-daterange {
+  font-size: 12px; font-weight: 600; color: var(--text-3);
+  display: flex; align-items: center; gap: 7px;
+}
+.sdash-refresh-info { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.sdash-last-updated {
+  font-size: 11px; font-weight: 600; color: #16a34a;
+  display: flex; align-items: center; gap: 5px;
+}
+.sdash-open-sheet-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: 8px;
+  border: 1.5px solid #16a34a; background: rgba(22,163,74,.07);
+  color: #16a34a; font-size: 11.5px; font-weight: 700;
+  text-decoration: none; white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.sdash-open-sheet-btn:hover { background: #16a34a; color: #fff; }
+.sdash-refresh-btn {
+  width: 30px; height: 30px; border-radius: 8px;
   border: 1.5px solid var(--border); background: var(--bg);
-  text-decoration: none; color: var(--text);
-  box-shadow: 0 2px 8px rgba(30,58,138,.05);
-  transition: border-color .18s, box-shadow .18s, background .15s, transform .15s;
-}
-.sdash-sheet-card:hover {
-  border-color: #16a34a; background: rgba(22,163,74,.04);
-  box-shadow: 0 4px 18px rgba(22,163,74,.14); transform: translateY(-1px);
-}
-.sdash-sheet-card-icon {
-  width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
-  background: linear-gradient(135deg,#16a34a,#15803d);
+  color: var(--text-2); cursor: pointer; font-size: 13px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: #fff;
-  box-shadow: 0 3px 10px rgba(22,163,74,.3);
+  transition: background .15s, color .15s, transform .2s;
 }
-.sdash-sheet-card-info { flex: 1; min-width: 0; }
-.sdash-sheet-card-label {
-  font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px;
+.sdash-refresh-btn:hover { background: var(--bg-subtle); color: var(--accent); }
+.sdash-refresh-btn:active { transform: rotate(180deg); }
+
+/* Month / Period filter pills */
+.sdash-month-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  padding: 10px 14px; background: var(--bg-subtle);
+  border-radius: 12px; border: 1px solid var(--border);
 }
-.sdash-sheet-card-desc {
-  font-size: 12px; color: var(--text-3); font-weight: 500;
+.sdash-month-label {
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
 }
-.sdash-sheet-card-arrow {
-  font-size: 14px; color: #16a34a; flex-shrink: 0;
-  opacity: 0; transition: opacity .15s, transform .15s;
-  transform: translate(-4px, -4px);
+.sdash-month-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.sdash-mpill {
+  padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-2);
+  cursor: pointer; background: var(--bg); font-family: inherit;
+  transition: background .15s, color .15s, border-color .15s, box-shadow .15s;
 }
-.sdash-sheet-card:hover .sdash-sheet-card-arrow {
-  opacity: 1; transform: translate(0, 0);
+.sdash-mpill:hover { background: var(--bg-subtle); color: var(--text); }
+.sdash-mpill.active {
+  background: #0055e0; color: #fff; border-color: #0055e0;
+  box-shadow: 0 2px 8px rgba(0,85,224,.25);
 }
+
+/* Charts */
+.sdash-charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sdash-chart-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;
+  box-shadow: 0 2px 10px rgba(30,58,138,.05);
+}
+.sdash-chart-title {
+  font-size: 13px; font-weight: 800; color: var(--text);
+  display: flex; align-items: center; gap: 7px;
+}
+.sdash-gchart-wrap { height: 240px; width: 100%; }
+
+/* Data table */
+.sdash-table-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; box-shadow: 0 2px 10px rgba(30,58,138,.05);
+}
+.sdash-tbl-scroll { overflow-x: auto; }
+.sdash-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.sdash-tbl thead th {
+  background: var(--bg-subtle); padding: 10px 14px;
+  text-align: left; font-size: 11px; font-weight: 700; color: var(--text-2);
+  text-transform: uppercase; letter-spacing: .05em;
+  border-bottom: 2px solid var(--border); white-space: nowrap;
+  position: sticky; top: 0; z-index: 1;
+}
+.sdash-tbl tbody td {
+  padding: 9px 14px; border-bottom: 1px solid var(--border);
+  color: var(--text); white-space: nowrap;
+}
+.sdash-tbl tbody tr:last-child td { border-bottom: none; }
+.sdash-tbl tbody tr:hover td { background: var(--bg-subtle); }
+.sdash-tbl .sdash-num { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+.sdash-tbl .sdash-td-na { color: var(--text-3); text-align: center; }
 
 /* States */
 .sdash-loader {
   display: flex; align-items: center; justify-content: center;
-  gap: 10px; padding: 60px 20px;
+  gap: 10px; padding: 70px 20px;
   font-size: 14px; font-weight: 600; color: var(--text-3);
 }
 .sdash-error {
@@ -75,6 +138,10 @@
 }
 .sdash-error i { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
 .sdash-error p { margin: 0; line-height: 1.5; }
+.sdash-no-col {
+  font-size: 11px; color: var(--text-3); text-align: center;
+  padding: 6px; font-style: italic;
+}
 
 /* Sidebar nav button */
 #navSalesDash { background: rgba(37,99,235,.08); color: #1d4ed8; }
@@ -82,10 +149,14 @@
 #navSalesDash:not(.active) .tab-count { color: #1d4ed8; background: rgba(29,78,216,.1); }
 
 /* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sdash-charts-row { grid-template-columns: 1fr; }
+}
 @media (max-width: 768px) {
   .sdash-header-row { flex-direction: column; align-items: flex-start; }
+  .sdash-period-tabs { margin-left: 0; }
   .sdash-vtab { font-size: 12px; padding: 8px 13px; }
-  .sdash-sheet-card { padding: 14px 16px; gap: 12px; }
-  .sdash-sheet-card-icon { width: 40px; height: 40px; font-size: 17px; }
-  .sdash-sheet-card-label { font-size: 13px; }
+  .sdash-gchart-wrap { height: 190px; }
+  .sdash-tbl { font-size: 11.5px; }
+  .sdash-tbl thead th, .sdash-tbl tbody td { padding: 7px 10px; }
 }

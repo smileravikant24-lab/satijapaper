@@ -18,7 +18,7 @@ import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { BANK_QR }                        from './bank-qr.js';
-import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
+import { renderSalesDashboard, sdashSetView, sdashSetPeriod, sdashSetMonth, sdashRefresh } from './ui/sales.view.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -104,7 +104,8 @@ function _hideSalesPanel() {
 }
 
 async function showSalesDashboard(btn) {
-  if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Sales'))) {
+  const da = state.curUser?.deptAccess || [];
+  if (!(state.curUser?.role === 'Admin' || da.includes('All') || da.includes('Sales') || da.includes('SalesDash'))) {
     showToast('Access Denied.', 'err');
     return;
   }
@@ -500,6 +501,9 @@ Object.assign(window, {
   showPersonalAccounts: _showPersonalBanks,
   showSalesDashboard,
   sdashSetView,
+  sdashSetPeriod,
+  sdashSetMonth,
+  sdashRefresh,
 });
 
 
