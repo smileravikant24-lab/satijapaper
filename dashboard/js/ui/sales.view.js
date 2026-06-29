@@ -9,7 +9,9 @@ let _allMeta = {};
 let _charts  = [];
 let _busy    = false;
 let _gcReady = false;
-let _refreshTimer = null;
+let _refreshTimer  = null;
+let _spreadsheetId = '';
+let _currentGid    = '';
 
 const SHEET_KEY = {
   manager: { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' },
@@ -93,6 +95,8 @@ async function _load() {
     const gidEntry = cfg.sheets?.[key];
     if (!gidEntry) throw new Error(`Sheet "${key}" not configured in Firestore (config/salesDashboard).`);
     const gid   = typeof gidEntry === 'object' ? gidEntry.gid : String(gidEntry);
+    _spreadsheetId = cfg.spreadsheetId;
+    _currentGid    = gid;
     const table = await fetchGvizSheet(cfg.spreadsheetId, gid);
     const { cols, rows, meta } = parseSheetTable(table);
 
@@ -135,12 +139,16 @@ function _renderAll(container, cols, rows, meta) {
   const dateRange = (meta.startDate && meta.endDate)
     ? `<span class="sdash-daterange"><i class="fas fa-calendar-days"></i> ${meta.startDate} – ${meta.endDate}</span>`
     : '';
+  const sheetUrl  = `https://docs.google.com/spreadsheets/d/${_spreadsheetId}/edit#gid=${_currentGid}`;
 
   container.innerHTML = `
     <div class="sdash-top-bar">
       ${dateRange}
       <div class="sdash-refresh-info">
         <span class="sdash-last-updated" id="sdashLastUpdated"><i class="fas fa-circle-check"></i> Updated ${now}</span>
+        <a class="sdash-open-sheet-btn" href="${sheetUrl}" target="_blank" rel="noopener noreferrer" title="Open this sheet in Google Sheets">
+          <i class="fas fa-arrow-up-right-from-square"></i> Open Sheet
+        </a>
         <button class="sdash-refresh-btn" onclick="sdashRefresh()" title="Refresh data">
           <i class="fas fa-rotate-right"></i>
         </button>
