@@ -1,55 +1,55 @@
 import { getSalesDashConfig } from '../services/sales.service.js';
 import { state } from '../state.js';
 
-let _view = 'manager';
+let _view = 'dispatch';
 let _busy = false;
 let _cfg  = null;
 
 const SHEET_KEY = {
-  manager: { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' },
-  md:      { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' }
+  dispatch: { monthly: 'monthlyMode', biweekly: 'biweeklyMode', weekly: 'weeklyMode' },
+  Sales:      { monthly: 'monthlyTime', biweekly: 'biweeklyTime', weekly: 'weeklyTime' }
 };
 
 const VIEW_META = {
-  manager: {
+  dispatch: {
     cards: [
       { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch & financial data' },
       { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch & financial data' },
       { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch & financial data' },
     ],
-    color: 'manager'
+    color: 'dispatch'
   },
-  md: {
+  Sales: {
     cards: [
       { key: 'monthly',  label: 'Monthly Summary',  icon: 'fa-calendar-days', desc: 'Month-wise dispatch & financial data' },
       { key: 'biweekly', label: '15-Day Summary',   icon: 'fa-calendar-week', desc: '15-day period dispatch & financial data' },
       { key: 'weekly',   label: 'Weekly Summary',   icon: 'fa-calendar',      desc: 'Week-wise dispatch & financial data' },
     ],
-    color: 'md'
+    color: 'Sales'
   }
 };
 
-function _canMDView() {
+function _canSalesView() {
   const u = state.curUser;
   return u?.role === 'Admin'
     || u?.deptAccess?.includes('All')
-    || u?.deptAccess?.includes('SalesDashMD');
+    || u?.deptAccess?.includes('SalesDashSales');
 }
 
 function _shellHTML() {
-  const mdTab = _canMDView()
-    ? `<button class="sdash-vtab" id="sdashVMD" onclick="sdashSetView('md',this)">
-         <i class="fas fa-crown"></i> MD View
+  const SalesTab = _canSalesView()
+    ? `<button class="sdash-vtab" id="sdashVSales" onclick="sdashSetView('Sales',this)">
+         <i class="fas fa-crown"></i> Sales View
        </button>`
     : '';
   return `
 <div class="sdash-wrap">
   <div class="sdash-header-row">
     <div class="sdash-view-tabs">
-      <button class="sdash-vtab active" id="sdashVManager" onclick="sdashSetView('manager',this)">
-        <i class="fas fa-user-tie"></i> Manager View
+      <button class="sdash-vtab active" id="sdashVdispatch" onclick="sdashSetView('dispatch',this)">
+        <i class="fas fa-user-tie"></i> dispatch View
       </button>
-      ${mdTab}
+      ${SalesTab}
     </div>
   </div>
   <div id="sdashBody">
@@ -59,7 +59,7 @@ function _shellHTML() {
 }
 
 export async function renderSalesDashboard(container) {
-  _view = 'manager';
+  _view = 'dispatch';
   container.innerHTML = _shellHTML();
   await _load();
 }
@@ -111,7 +111,7 @@ function _renderCards() {
 }
 
 export function sdashSetView(view, btn) {
-  if (view === 'md' && !_canMDView()) return;
+  if (view === 'Sales' && !_canSalesView()) return;
   _view = view;
   document.querySelectorAll('.sdash-vtab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
