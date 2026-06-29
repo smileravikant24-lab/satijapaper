@@ -10,6 +10,8 @@ export function updateAccessModeNote(){
 }
 
 const SPECIAL_ACCESS = [
+  { name: 'Sales Dashboard',    dept: 'SalesDash'    },
+  { name: 'MD View (Sales)',    dept: 'SalesDashMD'  },
   { name: 'Products Catalogue', dept: 'Products'     },
   { name: 'Bank Details',       dept: 'Bank Details' },
   { name: 'Documents',          dept: 'Documents'    }
