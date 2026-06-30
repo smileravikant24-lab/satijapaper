@@ -308,10 +308,13 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     }
 
     const catIcon = PROC_ICON[it.name] || 'fas fa-circle-dot';
+    const catIconHtml = cc === 'Family'
+      ? `<img class="card-cat-icon sp-family-icon" src="logo.png" alt="SP">`
+      : `<i class="card-cat-icon ${catIcon}"></i>`;
 
     return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
       <div class="card-inner">
-        <i class="card-cat-icon ${catIcon}"></i>
+        ${catIconHtml}
         <span class="card-tag tag-${cc}">${CAT_TAG[cc] || cc}</span>
         <div class="card-title">${escapeHtml(it.name)}</div>
         <div class="roles-grid">

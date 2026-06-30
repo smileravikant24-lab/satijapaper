@@ -69,6 +69,11 @@
   pointer-events: none;
   flex-shrink: 0;
 }
+img.card-cat-icon.sp-family-icon{
+  object-fit: contain;
+  background: rgba(190,24,93,.08);
+  padding: 3px;
+}
 .cat-Import .card-cat-icon    { background:rgba(30,58,138,.1);   color:#1e3a8a }
 .cat-Sales .card-cat-icon     { background:rgba(0,85,224,.1);    color:#1d4ed8 }
 .cat-Warehouse .card-cat-icon { background:rgba(194,65,12,.1);   color:#c2410c }
