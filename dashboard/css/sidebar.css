@@ -104,49 +104,45 @@
   background:rgba(220,38,38,.08);
 }
 
-/* ── VERTICAL SIDEBAR NAV ─────────────────────────────────── */
+/* ── VERTICAL SIDEBAR NAV (icon-only) ────────────────────── */
 .tab-row{
   display:flex; flex-direction:column;
-  align-items:stretch; justify-content:flex-start;
-  gap:2px; padding:14px 10px 28px;
-  width:242px; flex-shrink:0;
+  align-items:center; justify-content:flex-start;
+  gap:2px; padding:14px 6px 28px;
+  width:62px; flex-shrink:0;
   background:#fff;
   border-right:1px solid var(--border);
   box-shadow:2px 0 18px rgba(30,58,138,.06);
   overflow-y:auto; overflow-x:hidden;
-  scrollbar-width:thin;
-  scrollbar-color:var(--border) transparent;
+  scrollbar-width:none;
 }
-.tab-row::-webkit-scrollbar{ width:4px }
-.tab-row::-webkit-scrollbar-track{ background:transparent }
-.tab-row::-webkit-scrollbar-thumb{ background:var(--border); border-radius:4px }
+.tab-row::-webkit-scrollbar{ display:none }
 
 /* Sidebar section separator — horizontal rule */
 .tab-sep{
-  width:auto; height:1px;
+  width:36px; height:1px;
   background:var(--border);
-  flex-shrink:0; margin:6px 4px;
+  flex-shrink:0; margin:6px 0;
 }
 
 /* Nav item buttons */
 .tab-btn{
-  display:flex; align-items:center; gap:9px;
-  padding:10px 12px; border:0;
-  border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  padding:0; border:0;
+  width:42px; height:42px;
+  border-radius:12px;
   font-size:12.5px; font-weight:700;
   font-family:inherit;
   color:var(--text-2); cursor:pointer;
-  white-space:nowrap; flex-shrink:0;
-  width:100%; text-align:left;
-  overflow:hidden;
+  flex-shrink:0;
   transition:background .15s, color .15s, box-shadow .15s, transform .12s;
 }
-.tab-btn .tab-label{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.tab-btn i{ font-size:15px; opacity:.75; transition:opacity .15s; flex-shrink:0; width:18px; text-align:center }
+.tab-btn i{ font-size:17px; opacity:.75; transition:opacity .15s; }
 .tab-btn:hover{
   background:var(--bg-subtle);
   color:var(--text);
-  transform:translateX(2px);
+  transform:scale(1.08);
 }
 .tab-btn:hover i{ opacity:1 }
 .tab-btn.active{
@@ -156,19 +152,21 @@
 }
 .tab-btn.active i{ opacity:1 }
 
-/* Count badge — pushed to right edge */
+/* Count badge — small dot in top-right corner */
 .tab-count{
-  margin-left:auto;
-  background:rgba(255,255,255,.25);
-  color:rgba(255,255,255,.9);
-  font-size:9.5px; font-weight:800;
-  padding:1px 7px; border-radius:20px;
-  min-width:20px; text-align:center; letter-spacing:.2px;
-  flex-shrink:0;
+  position:absolute;
+  top:4px; right:4px;
+  background:rgba(255,255,255,.3);
+  color:rgba(255,255,255,.95);
+  font-size:7.5px; font-weight:800;
+  padding:1px 4px; border-radius:20px;
+  min-width:14px; text-align:center; letter-spacing:.1px;
+  line-height:1.5;
+  pointer-events:none;
 }
 .tab-btn:not(.active) .tab-count{
-  background:var(--bg-subtle);
-  color:var(--text-3);
+  background:var(--accent);
+  color:#fff;
 }
 
 /* Admin-only tab */
