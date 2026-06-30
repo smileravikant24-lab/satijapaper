@@ -261,6 +261,14 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
       </div>`;
     }
 
+    if (it.navTo === 'SpLogo') {
+      return `<div class="sp-logo-card" style="animation-delay:${i*.028}s">
+        <img src="logo.png" alt="Satija Paper" class="sp-logo-img">
+        <div class="sp-logo-name">Satija Paper</div>
+        <div class="sp-logo-sub">www.satijapaper.com</div>
+      </div>`;
+    }
+
     const cc = it.cat === 'Documents' ? 'Family' : it.cat;
 
     let btns = '';

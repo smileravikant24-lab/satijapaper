@@ -74,10 +74,22 @@ export function setActive(el){
   if (el) el.classList.add('active');
 }
 
+const _CAT_LABEL = {
+  All:      'All Processes',
+  Import:   'Import & Procurement',
+  Sales:    'Sales & Marketing',
+  Warehouse:'Warehouse & Logistics',
+  Purchase: 'Purchase & Inventory',
+  Accounts: 'Accounts, GST & Tax',
+  AdminMIS: 'Admin & MIS',
+  Support:  'Team / Support',
+  Family:   'SP Family',
+};
+
 export function filterCat(cat, el){
   state.curCat = cat;
   setActive(el);
-  $('pageHeader').innerText      = cat === 'All' ? 'All Processes' : cat;
+  $('pageHeader').innerText      = _CAT_LABEL[cat] || cat;
   $('cardBox').style.display     = '';
   $('adminPanel').classList.remove('visible');
   $('searchWrap').style.display  = '';
