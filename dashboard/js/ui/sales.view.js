@@ -1,7 +1,5 @@
 import { getSalesDashConfig } from '../services/sales.service.js';
 import { state } from '../state.js';
-import { DB } from '../data.js';
-import { canAccessProc } from './access.js';
 
 let _busy = false;
 let _cfg  = null;
@@ -75,8 +73,7 @@ export async function renderSalesDashboard(container) {
     _cfg = await getSalesDashConfig();
     let html = _buildCard('manager');
     if (_canMDView()) html += _buildCard('md');
-    const reportItem = DB.find(d => d.name === 'Sales Report (GSTR-3B)');
-    if (reportItem && canAccessProc(state.curUser, reportItem)) html += _buildReportCard();
+    html += _buildReportCard();
     container.innerHTML = `<div class="sdash-grid">${html}</div>`;
   } catch (err) {
     container.innerHTML = `
