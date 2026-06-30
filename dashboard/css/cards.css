@@ -70,6 +70,7 @@
   flex-shrink: 0;
 }
 img.card-cat-icon.sp-family-icon{
+  display: block;
   object-fit: contain;
   background: rgba(190,24,93,.08);
   padding: 3px;
