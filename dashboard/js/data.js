@@ -14,7 +14,7 @@ export const DB = [
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
   {cat:"Sales",name:"Next Week/ Day Marketing Plan",
    pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sale's Team",links:{gasForm:1,sheet:1,aiqa:1}},
-  {cat:"Sales",name:"Sales Report",
+  {cat:"Sales",name:"Sales Report (GSTR-3B)",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{sheet:1}},
 
   // Double A ─────────────────────────────────────────────────────

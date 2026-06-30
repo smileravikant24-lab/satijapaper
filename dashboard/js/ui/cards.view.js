@@ -112,7 +112,7 @@ export function renderCards(data){
     'CRM Payment FMS':                   'fas fa-money-bill-wave',
     'Price List':                        'fas fa-tags',
     'Next Week/ Day Marketing Plan':     'fas fa-calendar-days',
-    'Sales Report':                      'fas fa-chart-bar',
+    'Sales Report (GSTR-3B)':            'fas fa-chart-bar',
     'New Customer Visit':                'fas fa-user-plus',
     'Follow Up Calls':                   'fas fa-phone-volume',
     'Scott Sheet':                       'fas fa-file-lines',
