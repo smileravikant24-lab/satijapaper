@@ -1,5 +1,7 @@
 import { getSalesDashConfig } from '../services/sales.service.js';
 import { state } from '../state.js';
+import { DB } from '../data.js';
+import { canAccessProc } from './access.js';
 
 let _busy = false;
 let _cfg  = null;
@@ -48,6 +50,23 @@ function _buildCard(view) {
     </div>`;
 }
 
+function _buildReportCard() {
+  return `
+    <div class="card sdash-card-report">
+      <div class="card-inner">
+        <i class="card-cat-icon fas fa-chart-bar"></i>
+        <span class="card-tag sdash-tag-report">GSTR-3B</span>
+        <div class="card-title">Sales Report (GSTR-3B)</div>
+        <div class="card-divider"></div>
+        <div class="actions">
+          <button class="btn sdash-btn-report" onclick="secureOpen('Sales Report (GSTR-3B)','sheet')">
+            <i class="fas fa-table-cells-large"></i> Open Sheet
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
 export async function renderSalesDashboard(container) {
   container.innerHTML = '<div class="sdash-grid"><div class="sdash-loader"><i class="fas fa-spinner fa-spin"></i> Loading…</div></div>';
   if (_busy) return;
@@ -56,6 +75,8 @@ export async function renderSalesDashboard(container) {
     _cfg = await getSalesDashConfig();
     let html = _buildCard('manager');
     if (_canMDView()) html += _buildCard('md');
+    const reportItem = DB.find(d => d.name === 'Sales Report (GSTR-3B)');
+    if (reportItem && canAccessProc(state.curUser, reportItem)) html += _buildReportCard();
     container.innerHTML = `<div class="sdash-grid">${html}</div>`;
   } catch (err) {
     container.innerHTML = `

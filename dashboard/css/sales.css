@@ -39,9 +39,34 @@
   color: #92400e;
 }
 
+/* ── Report card — Indigo ─────────────────────────────────── */
+.card.sdash-card-report::before {
+  background: linear-gradient(90deg, #4338ca, #818cf8);
+}
+.card.sdash-card-report::after {
+  background: linear-gradient(90deg, rgba(67,56,202,.4), transparent);
+}
+.sdash-card-report .card-cat-icon {
+  background: rgba(79,70,229,.12);
+  color: #4f46e5;
+}
+.sdash-tag-report {
+  background: #eef2ff;
+  color: #3730a3;
+}
+.sdash-btn-report {
+  background: #eef2ff;
+  color: #4338ca;
+}
+.sdash-btn-report:hover {
+  background: #4338ca;
+  color: #fff;
+}
+
 /* ── Card title color overrides ───────────────────────────── */
 .sdash-card-manager .card-title { color: #0f766e; }
 .sdash-card-md      .card-title { color: #b45309; }
+.sdash-card-report  .card-title { color: #4338ca; }
 
 /* ── Period buttons ───────────────────────────────────────── */
 .sdash-btn-manager {
