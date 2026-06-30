@@ -232,6 +232,35 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
       </div>`;
     }
 
+    if (it.navTo === 'GodownAddress') {
+      return `<div class="bank-card godown-card" style="animation-delay:${i*.028}s">
+        <div class="bank-card-header godown-header">
+          <i class="fas fa-warehouse"></i> Godown Address
+        </div>
+        <div class="bank-card-body">
+          <div class="bank-details-table">
+            <table>
+              <tr><td>Firm</td><td>:</td><td><strong>M/s. SATIJA PAPER</strong></td></tr>
+              <tr><td>Godown No.</td><td>:</td><td>19, Vikas Mandal</td></tr>
+              <tr><td>Location</td><td>:</td><td>Khera Kalan</td></tr>
+              <tr><td>Near</td><td>:</td><td>Shri Ram Dharam Kanta</td></tr>
+              <tr><td>City</td><td>:</td><td>Delhi – 110082</td></tr>
+              <tr><td>Godown Keeper</td><td>:</td><td>Mr. Chandresh</td></tr>
+              <tr><td>Mobile</td><td>:</td><td><a href="tel:9899701090" style="color:inherit;text-decoration:none">9899701090</a></td></tr>
+            </table>
+            <div class="bank-action-row">
+              <button class="bank-copy-btn" onclick="copyGodownAddr()">
+                <i class="fas fa-copy"></i> Copy Details
+              </button>
+              <button class="bank-share-btn" onclick="shareGodownAddr()">
+                <i class="fas fa-share-nodes"></i> Share
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
     const cc = it.cat === 'Documents' ? 'Family' : it.cat;
 
     let btns = '';

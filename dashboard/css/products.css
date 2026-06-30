@@ -574,6 +574,7 @@ img.prod-lazy {
 .bank-card-header.pnb  { background: linear-gradient(120deg, #1a5276 0%, #154360 100%); }
 .bank-card-header.yes   { background: linear-gradient(120deg, #0f5c2e 0%, #0a3d1f 100%); }
 .bank-card-header.kotak { background: linear-gradient(120deg, #c0392b 0%, #922b21 100%); }
+.bank-card-header.godown-header { background: linear-gradient(120deg, #c2410c 0%, #9a3412 100%); }
 .bank-group-header     { font-size:13px; font-weight:700; color:var(--text-2); text-transform:uppercase;
                          letter-spacing:.6px; padding:18px 0 8px; border-bottom:1px solid var(--border);
                          margin-bottom:14px; display:flex; align-items:center; gap:8px; }

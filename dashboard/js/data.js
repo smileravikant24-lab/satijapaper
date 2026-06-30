@@ -76,6 +76,7 @@ export const DB = [
    pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"Warehouse",name:"Products Photos",
    pc:"-",solver:"-",exec:"-",links:{folder:1}},
+  {cat:"Warehouse",name:"Godown Address",navTo:"GodownAddress"},
 
   // ── D) PURCHASE & INVENTORY ───────────────────────────────────
   {cat:"Purchase",name:"Purchase FMS",

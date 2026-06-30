@@ -498,6 +498,8 @@ Object.assign(window, {
   copyBankDetails,
   shareBankDetails,
   showBankDetails,
+  copyGodownAddr,
+  shareGodownAddr,
   showPersonalAccounts: _showPersonalBanks,
   showSalesDashboard,
   sdashSetView,
@@ -580,7 +582,22 @@ function copyBankDetails(id) {
   });
 }
 
+/* ── Godown Address ───────────────────────────────────────────── */
+const _GODOWN_TEXT =
+`M/s. SATIJA PAPER
+Godown No. 19, Vikas Mandal, Khera Kalan
+Near Shri Ram Dharam Kanta, Delhi – 110082
+Godown Keeper: Mr. Chandresh
+Mobile: 9899701090`;
 
+function copyGodownAddr() {
+  navigator.clipboard.writeText(_GODOWN_TEXT).then(() => {
+    if (typeof showToast === 'function') showToast('Godown address copied!');
+  });
+}
+function shareGodownAddr() {
+  openShareModal('Godown Address — Satija Paper', _GODOWN_TEXT + '\nwww.satijapaper.com');
+}
 
 /* ── Share Modal ──────────────────────────────────────────────── */
 (function _injectShareModal() {
