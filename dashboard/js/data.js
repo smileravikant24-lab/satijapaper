@@ -143,7 +143,6 @@ export const DB = [
    pc:"-",solver:"-",exec:"All Team",links:{form:1,sheet:1}},
 
   // ── H) SP FAMILY ──────────────────────────────────────────────
-  {cat:"Family",name:"Satija Paper Logo",navTo:"SpLogo"},
   {cat:"Family",name:"Personal Documents",
    pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1,sheet:1}},
   {cat:"Family",name:"Teams Member Document",

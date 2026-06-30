@@ -108,67 +108,67 @@
   <!-- ── SIDEBAR NAV ───────────────────────────────────────── -->
   <nav class="tab-row">
     <button class="tab-btn active" id="navAll" onclick="filterCat('All',this)">
-      <i class="fas fa-grid-2"></i> All
+      <i class="fas fa-grid-2"></i><span class="tab-label">All</span>
       <span class="tab-count" id="cntAll">0</span>
     </button>
 
     <div class="tab-sep"></div>
 
     <button class="tab-btn" id="navImport" onclick="filterCat('Import',this)">
-      <i class="fas fa-ship"></i> Import & Procurement
+      <i class="fas fa-ship"></i><span class="tab-label">Import & Procurement</span>
       <span class="tab-count" id="cntImport">0</span>
     </button>
     <button class="tab-btn" id="navSales" onclick="filterCat('Sales',this)">
-      <i class="fas fa-chart-line"></i> Sales & Marketing
+      <i class="fas fa-chart-line"></i><span class="tab-label">Sales & Marketing</span>
       <span class="tab-count" id="cntSales">0</span>
     </button>
     <button class="tab-btn" id="navWarehouse" onclick="filterCat('Warehouse',this)">
-      <i class="fas fa-warehouse"></i> Warehouse & Logistics
+      <i class="fas fa-warehouse"></i><span class="tab-label">Warehouse & Logistics</span>
       <span class="tab-count" id="cntWarehouse">0</span>
     </button>
     <button class="tab-btn" id="navPurchase" onclick="filterCat('Purchase',this)">
-      <i class="fas fa-cart-shopping"></i> Purchase & Inventory
+      <i class="fas fa-cart-shopping"></i><span class="tab-label">Purchase & Inventory</span>
       <span class="tab-count" id="cntPurchase">0</span>
     </button>
     <button class="tab-btn" id="navAccounts" onclick="filterCat('Accounts',this)">
-      <i class="fas fa-calculator"></i> Accounts, GST & Tax
+      <i class="fas fa-calculator"></i><span class="tab-label">Accounts, GST & Tax</span>
       <span class="tab-count" id="cntAccounts">0</span>
     </button>
     <button class="tab-btn" id="navAdminMIS" onclick="filterCat('AdminMIS',this)">
-      <i class="fas fa-clipboard-check"></i> Admin & MIS
+      <i class="fas fa-clipboard-check"></i><span class="tab-label">Admin & MIS</span>
       <span class="tab-count" id="cntAdminMIS">0</span>
     </button>
     <button class="tab-btn" id="navSupport" onclick="filterCat('Support',this)">
-      <i class="fas fa-headset"></i> Team / Support
+      <i class="fas fa-headset"></i><span class="tab-label">Team / Support</span>
       <span class="tab-count" id="cntSupport">0</span>
     </button>
 
     <div class="tab-sep"></div>
 
     <button class="tab-btn" id="navFamily" onclick="filterCat('Family',this)">
-      <i class="fas fa-folder-heart"></i> SP Family
+      <i class="fas fa-folder-heart"></i><span class="tab-label">SP Family</span>
       <span class="tab-count" id="cntFamily">0</span>
     </button>
     <button class="tab-btn" id="navProducts" onclick="showProducts(this)">
-      <i class="fas fa-cubes"></i> Products
+      <i class="fas fa-cubes"></i><span class="tab-label">Products</span>
       <span class="tab-count products-badge" id="cntProducts">9</span>
     </button>
     <button class="tab-btn" id="navBankDetails" onclick="showBankDetails(this)">
-      <i class="fas fa-landmark"></i> Bank Details
+      <i class="fas fa-landmark"></i><span class="tab-label">Bank Details</span>
     </button>
 
     <!-- Sales Dashboard (hidden by default, shown for Sales/Admin users) -->
     <div class="tab-sep" id="salesDashSep" style="display:none"></div>
     <button class="tab-btn" id="navSalesDash" style="display:none"
             onclick="showSalesDashboard(this)">
-      <i class="fas fa-chart-bar"></i> Sales Dashboard
+      <i class="fas fa-chart-bar"></i><span class="tab-label">Sales Dashboard</span>
     </button>
 
     <!-- Admin-only (hidden by default, shown by sidebar.view.js) -->
     <div class="tab-sep" id="adminNavLabel" style="display:none"></div>
     <button class="tab-btn tab-btn-admin" id="adminNavBtn" style="display:none"
             onclick="showAdmin(this)">
-      <i class="fas fa-user-gear"></i> Admin
+      <i class="fas fa-user-gear"></i><span class="tab-label">Admin</span>
     </button>
   </nav>
 
