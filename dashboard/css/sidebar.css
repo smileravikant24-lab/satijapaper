@@ -109,7 +109,7 @@
   display:flex; flex-direction:column;
   align-items:stretch; justify-content:flex-start;
   gap:2px; padding:14px 10px 28px;
-  width:200px; flex-shrink:0;
+  width:240px; flex-shrink:0;
   background:#fff;
   border-right:1px solid var(--border);
   box-shadow:2px 0 18px rgba(30,58,138,.06);
