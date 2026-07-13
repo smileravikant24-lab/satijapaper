@@ -319,7 +319,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
       <div class="card-inner">
         ${catIconHtml}
         <span class="card-tag tag-${cc}">${CAT_TAG[cc] || cc}</span>
-        <div class="card-title">${escapeHtml(it.name)}</div>
+        <div class="card-title"><i class="${catIcon} card-title-icon"></i>${escapeHtml(it.name)}</div>
         <div class="roles-grid">
           ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
           ${buildRoleCell('rv-sv','fas fa-wrench',       'Solver',    it.solver)}
