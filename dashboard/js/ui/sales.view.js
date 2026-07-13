@@ -48,6 +48,23 @@ function _buildCard(view) {
     </div>`;
 }
 
+function _buildDARetailCard() {
+  return `
+    <div class="card sdash-card-da">
+      <div class="card-inner">
+        <i class="card-cat-icon fas fa-users"></i>
+        <span class="card-tag sdash-tag-da">Double A</span>
+        <div class="card-title">DA Retail Customer</div>
+        <div class="card-divider"></div>
+        <div class="actions">
+          <button class="btn sdash-btn-da" onclick="secureOpen('Double A Retail Customer','stockDash')">
+            <i class="fas fa-gauge-high"></i> Dashboard
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
 function _buildReportCard() {
   return `
     <div class="card sdash-card-report">
@@ -73,6 +90,7 @@ export async function renderSalesDashboard(container) {
     _cfg = await getSalesDashConfig();
     let html = _buildCard('manager');
     if (_canMDView()) html += _buildCard('md');
+    html += _buildDARetailCard();
     html += _buildReportCard();
     container.innerHTML = `<div class="sdash-grid">${html}</div>`;
   } catch (err) {

@@ -39,6 +39,31 @@
   color: #92400e;
 }
 
+/* ── DA Retail card — Blue ────────────────────────────────── */
+.card.sdash-card-da::before {
+  background: linear-gradient(90deg, #1e40af, #60a5fa);
+}
+.card.sdash-card-da::after {
+  background: linear-gradient(90deg, rgba(30,64,175,.4), transparent);
+}
+.sdash-card-da .card-cat-icon {
+  background: rgba(29,78,216,.12);
+  color: #1d4ed8;
+}
+.sdash-tag-da {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.sdash-btn-da {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.sdash-btn-da:hover {
+  background: #1e40af;
+  color: #fff;
+}
+.sdash-card-da .card-title { color: #1d4ed8; }
+
 /* ── Report card — Indigo ─────────────────────────────────── */
 .card.sdash-card-report::before {
   background: linear-gradient(90deg, #4338ca, #818cf8);

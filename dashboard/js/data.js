@@ -5,7 +5,7 @@ export const DB = [
   {cat:"Import",name:"Custom Clearance Checklist",
    pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"Import",name:"Shipping Document Checklist",
-   pc:"-",solver:"-",exec:"-",links:{}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1}},
 
   // ── B) SALES & MARKETING ─────────────────────────────────────
   {cat:"Sales",name:"CRM Payment FMS",
@@ -31,7 +31,7 @@ export const DB = [
   {cat:"Sales",name:"Double A CME Folder",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
   {cat:"Sales",name:"Double A Retail Customer",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1,stockDash:1}},
   {cat:"Sales",name:"Double A Corporate Customer",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
   {cat:"Sales",name:"Double A Display Links",
