@@ -149,9 +149,9 @@ export function renderCards(data){
     'Godown Inward Report':              'fas fa-truck-ramp-box',
     // ── Accounts, GST & Taxation ─────────────────────────────
     'Account Checklist':                 'fas fa-calculator',
-    'Company Payment':                   'fas fa-building-columns',
+    'Company Payment FMS':               'fas fa-building-columns',
     'GP Sheet':                          'fas fa-percent',
-    'Cheque Payment':                    'fas fa-money-check-dollar',
+    'Cheque Payment FMS':                'fas fa-money-check-dollar',
     'Sales Marketing Daily Expense':     'fas fa-wallet',
     'Courier FMS':                       'fas fa-motorcycle',
     'Home Loan/ OD FMS':                 'fas fa-house',
@@ -307,7 +307,12 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';
     }
 
-    const catIcon = PROC_ICON[it.name] || 'fas fa-circle-dot';
+    const CAT_ICON = {
+      Import:'fas fa-ship', Sales:'fas fa-chart-line', Warehouse:'fas fa-warehouse',
+      Purchase:'fas fa-cart-shopping', Accounts:'fas fa-calculator',
+      AdminMIS:'fas fa-clipboard-check', Support:'fas fa-headset', Family:'fas fa-folder-heart',
+    };
+    const catIcon = PROC_ICON[it.name] || CAT_ICON[it.cat] || 'fas fa-circle';
     const catIconHtml = `<i class="card-cat-icon ${catIcon}"></i>`;
 
     return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
