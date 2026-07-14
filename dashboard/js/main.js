@@ -17,6 +17,7 @@ import {
 import { canAccessProc }                   from './ui/access.js';
 import { PRODUCTS, DB, NAV_TABS }          from './data.js';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
+import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
 
@@ -31,6 +32,7 @@ function enterApp(user) {
   $('appContainer').classList.add('visible');
   paintSidebarUser(user);
   updateCounts();
+  fetchGodownList();
   renderFiltered();
   _forceLocalCounts();
   _setProductsCount();
@@ -583,20 +585,32 @@ function copyBankDetails(id) {
 }
 
 /* ── Godown Address ───────────────────────────────────────────── */
-const _GODOWN_TEXT =
-`M/s. SATIJA PAPER
-Godown No. 19, Vikas Mandal, Khera Kalan
-Near Shri Ram Dharam Kanta, Delhi – 110082
-Godown Keeper: Mr. Chandresh
-Mobile: 9899701090`;
+function _godownText() {
+  const g = getGodownList()[0];
+  if (!g) return '';
+  const parts = [];
+  if (g.firm)     parts.push(g.firm);
+  if (g.godownNo && g.location) parts.push(`Godown No. ${g.godownNo}, ${g.location}`);
+  else if (g.godownNo) parts.push(`Godown No. ${g.godownNo}`);
+  else if (g.location) parts.push(g.location);
+  if (g.near && g.city) parts.push(`Near ${g.near}, ${g.city}`);
+  else if (g.near)      parts.push(g.near);
+  else if (g.city)      parts.push(g.city);
+  if (g.keeper) parts.push(`Godown Keeper: ${g.keeper}`);
+  if (g.mobile) parts.push(`Mobile: ${g.mobile}`);
+  return parts.join('\n');
+}
 
 function copyGodownAddr() {
-  navigator.clipboard.writeText(_GODOWN_TEXT).then(() => {
+  const text = _godownText();
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
     if (typeof showToast === 'function') showToast('Godown address copied!');
   });
 }
 function shareGodownAddr() {
-  openShareModal('Godown Address — Satija Paper', _GODOWN_TEXT + '\nwww.satijapaper.com');
+  const g = getGodownList()[0];
+  openShareModal((g?.name || 'Godown Address') + ' — Satija Paper', _godownText() + '\nwww.satijapaper.com');
 }
 
 /* ── Share Modal ──────────────────────────────────────────────── */
