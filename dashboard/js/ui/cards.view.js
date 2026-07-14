@@ -60,7 +60,7 @@ function buildRoleCell(cls, icon, label, val){
 /** Render a list of processes into #cardBox. */
 export async function renderCards(data){
   if (data.some(it => it.navTo === 'GodownAddress')) {
-    try { await fetchGodownList(); } catch(_) {}
+    try { await fetchGodownList(); } catch(e) { console.error('[Godown] Firestore read failed:', e); }
   }
   const box = $('cardBox');
   box.innerHTML = '';
