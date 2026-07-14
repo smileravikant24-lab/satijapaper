@@ -59,7 +59,9 @@ function buildRoleCell(cls, icon, label, val){
 
 /** Render a list of processes into #cardBox. */
 export async function renderCards(data){
-  if (data.some(it => it.navTo === 'GodownAddress')) await fetchGodownList();
+  if (data.some(it => it.navTo === 'GodownAddress')) {
+    try { await fetchGodownList(); } catch(_) {}
+  }
   const box = $('cardBox');
   box.innerHTML = '';
 
