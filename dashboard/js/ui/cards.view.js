@@ -293,7 +293,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    _G.GAS,                    'Form');
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  _G.GAS,                    'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  _G.LOOKER,                 'Dashboard');
+    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-gauge',            'Dashboard');
     btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
