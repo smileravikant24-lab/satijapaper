@@ -3,6 +3,7 @@ import { state }                    from '../state.js';
 import { DB }                       from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
+import { fetchGodownList, getGodownList } from '../services/godown.service.js';
 
 const _G = {
   SHEETS: 'https://www.gstatic.com/images/branding/product/1x/sheets_48dp.png',
@@ -57,7 +58,8 @@ function buildRoleCell(cls, icon, label, val){
 }
 
 /** Render a list of processes into #cardBox. */
-export function renderCards(data){
+export async function renderCards(data){
+  if (data.some(it => it.navTo === 'GodownAddress')) await fetchGodownList();
   const box = $('cardBox');
   box.innerHTML = '';
 
@@ -233,20 +235,26 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     }
 
     if (it.navTo === 'GodownAddress') {
+      const g = getGodownList()[0];
+      if (!g) return `<div class="bank-card godown-card" style="animation-delay:${i*.028}s">
+        <div class="bank-card-header godown-header"><i class="fas fa-warehouse"></i> Godown Address</div>
+        <div class="bank-card-body"><div style="padding:20px;color:#999;font-size:13px">Not configured in Firestore.</div></div>
+      </div>`;
+      const tel = `<a href="tel:${escapeHtml(g.mobile)}" style="color:inherit;text-decoration:none">${escapeHtml(g.mobile)}</a>`;
       return `<div class="bank-card godown-card" style="animation-delay:${i*.028}s">
         <div class="bank-card-header godown-header">
-          <i class="fas fa-warehouse"></i> Godown Address
+          <i class="fas fa-warehouse"></i> ${escapeHtml(g.name || 'Godown Address')}
         </div>
         <div class="bank-card-body">
           <div class="bank-details-table">
             <table>
-              <tr><td>Firm</td><td>:</td><td><strong>M/s. SATIJA PAPER</strong></td></tr>
-              <tr><td>Godown No.</td><td>:</td><td>19, Vikas Mandal</td></tr>
-              <tr><td>Location</td><td>:</td><td>Khera Kalan</td></tr>
-              <tr><td>Near</td><td>:</td><td>Shri Ram Dharam Kanta</td></tr>
-              <tr><td>City</td><td>:</td><td>Delhi – 110082</td></tr>
-              <tr><td>Godown Keeper</td><td>:</td><td>Mr. Chandresh</td></tr>
-              <tr><td>Mobile</td><td>:</td><td><a href="tel:9899701090" style="color:inherit;text-decoration:none">9899701090</a></td></tr>
+              ${g.firm     ? `<tr><td>Firm</td><td>:</td><td><strong>${escapeHtml(g.firm)}</strong></td></tr>` : ''}
+              ${g.godownNo ? `<tr><td>Godown No.</td><td>:</td><td>${escapeHtml(g.godownNo)}</td></tr>` : ''}
+              ${g.location ? `<tr><td>Location</td><td>:</td><td>${escapeHtml(g.location)}</td></tr>` : ''}
+              ${g.near     ? `<tr><td>Near</td><td>:</td><td>${escapeHtml(g.near)}</td></tr>` : ''}
+              ${g.city     ? `<tr><td>City</td><td>:</td><td>${escapeHtml(g.city)}</td></tr>` : ''}
+              ${g.keeper   ? `<tr><td>Godown Keeper</td><td>:</td><td>${escapeHtml(g.keeper)}</td></tr>` : ''}
+              ${g.mobile   ? `<tr><td>Mobile</td><td>:</td><td>${tel}</td></tr>` : ''}
             </table>
             <div class="bank-action-row">
               <button class="bank-copy-btn" onclick="copyGodownAddr()">
