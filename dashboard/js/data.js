@@ -57,7 +57,7 @@ export const DB = [
   {cat:"Sales",name:"Pranav Debtor List",
    pc:"Ms. Richa",solver:"Ravi",exec:"Mr. Mukesh",links:{sheet:1,aiqa:1}},
   {cat:"Sales",name:"Ruchira Color Copier Client (Mr. Pawan)",
-   pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{sheet:1,gasForm:1,stockDash:1,aiqa:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{sheet:1,form:1,stockDash:1,aiqa:1}},
   {cat:"Sales",name:"Sales Meeting Attendance Sheet",
    pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{gasForm:1,sheet:1}},
   {cat:"Sales",name:"Bank Details",navTo:"BankDetails",
