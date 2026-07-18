@@ -29,7 +29,7 @@ export const DB = [
   {cat:"Sales",name:"Double A Dealer",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
   {cat:"Sales",name:"Double A CME Folder",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{folder:1,calc:1}},
   {cat:"Sales",name:"Double A Retail Customer (Mr. Rishabh)",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1,stockDash:1}},
   {cat:"Sales",name:"Double A Corporate Customer",
