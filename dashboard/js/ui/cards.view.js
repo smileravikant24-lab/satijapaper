@@ -305,6 +305,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-gauge',            'Dashboard');
     btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
+    btns += buildButton(it, !!it.links.calc,       'calc',      'btn-dash',   'fas fa-calculator',       'Profit Calculator');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
     btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer (Mr. Rishabh)' ? 'Marketing Guideline' : 'Guideline');
