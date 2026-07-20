@@ -302,7 +302,7 @@ function _showReminderPopup(reminders, info) {
   const title = hasProcess && !hasEntry ? `${info.label} — Ready to Process` : `${info.label} Salary Due`;
   const sub   = hasProcess && !hasEntry
     ? 'Entries submitted. Please mark as processed.'
-    : 'Salary entry window is open (3rd – 7th).';
+    : 'Salary entry window is open.';
 
   const itemsHtml = reminders.map(r => {
     const goLabel = r.type === 'process' ? 'Mark Processed' : 'Enter Now';
@@ -361,8 +361,17 @@ export async function checkSalaryReminder() {
   if (!canCash && !canBank && !canProc) return;
 
   const info = getSalaryMonthInfo();
-  const day  = new Date().getDate();
-  const inEntryWindow = day >= 3 && day <= 7;
+  const now  = new Date();
+  const day  = now.getDate();
+  const yr   = now.getFullYear();
+  const mo   = now.getMonth(); // 0-indexed (July = 6)
+
+  // Special first window: July 21–31 2026 (deployment date onwards for July salary)
+  // Regular window: 3rd–15th of every month (getSalaryMonthInfo auto-returns previous month in this range)
+  const inEntryWindow = (yr === 2026 && mo === 6 && day >= 21) || (day >= 3 && day <= 15);
+
+  // Once-per-day key includes today's date so it resets daily
+  const today = `${yr}-${String(mo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
   let cashData = null, bankData = null;
   try { cashData = await getSalaryDoc(info.cashId); } catch(_) {}
@@ -373,23 +382,23 @@ export async function checkSalaryReminder() {
 
   const reminders = [];
 
-  // Entry reminders — only between 3rd and 7th, once per browser session
+  // Entry reminders — once per day (localStorage resets daily), within entry window, while pending
   if (canCash && inEntryWindow && cashStatus === 'pending') {
-    const key = `salRem_cash_${info.cashId}`;
-    if (!sessionStorage.getItem(key)) {
-      sessionStorage.setItem(key, '1');
+    const key = `salRem_cash_${info.cashId}_${today}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
       reminders.push({ type: 'entry', label: 'Cash Salary', month: info.label, action: 'cash' });
     }
   }
   if (canBank && inEntryWindow && bankStatus === 'pending') {
-    const key = `salRem_bank_${info.bankId}`;
-    if (!sessionStorage.getItem(key)) {
-      sessionStorage.setItem(key, '1');
+    const key = `salRem_bank_${info.bankId}_${today}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
       reminders.push({ type: 'entry', label: 'Bank Salary & Payments', month: info.label, action: 'bank' });
     }
   }
 
-  // Process reminders — always show for Pranav while status is submitted (no session limit)
+  // Process reminders — every login for Pranav while status is submitted (no day limit)
   if (canProc && cashStatus === 'submitted')
     reminders.push({ type: 'process', label: 'Cash Salary', month: info.label, action: 'cash' });
   if (canProc && bankStatus === 'submitted')
