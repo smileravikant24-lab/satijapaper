@@ -236,6 +236,28 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
       </div>`;
     }
 
+    if (it.navTo === 'CashSalary') {
+      return `<div class="bank-nav-card" onclick="showCashSalary()" style="animation-delay:${i*.028}s">
+        <div class="bank-nav-icon"><i class="fas fa-money-bill-wave"></i></div>
+        <div class="bank-nav-text">
+          <div class="bank-nav-title">Cash Salary</div>
+          <div class="bank-nav-sub">Enter / View monthly cash salary</div>
+        </div>
+        <i class="fas fa-arrow-right" style="color:#93c5fd;font-size:13px"></i>
+      </div>`;
+    }
+
+    if (it.navTo === 'BankSalary') {
+      return `<div class="bank-nav-card" onclick="showBankSalary()" style="animation-delay:${i*.028}s">
+        <div class="bank-nav-icon"><i class="fas fa-building-columns"></i></div>
+        <div class="bank-nav-text">
+          <div class="bank-nav-title">Bank Salary &amp; Payments</div>
+          <div class="bank-nav-sub">Enter / View monthly bank payments</div>
+        </div>
+        <i class="fas fa-arrow-right" style="color:#93c5fd;font-size:13px"></i>
+      </div>`;
+    }
+
     if (it.navTo === 'GodownAddress') {
       const g = getGodownList()[0];
       if (!g) return `<div class="bank-card godown-card" style="animation-delay:${i*.028}s">
