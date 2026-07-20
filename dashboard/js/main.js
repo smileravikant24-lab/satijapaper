@@ -20,6 +20,7 @@ import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
+import { showCashSalary, showBankSalary, hideSalaryPanel } from './ui/salary.view.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -112,6 +113,7 @@ async function showSalesDashboard(btn) {
     return;
   }
   _hidePersonalBankPanel();
+  hideSalaryPanel();
   document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   state.curCat   = 'SalesDash';
@@ -134,6 +136,7 @@ function showProducts(btn) {
   }
   _hideSalesPanel();
   _hidePersonalBankPanel();
+  hideSalaryPanel();
   document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
@@ -243,6 +246,7 @@ function _showCardGrid() {
   if (ap) { ap.classList.remove('visible'); ap.style.removeProperty('display'); }
   document.getElementById('productsPanel').style.display = 'none';
   _hideSalesPanel();
+  hideSalaryPanel();
   document.getElementById('searchWrap').style.display    = '';
   document.getElementById('cardBox').style.display       = '';
 }
@@ -250,6 +254,7 @@ function _showCardGrid() {
 function showAdmin(btn) {
   _hidePersonalBankPanel();
   _hideSalesPanel();
+  hideSalaryPanel();
   const pp = document.getElementById('productsPanel');
   if (pp) pp.style.display = 'none';
   const ap = document.getElementById('adminPanel');
@@ -300,6 +305,7 @@ function filterCatPatched(cat, btn) {
   const header = document.getElementById('pageHeader');
   if (header) header.textContent = _CAT_FULL_LABEL[cat] || cat;
   _hidePersonalBankPanel();
+  hideSalaryPanel();
 }
 
 function runFilterPatched() {
@@ -457,6 +463,7 @@ function _lazyLoadImages(container) {
 async function showBankDetails(btn) {
   _hidePersonalBankPanel();
   _hideSalesPanel();
+  hideSalaryPanel();
   if (!(state.curUser?.role === 'Admin' || state.curUser?.deptAccess?.includes('All') || state.curUser?.deptAccess?.includes('Bank Details'))) {
     showToast('Access Denied.', 'err');
     return;
@@ -505,6 +512,8 @@ Object.assign(window, {
   showPersonalAccounts: _showPersonalBanks,
   showSalesDashboard,
   sdashSetView,
+  showCashSalary,
+  showBankSalary,
 });
 
 

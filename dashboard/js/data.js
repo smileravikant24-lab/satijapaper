@@ -111,6 +111,12 @@ export const DB = [
    pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
 
   // ── F) ADMIN & MIS ────────────────────────────────────────────
+  // ── Salary Disbursement ──────────────────────────────────────
+  {cat:"AdminMIS",name:"Cash Salary",navTo:"CashSalary",
+   pc:"Mr. Pranav",solver:"Mr. Mukesh",exec:"-",links:{}},
+  {cat:"AdminMIS",name:"Bank Salary & Payments",navTo:"BankSalary",
+   pc:"Mr. Pranav",solver:"-",exec:"-",links:{}},
+  // ─────────────────────────────────────────────────────────────
   {cat:"AdminMIS",name:"Attendance Sheet",
    pc:"Neha / Richa",solver:"Neha / Pranav",exec:"All Staff",links:{gasForm:1,sheet:1,admin:1}},
   {cat:"AdminMIS",name:"Office Chores Form",
