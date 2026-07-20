@@ -290,3 +290,120 @@ window._salMarkProcessed = async function(type, docId) {
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-circle-check"></i> Mark as Processed'; }
   }
 };
+
+// ── Salary Reminder Popup ─────────────────────────────────────────────────────
+
+function _showReminderPopup(reminders, info) {
+  document.getElementById('salReminderOverlay')?.remove();
+
+  const hasProcess = reminders.some(r => r.type === 'process');
+  const hasEntry   = reminders.some(r => r.type === 'entry');
+  const icon  = hasProcess && !hasEntry ? 'fas fa-circle-check' : 'fas fa-bell';
+  const title = hasProcess && !hasEntry ? `${info.label} — Ready to Process` : `${info.label} Salary Due`;
+  const sub   = hasProcess && !hasEntry
+    ? 'Entries submitted. Please mark as processed.'
+    : 'Salary entry window is open.';
+
+  const itemsHtml = reminders.map(r => {
+    const goLabel = r.type === 'process' ? 'Mark Processed' : 'Enter Now';
+    const goFn    = r.action === 'cash' ? 'showCashSalary()' : 'showBankSalary()';
+    const icoType = r.type === 'process' ? 'fas fa-circle-check' : 'fas fa-pen-to-square';
+    return `<div class="sal-rem-item">
+      <div class="sal-rem-item-left">
+        <i class="${icoType}"></i>
+        <div>
+          <div class="sal-rem-item-label">${r.label}</div>
+          <div class="sal-rem-item-sub">${r.month}</div>
+        </div>
+      </div>
+      <button class="sal-rem-go${r.type === 'process' ? ' sal-rem-go-green' : ''}"
+              onclick="window._salCloseReminder();${goFn}">
+        ${goLabel} <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>`;
+  }).join('');
+
+  document.body.insertAdjacentHTML('beforeend', `
+  <div class="sal-rem-overlay" id="salReminderOverlay">
+    <div class="sal-rem-card">
+      <button class="sal-rem-x" onclick="window._salCloseReminder()">
+        <i class="fas fa-xmark"></i>
+      </button>
+      <div class="sal-rem-icon-wrap ${hasProcess && !hasEntry ? 'sal-rem-blue' : 'sal-rem-amber'}">
+        <i class="${icon}"></i>
+      </div>
+      <div class="sal-rem-title">${title}</div>
+      <div class="sal-rem-sub">${sub}</div>
+      <div class="sal-rem-items">${itemsHtml}</div>
+    </div>
+  </div>`);
+
+  requestAnimationFrame(() =>
+    document.getElementById('salReminderOverlay')?.classList.add('active')
+  );
+}
+
+window._salCloseReminder = function() {
+  const ov = document.getElementById('salReminderOverlay');
+  if (!ov) return;
+  ov.classList.remove('active');
+  setTimeout(() => ov.remove(), 260);
+};
+
+export async function checkSalaryReminder() {
+  const email   = state.curUser?.email || '';
+  const isAdmin = state.curUser?.role === 'Admin';
+
+  const canCash = email === MUKESH_EMAIL || isAdmin;
+  const canBank = email === SATIJA_EMAIL || isAdmin;
+  const canProc = email === PRANAV_EMAIL || isAdmin;
+
+  if (!canCash && !canBank && !canProc) return;
+
+  const info = getSalaryMonthInfo();
+  const now  = new Date();
+  const day  = now.getDate();
+  const yr   = now.getFullYear();
+  const mo   = now.getMonth(); // 0-indexed (July = 6)
+
+  // Special first window: July 21–31 2026 (deployment date onwards for July salary)
+  // Regular window: 3rd–15th of every month (getSalaryMonthInfo auto-returns previous month in this range)
+  const inEntryWindow = (yr === 2026 && mo === 6 && day >= 21) || (day >= 3 && day <= 15);
+
+  // Once-per-day key includes today's date so it resets daily
+  const today = `${yr}-${String(mo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+  let cashData = null, bankData = null;
+  try { cashData = await getSalaryDoc(info.cashId); } catch(_) {}
+  try { bankData = await getSalaryDoc(info.bankId); } catch(_) {}
+
+  const cashStatus = cashData?.status || 'pending';
+  const bankStatus = bankData?.status || 'pending';
+
+  const reminders = [];
+
+  // Entry reminders — once per day (localStorage resets daily), within entry window, while pending
+  if (canCash && inEntryWindow && cashStatus === 'pending') {
+    const key = `salRem_cash_${info.cashId}_${today}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
+      reminders.push({ type: 'entry', label: 'Cash Salary', month: info.label, action: 'cash' });
+    }
+  }
+  if (canBank && inEntryWindow && bankStatus === 'pending') {
+    const key = `salRem_bank_${info.bankId}_${today}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
+      reminders.push({ type: 'entry', label: 'Bank Salary & Payments', month: info.label, action: 'bank' });
+    }
+  }
+
+  // Process reminders — every login for Pranav while status is submitted (no day limit)
+  if (canProc && cashStatus === 'submitted')
+    reminders.push({ type: 'process', label: 'Cash Salary', month: info.label, action: 'cash' });
+  if (canProc && bankStatus === 'submitted')
+    reminders.push({ type: 'process', label: 'Bank Salary & Payments', month: info.label, action: 'bank' });
+
+  if (!reminders.length) return;
+  _showReminderPopup(reminders, info);
+}

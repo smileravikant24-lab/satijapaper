@@ -20,7 +20,7 @@ import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
-import { showCashSalary, showBankSalary, hideSalaryPanel } from './ui/salary.view.js';
+import { showCashSalary, showBankSalary, hideSalaryPanel, checkSalaryReminder } from './ui/salary.view.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -38,6 +38,7 @@ function enterApp(user) {
   _forceLocalCounts();
   _setProductsCount();
   _initMobileSidebar();
+  setTimeout(() => checkSalaryReminder(), 900);
 }
 
 
