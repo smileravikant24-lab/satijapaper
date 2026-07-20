@@ -236,10 +236,12 @@
 }
 .sal-rem-amber { background: #fef3c7; color: #92400e; }
 .sal-rem-blue  { background: #dbeafe; color: #1e40af; }
+.sal-rem-green { background: #dcfce7; color: #14532d; }
 
 @media (prefers-color-scheme: dark) {
   .sal-rem-amber { background: #451a03; color: #fde68a; }
   .sal-rem-blue  { background: #1e3a5f; color: #93c5fd; }
+  .sal-rem-green { background: #052e16; color: #86efac; }
 }
 
 .sal-rem-title {
@@ -284,3 +286,22 @@
 .sal-rem-go:hover     { opacity: .88; transform: translateY(-1px); }
 .sal-rem-go:active    { transform: translateY(0); }
 .sal-rem-go-green     { background: #16a34a; }
+
+/* WhatsApp button in processed banner */
+.sal-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #25d366;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: opacity .15s;
+}
+.sal-wa-btn:hover { opacity: .85; }

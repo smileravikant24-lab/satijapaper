@@ -38,6 +38,13 @@ const BANK_ITEMS = [
   { id: 'office_e',  name: 'Cash Withdraw',                  via: 'PNB',                label: 'Office Exp' },
 ];
 
+function _displayName(email) {
+  if (email === MUKESH_EMAIL) return 'Mukesh Ji';
+  if (email === SATIJA_EMAIL) return 'Sandeep Ji';
+  if (email === PRANAV_EMAIL) return 'Pranav Sir';
+  return email;
+}
+
 function _panel() { return document.getElementById('salaryPanel'); }
 
 function _canEnterCash(email) {
@@ -126,16 +133,24 @@ async function _renderSalaryPanel(type) {
     return;
   }
 
+  const whoEnters = type === 'cash' ? MUKESH_EMAIL : SATIJA_EMAIL;
+  const waText    = encodeURIComponent(`${info.label} ${title} processed ho gayi. ✓ — Pranav Sir`);
+  const waBtn     = (status === 'processed' && canProcess)
+    ? `<a class="sal-wa-btn" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener noreferrer">
+         <i class="fab fa-whatsapp"></i> Inform ${_displayName(whoEnters)}
+       </a>` : '';
+
   const processedBanner = status === 'processed'
     ? `<div class="sal-processed-banner">
          <i class="fas fa-circle-check"></i>
-         ${info.label} — Processed by ${data.processedBy || ''}
+         <span>${info.label} — Processed by ${_displayName(data.processedBy || '')}</span>
+         ${waBtn}
        </div>` : '';
 
   const submittedBanner = status === 'submitted' && !canProcess
     ? `<div class="sal-submitted-banner">
          <i class="fas fa-paper-plane"></i>
-         Submitted. Awaiting Pranav's confirmation.
+         Submitted. Awaiting Pranav Sir's confirmation.
        </div>` : '';
 
   const actionBtn = (() => {
@@ -298,15 +313,43 @@ function _showReminderPopup(reminders, info) {
 
   const hasProcess = reminders.some(r => r.type === 'process');
   const hasEntry   = reminders.some(r => r.type === 'entry');
-  const icon  = hasProcess && !hasEntry ? 'fas fa-circle-check' : 'fas fa-bell';
-  const title = hasProcess && !hasEntry ? `${info.label} — Ready to Process` : `${info.label} Salary Due`;
-  const sub   = hasProcess && !hasEntry
-    ? 'Entries submitted. Please mark as processed.'
-    : 'Salary entry window is open.';
+  const hasDone    = reminders.some(r => r.type === 'done');
+
+  let icon, iconCls, title, sub;
+  if (hasDone && !hasEntry && !hasProcess) {
+    icon    = 'fas fa-circle-check';
+    iconCls = 'sal-rem-green';
+    title   = `${info.label} — Processed! ✓`;
+    sub     = 'Pranav Sir ne salary process kar di.';
+  } else if (hasProcess && !hasEntry) {
+    icon    = 'fas fa-circle-check';
+    iconCls = 'sal-rem-blue';
+    title   = `${info.label} — Ready to Process`;
+    sub     = 'Entries submitted. Please mark as processed.';
+  } else {
+    icon    = 'fas fa-bell';
+    iconCls = 'sal-rem-amber';
+    title   = `${info.label} Salary Due`;
+    sub     = 'Salary entry window open hai.';
+  }
 
   const itemsHtml = reminders.map(r => {
+    const goFn = r.action === 'cash' ? 'showCashSalary()' : 'showBankSalary()';
+    if (r.type === 'done') {
+      return `<div class="sal-rem-item">
+        <div class="sal-rem-item-left">
+          <i class="fas fa-circle-check" style="color:#16a34a"></i>
+          <div>
+            <div class="sal-rem-item-label">${r.label}</div>
+            <div class="sal-rem-item-sub">${r.month} — by ${_displayName(r.by || '')}</div>
+          </div>
+        </div>
+        <button class="sal-rem-go sal-rem-go-green" onclick="window._salCloseReminder();${goFn}">
+          View <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>`;
+    }
     const goLabel = r.type === 'process' ? 'Mark Processed' : 'Enter Now';
-    const goFn    = r.action === 'cash' ? 'showCashSalary()' : 'showBankSalary()';
     const icoType = r.type === 'process' ? 'fas fa-circle-check' : 'fas fa-pen-to-square';
     return `<div class="sal-rem-item">
       <div class="sal-rem-item-left">
@@ -329,7 +372,7 @@ function _showReminderPopup(reminders, info) {
       <button class="sal-rem-x" onclick="window._salCloseReminder()">
         <i class="fas fa-xmark"></i>
       </button>
-      <div class="sal-rem-icon-wrap ${hasProcess && !hasEntry ? 'sal-rem-blue' : 'sal-rem-amber'}">
+      <div class="sal-rem-icon-wrap ${iconCls}">
         <i class="${icon}"></i>
       </div>
       <div class="sal-rem-title">${title}</div>
@@ -403,6 +446,22 @@ export async function checkSalaryReminder() {
     reminders.push({ type: 'process', label: 'Cash Salary', month: info.label, action: 'cash' });
   if (canProc && bankStatus === 'submitted')
     reminders.push({ type: 'process', label: 'Bank Salary & Payments', month: info.label, action: 'bank' });
+
+  // Done notifications — once ever (per salary month) for Mukesh Ji / Sandeep Ji when processed
+  if (email === MUKESH_EMAIL && cashStatus === 'processed') {
+    const key = `salRem_done_cash_${info.cashId}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
+      reminders.push({ type: 'done', label: 'Cash Salary', month: info.label, action: 'cash', by: cashData?.processedBy });
+    }
+  }
+  if (email === SATIJA_EMAIL && bankStatus === 'processed') {
+    const key = `salRem_done_bank_${info.bankId}`;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '1');
+      reminders.push({ type: 'done', label: 'Bank Salary & Payments', month: info.label, action: 'bank', by: bankData?.processedBy });
+    }
+  }
 
   if (!reminders.length) return;
   _showReminderPopup(reminders, info);
