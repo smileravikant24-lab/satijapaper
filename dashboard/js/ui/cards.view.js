@@ -327,6 +327,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  _G.GAS,                    'Admin Panel');
     btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
     btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-gauge',            'Dashboard');
+    btns += buildButton(it, !!it.links.dash,       'dash',      'btn-dash',   'fas fa-chart-line',       'Dashboard');
     btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
     btns += buildButton(it, !!it.links.calc,       'calc',      'btn-dash',   'fas fa-calculator',       'Profit Calculator');
     btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
