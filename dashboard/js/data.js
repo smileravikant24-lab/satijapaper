@@ -173,6 +173,7 @@ export const LINK_META = {
   admin:     {label:'Admin Panel',    icon:'fas fa-user-gear',        cls:'btn-admin'},
   gpDash:    {label:'GP Dashboard',   icon:'fas fa-chart-column',     cls:'btn-gp'},
   stockDash: {label:'Stock Dashboard',icon:'fas fa-boxes-stacking',   cls:'btn-stock'},
+  dash:      {label:'Dashboard',      icon:'fas fa-chart-line',       cls:'btn-dash'},
   calc:      {label:'Profit Calculator',icon:'fas fa-calculator',    cls:'btn-dash'},
   folder:    {label:'View Folder',    icon:'fas fa-folder-open',      cls:'btn-folder'},
   terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},
