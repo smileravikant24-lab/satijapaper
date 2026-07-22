@@ -117,6 +117,7 @@ export async function renderCards(data){
     'Price List':                        'fas fa-tags',
     'Next Week/ Day Marketing Plan':     'fas fa-calendar-days',
     'Sales Report (GSTR-3B)':            'fas fa-chart-bar',
+    'Truck Sale Dashboard':              'fas fa-truck',
     'New Customer Visit':                'fas fa-user-plus',
     'Follow Up Calls':                   'fas fa-phone-volume',
     'Scott Sheet':                       'fas fa-file-lines',
