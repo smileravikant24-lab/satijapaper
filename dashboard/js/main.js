@@ -21,6 +21,7 @@ import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
 import { showCashSalary, showBankSalary, hideSalaryPanel, checkSalaryReminder } from './ui/salary.view.js';
+import { getConfigUrl } from './services/config.service.js';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -95,6 +96,15 @@ function openAIQA() {
 function _setProductsCount() {
   const badge = document.getElementById('cntProducts');
   if (badge) badge.textContent = PRODUCTS.length;
+}
+
+async function showGallery(btn) {
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const url = await getConfigUrl('gallery');
+  if (!url) { showToast('Gallery not configured.', 'err'); return; }
+  window.open(url, '_blank', 'noopener,noreferrer');
+  document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
 }
 
 function _hidePersonalBankPanel() {
@@ -515,6 +525,7 @@ Object.assign(window, {
   sdashSetView,
   showCashSalary,
   showBankSalary,
+  showGallery,
 });
 
 
