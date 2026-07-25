@@ -4,7 +4,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  browserSessionPersistence,
+  setPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore,
@@ -18,6 +20,7 @@ import {
 import { FIREBASE_CONFIG } from '../config.js';
 const app = initializeApp(FIREBASE_CONFIG);
 export const auth = getAuth(app);
+setPersistence(auth, browserSessionPersistence).catch(console.error);
 export const db = getFirestore(app);
 export {
   signInWithEmailAndPassword,
