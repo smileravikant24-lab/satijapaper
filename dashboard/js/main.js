@@ -73,7 +73,7 @@ function enterApp(user) {
   _setProductsCount();
   _initMobileSidebar();
   _stopIdleWatcher();
-  _startIdleWatcher();
+  if (user.email === 'pranavsatija@satijapaper.com') _startIdleWatcher();
   _lockContextMenu();
   setTimeout(() => checkSalaryReminder(), 900);
 }
