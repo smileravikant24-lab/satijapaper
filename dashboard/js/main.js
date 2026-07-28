@@ -26,6 +26,39 @@ import { getConfigUrl } from './services/config.service.js';
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
+// ── Bank-like session security ────────────────────────────────────────────
+let   _idleTimer      = null;
+const _IDLE_MS        = 30 * 60 * 1000;
+const _IDLE_EVS       = ['mousemove','mousedown','keydown','touchstart','scroll','click'];
+let   _securityLocked = false;
+
+function _resetIdle() {
+  clearTimeout(_idleTimer);
+  _idleTimer = setTimeout(() => {
+    showToast('Session expired due to inactivity.', 'err');
+    setTimeout(handleLogout, 1400);
+  }, _IDLE_MS);
+}
+function _startIdleWatcher() {
+  _IDLE_EVS.forEach(ev => document.addEventListener(ev, _resetIdle, { passive: true }));
+  _resetIdle();
+}
+function _stopIdleWatcher() {
+  clearTimeout(_idleTimer);
+  _IDLE_EVS.forEach(ev => document.removeEventListener(ev, _resetIdle));
+}
+function _lockContextMenu() {
+  if (_securityLocked) return;
+  _securityLocked = true;
+  document.addEventListener('contextmenu', e => e.preventDefault(), { capture: true });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12') { e.preventDefault(); return; }
+    if (e.ctrlKey && e.shiftKey && ['i','I','j','J','c','C'].includes(e.key)) { e.preventDefault(); return; }
+    if (e.ctrlKey && ['u','U','s','S'].includes(e.key)) e.preventDefault();
+  }, { capture: true });
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -39,6 +72,9 @@ function enterApp(user) {
   _forceLocalCounts();
   _setProductsCount();
   _initMobileSidebar();
+  _stopIdleWatcher();
+  if (user.email === 'pranavsatija@satijapaper.com') _startIdleWatcher();
+  _lockContextMenu();
   setTimeout(() => checkSalaryReminder(), 900);
 }
 

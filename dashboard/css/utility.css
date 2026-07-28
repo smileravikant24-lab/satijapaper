@@ -15,6 +15,16 @@
 .toast.err { border-left:3px solid var(--danger) }
 .toast.info{ border-left:3px solid var(--accent) }
 
+/* Bank-like: buttons and cards are non-selectable */
+.btn, .tab-btn, .top-logout, .add-btn, .mbtn,
+.bank-copy-btn, .bank-share-btn, .doc-open-btn,
+.bank-nav-card, .card-inner {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 @media (max-width:768px){
   .sidebar{
     position:fixed; left:-300px; top:0; bottom:0;
