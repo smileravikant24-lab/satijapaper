@@ -1,6 +1,7 @@
 import {
   auth, db,
   signInWithEmailAndPassword, signOut, sendPasswordResetEmail, onAuthStateChanged,
+  browserSessionPersistence, browserLocalPersistence, setPersistence,
   doc, getDoc, setDoc
 } from './firebase.js';
 
@@ -9,8 +10,13 @@ import { DEFAULT_ADMIN_EMAIL } from '../config.js';
 
 export const emailToId = email =>
 email.toLowerCase().replace(/[^a-z0-9]/g, '_');
-export const login = (email, password) =>
-signInWithEmailAndPassword(auth, email, password);
+export const login = async (email, password) => {
+  const persistence = email.toLowerCase() === 'pranavsatija@satijapaper.com'
+    ? browserSessionPersistence
+    : browserLocalPersistence;
+  await setPersistence(auth, persistence);
+  return signInWithEmailAndPassword(auth, email, password);
+};
 export const logout = () => signOut(auth);
 export const resetPassword = email =>
 sendPasswordResetEmail(auth, email);
