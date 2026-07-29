@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
   browserSessionPersistence,
+  browserLocalPersistence,
   setPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
@@ -20,12 +21,14 @@ import {
 import { FIREBASE_CONFIG } from '../config.js';
 const app = initializeApp(FIREBASE_CONFIG);
 export const auth = getAuth(app);
-setPersistence(auth, browserSessionPersistence).catch(console.error);
 export const db = getFirestore(app);
 export {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  browserSessionPersistence,
+  browserLocalPersistence,
+  setPersistence
 };
 export { doc, getDoc, setDoc, deleteDoc, collection, getDocs };
