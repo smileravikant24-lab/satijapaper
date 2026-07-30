@@ -31,7 +31,7 @@ let _cpUrl = null;
 
 async function _initCPBanner() {
   _cpUrl = await getConfigUrl('companyProfile');
-  if (_cpUrl) _renderCPBannerHTML();
+  if (_cpUrl) { _renderCPBannerHTML(); _showCPBanner(); }
 }
 function _renderCPBannerHTML() {
   const banner = document.getElementById('cpBanner');
