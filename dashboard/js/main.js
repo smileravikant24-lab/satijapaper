@@ -26,6 +26,50 @@ import { getConfigUrl } from './services/config.service.js';
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
 
+// ── Company Profile Banner ────────────────────────────────────────────────
+let _cpUrl = null;
+
+async function _initCPBanner() {
+  _cpUrl = await getConfigUrl('companyProfile');
+  if (_cpUrl) _renderCPBannerHTML();
+}
+function _renderCPBannerHTML() {
+  const banner = document.getElementById('cpBanner');
+  if (!banner || !_cpUrl) return;
+  const absUrl = _cpUrl.startsWith('http') ? _cpUrl : `${location.origin}/${_cpUrl.replace(/^\//,'')}`;
+  const waText = encodeURIComponent(`Satija Paper — Company Profile\n${absUrl}`);
+  banner.innerHTML = `
+    <div class="cp-banner">
+      <div class="cp-banner-left">
+        <div class="cp-banner-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="cp-banner-info">
+          <div class="cp-banner-title">SP Company Profile</div>
+          <div class="cp-banner-sub">Download &amp; Share with clients</div>
+        </div>
+      </div>
+      <div class="cp-banner-actions">
+        <a href="${absUrl}" target="_blank" rel="noopener" class="cp-btn cp-btn-open">
+          <i class="fas fa-eye"></i><span>Open</span>
+        </a>
+        <a href="https://wa.me/?text=${waText}" target="_blank" rel="noopener" class="cp-btn cp-btn-wa">
+          <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+        </a>
+        <button onclick="cpCopyLink()" class="cp-btn cp-btn-copy">
+          <i class="fas fa-link"></i><span>Copy Link</span>
+        </button>
+      </div>
+    </div>`;
+}
+function _showCPBanner() {
+  const b = document.getElementById('cpBanner');
+  if (b && _cpUrl) b.style.display = 'block';
+}
+function _hideCPBanner() {
+  const b = document.getElementById('cpBanner');
+  if (b) b.style.display = 'none';
+}
+// ─────────────────────────────────────────────────────────────────────────
+
 // ── Bank-like session security ────────────────────────────────────────────
 let   _idleTimer      = null;
 const _IDLE_MS        = 30 * 60 * 1000;
@@ -75,6 +119,7 @@ function enterApp(user) {
   _stopIdleWatcher();
   if (user.email === 'pranavsatija@satijapaper.com') _startIdleWatcher();
   _lockContextMenu();
+  _initCPBanner();
   setTimeout(() => checkSalaryReminder(), 900);
 }
 
@@ -161,6 +206,7 @@ async function showSalesDashboard(btn) {
   }
   _hidePersonalBankPanel();
   hideSalaryPanel();
+  _hideCPBanner();
   document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   state.curCat   = 'SalesDash';
@@ -184,6 +230,7 @@ function showProducts(btn) {
   _hideSalesPanel();
   _hidePersonalBankPanel();
   hideSalaryPanel();
+  _hideCPBanner();
   document.querySelectorAll('.tab-btn,.menu-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   state.curCat   = 'Products';
@@ -302,6 +349,7 @@ function showAdmin(btn) {
   _hidePersonalBankPanel();
   _hideSalesPanel();
   hideSalaryPanel();
+  _hideCPBanner();
   const pp = document.getElementById('productsPanel');
   if (pp) pp.style.display = 'none';
   const ap = document.getElementById('adminPanel');
@@ -353,6 +401,7 @@ function filterCatPatched(cat, btn) {
   if (header) header.textContent = _CAT_FULL_LABEL[cat] || cat;
   _hidePersonalBankPanel();
   hideSalaryPanel();
+  if (cat === 'All') _showCPBanner(); else _hideCPBanner();
 }
 
 function runFilterPatched() {
@@ -562,6 +611,13 @@ Object.assign(window, {
   showCashSalary,
   showBankSalary,
   showGallery,
+  cpCopyLink: () => {
+    if (!_cpUrl) return;
+    const absUrl = _cpUrl.startsWith('http') ? _cpUrl : `${location.origin}/${_cpUrl.replace(/^\//,'')}`;
+    navigator.clipboard.writeText(absUrl)
+      .then(() => showToast('Link copied!', 'ok'))
+      .catch(() => showToast('Copy failed.', 'err'));
+  },
 });
 
 
