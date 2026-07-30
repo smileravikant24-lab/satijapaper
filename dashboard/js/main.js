@@ -41,7 +41,7 @@ function _renderCPBannerHTML() {
   banner.innerHTML = `
     <div class="cp-banner">
       <div class="cp-banner-left">
-        <div class="cp-banner-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="cp-banner-icon"><img src="logo.png" alt="SP" class="cp-logo-img"></div>
         <div class="cp-banner-info">
           <div class="cp-banner-title">SP Company Profile</div>
           <div class="cp-banner-sub">Download &amp; Share with clients</div>
