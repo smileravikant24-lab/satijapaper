@@ -135,7 +135,7 @@ export async function renderCards(data){
     'Double A CME Folder':               'fas fa-folder-open',
     'Double A Retail Customer (Mr. Rishabh)': 'fas fa-users',
     'Double A Corporate Customer':       'fas fa-building',
-    'Double A Container Tracker':         'fas fa-ship',
+    'Double A Container Tracker':         'fas fa-location-crosshairs',
     'Double A Display Links':            'fas fa-link',
     'Enquiry Capture FY 2026-27':        'fas fa-magnifying-glass',
     'Stock Dashboard Khera':             'fas fa-cubes',
