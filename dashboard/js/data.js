@@ -36,6 +36,8 @@ export const DB = [
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1,stockDash:1}},
   {cat:"Sales",name:"Double A Corporate Customer",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
+  {cat:"Sales",name:"Double A Container Tracker",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
   {cat:"Sales",name:"Double A Display Links",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1}},
   // ──────────────────────────────────────────────────────────────
