@@ -91,15 +91,17 @@ function _stopIdleWatcher() {
   clearTimeout(_idleTimer);
   _IDLE_EVS.forEach(ev => document.removeEventListener(ev, _resetIdle));
 }
-function _lockContextMenu() {
+function _lockContextMenu(isAdmin) {
   if (_securityLocked) return;
   _securityLocked = true;
   document.addEventListener('contextmenu', e => e.preventDefault(), { capture: true });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'F12') { e.preventDefault(); return; }
-    if (e.ctrlKey && e.shiftKey && ['i','I','j','J','c','C'].includes(e.key)) { e.preventDefault(); return; }
-    if (e.ctrlKey && ['u','U','s','S'].includes(e.key)) e.preventDefault();
-  }, { capture: true });
+  if (!isAdmin) {
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F12') { e.preventDefault(); return; }
+      if (e.ctrlKey && e.shiftKey && ['i','I','j','J','c','C'].includes(e.key)) { e.preventDefault(); return; }
+      if (e.ctrlKey && ['u','U','s','S'].includes(e.key)) e.preventDefault();
+    }, { capture: true });
+  }
 }
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -118,7 +120,7 @@ function enterApp(user) {
   _initMobileSidebar();
   _stopIdleWatcher();
   if (user.email === 'pranavsatija@satijapaper.com') _startIdleWatcher();
-  _lockContextMenu();
+  _lockContextMenu(user.role === 'Admin');
   _initCPBanner();
   setTimeout(() => checkSalaryReminder(), 900);
 }
