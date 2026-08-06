@@ -112,7 +112,9 @@ export async function renderCards(data){
     // ── Import & Procurement ──────────────────────────────────
     'Custom Clearance Checklist':        'fas fa-clipboard-list',
     'Shipping Document Checklist':       'fas fa-file-lines',
+    'Import Process System':             'fas fa-diagram-project',
     // ── Sales & Marketing ────────────────────────────────────
+    'Rozaana Field Order Dashboard':     'fas fa-calendar-day',
     'CRM Payment FMS':                   'fas fa-money-bill-wave',
     'Price List':                        'fas fa-tags',
     'Next Week/ Day Marketing Plan':     'fas fa-calendar-days',
