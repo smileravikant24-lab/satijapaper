@@ -169,14 +169,13 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
   // ── Table headers ──
   const amtHeader = editable ? 'Enter Amount (₹)' : 'Amount';
   const extraHeaders = type === 'cash'
-    ? `<th class="sal-check-cell sal-bank-col-header">Done</th>
-       <th class="sal-check-cell sal-bank-col-header">Pending</th>`
+    ? `<th class="sal-check-cell sal-bank-col-header">Status</th>`
     : `<th class="sal-check-cell sal-bank-col-header">Mukesh Ji</th>
        <th class="sal-check-cell sal-bank-col-header">Sandeep Ji</th>
        <th class="sal-check-cell sal-bank-col-header">Pranav Sir</th>`;
 
   const emptyStatusCols = type === 'cash'
-    ? '<td class="sal-check-cell"></td><td class="sal-check-cell"></td>'
+    ? '<td class="sal-check-cell"></td>'
     : '<td class="sal-check-cell"></td><td class="sal-check-cell"></td><td class="sal-check-cell"></td>';
 
   // ── Main employee rows ──
@@ -286,30 +285,35 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
 }
 
 // Returns the status cell HTML for a row (works for both regular entries and custom)
+function _mkChkCell(isDone, canToggle, onchangeStr) {
+  const lbl = isDone ? 'Done' : 'Pending';
+  if (canToggle) {
+    return `<td class="sal-check-cell">
+      <label class="sal-chk-label">
+        <input type="checkbox" class="sal-chk-box" ${isDone ? 'checked' : ''}
+          onchange="${onchangeStr};this.closest('.sal-chk-label').querySelector('.sal-chk-lbl').textContent=this.checked?'Done':'Pending'">
+        <span class="sal-chk-ui"></span>
+        <span class="sal-chk-lbl">${lbl}</span>
+      </label>
+    </td>`;
+  }
+  return `<td class="sal-check-cell">
+    <label class="sal-chk-label sal-chk-view">
+      <input type="checkbox" class="sal-chk-box" ${isDone ? 'checked' : ''} disabled>
+      <span class="sal-chk-ui"></span>
+      <span class="sal-chk-lbl">${lbl}</span>
+    </label>
+  </td>`;
+}
+
 function _buildStatusCells(type, rowKey, entryData, docId, email, isAdmin, isCustom, customId) {
   if (type === 'cash') {
     const done = !!entryData.done;
     const canToggle = email === MUKESH_EMAIL || isAdmin;
-    const toggleFn = isCustom
-      ? `window._salToggleCashCustom('${docId}','${customId}',`
-      : `window._salToggleCash('${docId}','${rowKey}',`;
-
-    if (canToggle) {
-      return `
-        <td class="sal-check-cell">
-          <button class="sal-chk-toggle ${done ? 'done' : ''}" onclick="${toggleFn}true)">
-            ${done ? 'Done' : 'Mark Done'}
-          </button>
-        </td>
-        <td class="sal-check-cell">
-          <button class="sal-chk-toggle ${!done ? 'pending' : ''}" onclick="${toggleFn}false)">
-            ${!done ? 'Pending' : 'Mark Pending'}
-          </button>
-        </td>`;
-    }
-    return `
-      <td class="sal-check-cell">${done ? '<span class="sal-chk-toggle done">Done</span>' : '<span class="sal-chk-toggle muted">—</span>'}</td>
-      <td class="sal-check-cell">${!done ? '<span class="sal-chk-toggle pending">Pending</span>' : '<span class="sal-chk-toggle muted">—</span>'}</td>`;
+    const onch = isCustom
+      ? `window._salToggleCashCustom('${docId}','${customId}',this.checked)`
+      : `window._salToggleCash('${docId}','${rowKey}',this.checked)`;
+    return _mkChkCell(done, canToggle, onch);
   }
 
   // bank: 3 approval columns
@@ -321,25 +325,19 @@ function _buildStatusCells(type, rowKey, entryData, docId, email, isAdmin, isCus
   const canToggleSandeep = email === SATIJA_EMAIL  || isAdmin;
   const canTogglePranav  = email === PRANAV_EMAIL  || isAdmin;
 
-  const toggleFn = isCustom
-    ? (col) => `window._salToggleBankCustom('${docId}','${customId}','${col}')`
-    : (col) => `window._salToggleBank('${docId}','${rowKey}','${col}')`;
+  const mkOnch = isCustom
+    ? `window._salToggleBankCustom('${docId}','${customId}','mukesh',this.checked)`
+    : `window._salToggleBank('${docId}','${rowKey}','mukesh',this.checked)`;
+  const sdOnch = isCustom
+    ? `window._salToggleBankCustom('${docId}','${customId}','sandeep',this.checked)`
+    : `window._salToggleBank('${docId}','${rowKey}','sandeep',this.checked)`;
+  const pvOnch = isCustom
+    ? `window._salToggleBankCustom('${docId}','${customId}','pranav',this.checked)`
+    : `window._salToggleBank('${docId}','${rowKey}','pranav',this.checked)`;
 
-  const mkChip = canToggleMukesh
-    ? `<button class="sal-chk-toggle ${mukeshDone ? 'done' : 'pending'}" onclick="${toggleFn('mukesh')}">${mukeshDone ? 'Done' : 'Pending'}</button>`
-    : `<span class="sal-chk-toggle ${mukeshDone ? 'done' : 'pending'}">${mukeshDone ? 'Done' : 'Pending'}</span>`;
-
-  const sdChip = canToggleSandeep
-    ? `<button class="sal-chk-toggle ${sandeepDone ? 'done' : 'pending'}" onclick="${toggleFn('sandeep')}">${sandeepDone ? 'Done' : 'Pending'}</button>`
-    : `<span class="sal-chk-toggle ${sandeepDone ? 'done' : 'pending'}">${sandeepDone ? 'Done' : 'Pending'}</span>`;
-
-  const pvChip = canTogglePranav
-    ? `<button class="sal-chk-toggle ${pranavDone ? 'done' : 'pending'}" onclick="${toggleFn('pranav')}">${pranavDone ? 'Done' : 'Pending'}</button>`
-    : `<span class="sal-chk-toggle ${pranavDone ? 'done' : 'pending'}">${pranavDone ? 'Done' : 'Pending'}</span>`;
-
-  return `<td class="sal-check-cell">${mkChip}</td>
-          <td class="sal-check-cell">${sdChip}</td>
-          <td class="sal-check-cell">${pvChip}</td>`;
+  return _mkChkCell(mukeshDone, canToggleMukesh, mkOnch)
+       + _mkChkCell(sandeepDone, canToggleSandeep, sdOnch)
+       + _mkChkCell(pranavDone, canTogglePranav, pvOnch);
 }
 
 // ── Live total listener attachment ────────────────────────────────────────────
@@ -758,7 +756,6 @@ window._salToggleCash = async function(docId, entryId, setDone) {
   try {
     await updateSalaryEntryField(docId, entryId, 'done', setDone);
     showToast(setDone ? 'Marked as Done' : 'Marked as Pending', 'ok');
-    await _rerender();
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
   }
@@ -772,7 +769,6 @@ window._salToggleCashCustom = async function(docId, customId, setDone) {
     );
     await updateSalaryField(docId, 'customEntries', ces);
     showToast(setDone ? 'Marked as Done' : 'Marked as Pending', 'ok');
-    await _rerender();
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
   }
@@ -780,29 +776,23 @@ window._salToggleCashCustom = async function(docId, customId, setDone) {
 
 // ── Bank approval toggles ─────────────────────────────────────────────────────
 
-window._salToggleBank = async function(docId, entryId, col) {
+window._salToggleBank = async function(docId, entryId, col, newVal) {
   try {
-    const d = await getSalaryDoc(docId);
-    const current = d?.entries?.[entryId]?.[col + '_done'] || false;
-    await updateSalaryEntryField(docId, entryId, col + '_done', !current);
-    showToast(!current ? 'Marked as Done' : 'Marked as Pending', 'ok');
-    await _rerender();
+    await updateSalaryEntryField(docId, entryId, col + '_done', newVal);
+    showToast(newVal ? 'Marked as Done' : 'Marked as Pending', 'ok');
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
   }
 };
 
-window._salToggleBankCustom = async function(docId, customId, col) {
+window._salToggleBankCustom = async function(docId, customId, col, newVal) {
   try {
     const d = await getSalaryDoc(docId);
-    const ce = (d?.customEntries || []).find(c => c.id === customId);
-    const current = ce?.[col + '_done'] || false;
     const ces = (d?.customEntries || []).map(c =>
-      c.id === customId ? { ...c, [col + '_done']: !current } : c
+      c.id === customId ? { ...c, [col + '_done']: newVal } : c
     );
     await updateSalaryField(docId, 'customEntries', ces);
-    showToast(!current ? 'Marked as Done' : 'Marked as Pending', 'ok');
-    await _rerender();
+    showToast(newVal ? 'Marked as Done' : 'Marked as Pending', 'ok');
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
   }
