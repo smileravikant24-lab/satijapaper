@@ -306,58 +306,71 @@
 }
 .sal-wa-btn:hover { opacity: .85; }
 
-/* ── Done/Pending toggle chips ─────────────────────────────────────────────── */
+/* ── Done/Pending checkboxes ────────────────────────────────────────────────── */
 .sal-check-cell {
-  width: 88px;
-  min-width: 80px;
+  width: 96px;
+  min-width: 88px;
   text-align: center;
   padding: 7px 6px;
   vertical-align: middle;
 }
 
-.sal-chk-toggle {
+.sal-chk-label {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  white-space: nowrap;
-  border: none;
-  background: var(--hover);
-  color: var(--text-3);
-  cursor: default;
-  transition: background .15s, color .15s, transform .1s;
-  user-select: none;
-}
-button.sal-chk-toggle {
+  gap: 6px;
   cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
 }
-button.sal-chk-toggle:hover {
-  opacity: .85;
-  transform: translateY(-1px);
-}
-button.sal-chk-toggle:active {
-  transform: translateY(0);
+.sal-chk-label.sal-chk-view {
+  cursor: default;
+  opacity: .72;
 }
 
-.sal-chk-toggle.done {
-  background: #dcfce7;
-  color: #14532d;
+/* Hidden native checkbox — custom box drawn via ::after */
+.sal-chk-box {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  background: #fff;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
 }
-.sal-chk-toggle.pending {
-  background: #fef3c7;
-  color: #92400e;
+.sal-chk-box:checked {
+  background: #22c55e;
+  border-color: #16a34a;
 }
-.sal-chk-toggle.muted {
-  background: none;
-  color: var(--text-3);
+.sal-chk-box:checked::after {
+  content: '';
+  position: absolute;
+  top: 1px; left: 4px;
+  width: 4px; height: 8px;
+  border: 2px solid #fff;
+  border-top: none; border-left: none;
+  transform: rotate(45deg);
+}
+.sal-chk-box:disabled { opacity: .55; cursor: not-allowed; }
+
+/* Invisible span — keeps layout when no custom box drawn */
+.sal-chk-ui { display: none; }
+
+.sal-chk-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  min-width: 42px;
+  text-align: left;
 }
 
 @media (prefers-color-scheme: dark) {
-  .sal-chk-toggle.done    { background: #052e16; color: #86efac; }
-  .sal-chk-toggle.pending { background: #451a03; color: #fde68a; }
+  .sal-chk-box { background: #1e293b; border-color: #475569; }
+  .sal-chk-box:checked { background: #16a34a; border-color: #15803d; }
 }
 
 .sal-bank-col-header {
