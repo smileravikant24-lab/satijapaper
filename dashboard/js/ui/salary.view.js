@@ -1,6 +1,9 @@
 import { state }                          from '../state.js';
 import { showToast }                      from './dom.js';
-import { getSalaryMonthInfo, getSalaryDoc, saveSalaryDoc } from '../services/salary.service.js';
+import {
+  getSalaryMonthInfo, getSalaryDoc, saveSalaryDoc,
+  updateSalaryField, updateSalaryEntryField
+} from '../services/salary.service.js';
 
 const MUKESH_EMAIL = 'mukesh.shukla@pranavsatijapaper.com';
 const SATIJA_EMAIL = 'satijapaper@gmail.com';
@@ -38,6 +41,11 @@ const BANK_ITEMS = [
   { id: 'office_e',  name: 'Cash Withdraw',                  via: 'PNB',                label: 'Office Exp' },
 ];
 
+// ── Module state ──────────────────────────────────────────────────────────────
+let _lastRenderType = 'cash'; // 'cash' | 'bank' | 'combined'
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function _displayName(email) {
   if (email === MUKESH_EMAIL) return 'Mukesh Ji';
   if (email === SATIJA_EMAIL) return 'Sandeep Ji';
@@ -72,42 +80,310 @@ function _fmt(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
-function _buildTable(items, entries, editable, type) {
-  let lastLabel = '';
-  const rows = items.map(it => {
-    const amt = entries?.[it.id]?.amount ?? '';
-    const labelCell = it.label !== lastLabel
-      ? `<td class="sal-label-cell" rowspan="X">${it.label}</td>`
+function _esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function _calcTotal(items, entries, customEntries = []) {
+  const base   = items.reduce((s, it) => s + (Number(entries?.[it.id]?.amount) || 0), 0);
+  const custom = customEntries.reduce((s, ce) => s + (Number(ce.amount) || 0), 0);
+  return base + custom;
+}
+
+// ── WhatsApp section ──────────────────────────────────────────────────────────
+
+function _waSection(type, info, status, whoEnters, email, isAdmin) {
+  const canWa = email === PRANAV_EMAIL || isAdmin;
+  if (!canWa) return '';
+  if (status !== 'submitted' && status !== 'processed') return '';
+
+  const defaultText = status === 'processed'
+    ? `${info.label} — processed ho gayi ✓`
+    : `${info.label} — salary entries submit ho gayi, please process karein.`;
+
+  const btnLabel = status === 'processed'
+    ? `Inform ${_displayName(whoEnters)}`
+    : 'Send via WhatsApp';
+
+  return `<div class="sal-wa-section">
+    <label class="sal-wa-label">WhatsApp Message</label>
+    <textarea class="sal-wa-textarea" id="salWaText_${type}">${_esc(defaultText)}</textarea>
+    <button class="sal-wa-send-btn" onclick="window._salSendWa('${type}')">
+      <i class="fab fa-whatsapp"></i> ${btnLabel}
+    </button>
+  </div>`;
+}
+
+// ── Section body builder ──────────────────────────────────────────────────────
+
+function _buildSectionBody(type, data, info, email, isAdmin, docId) {
+  const items        = type === 'cash' ? CASH_EMPLOYEES : BANK_ITEMS;
+  const status       = data?.status || 'pending';
+  const entries      = data?.entries || {};
+  const customEntries = data?.customEntries || [];
+  const nameOverrides = data?.nameOverrides || {};
+  const whoEnters    = type === 'cash' ? MUKESH_EMAIL : SATIJA_EMAIL;
+
+  const canEnter  = type === 'cash' ? _canEnterCash(email) : _canEnterBank(email);
+  const canProcess = _canMarkProcessed(email);
+  const editable  = canEnter && status === 'pending';
+  const canEditAmt  = canEnter; // same permission as entering
+  const canEditName = canEnter;
+  const canAddCustom = type === 'cash'
+    ? (email === MUKESH_EMAIL || isAdmin)
+    : (email === SATIJA_EMAIL || isAdmin);
+
+  const total = _calcTotal(items, entries, customEntries);
+
+  // ── Banners ──
+  const processedBanner = status === 'processed'
+    ? `<div class="sal-processed-banner">
+         <i class="fas fa-circle-check"></i>
+         <span>${_esc(info.label)} — Processed by ${_esc(_displayName(data?.processedBy || ''))}</span>
+       </div>` : '';
+
+  const submittedBanner = status === 'submitted' && !canProcess
+    ? `<div class="sal-submitted-banner">
+         <i class="fas fa-paper-plane"></i>
+         Submitted. Awaiting Pranav Sir's confirmation.
+       </div>` : '';
+
+  // ── Action button ──
+  const actionBtn = (() => {
+    if (status === 'processed') return '';
+    if (editable)
+      return `<button class="sal-submit-btn" onclick="window._salSubmit('${type}','${docId}')">
+                <i class="fas fa-paper-plane"></i> Submit ${_esc(info.label)} ${type === 'cash' ? 'Cash Salary' : 'Bank Salary'}
+              </button>`;
+    if (status === 'submitted' && canProcess)
+      return `<button class="sal-process-btn" onclick="window._salMarkProcessed('${type}','${docId}')">
+                <i class="fas fa-circle-check"></i> Mark as Processed
+              </button>`;
+    return '';
+  })();
+
+  // ── Table headers ──
+  const amtHeader = editable ? 'Enter Amount (₹)' : 'Amount';
+  const extraHeaders = type === 'cash'
+    ? `<th class="sal-check-cell sal-bank-col-header">Done</th>
+       <th class="sal-check-cell sal-bank-col-header">Pending</th>`
+    : `<th class="sal-check-cell sal-bank-col-header">Mukesh Ji</th>
+       <th class="sal-check-cell sal-bank-col-header">Sandeep Ji</th>
+       <th class="sal-check-cell sal-bank-col-header">Pranav Sir</th>`;
+
+  const emptyStatusCols = type === 'cash'
+    ? '<td class="sal-check-cell"></td><td class="sal-check-cell"></td>'
+    : '<td class="sal-check-cell"></td><td class="sal-check-cell"></td><td class="sal-check-cell"></td>';
+
+  // ── Main employee rows ──
+  const mainRows = items.map(it => {
+    const entryData   = entries?.[it.id] || {};
+    const amt         = entryData.amount ?? '';
+    const displayName = _esc(nameOverrides[it.id] || it.name);
+
+    // name cell
+    const nameEditBtn = canEditName
+      ? `<button class="sal-name-edit-btn" onclick="window._salEditName('${type}','${docId}','${it.id}')" title="Edit name"><i class="fas fa-pencil"></i></button>`
       : '';
-    lastLabel = it.label;
+    const via  = it.via  ? `<span class="sal-via">${_esc(it.via)}</span>`  : '';
+    const note = it.note ? `<span class="sal-note">${_esc(it.note)}</span>` : '';
+    const nameCell = `<td class="sal-name-cell" id="sal_namecell_${type}_${it.id}">
+      <span class="sal-name-text" id="sal_nametext_${type}_${it.id}">${displayName}</span>${note}${via}${nameEditBtn}
+    </td>`;
 
-    const via = it.via ? `<span class="sal-via">${it.via}</span>` : '';
-    const note = it.note ? `<span class="sal-note">${it.note}</span>` : '';
+    // amount cell
+    let amtCell;
+    if (editable) {
+      amtCell = `<td><input type="number" class="sal-amt-input" id="sal_${type}_${it.id}" value="${Number(amt) || ''}" placeholder="0" min="0"></td>`;
+    } else {
+      const pencil = canEditAmt
+        ? `<button class="sal-edit-amt-btn" onclick="window._salEditAmt('${type}','${docId}','${it.id}',${Number(amt) || 0})" title="Edit amount"><i class="fas fa-pencil"></i></button>`
+        : '';
+      amtCell = `<td class="sal-amt-cell" id="sal_amt_cell_${type}_${it.id}">
+        <span class="sal-amt-val" id="sal_amt_val_${type}_${it.id}">${_fmt(amt)}</span>${pencil}
+      </td>`;
+    }
 
-    const amtCell = editable
-      ? `<td><input type="number" class="sal-amt-input" id="sal_${type}_${it.id}"
-              value="${amt}" placeholder="0" min="0"></td>`
-      : `<td class="sal-amt-val">${_fmt(amt)}</td>`;
+    // status cells
+    const statusCells = _buildStatusCells(type, it.id, entryData, docId, email, isAdmin, false);
 
-    return `<tr>
-      <td class="sal-name-cell">${it.name}${via}${note}</td>
+    return `<tr>${nameCell}${amtCell}${statusCells}</tr>`;
+  }).join('');
+
+  // ── Custom entry rows ──
+  const customRows = customEntries.map(ce => {
+    const amt = ce.amount ?? '';
+    const pencil = canEditAmt
+      ? `<button class="sal-edit-amt-btn" onclick="window._salEditAmt('${type}','${docId}','_ce_${ce.id}',${Number(amt) || 0})" title="Edit amount"><i class="fas fa-pencil"></i></button>`
+      : '';
+    const amtCell = `<td class="sal-amt-cell" id="sal_amt_cell_${type}__ce_${ce.id}">
+      <span class="sal-amt-val" id="sal_amt_val_${type}__ce_${ce.id}">${_fmt(amt)}</span>${pencil}
+    </td>`;
+
+    const delBtn = canAddCustom
+      ? `<button class="sal-custom-del-btn" onclick="window._salDeleteCustom('${docId}','${ce.id}','${type}')" title="Delete entry"><i class="fas fa-times"></i></button>`
+      : '';
+
+    const statusCells = _buildStatusCells(type, `_ce_${ce.id}`, ce, docId, email, isAdmin, true, ce.id);
+
+    return `<tr class="sal-custom-row">
+      <td class="sal-name-cell">
+        <span class="sal-custom-tag">Custom</span>
+        ${_esc(ce.name)}${delBtn}
+      </td>
       ${amtCell}
+      ${statusCells}
     </tr>`;
-  });
-  return rows.join('');
+  }).join('');
+
+  // ── Add form (always rendered, toggled by display) ──
+  const addForm = canAddCustom ? `
+    <div class="sal-add-form-row" id="salAddForm_${type}" style="display:none">
+      <input class="sal-add-name-input" id="salAddName_${type}" placeholder="Name" />
+      <input class="sal-add-amt-input" id="salAddAmt_${type}" type="number" placeholder="Amount (₹)" min="0" />
+      <button class="sal-add-save-btn" onclick="window._salSaveCustom('${type}','${docId}')">Add</button>
+      <button class="sal-add-cancel-btn" onclick="window._salHideAddForm('${type}')">Cancel</button>
+    </div>` : '';
+
+  const addCustomBtn = canAddCustom
+    ? `<button class="sal-add-entry-btn" onclick="window._salShowAddForm('${type}')">
+         <i class="fas fa-plus"></i> Add Custom Entry
+       </button>`
+    : '';
+
+  const waSection = _waSection(type, info, status, whoEnters, email, isAdmin);
+
+  return `
+    ${processedBanner}
+    ${submittedBanner}
+    <div class="sal-table-wrap" id="salTableWrap_${type}">
+      <table class="sal-table">
+        <thead>
+          <tr>
+            <th>Name / Description</th>
+            <th style="width:160px">${amtHeader}</th>
+            ${extraHeaders}
+          </tr>
+        </thead>
+        <tbody>${mainRows}${customRows}</tbody>
+        <tfoot>
+          <tr class="sal-total-row">
+            <td><strong>Total</strong></td>
+            <td id="salTotal_${type}" class="sal-amt-val"><strong>${_fmt(total)}</strong></td>
+            ${emptyStatusCols}
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    ${addForm}
+    ${addCustomBtn}
+    ${actionBtn}
+    ${waSection}`;
 }
 
-function _calcTotal(items, entries) {
-  return items.reduce((s, it) => s + (Number(entries?.[it.id]?.amount) || 0), 0);
+// Returns the status cell HTML for a row (works for both regular entries and custom)
+function _buildStatusCells(type, rowKey, entryData, docId, email, isAdmin, isCustom, customId) {
+  if (type === 'cash') {
+    const done = !!entryData.done;
+    const canToggle = email === MUKESH_EMAIL || isAdmin;
+    const toggleFn = isCustom
+      ? `window._salToggleCashCustom('${docId}','${customId}',`
+      : `window._salToggleCash('${docId}','${rowKey}',`;
+
+    if (canToggle) {
+      return `
+        <td class="sal-check-cell">
+          <button class="sal-chk-toggle ${done ? 'done' : ''}" onclick="${toggleFn}true)">
+            ${done ? 'Done' : 'Mark Done'}
+          </button>
+        </td>
+        <td class="sal-check-cell">
+          <button class="sal-chk-toggle ${!done ? 'pending' : ''}" onclick="${toggleFn}false)">
+            ${!done ? 'Pending' : 'Mark Pending'}
+          </button>
+        </td>`;
+    }
+    return `
+      <td class="sal-check-cell">${done ? '<span class="sal-chk-toggle done">Done</span>' : '<span class="sal-chk-toggle muted">—</span>'}</td>
+      <td class="sal-check-cell">${!done ? '<span class="sal-chk-toggle pending">Pending</span>' : '<span class="sal-chk-toggle muted">—</span>'}</td>`;
+  }
+
+  // bank: 3 approval columns
+  const mukeshDone  = !!entryData.mukesh_done;
+  const sandeepDone = !!entryData.sandeep_done;
+  const pranavDone  = !!entryData.pranav_done;
+
+  const canToggleMukesh  = email === MUKESH_EMAIL || isAdmin;
+  const canToggleSandeep = email === SATIJA_EMAIL  || isAdmin;
+  const canTogglePranav  = email === PRANAV_EMAIL  || isAdmin;
+
+  const toggleFn = isCustom
+    ? (col) => `window._salToggleBankCustom('${docId}','${customId}','${col}')`
+    : (col) => `window._salToggleBank('${docId}','${rowKey}','${col}')`;
+
+  const mkChip = canToggleMukesh
+    ? `<button class="sal-chk-toggle ${mukeshDone ? 'done' : 'pending'}" onclick="${toggleFn('mukesh')}">${mukeshDone ? 'Done' : 'Pending'}</button>`
+    : `<span class="sal-chk-toggle ${mukeshDone ? 'done' : 'pending'}">${mukeshDone ? 'Done' : 'Pending'}</span>`;
+
+  const sdChip = canToggleSandeep
+    ? `<button class="sal-chk-toggle ${sandeepDone ? 'done' : 'pending'}" onclick="${toggleFn('sandeep')}">${sandeepDone ? 'Done' : 'Pending'}</button>`
+    : `<span class="sal-chk-toggle ${sandeepDone ? 'done' : 'pending'}">${sandeepDone ? 'Done' : 'Pending'}</span>`;
+
+  const pvChip = canTogglePranav
+    ? `<button class="sal-chk-toggle ${pranavDone ? 'done' : 'pending'}" onclick="${toggleFn('pranav')}">${pranavDone ? 'Done' : 'Pending'}</button>`
+    : `<span class="sal-chk-toggle ${pranavDone ? 'done' : 'pending'}">${pranavDone ? 'Done' : 'Pending'}</span>`;
+
+  return `<td class="sal-check-cell">${mkChip}</td>
+          <td class="sal-check-cell">${sdChip}</td>
+          <td class="sal-check-cell">${pvChip}</td>`;
 }
+
+// ── Live total listener attachment ────────────────────────────────────────────
+
+function _attachTotalListeners(type, items, data, docId) {
+  const status = data?.status || 'pending';
+  const email  = state.curUser?.email || '';
+  const canEnter = type === 'cash' ? _canEnterCash(email) : _canEnterBank(email);
+  if (!(canEnter && status === 'pending')) return;
+
+  const customEntries = data?.customEntries || [];
+  const totalEl = document.getElementById(`salTotal_${type}`);
+
+  document.querySelectorAll(`input.sal-amt-input[id^="sal_${type}_"]`).forEach(inp => {
+    inp.addEventListener('input', () => {
+      const t = items.reduce((s, it) => {
+        const v = Number(document.getElementById(`sal_${type}_${it.id}`)?.value) || 0;
+        return s + v;
+      }, 0) + customEntries.reduce((s, ce) => s + (Number(ce.amount) || 0), 0);
+      if (totalEl) totalEl.innerHTML = `<strong>${_fmt(t)}</strong>`;
+    });
+  });
+}
+
+// ── Re-render helper ──────────────────────────────────────────────────────────
+
+async function _rerender() {
+  if (_lastRenderType === 'combined') {
+    await _renderPranavView();
+  } else {
+    await _renderSalaryPanel(_lastRenderType);
+  }
+}
+
+// ── Single-type panel render ──────────────────────────────────────────────────
 
 async function _renderSalaryPanel(type) {
+  _lastRenderType = type;
   const panel = _panel();
   if (!panel) return;
   panel.style.display = 'block';
   panel.innerHTML = `<div class="sal-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>`;
 
-  const info = getSalaryMonthInfo();
+  const info  = getSalaryMonthInfo();
   const docId = type === 'cash' ? info.cashId : info.bankId;
   const items = type === 'cash' ? CASH_EMPLOYEES : BANK_ITEMS;
   const title = type === 'cash' ? 'Cash Salary' : 'Bank Salary & Payments';
@@ -117,54 +393,19 @@ async function _renderSalaryPanel(type) {
   try { data = await getSalaryDoc(docId); } catch(_) {}
 
   const status  = data?.status || 'pending';
-  const entries = data?.entries || {};
   const email   = state.curUser?.email || '';
   const isAdmin = state.curUser?.role === 'Admin';
 
-  const canEnter    = type === 'cash' ? _canEnterCash(email) : _canEnterBank(email);
-  const canProcess  = _canMarkProcessed(email);
-  const editable    = canEnter && status === 'pending';
-  const total       = _calcTotal(items, entries);
+  const canEnter  = type === 'cash' ? _canEnterCash(email) : _canEnterBank(email);
+  const canProcess = _canMarkProcessed(email);
+  const canView   = canEnter || canProcess;
 
-  // Pranav/Admin sees both sections — we don't restrict reading
-  const canView = canEnter || canProcess;
   if (!canView) {
     panel.innerHTML = `<div class="sal-empty"><i class="fas fa-lock"></i><p>Access Denied</p></div>`;
     return;
   }
 
-  const whoEnters = type === 'cash' ? MUKESH_EMAIL : SATIJA_EMAIL;
-  const waText    = encodeURIComponent(`${info.label} ${title} processed ho gayi. ✓ — Pranav Sir`);
-  const waBtn     = (status === 'processed' && canProcess)
-    ? `<a class="sal-wa-btn" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener noreferrer">
-         <i class="fab fa-whatsapp"></i> Inform ${_displayName(whoEnters)}
-       </a>` : '';
-
-  const processedBanner = status === 'processed'
-    ? `<div class="sal-processed-banner">
-         <i class="fas fa-circle-check"></i>
-         <span>${info.label} — Processed by ${_displayName(data.processedBy || '')}</span>
-         ${waBtn}
-       </div>` : '';
-
-  const submittedBanner = status === 'submitted' && !canProcess
-    ? `<div class="sal-submitted-banner">
-         <i class="fas fa-paper-plane"></i>
-         Submitted. Awaiting Pranav Sir's confirmation.
-       </div>` : '';
-
-  const actionBtn = (() => {
-    if (status === 'processed') return '';
-    if (editable)
-      return `<button class="sal-submit-btn" onclick="window._salSubmit('${type}','${docId}')">
-                <i class="fas fa-paper-plane"></i> Submit ${info.label} ${title}
-              </button>`;
-    if (status === 'submitted' && canProcess)
-      return `<button class="sal-process-btn" onclick="window._salMarkProcessed('${type}','${docId}')">
-                <i class="fas fa-circle-check"></i> Mark as Processed
-              </button>`;
-    return '';
-  })();
+  const bodyHTML = _buildSectionBody(type, data, info, email, isAdmin, docId);
 
   panel.innerHTML = `
     <div class="sal-panel">
@@ -181,62 +422,119 @@ async function _renderSalaryPanel(type) {
         </div>
         ${_statusBadge(status)}
       </div>
-
-      ${processedBanner}
-      ${submittedBanner}
-
-      <div class="sal-table-wrap">
-        <table class="sal-table">
-          <thead>
-            <tr>
-              <th>Name / Description</th>
-              <th style="width:140px">${editable ? 'Enter Amount (₹)' : 'Amount'}</th>
-            </tr>
-          </thead>
-          <tbody>${_buildTable(items, entries, editable, type)}</tbody>
-          <tfoot>
-            <tr class="sal-total-row">
-              <td><strong>Total</strong></td>
-              <td id="salTotal_${type}" class="sal-amt-val"><strong>${_fmt(total)}</strong></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-
-      ${actionBtn}
+      ${bodyHTML}
     </div>`;
 
-  // Live total update
-  if (editable) {
-    panel.querySelectorAll('.sal-amt-input').forEach(inp => {
-      inp.addEventListener('input', () => {
-        const t = items.reduce((s, it) => {
-          const v = Number(document.getElementById(`sal_${type}_${it.id}`)?.value) || 0;
-          return s + v;
-        }, 0);
-        const el = document.getElementById(`salTotal_${type}`);
-        if (el) el.innerHTML = `<strong>${_fmt(t)}</strong>`;
-      });
-    });
-  }
+  _attachTotalListeners(type, items, data, docId);
 }
 
-// ── Public functions (exposed to window) ──────────────────────────────────────
+// ── Pranav combined view ──────────────────────────────────────────────────────
+
+async function _renderPranavView() {
+  _lastRenderType = 'combined';
+  const panel = _panel();
+  if (!panel) return;
+  panel.style.display = 'block';
+  panel.innerHTML = `<div class="sal-loading"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>`;
+
+  const info    = getSalaryMonthInfo();
+  const email   = state.curUser?.email || '';
+  const isAdmin = state.curUser?.role === 'Admin';
+
+  let cashData = null, bankData = null;
+  try {
+    [cashData, bankData] = await Promise.all([
+      getSalaryDoc(info.cashId),
+      getSalaryDoc(info.bankId),
+    ]);
+  } catch(_) {}
+
+  const cashStatus = cashData?.status || 'pending';
+  const bankStatus = bankData?.status || 'pending';
+
+  const cashBody = _buildSectionBody('cash', cashData, info, email, isAdmin, info.cashId);
+  const bankBody = _buildSectionBody('bank', bankData, info, email, isAdmin, info.bankId);
+
+  panel.innerHTML = `
+    <div class="sal-panel">
+      <div class="sal-header">
+        <button class="sal-back-btn" onclick="window._salBack()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <div class="sal-header-info">
+          <i class="fas fa-money-check-dollar" style="font-size:20px;color:var(--accent)"></i>
+          <div>
+            <div class="sal-title">Salary Disbursement Overview</div>
+            <div class="sal-month">${info.label}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sal-pranav-section" id="salSection_cash">
+        <div class="sal-pranav-section-header" onclick="window._salToggleSection('cash')">
+          <span><i class="fas fa-money-bill-wave"></i> Cash Salary</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${_statusBadge(cashStatus)}
+            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_cash"></i>
+          </div>
+        </div>
+        <div class="sal-section-body" id="salSectionBody_cash">
+          ${cashBody}
+        </div>
+      </div>
+
+      <div class="sal-pranav-section" id="salSection_bank">
+        <div class="sal-pranav-section-header" onclick="window._salToggleSection('bank')">
+          <span><i class="fas fa-building-columns"></i> Bank Salary &amp; Payments</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${_statusBadge(bankStatus)}
+            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_bank"></i>
+          </div>
+        </div>
+        <div class="sal-section-body" id="salSectionBody_bank">
+          ${bankBody}
+        </div>
+      </div>
+    </div>`;
+
+  _attachTotalListeners('cash', CASH_EMPLOYEES, cashData, info.cashId);
+  _attachTotalListeners('bank', BANK_ITEMS, bankData, info.bankId);
+}
+
+// ── Public panel functions ────────────────────────────────────────────────────
 
 export async function showCashSalary() {
   _hideOtherPanels();
-  document.getElementById('pageHeader').textContent   = 'Cash Salary';
-  document.getElementById('searchWrap').style.display = 'none';
-  document.getElementById('cardBox').style.display    = 'none';
-  await _renderSalaryPanel('cash');
+  const email   = state.curUser?.email || '';
+  const isAdmin = state.curUser?.role === 'Admin';
+  if (email === PRANAV_EMAIL || isAdmin) {
+    document.getElementById('pageHeader').textContent   = 'Salary Disbursement Overview';
+    document.getElementById('searchWrap').style.display = 'none';
+    document.getElementById('cardBox').style.display    = 'none';
+    await _renderPranavView();
+  } else {
+    document.getElementById('pageHeader').textContent   = 'Cash Salary';
+    document.getElementById('searchWrap').style.display = 'none';
+    document.getElementById('cardBox').style.display    = 'none';
+    await _renderSalaryPanel('cash');
+  }
 }
 
 export async function showBankSalary() {
   _hideOtherPanels();
-  document.getElementById('pageHeader').textContent   = 'Bank Salary & Payments';
-  document.getElementById('searchWrap').style.display = 'none';
-  document.getElementById('cardBox').style.display    = 'none';
-  await _renderSalaryPanel('bank');
+  const email   = state.curUser?.email || '';
+  const isAdmin = state.curUser?.role === 'Admin';
+  if (email === PRANAV_EMAIL || isAdmin) {
+    document.getElementById('pageHeader').textContent   = 'Salary Disbursement Overview';
+    document.getElementById('searchWrap').style.display = 'none';
+    document.getElementById('cardBox').style.display    = 'none';
+    await _renderPranavView();
+  } else {
+    document.getElementById('pageHeader').textContent   = 'Bank Salary & Payments';
+    document.getElementById('searchWrap').style.display = 'none';
+    document.getElementById('cardBox').style.display    = 'none';
+    await _renderSalaryPanel('bank');
+  }
 }
 
 export function hideSalaryPanel() {
@@ -252,7 +550,7 @@ function _hideOtherPanels() {
   hideSalaryPanel();
 }
 
-// window-level handlers for onclick
+// ── window-level handlers ─────────────────────────────────────────────────────
 
 window._salBack = function() {
   hideSalaryPanel();
@@ -261,12 +559,30 @@ window._salBack = function() {
   document.getElementById('pageHeader').textContent   = 'All Processes';
 };
 
+window._salToggleSection = function(type) {
+  const body    = document.getElementById(`salSectionBody_${type}`);
+  const chevron = document.getElementById(`salChevron_${type}`);
+  if (!body) return;
+  const collapsed = body.style.display === 'none';
+  body.style.display    = collapsed ? '' : 'none';
+  if (chevron) chevron.style.transform = collapsed ? '' : 'rotate(-90deg)';
+};
+
+// ── Submit / Process ──────────────────────────────────────────────────────────
+
 window._salSubmit = async function(type, docId) {
   const items = type === 'cash' ? CASH_EMPLOYEES : BANK_ITEMS;
+
+  // Fetch existing to preserve per-entry fields (done, mukesh_done, etc.)
+  let existingData = null;
+  try { existingData = await getSalaryDoc(docId); } catch(_) {}
+  const existingEntries = existingData?.entries || {};
+
   const entries = {};
   items.forEach(it => {
     const val = Number(document.getElementById(`sal_${type}_${it.id}`)?.value) || 0;
-    entries[it.id] = { name: it.name, amount: val };
+    const existing = existingEntries[it.id] || {};
+    entries[it.id] = { ...existing, name: it.name, amount: val };
   });
 
   const btn = document.querySelector('.sal-submit-btn');
@@ -280,7 +596,7 @@ window._salSubmit = async function(type, docId) {
       entries,
     });
     showToast('Submitted successfully!', 'ok');
-    await _renderSalaryPanel(type);
+    await _rerender();
   } catch(e) {
     showToast('Save failed: ' + e.message, 'err');
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit'; }
@@ -299,14 +615,259 @@ window._salMarkProcessed = async function(type, docId) {
       processedAt: new Date().toISOString(),
     });
     showToast('Marked as Processed!', 'ok');
-    await _renderSalaryPanel(type);
+    await _rerender();
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-circle-check"></i> Mark as Processed'; }
   }
 };
 
-// ── Salary Reminder Popup ─────────────────────────────────────────────────────
+// ── Inline amount edit ────────────────────────────────────────────────────────
+
+window._salEditAmt = function(type, docId, entryId, currentAmt) {
+  // entryId may start with '_ce_' for custom entries
+  const safeCellId = `sal_amt_cell_${type}_${entryId}`;
+  const cell = document.getElementById(safeCellId);
+  if (!cell) return;
+
+  const input = document.createElement('input');
+  input.type        = 'number';
+  input.className   = 'sal-amt-input sal-amt-inline';
+  input.value       = currentAmt || '';
+  input.placeholder = '0';
+  input.min         = '0';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.className   = 'sal-save-inline-btn';
+  saveBtn.title       = 'Save';
+  saveBtn.innerHTML   = '<i class="fas fa-check"></i>';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'sal-cancel-inline-btn';
+  cancelBtn.title     = 'Cancel';
+  cancelBtn.innerHTML = '<i class="fas fa-times"></i>';
+
+  cell.innerHTML = '';
+  cell.appendChild(input);
+  cell.appendChild(saveBtn);
+  cell.appendChild(cancelBtn);
+  input.focus();
+  input.select();
+
+  const pencilFn = `window._salEditAmt('${type}','${docId}','${entryId}',${currentAmt})`;
+
+  const restore = (displayAmt) => {
+    const pencil = `<button class="sal-edit-amt-btn" onclick="${pencilFn}" title="Edit amount"><i class="fas fa-pencil"></i></button>`;
+    cell.innerHTML = `<span class="sal-amt-val" id="sal_amt_val_${type}_${entryId}">${_fmt(displayAmt)}</span>${pencil}`;
+  };
+
+  let _committed = false;
+
+  const commit = async (doSave) => {
+    if (_committed) return;
+    _committed = true;
+    input.removeEventListener('blur', onBlur);
+    if (!doSave) { restore(currentAmt); return; }
+    const newAmt = Number(input.value) || 0;
+    saveBtn.disabled = true;
+    try {
+      if (entryId.startsWith('_ce_')) {
+        const d = await getSalaryDoc(docId);
+        const ces = (d?.customEntries || []).map(ce =>
+          `_ce_${ce.id}` === entryId ? { ...ce, amount: newAmt } : ce
+        );
+        await updateSalaryField(docId, 'customEntries', ces);
+      } else {
+        await updateSalaryEntryField(docId, entryId, 'amount', newAmt);
+      }
+      showToast('Amount saved', 'ok');
+      await _rerender();
+    } catch(e) {
+      showToast('Failed: ' + e.message, 'err');
+      restore(currentAmt);
+    }
+  };
+
+  // Prevent blur when clicking save/cancel buttons
+  saveBtn.addEventListener('mousedown',   e => e.preventDefault());
+  cancelBtn.addEventListener('mousedown', e => e.preventDefault());
+
+  const onBlur = () => commit(true);
+  saveBtn.onclick   = () => commit(true);
+  cancelBtn.onclick = () => commit(false);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  { e.preventDefault(); commit(true); }
+    if (e.key === 'Escape') { _committed = true; input.removeEventListener('blur', onBlur); restore(currentAmt); }
+  });
+  input.addEventListener('blur', onBlur);
+};
+
+// ── Inline name edit ──────────────────────────────────────────────────────────
+
+window._salEditName = function(type, docId, entryId) {
+  const textEl = document.getElementById(`sal_nametext_${type}_${entryId}`);
+  if (!textEl) return;
+  const currentName = textEl.textContent.trim();
+
+  const input = document.createElement('input');
+  input.className = 'sal-amt-input sal-name-inline';
+  input.value     = currentName;
+  input.style.minWidth = '140px';
+  textEl.replaceWith(input);
+  input.focus();
+  input.select();
+
+  const restore = (name) => {
+    const span = document.createElement('span');
+    span.className = 'sal-name-text';
+    span.id        = `sal_nametext_${type}_${entryId}`;
+    span.textContent = name;
+    input.replaceWith(span);
+  };
+
+  let _committed = false;
+
+  const commit = async (doSave) => {
+    if (_committed) return;
+    _committed = true;
+    input.removeEventListener('blur', onBlur);
+    const newName = input.value.trim();
+    if (!doSave) { restore(currentName); return; }
+    if (newName && newName !== currentName) {
+      try {
+        await updateSalaryField(docId, `nameOverrides.${entryId}`, newName);
+        showToast('Name saved', 'ok');
+      } catch(e) {
+        showToast('Failed: ' + e.message, 'err');
+      }
+    }
+    restore(newName || currentName);
+  };
+
+  const onBlur = () => commit(true);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  { e.preventDefault(); commit(true); }
+    if (e.key === 'Escape') { commit(false); }
+  });
+  input.addEventListener('blur', onBlur);
+};
+
+// ── Cash done/pending toggles ─────────────────────────────────────────────────
+
+window._salToggleCash = async function(docId, entryId, setDone) {
+  try {
+    await updateSalaryEntryField(docId, entryId, 'done', setDone);
+    showToast(setDone ? 'Marked as Done' : 'Marked as Pending', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+window._salToggleCashCustom = async function(docId, customId, setDone) {
+  try {
+    const d = await getSalaryDoc(docId);
+    const ces = (d?.customEntries || []).map(ce =>
+      ce.id === customId ? { ...ce, done: setDone } : ce
+    );
+    await updateSalaryField(docId, 'customEntries', ces);
+    showToast(setDone ? 'Marked as Done' : 'Marked as Pending', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+// ── Bank approval toggles ─────────────────────────────────────────────────────
+
+window._salToggleBank = async function(docId, entryId, col) {
+  try {
+    const d = await getSalaryDoc(docId);
+    const current = d?.entries?.[entryId]?.[col + '_done'] || false;
+    await updateSalaryEntryField(docId, entryId, col + '_done', !current);
+    showToast(!current ? 'Marked as Done' : 'Marked as Pending', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+window._salToggleBankCustom = async function(docId, customId, col) {
+  try {
+    const d = await getSalaryDoc(docId);
+    const ce = (d?.customEntries || []).find(c => c.id === customId);
+    const current = ce?.[col + '_done'] || false;
+    const ces = (d?.customEntries || []).map(c =>
+      c.id === customId ? { ...c, [col + '_done']: !current } : c
+    );
+    await updateSalaryField(docId, 'customEntries', ces);
+    showToast(!current ? 'Marked as Done' : 'Marked as Pending', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+// ── Custom entry add/delete ───────────────────────────────────────────────────
+
+window._salShowAddForm = function(type) {
+  const form = document.getElementById(`salAddForm_${type}`);
+  if (!form) return;
+  form.style.display = 'flex';
+  document.getElementById(`salAddName_${type}`)?.focus();
+};
+
+window._salHideAddForm = function(type) {
+  const form = document.getElementById(`salAddForm_${type}`);
+  if (form) form.style.display = 'none';
+};
+
+window._salSaveCustom = async function(type, docId) {
+  const name = document.getElementById(`salAddName_${type}`)?.value.trim();
+  const amt  = Number(document.getElementById(`salAddAmt_${type}`)?.value) || 0;
+  if (!name) { showToast('Please enter a name', 'err'); return; }
+
+  try {
+    const d = await getSalaryDoc(docId);
+    const ces = d?.customEntries || [];
+    ces.push({
+      id:     `_custom_${Date.now()}`,
+      name,
+      label:  'Custom',
+      amount: amt,
+    });
+    await updateSalaryField(docId, 'customEntries', ces);
+    showToast('Entry added', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+window._salDeleteCustom = async function(docId, customId, type) {
+  if (!confirm('Delete this custom entry?')) return;
+  try {
+    const d = await getSalaryDoc(docId);
+    const ces = (d?.customEntries || []).filter(c => c.id !== customId);
+    await updateSalaryField(docId, 'customEntries', ces);
+    showToast('Entry deleted', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+// ── WhatsApp send ─────────────────────────────────────────────────────────────
+
+window._salSendWa = function(type) {
+  const ta = document.getElementById(`salWaText_${type}`);
+  if (!ta) return;
+  const text = ta.value.trim();
+  if (!text) { showToast('Message is empty', 'err'); return; }
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener,noreferrer');
+};
+
+// ── Reminder Popup (unchanged) ────────────────────────────────────────────────
 
 function _showReminderPopup(reminders, info) {
   document.getElementById('salReminderOverlay')?.remove();
@@ -407,13 +968,12 @@ export async function checkSalaryReminder() {
   const now  = new Date();
   const day  = now.getDate();
   const yr   = now.getFullYear();
-  const mo   = now.getMonth(); // 0-indexed (July = 6)
+  const mo   = now.getMonth();
 
   // Special first window: July 21–31 2026 (deployment date onwards for July salary)
   // Regular window: 3rd–15th of every month (getSalaryMonthInfo auto-returns previous month in this range)
   const inEntryWindow = (yr === 2026 && mo === 6 && day >= 21) || (day >= 3 && day <= 15);
 
-  // Once-per-day key includes today's date so it resets daily
   const today = `${yr}-${String(mo + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
   let cashData = null, bankData = null;
@@ -425,7 +985,6 @@ export async function checkSalaryReminder() {
 
   const reminders = [];
 
-  // Entry reminders — once per day (localStorage resets daily), within entry window, while pending
   if (canCash && inEntryWindow && cashStatus === 'pending') {
     const key = `salRem_cash_${info.cashId}_${today}`;
     if (!localStorage.getItem(key)) {
@@ -441,13 +1000,11 @@ export async function checkSalaryReminder() {
     }
   }
 
-  // Process reminders — every login for Pranav while status is submitted (no day limit)
   if (canProc && cashStatus === 'submitted')
     reminders.push({ type: 'process', label: 'Cash Salary', month: info.label, action: 'cash' });
   if (canProc && bankStatus === 'submitted')
     reminders.push({ type: 'process', label: 'Bank Salary & Payments', month: info.label, action: 'bank' });
 
-  // Done notifications — once ever (per salary month) for Mukesh Ji / Sandeep Ji when processed
   if (email === MUKESH_EMAIL && cashStatus === 'processed') {
     const key = `salRem_done_cash_${info.cashId}`;
     if (!localStorage.getItem(key)) {

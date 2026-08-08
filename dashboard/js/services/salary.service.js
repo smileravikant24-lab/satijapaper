@@ -1,4 +1,4 @@
-import { db, doc, getDoc, setDoc, collection, getDocs } from './firebase.js';
+import { db, doc, getDoc, setDoc, updateDoc, collection, getDocs } from './firebase.js';
 
 const COL = 'salary_disbursements';
 
@@ -23,4 +23,13 @@ export async function getSalaryDoc(docId) {
 
 export async function saveSalaryDoc(docId, data) {
   await setDoc(doc(db, COL, docId), data, { merge: true });
+}
+
+export async function updateSalaryField(docId, fieldPath, value) {
+  const ref = doc(db, COL, docId);
+  await updateDoc(ref, { [fieldPath]: value });
+}
+
+export async function updateSalaryEntryField(docId, entryId, field, value) {
+  await updateSalaryField(docId, `entries.${entryId}.${field}`, value);
 }
