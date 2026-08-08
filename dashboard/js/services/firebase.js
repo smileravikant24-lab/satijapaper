@@ -14,6 +14,7 @@ import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
   deleteDoc,
   collection,
   getDocs
@@ -31,4 +32,4 @@ export {
   browserLocalPersistence,
   setPersistence
 };
-export { doc, getDoc, setDoc, deleteDoc, collection, getDocs };
+export { doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs };
