@@ -1,6 +1,6 @@
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
-import { DB }                       from '../data.js';
+import { DB, LINK_META }             from '../data.js';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 import { fetchGodownList, getGodownList } from '../services/godown.service.js';
@@ -19,6 +19,10 @@ export async function secureOpen(procName, linkType){
   if (!canAccessLink(state.curUser, procName, linkType)){
     showToast('No access to this link.', 'err'); return;
   }
+
+  // Use hardcoded URL from LINK_META for public links (followup, incentive, aiqa, etc.)
+  const directUrl = LINK_META[linkType]?.url;
+  if (directUrl) { window.open(directUrl, '_blank', 'noopener'); return; }
 
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
@@ -337,6 +341,8 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
     btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer (Mr. Rishabh)' ? 'Marketing Guideline' : 'Guideline');
 
+    btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'Follow Up');
+    btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────

@@ -43,7 +43,7 @@ export const DB = [
   {cat:"Sales",name:"Double A Container Tracker",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
   {cat:"Sales",name:"Double A Display Links",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1}},
   // ──────────────────────────────────────────────────────────────
   {cat:"Sales",name:"Enquiry Capture FY 2026-27",
    pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{gasForm:1,sheet:1,aiqa:1}},
@@ -186,6 +186,10 @@ export const LINK_META = {
   drive:       {label:'Drive',            icon:'fab fa-google-drive',     cls:'btn-form'},
   guidelineForm:{label:'Guideline Form',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
   gasForm:   {label:'Form',             icon:'fas fa-bolt',             cls:'btn-gas'},
+  followup:  {label:'Follow Up',        icon:'fas fa-paper-plane',      cls:'btn-form',
+               url:'https://docs.google.com/forms/d/e/1FAIpQLScnHfsy60upl2BWUXapK7r1EMMIzOBSZ5Bo8MtG6r3z_c83IQ/viewform'},
+  incentive: {label:'Incentive Portal', icon:'fas fa-trophy',           cls:'btn-dash',
+               url:'https://sites.google.com/view/doubleaindiacashfreeportal/home'},
   aiqa:      {label:'AI Q&A',         icon:'fas fa-robot',            cls:'btn-aiqa',
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'}
 };
