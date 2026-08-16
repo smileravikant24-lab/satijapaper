@@ -186,7 +186,7 @@ export const LINK_META = {
   drive:       {label:'Drive',            icon:'fab fa-google-drive',     cls:'btn-form'},
   guidelineForm:{label:'Guideline Form',  icon:'fas fa-clipboard-list',   cls:'btn-form'},
   gasForm:   {label:'Form',             icon:'fas fa-bolt',             cls:'btn-gas'},
-  followup:  {label:'Follow Up',        icon:'fas fa-paper-plane',      cls:'btn-form',
+  followup:  {label:'D- Follow up',      icon:'fas fa-paper-plane',      cls:'btn-form',
                url:'https://docs.google.com/forms/d/e/1FAIpQLScnHfsy60upl2BWUXapK7r1EMMIzOBSZ5Bo8MtG6r3z_c83IQ/viewform'},
   incentive: {label:'Incentive Portal', icon:'fas fa-trophy',           cls:'btn-dash',
                url:'https://sites.google.com/view/doubleaindiacashfreeportal/home'},
