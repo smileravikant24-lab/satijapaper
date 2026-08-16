@@ -11,7 +11,7 @@ export const DB = [
 
   // ── B) SALES & MARKETING ─────────────────────────────────────
   {cat:"Sales",name:"Rozaana Field Order Dashboard",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{dash:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{dash:1,sheet:1}},
   {cat:"Sales",name:"CRM Payment FMS",
    pc:"Ms. Richa",solver:"Mr. Pranav/Mr. Mukesh",exec:"Ms. Pooja",links:{fms:1,form:1,aiqa:1}},
   {cat:"Sales",name:"Price List",
