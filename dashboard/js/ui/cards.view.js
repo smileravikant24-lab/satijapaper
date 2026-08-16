@@ -341,7 +341,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
     btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer (Mr. Rishabh)' ? 'Marketing Guideline' : 'Guideline');
 
-    btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'Follow Up');
+    btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
