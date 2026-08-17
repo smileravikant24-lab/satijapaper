@@ -7,7 +7,7 @@ export const DB = [
   {cat:"Import",name:"Shipping Document Checklist",
    pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"Import",name:"Import Process System",
-   pc:"Mr. Pranav",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
+   pc:"Mr. Pranav",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1,sheet:1}},
 
   // ── B) SALES & MARKETING ─────────────────────────────────────
   {cat:"Sales",name:"Rozaana Field Order Dashboard",
