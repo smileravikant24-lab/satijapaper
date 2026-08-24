@@ -23,7 +23,7 @@ export const DB = [
   {cat:"Sales",name:"Truck Sale Dashboard",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1,sheet:1}},
   {cat:"Sales",name:"Sales Overview Dashboard",
-   pc:"-",solver:"-",exec:"-",links:{dash:1}},
+   pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",
