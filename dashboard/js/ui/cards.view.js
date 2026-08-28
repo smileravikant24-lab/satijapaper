@@ -343,6 +343,10 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
+    btns += buildButton(it, !!it.links.orderFormPdf,      'orderFormPdf',      'btn-form', 'fas fa-file-pdf',  'PDF');
+    btns += buildButton(it, !!it.links.orderFormDoc,      'orderFormDoc',      'btn-form', 'fas fa-file-word', 'Word File');
+    btns += buildButton(it, !!it.links.truckOrderFormPdf, 'truckOrderFormPdf', 'btn-form', 'fas fa-file-pdf',  'PDF');
+    btns += buildButton(it, !!it.links.truckOrderFormDoc, 'truckOrderFormDoc', 'btn-form', 'fas fa-file-word', 'Word File');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
