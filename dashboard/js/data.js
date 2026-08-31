@@ -49,11 +49,11 @@ export const DB = [
   {cat:"Sales",name:"Double A Retail Customer (Mr. Rishabh)",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,guidelineForm:1,stockDash:1}},
   {cat:"Sales",name:"Double A Corporate Customer",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{sheet:1,form:1}},
   {cat:"Sales",name:"Double A Container Tracker",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
   {cat:"Sales",name:"Double A Display Links",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1,form:1}},
   // ──────────────────────────────────────────────────────────────
   {cat:"Sales",name:"Enquiry Capture FY 2026-27",
    pc:"Ms. Neha",solver:"Mr. Pranav/Mr. Mukesh",exec:"Sales Team",links:{gasForm:1,sheet:1,aiqa:1}},
