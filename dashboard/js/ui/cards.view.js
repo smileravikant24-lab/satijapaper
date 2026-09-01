@@ -228,7 +228,21 @@ export async function renderCards(data){
     return;
   }
 
-  const html    = accessible.map((it, i) => _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  // Within a single category: plain items first, then any subcat groups with their own section header
+  const plain = accessible.filter(it => !it.subcat);
+  const subcats = [...new Set(accessible.filter(it => it.subcat).map(it => it.subcat))];
+
+  let idx = 0;
+  let html = plain.map(it => _buildCardHTML(it, idx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  subcats.forEach(sc => {
+    const items = accessible.filter(it => it.subcat === sc);
+    html += `<div class="cat-section-header">
+      <span class="cat-section-label">${sc}</span>
+      <span class="cat-section-count">${items.length}</span>
+    </div>`;
+    html += items.map(it => _buildCardHTML(it, idx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  });
+
   box.innerHTML = html || '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
 }
 
@@ -348,6 +362,8 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.orderFormDoc,      'orderFormDoc',      'btn-form', 'fas fa-file-word', 'Word File');
     btns += buildButton(it, !!it.links.truckOrderFormPdf, 'truckOrderFormPdf', 'btn-form', 'fas fa-file-pdf',  'PDF');
     btns += buildButton(it, !!it.links.truckOrderFormDoc, 'truckOrderFormDoc', 'btn-form', 'fas fa-file-word', 'Word File');
+    btns += buildButton(it, !!it.links.daDisplayFms,  'daDisplayFms',  'btn-fms',  'fas fa-table-cells', 'FMS');
+    btns += buildButton(it, !!it.links.daDisplayDash, 'daDisplayDash', 'btn-dash', 'fas fa-chart-line',  'Dashboard');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
