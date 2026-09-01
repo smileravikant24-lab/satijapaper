@@ -65,6 +65,13 @@ export function updateCounts(){
   if (sdBtn) sdBtn.style.display = canSeeSalesDash ? '' : 'none';
   if (sdSep) sdSep.style.display = canSeeSalesDash ? '' : 'none';
 
+  // Double A sub-category — visible if any Double A item is accessible
+  const daCount = DB.filter(d => d.subcat === 'Double A' && canAccessProc(state.curUser, d)).length;
+  const daBtn = document.getElementById('navDoubleA');
+  const daCnt = document.getElementById('cntDoubleA');
+  if (daCnt) daCnt.textContent = daCount;
+  if (daBtn) daBtn.style.display = (isAdmin || daCount > 0) ? '' : 'none';
+
   $('adminNavLabel').style.display = isAdmin ? '' : 'none';
   $('adminNavBtn').style.display   = isAdmin ? '' : 'none';
 }
@@ -84,6 +91,7 @@ const _CAT_LABEL = {
   AdminMIS: 'Admin & MIS',
   Support:  'Team / Support',
   Family:   'SP Family',
+  DoubleA:  'Double A',
 };
 
 export function filterCat(cat, el){
