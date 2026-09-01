@@ -209,11 +209,11 @@ export const LINK_META = {
   aiqa:      {label:'AI Q&A',         icon:'fas fa-robot',            cls:'btn-aiqa',
                url:'https://chatgpt.com/g/g-6a0c9090a45c81919ac3a2682dfe1dfa-satija-paper-ai-command-center'},
   orderFormPdf:      {label:'PDF',       icon:'fas fa-file-pdf',   cls:'btn-form',
-               url:'https://drive.google.com/file/d/1rCSEDTG51IcYpELzg7K1vB1QNe_6gADY/view?usp=drive_link'},
+               url:'https://drive.google.com/file/d/1EYrIFWS5OCk_laSsty1HJHKiTKy6ggtR/view?usp=drive_link'},
   orderFormDoc:      {label:'Word File', icon:'fas fa-file-word',  cls:'btn-form',
                url:'https://docs.google.com/document/d/1HXp_2sukWWsds1UytDR7Lheq8GnsqSUS/edit?usp=drive_link&ouid=108679167360920301270&rtpof=true&sd=true'},
   truckOrderFormPdf: {label:'PDF',       icon:'fas fa-file-pdf',   cls:'btn-form',
-               url:'https://drive.google.com/file/d/1pW3J9_RzTQ5KAxArdpuwELGlZlI-XIBH/view?usp=drive_link'},
+               url:'https://drive.google.com/file/d/1VXcPWEn9S3HK9ugBrMzsf--33gvXGdkn/view?usp=drive_link'},
   truckOrderFormDoc: {label:'Word File', icon:'fas fa-file-word',  cls:'btn-form',
                url:'https://docs.google.com/document/d/1D29zi-k0ZmHBB2J-saXV8fbq9kWwThDf/edit?usp=drive_link&ouid=108679167360920301270&rtpof=true&sd=true'}
 };
