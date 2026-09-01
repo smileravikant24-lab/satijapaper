@@ -305,7 +305,8 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     let btns = '';
     btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    _G.SHEETS,                 'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  'Form');
+    const DISPLAY_FORM_NAMES = ['Double A Corporate Customer', 'Double A Display Links'];
+    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  DISPLAY_FORM_NAMES.includes(it.name) ? 'Display Form' : 'Form');
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', _G.SHEETS, 'All Tickets');
