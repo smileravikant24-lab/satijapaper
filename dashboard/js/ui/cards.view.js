@@ -229,8 +229,10 @@ export async function renderCards(data){
   }
 
   // Within a single category: plain items first, then any subcat groups with their own section header
-  const plain = accessible.filter(it => !it.subcat);
-  const subcats = [...new Set(accessible.filter(it => it.subcat).map(it => it.subcat))];
+  // (skip re-grouping when the page itself IS a subcat view, e.g. the dedicated Double A tab)
+  const onSubcatPage = state.curCat === 'DoubleA';
+  const plain    = onSubcatPage ? accessible : accessible.filter(it => !it.subcat);
+  const subcats  = onSubcatPage ? [] : [...new Set(accessible.filter(it => it.subcat).map(it => it.subcat))];
 
   let idx = 0;
   let html = plain.map(it => _buildCardHTML(it, idx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
@@ -407,7 +409,8 @@ export function renderFiltered(){
   const filtered = DB.filter(it => {
     if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
     if (!canAccessProc(state.curUser, it)) return false;
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
+    const matchesCat = state.curCat === 'All' || it.cat === state.curCat
+      || (state.curCat === 'DoubleA' && it.subcat === 'Double A');
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
     return matchesCat && terms.every(t => haystack.includes(t));
   });
