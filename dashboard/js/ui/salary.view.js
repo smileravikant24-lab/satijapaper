@@ -2,7 +2,7 @@ import { state }                          from '../state.js';
 import { showToast }                      from './dom.js';
 import {
   getSalaryMonthInfo, getSalaryDoc, saveSalaryDoc,
-  updateSalaryField, updateSalaryEntryField, deleteSalaryDoc
+  updateSalaryField, updateSalaryEntryField
 } from '../services/salary.service.js';
 
 const MUKESH_EMAIL = 'mukesh.shukla@pranavsatijapaper.com';
@@ -153,16 +153,12 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
 
   const total = _calcTotal(items, entries, customEntries);
 
-  // ── Header actions: download always available, delete for the owner/admin ──
-  const canDelete = canEnter || isAdmin;
+  // ── Header actions: download this record as CSV ──
   const headerActions = `
     <div class="sal-header-actions">
       <button class="sal-download-btn" onclick="window._salDownloadCSV('${type}','${docId}')">
         <i class="fas fa-download"></i> Download
       </button>
-      ${canDelete ? `<button class="sal-delete-record-btn" onclick="window._salDeleteRecord('${type}','${docId}')">
-        <i class="fas fa-trash"></i> Delete Record
-      </button>` : ''}
     </div>`;
 
   // ── Banners ──
@@ -228,8 +224,12 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
       const pencil = canEditAmt
         ? `<button class="sal-edit-amt-btn" onclick="window._salEditAmt('${type}','${docId}','${it.id}',${Number(amt) || 0})" title="Edit amount"><i class="fas fa-pencil"></i></button>`
         : '';
+      const hasEntry = Object.keys(entryData).length > 0;
+      const rowDelBtn = (canEditAmt && hasEntry)
+        ? `<button class="sal-custom-del-btn" onclick="window._salDeleteEntry('${docId}','${it.id}')" title="Delete this entry"><i class="fas fa-times"></i></button>`
+        : '';
       amtCell = `<td class="sal-amt-cell" id="sal_amt_cell_${type}_${it.id}">
-        <span class="sal-amt-val" id="sal_amt_val_${type}_${it.id}">${_fmt(amt)}</span>${pencil}
+        <span class="sal-amt-val" id="sal_amt_val_${type}_${it.id}">${_fmt(amt)}</span>${pencil}${rowDelBtn}
       </td>`;
     }
 
@@ -934,14 +934,16 @@ window._salDownloadCSV = async function(type, docId) {
   }
 };
 
-// ── Delete record ─────────────────────────────────────────────────────────────
+// ── Delete individual entry ────────────────────────────────────────────────────
 
-window._salDeleteRecord = async function(type, docId) {
-  const label = type === 'cash' ? 'Cash Salary' : 'Bank Salary & Payments';
-  if (!confirm(`Delete ALL ${label} data for this month? This cannot be undone.`)) return;
+window._salDeleteEntry = async function(docId, entryId) {
+  if (!confirm('Delete this entry\'s data? This cannot be undone.')) return;
   try {
-    await deleteSalaryDoc(docId);
-    showToast('Record deleted', 'ok');
+    const d = await getSalaryDoc(docId);
+    const entries = { ...(d?.entries || {}) };
+    delete entries[entryId];
+    await updateSalaryField(docId, 'entries', entries);
+    showToast('Entry deleted', 'ok');
     await _rerender();
   } catch(e) {
     showToast('Delete failed: ' + e.message, 'err');
