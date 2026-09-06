@@ -1,4 +1,4 @@
-import { db, doc, getDoc, setDoc, updateDoc, collection, getDocs } from './firebase.js';
+import { db, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs } from './firebase.js';
 
 const COL = 'salary_disbursements';
 
@@ -32,4 +32,8 @@ export async function updateSalaryField(docId, fieldPath, value) {
 
 export async function updateSalaryEntryField(docId, entryId, field, value) {
   await updateSalaryField(docId, `entries.${entryId}.${field}`, value);
+}
+
+export async function deleteSalaryDoc(docId) {
+  await deleteDoc(doc(db, COL, docId));
 }

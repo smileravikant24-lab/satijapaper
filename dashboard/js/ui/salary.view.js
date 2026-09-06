@@ -2,7 +2,7 @@ import { state }                          from '../state.js';
 import { showToast }                      from './dom.js';
 import {
   getSalaryMonthInfo, getSalaryDoc, saveSalaryDoc,
-  updateSalaryField, updateSalaryEntryField
+  updateSalaryField, updateSalaryEntryField, deleteSalaryDoc
 } from '../services/salary.service.js';
 
 const MUKESH_EMAIL = 'mukesh.shukla@pranavsatijapaper.com';
@@ -94,6 +94,20 @@ function _calcTotal(items, entries, customEntries = []) {
   return base + custom;
 }
 
+// True once every row (main items + custom entries) is fully marked done —
+// for cash that's the single Status checkbox, for bank all 3 approval columns.
+function _isFullyDone(type, data) {
+  if (!data || data.status !== 'processed') return false;
+  const items         = type === 'cash' ? CASH_EMPLOYEES : BANK_ITEMS;
+  const entries        = data.entries || {};
+  const customEntries  = data.customEntries || [];
+  const rowDone = e => type === 'cash'
+    ? !!e.done
+    : !!(e.mukesh_done && e.sandeep_done && e.pranav_done);
+  return items.every(it => rowDone(entries[it.id] || {}))
+      && customEntries.every(rowDone);
+}
+
 // ── WhatsApp section ──────────────────────────────────────────────────────────
 
 function _waSection(type, info, status, whoEnters, email, isAdmin) {
@@ -138,6 +152,18 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
     : (email === SATIJA_EMAIL || isAdmin);
 
   const total = _calcTotal(items, entries, customEntries);
+
+  // ── Header actions: download always available, delete for the owner/admin ──
+  const canDelete = canEnter || isAdmin;
+  const headerActions = `
+    <div class="sal-header-actions">
+      <button class="sal-download-btn" onclick="window._salDownloadCSV('${type}','${docId}')">
+        <i class="fas fa-download"></i> Download
+      </button>
+      ${canDelete ? `<button class="sal-delete-record-btn" onclick="window._salDeleteRecord('${type}','${docId}')">
+        <i class="fas fa-trash"></i> Delete Record
+      </button>` : ''}
+    </div>`;
 
   // ── Banners ──
   const processedBanner = status === 'processed'
@@ -257,6 +283,7 @@ function _buildSectionBody(type, data, info, email, isAdmin, docId) {
   const waSection = _waSection(type, info, status, whoEnters, email, isAdmin);
 
   return `
+    ${headerActions}
     ${processedBanner}
     ${submittedBanner}
     <div class="sal-table-wrap" id="salTableWrap_${type}">
@@ -450,8 +477,43 @@ async function _renderPranavView() {
   const cashStatus = cashData?.status || 'pending';
   const bankStatus = bankData?.status || 'pending';
 
-  const cashBody = _buildSectionBody('cash', cashData, info, email, isAdmin, info.cashId);
-  const bankBody = _buildSectionBody('bank', bankData, info, email, isAdmin, info.bankId);
+  // Once every row is fully marked done, that section is finished — drop it from this view
+  const cashDone = _isFullyDone('cash', cashData);
+  const bankDone = _isFullyDone('bank', bankData);
+
+  const cashSection = cashDone ? '' : `
+      <div class="sal-pranav-section" id="salSection_cash">
+        <div class="sal-pranav-section-header" onclick="window._salToggleSection('cash')">
+          <span><i class="fas fa-money-bill-wave"></i> Cash Salary</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${_statusBadge(cashStatus)}
+            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_cash"></i>
+          </div>
+        </div>
+        <div class="sal-section-body" id="salSectionBody_cash">
+          ${_buildSectionBody('cash', cashData, info, email, isAdmin, info.cashId)}
+        </div>
+      </div>`;
+
+  const bankSection = bankDone ? '' : `
+      <div class="sal-pranav-section" id="salSection_bank">
+        <div class="sal-pranav-section-header" onclick="window._salToggleSection('bank')">
+          <span><i class="fas fa-building-columns"></i> Bank Salary &amp; Payments</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            ${_statusBadge(bankStatus)}
+            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_bank"></i>
+          </div>
+        </div>
+        <div class="sal-section-body" id="salSectionBody_bank">
+          ${_buildSectionBody('bank', bankData, info, email, isAdmin, info.bankId)}
+        </div>
+      </div>`;
+
+  const allDoneBanner = (cashDone && bankDone) ? `
+      <div class="sal-alldone-banner">
+        <i class="fas fa-circle-check"></i>
+        <span>All ${_esc(info.label)} salary records are fully done ✓</span>
+      </div>` : '';
 
   panel.innerHTML = `
     <div class="sal-panel">
@@ -467,36 +529,13 @@ async function _renderPranavView() {
           </div>
         </div>
       </div>
-
-      <div class="sal-pranav-section" id="salSection_cash">
-        <div class="sal-pranav-section-header" onclick="window._salToggleSection('cash')">
-          <span><i class="fas fa-money-bill-wave"></i> Cash Salary</span>
-          <div style="display:flex;align-items:center;gap:8px">
-            ${_statusBadge(cashStatus)}
-            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_cash"></i>
-          </div>
-        </div>
-        <div class="sal-section-body" id="salSectionBody_cash">
-          ${cashBody}
-        </div>
-      </div>
-
-      <div class="sal-pranav-section" id="salSection_bank">
-        <div class="sal-pranav-section-header" onclick="window._salToggleSection('bank')">
-          <span><i class="fas fa-building-columns"></i> Bank Salary &amp; Payments</span>
-          <div style="display:flex;align-items:center;gap:8px">
-            ${_statusBadge(bankStatus)}
-            <i class="fas fa-chevron-down sal-section-chevron" id="salChevron_bank"></i>
-          </div>
-        </div>
-        <div class="sal-section-body" id="salSectionBody_bank">
-          ${bankBody}
-        </div>
-      </div>
+      ${allDoneBanner}
+      ${cashSection}
+      ${bankSection}
     </div>`;
 
-  _attachTotalListeners('cash', CASH_EMPLOYEES, cashData, info.cashId);
-  _attachTotalListeners('bank', BANK_ITEMS, bankData, info.bankId);
+  if (!cashDone) _attachTotalListeners('cash', CASH_EMPLOYEES, cashData, info.cashId);
+  if (!bankDone) _attachTotalListeners('bank', BANK_ITEMS, bankData, info.bankId);
 }
 
 // ── Public panel functions ────────────────────────────────────────────────────
@@ -844,6 +883,68 @@ window._salDeleteCustom = async function(docId, customId, type) {
     await _rerender();
   } catch(e) {
     showToast('Failed: ' + e.message, 'err');
+  }
+};
+
+// ── Download CSV ──────────────────────────────────────────────────────────────
+
+window._salDownloadCSV = async function(type, docId) {
+  try {
+    const data  = await getSalaryDoc(docId);
+    const items = type === 'cash' ? CASH_EMPLOYEES : BANK_ITEMS;
+    const entries       = data?.entries || {};
+    const customEntries = data?.customEntries || [];
+    const nameOverrides = data?.nameOverrides || {};
+    const info = getSalaryMonthInfo();
+
+    const headers = type === 'cash'
+      ? ['Name', 'Amount', 'Status']
+      : ['Name', 'Amount', 'Mukesh Ji', 'Sandeep Ji', 'Pranav Sir'];
+
+    const rowFor = (name, e) => type === 'cash'
+      ? [name, e.amount ?? 0, e.done ? 'Done' : 'Pending']
+      : [name, e.amount ?? 0,
+         e.mukesh_done  ? 'Done' : 'Pending',
+         e.sandeep_done ? 'Done' : 'Pending',
+         e.pranav_done  ? 'Done' : 'Pending'];
+
+    const rows = items.map(it => rowFor(nameOverrides[it.id] || it.name, entries[it.id] || {}));
+    customEntries.forEach(ce => rows.push(rowFor(ce.name, ce)));
+
+    const total = _calcTotal(items, entries, customEntries);
+    rows.push(['Total', total, ...Array(headers.length - 2).fill('')]);
+
+    const csvEscape = v => {
+      const s = String(v ?? '');
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const csv = [headers, ...rows].map(r => r.map(csvEscape).join(',')).join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `${type === 'cash' ? 'Cash_Salary' : 'Bank_Salary'}_${info.label.replace(/\s+/g, '_')}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    showToast('Download failed: ' + e.message, 'err');
+  }
+};
+
+// ── Delete record ─────────────────────────────────────────────────────────────
+
+window._salDeleteRecord = async function(type, docId) {
+  const label = type === 'cash' ? 'Cash Salary' : 'Bank Salary & Payments';
+  if (!confirm(`Delete ALL ${label} data for this month? This cannot be undone.`)) return;
+  try {
+    await deleteSalaryDoc(docId);
+    showToast('Record deleted', 'ok');
+    await _rerender();
+  } catch(e) {
+    showToast('Delete failed: ' + e.message, 'err');
   }
 };
 
