@@ -34,6 +34,8 @@ export const DB = [
    pc:"-",solver:"-",exec:"-",links:{truckOrderFormDoc:1,truckOrderFormPdf:1}},
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
+  {cat:"Sales",name:"Order to Delivery (Courier & Sample Courier)",
+   pc:"-",solver:"-",exec:"-",links:{o2dManager:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
@@ -113,6 +115,8 @@ export const DB = [
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{gasForm:1,sheet:1}},
   {cat:"Purchase",name:"Godown Inward Report",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{sheet:1}},
+  {cat:"Purchase",name:"O2D Direct Dispatch 2.0",
+   pc:"-",solver:"-",exec:"-",links:{dash:1}},
 
   // ── E) ACCOUNTS, GST & TAXATION ──────────────────────────────
   {cat:"Accounts",name:"Account Checklist",
@@ -200,6 +204,10 @@ export const LINK_META = {
   gpDash:    {label:'GP Dashboard',   icon:'fas fa-chart-column',     cls:'btn-gp'},
   stockDash: {label:'Stock Dashboard',icon:'fas fa-boxes-stacking',   cls:'btn-stock'},
   dash:      {label:'Dashboard',      icon:'fas fa-chart-line',       cls:'btn-dash'},
+  o2dManager:{label:'Manager',        icon:'fas fa-truck-fast',       cls:'btn-dash'},
+  o2dPawan:  {label:'Pawan',          icon:'fas fa-truck-fast',       cls:'btn-dash'},
+  o2dSonu:   {label:'Sonu',           icon:'fas fa-truck-fast',       cls:'btn-dash'},
+  o2dRishabh:{label:'Rishabh',        icon:'fas fa-truck-fast',       cls:'btn-dash'},
   calc:      {label:'Profit Calculator',icon:'fas fa-calculator',    cls:'btn-dash'},
   folder:    {label:'View Folder',    icon:'fas fa-folder-open',      cls:'btn-folder'},
   terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},

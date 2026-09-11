@@ -366,6 +366,10 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.truckOrderFormDoc, 'truckOrderFormDoc', 'btn-form', 'fas fa-file-word', 'Word File');
     btns += buildButton(it, !!it.links.daDisplayFms,  'daDisplayFms',  'btn-fms',  'fas fa-table-cells', 'FMS');
     btns += buildButton(it, !!it.links.daDisplayDash, 'daDisplayDash', 'btn-dash', 'fas fa-chart-line',  'Dashboard');
+    btns += buildButton(it, !!it.links.o2dManager,    'o2dManager',    'btn-dash', 'fas fa-truck-fast',  'Manager');
+    btns += buildButton(it, !!it.links.o2dPawan,      'o2dPawan',      'btn-dash', 'fas fa-truck-fast',  'Pawan');
+    btns += buildButton(it, !!it.links.o2dSonu,       'o2dSonu',       'btn-dash', 'fas fa-truck-fast',  'Sonu');
+    btns += buildButton(it, !!it.links.o2dRishabh,    'o2dRishabh',    'btn-dash', 'fas fa-truck-fast',  'Rishabh');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
