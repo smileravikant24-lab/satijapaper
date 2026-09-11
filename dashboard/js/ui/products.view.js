@@ -38,8 +38,7 @@ function buildBrandCard(brand) {
 
 function buildVariant(v, brand) {
   const sizes = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  // Use product-specific image if available (Double A), else brand image
-  const img = (brand.productImg && brand.productImg[v.gsm]) ? brand.productImg[v.gsm] : brand.img;
+  const img = v.img || (brand.productImg && brand.productImg[v.gsm]) || brand.img;
   const extras = [
     v.cie       ? `<div class="prod-spec"><span>CIE</span><strong>${v.cie}</strong></div>` : '',
     v.opacity   ? `<div class="prod-spec"><span>Opacity</span><strong>${v.opacity}</strong></div>` : '',
@@ -51,7 +50,7 @@ function buildVariant(v, brand) {
   <div class="prod-variant-card">
     <div class="prod-variant-img-wrap">
       <img src="${img}" alt="${v.name}" class="prod-variant-img"
-           onerror="this.onerror=null;this.src='${brand.img}'">
+           onerror="this.onerror=null;this.src='${v.fallbackImg || brand.img}'">
     </div>
     <div class="prod-variant-info">
       <div class="prod-variant-name">${v.name}</div>
