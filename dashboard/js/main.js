@@ -304,7 +304,8 @@ function _buildVariant(v, brand) {
     ? `<ul class="prod-feature-list">${v.features.map(f => `<li><i class="fas fa-check"></i>${f}</li>`).join('')}</ul>`
     : '';
 
-  const varId = `prod-var-${brand.id}-${v.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
+  const _slug = s => String(s).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  const varId = `prod-var-${brand.id}-${v.gsm}-${_slug(v.colorName || v.name)}`;
   return `
   <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
