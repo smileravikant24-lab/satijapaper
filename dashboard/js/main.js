@@ -285,7 +285,8 @@ function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
   // v.img may be a resolved _IMG value (base64 data: URL) or an external URL
   // Use v.img if it exists and is not identical to brand logo
-  const imgSrc = (v.img && v.img.length > 10) ? v.img : brand.img;
+  const imgSrc   = (v.img && v.img.length > 10) ? v.img : brand.img;
+  const isBase64 = imgSrc.startsWith('data:');
 
   // Standard spec badges
   const extras = [
@@ -313,9 +314,12 @@ function _buildVariant(v, brand) {
         ? `<div class="prod-colour-swatch" style="background:${v.color}">
              <span class="prod-colour-name-big">${v.colorName}</span>
            </div>`
-        : `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-               alt="${v.name}" class="prod-variant-img prod-lazy"
-               onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
+        : isBase64
+          ? `<img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
+                 onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
+          : `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                 alt="${v.name}" class="prod-variant-img prod-lazy"
+                 onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
       }
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
