@@ -304,10 +304,10 @@ function _buildVariant(v, brand) {
     ? `<ul class="prod-feature-list">${v.features.map(f => `<li><i class="fas fa-check"></i>${f}</li>`).join('')}</ul>`
     : '';
 
-  const varId = `prod-var-${brand.id}-${v.gsm}`;
+  const varId = `prod-var-${brand.id}-${v.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}`;
   return `
   <div class="prod-variant-card" id="${varId}">
-    <div class="prod-variant-img-wrap prod-variant-img-clickable" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}" onclick="openShareModal('${_jsq(v.name)}','${_jsq(brand.shareMsg || v.name)}')" title="Click to share">
+    <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
       ${v.colorOnly
         ? `<div class="prod-colour-swatch" style="background:${v.color}">
              <span class="prod-colour-name-big">${v.colorName}</span>
