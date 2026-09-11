@@ -328,7 +328,7 @@ function _buildVariant(v, brand) {
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <div class="prod-variant-actions">
-        <button class="prod-variant-share" onclick="shareProductImage('${varId}','${_jsq(v.name)}')">
+        <button class="prod-variant-share" onclick="shareProductImage(this,'${_jsq(v.name)}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
@@ -444,12 +444,19 @@ async function _replaceImgsWithBase64(clone) {
     img.src = b64;
   }));
 }
-async function shareProductImage(elementId, label) {
-  const el = document.getElementById(elementId);
+async function shareProductImage(btnOrId, label) {
+  let el, btn;
+  if (typeof btnOrId === 'string') {
+    // Called with element ID (brand-level share button)
+    el  = document.getElementById(btnOrId);
+    btn = el?.querySelector('.prod-share-btn, .prod-variant-share');
+  } else {
+    // Called with the button element itself (variant share button)
+    btn = btnOrId;
+    el  = btn.closest('.prod-variant-card, .prod-brand-card, .bank-card');
+  }
   if (!el) { showToast('Element not found.', 'err'); return; }
 
-  // Show loading state on clicked button
-  const btn = el.querySelector('.prod-share-btn, .prod-variant-share');
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) {
     btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
