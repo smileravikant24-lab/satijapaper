@@ -226,7 +226,7 @@ export const PRODUCTS = [
         name: 'Double A 70 GSM', gsm: 70, sizes: ['A4','A3','A11'],
         brightness: '102% ISO', cie: '148', opacity: '93%',
         bestFor: 'Forms, memos, daily printing',
-        img: 'https://satijapaper.com/DA 70.jpg',
+        img: 'https://satijapaper.com/DA%2070.jpg',
         fallbackImg: 'https://i.indiamart.com/data/img/catalogue/double-a-a4-70gsm-paper_24148053_xxl.jpg'
       },
       {
