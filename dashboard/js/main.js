@@ -8,14 +8,14 @@ import {
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
 }                                          from './ui/sidebar.view.js';
-import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20260912a';
+import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20260914a';
 import { showAdmin as _origShowAdmin }     from './admin/admin.view.js';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20260912a';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20260914a';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
@@ -437,6 +437,9 @@ async function _toBase64(url) {
 async function _replaceImgsWithBase64(clone) {
   const imgs = [...clone.querySelectorAll('img')];
   await Promise.all(imgs.map(async img => {
+    if (img.dataset && img.dataset.src) {
+      img.src = img.dataset.src;
+    }
     if (!img.src || img.src.startsWith('data:')) return;
     const b64 = await _toBase64(img.src);
     img.src = b64;
