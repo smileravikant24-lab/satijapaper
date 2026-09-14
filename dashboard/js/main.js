@@ -279,10 +279,9 @@ function _buildBrandCard(brand) {
 
 function _buildVariant(v, brand) {
   const sizes  = v.sizes.map(s => `<span class="prod-size-pill">${s}</span>`).join('');
-  // v.img may be a resolved _IMG value (base64 data: URL) or an external URL
-  // Use v.img if it exists and is not identical to brand logo
-  const imgSrc   = (v.img && v.img.length > 10) ? v.img : brand.img;
-  const isBase64 = imgSrc.startsWith('data:');
+  const hasSpecificImg = v.img && v.img.length > 10;
+  const imgSrc   = hasSpecificImg ? v.img : (brand.id === 'ruchira' ? null : brand.img);
+  const isBase64 = imgSrc ? imgSrc.startsWith('data:') : false;
 
   // Standard spec badges
   const extras = [
@@ -303,20 +302,24 @@ function _buildVariant(v, brand) {
 
   const _slug = s => String(s).replace(/[^a-z0-9]/gi, '_').toLowerCase();
   const varId = `prod-var-${brand.id}-${v.gsm}-${_slug(v.colorName || v.name)}`;
+  
+  let imgHTML = '';
+  if (v.colorOnly || !imgSrc) {
+    const swatchColor = v.color || '#3b82f6';
+    imgHTML = `<div class="prod-colour-swatch" style="background:${swatchColor}">
+                 <span class="prod-colour-name-big">${v.colorName || v.name}</span>
+               </div>`;
+  } else if (isBase64) {
+    imgHTML = `<img src="${imgSrc}" alt="${v.name}" class="prod-variant-img">`;
+  } else {
+    imgHTML = `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                    alt="${v.name}" class="prod-variant-img prod-lazy">`;
+  }
+
   return `
   <div class="prod-variant-card" id="${varId}">
     <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
-      ${v.colorOnly
-        ? `<div class="prod-colour-swatch" style="background:${v.color}">
-             <span class="prod-colour-name-big">${v.colorName}</span>
-           </div>`
-        : isBase64
-          ? `<img src="${imgSrc}" alt="${v.name}" class="prod-variant-img"
-                 onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
-          : `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                 alt="${v.name}" class="prod-variant-img prod-lazy"
-                 onerror="this.onerror=null;this.src='https://satijapaper.com/SP.jpg'">`
-      }
+      ${imgHTML}
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
     <div class="prod-variant-info">
@@ -329,11 +332,10 @@ function _buildVariant(v, brand) {
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <div class="prod-variant-actions">
-        <button class="prod-variant-share" onclick="shareProductImage(this,'${_jsq(v.name)}')">
+        <button class="prod-variant-share" onclick="event.stopPropagation();shareProductImage(this,'${_jsq(v.name)}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
-
     </div>
   </div>`;
 }
@@ -450,7 +452,7 @@ async function shareProductImage(btnOrId, label) {
   if (typeof btnOrId === 'string') {
     // Called with element ID (brand-level share button)
     el  = document.getElementById(btnOrId);
-    btn = el?.querySelector('.prod-share-btn, .prod-variant-share');
+    btn = el?.querySelector('.prod-share-btn') || el?.querySelector('.prod-variant-share');
   } else {
     // Called with the button element itself (variant share button)
     btn = btnOrId;

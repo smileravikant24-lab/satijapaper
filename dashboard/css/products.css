@@ -442,6 +442,31 @@ img.prod-lazy {
   100% { background-position: -200% 0; }
 }
 
+/* ── Fallback Colour Swatch Graphic ────────────────────────── */
+.prod-colour-swatch {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.06);
+  border-radius: .4rem;
+}
+.prod-colour-name-big {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1f2937;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  letter-spacing: 0.02em;
+  background: rgba(255,255,255,0.75);
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
 /* ── Colour badge for Ruchira Tarang ──────────────────────── */
 .prod-spec-color strong {
   display: inline-flex;
