@@ -480,8 +480,15 @@ async function shareProductImage(btnOrId, label) {
         // Fix html2canvas CSS-Grid bug: it renders from grid position (0,0) regardless
         // of which element is passed. De-grid the parent in the clone so the correct
         // variant card is captured at its own position.
-        if (clone.parentElement?.classList.contains('prod-variants-grid')) {
-          clone.parentElement.style.display = 'block';
+        if (clone.parentElement) {
+          if (clone.parentElement.classList.contains('prod-variants-grid')) {
+            clone.parentElement.style.display = 'block';
+          }
+          Array.from(clone.parentElement.children).forEach(child => {
+            if (child !== clone) {
+              child.style.display = 'none';
+            }
+          });
         }
         clone.querySelectorAll(
           '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
