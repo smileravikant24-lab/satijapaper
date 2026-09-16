@@ -332,7 +332,7 @@ function _buildVariant(v, brand) {
       ${featureList}
       <div class="prod-bestfor"><i class="fas fa-circle-check"></i> ${v.bestFor}</div>
       <div class="prod-variant-actions">
-        <button class="prod-variant-share" onclick="event.stopPropagation();shareProductImage(this,'${_jsq(v.name)}')">
+        <button class="prod-variant-share" onclick="event.stopPropagation();shareProductImage('${varId}','${_jsq(v.name)}')">
           <i class="fas fa-share-nodes"></i> Share
         </button>
       </div>
