@@ -84,21 +84,29 @@ var RPL = {
 };
 
 function rplShowCatalog(){document.getElementById('rpl-catalog').style.display='block';document.getElementById('rpl-detail').style.display='none';document.querySelectorAll('.rpl-bc-detail').forEach(function(e){e.style.display='none';});window.scrollTo({top:document.getElementById('brand-ruchira').offsetTop-120,behavior:'smooth'});}
-function rplShowProd(k){
+function rplShowProd(k, varIdx){
   var p=RPL[k]; if(!p) return;
+  var idx = (varIdx !== undefined) ? parseInt(varIdx, 10) : 0;
+  if(isNaN(idx) || idx < 0 || idx >= p.imgs.length) idx = 0;
   document.getElementById('rpl-catalog').style.display='none';
   document.getElementById('rpl-detail').style.display='block';
   document.getElementById('rpl-d-title').textContent=p.t;
   document.getElementById('rpl-d-sub').textContent=p.sub;
   document.getElementById('rpl-d-desc').textContent=p.d;
-  document.getElementById('rpl-d-img').src=p.imgs[0];
+  document.getElementById('rpl-d-img').src=p.imgs[idx];
   document.getElementById('rpl-d-img').alt=p.t;
   document.querySelectorAll('.rpl-bc-detail').forEach(function(e){e.style.display='inline';});
   document.getElementById('rpl-bc-product').textContent=p.t;
   var gal=document.getElementById('rpl-d-gallery');
-  gal.innerHTML=p.imgs.map(function(src,i){return '<img src="'+src+'" alt="'+p.t+'" class="rpl-gallery-thumb'+(i===0?' active':'')+'" onclick="rplSwapImg(this,\''+src+'\')" style="object-fit:cover;">';}).join('');
+  gal.innerHTML=p.imgs.map(function(src,i){return '<img src="'+src+'" alt="'+p.t+'" class="rpl-gallery-thumb'+(i===idx?' active':'')+'" onclick="rplSwapImg(this,\''+src+'\','+i+')" style="object-fit:cover;">';}).join('');
   var vh='<div style="margin-bottom:10px;"><strong>Variants:</strong></div><div style="display:flex;flex-wrap:wrap;gap:8px;">';
-  p.v.forEach(function(c){vh+='<span style="background:var(--cream);color:var(--text-muted);padding:6px 14px;border-radius:16px;font-size:0.84rem;font-weight:600;">'+c+'</span>';});
+  p.v.forEach(function(c, i){
+    var isAct = (i === idx && p.imgs.length > 1);
+    var bg = isAct ? 'var(--gold, #c5a059)' : 'var(--cream)';
+    var fg = isAct ? '#fff' : 'var(--text-muted)';
+    var clickAttr = (p.imgs.length > 1 && p.imgs[i]) ? 'onclick="rplSelectVariant('+i+')" style="cursor:pointer;background:'+bg+';color:'+fg+';padding:6px 14px;border-radius:16px;font-size:0.84rem;font-weight:600;"' : 'style="background:'+bg+';color:'+fg+';padding:6px 14px;border-radius:16px;font-size:0.84rem;font-weight:600;"';
+    vh+='<span '+clickAttr+'>'+c+'</span>';
+  });
   vh+='</div>';
   document.getElementById('rpl-av').innerHTML=vh;
   var sh='<table><tr><th>Parameter</th><th>Value</th></tr><tr><td>GSM</td><td><strong>'+p.gsm+'</strong></td></tr>';
@@ -110,10 +118,36 @@ function rplShowProd(k){
   document.querySelectorAll('#rpl-detail .apl-acc-icon').forEach(function(i){i.textContent='+';});
   window.scrollTo({top:document.getElementById('brand-ruchira').offsetTop-120,behavior:'smooth'});
 }
-function rplSwapImg(thumb,src){
+function rplSwapImg(thumb,src,idx){
   document.getElementById('rpl-d-img').src=src;
   document.querySelectorAll('.rpl-gallery-thumb').forEach(function(t){t.classList.remove('active');});
-  thumb.classList.add('active');
+  if(thumb) thumb.classList.add('active');
+  if(idx !== undefined) rplHighlightVariant(idx);
+}
+function rplSelectVariant(idx){
+  var p = RPL['tarang'];
+  if(p && p.imgs && p.imgs[idx]){
+    rplSwapImg(null, p.imgs[idx], idx);
+    var thumbs = document.querySelectorAll('.rpl-gallery-thumb');
+    thumbs.forEach(function(t, i){
+      if(i === idx) t.classList.add('active');
+      else t.classList.remove('active');
+    });
+  }
+}
+function rplHighlightVariant(idx){
+  var av = document.getElementById('rpl-av');
+  if(!av) return;
+  var spans = av.querySelectorAll('span[onclick]');
+  spans.forEach(function(s, i){
+    if(i === idx){
+      s.style.background = 'var(--gold, #c5a059)';
+      s.style.color = '#fff';
+    } else {
+      s.style.background = 'var(--cream)';
+      s.style.color = 'var(--text-muted)';
+    }
+  });
 }
 
 // ===== IMAGE INJECTION via showPage wrapper =====
