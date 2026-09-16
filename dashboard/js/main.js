@@ -469,48 +469,26 @@ async function shareProductImage(btnOrId, label) {
   try {
     await _loadHtml2Canvas();
 
-    // html2canvas has a known CSS-Grid bug: it renders the grid's first cell
-    // (position 0,0) instead of the specified element. Fix: clone variant cards
-    // into a standalone block container outside the grid, then capture that.
-    const isVariantCard = el.classList.contains('prod-variant-card');
-    let captureEl = el;
-    let tempWrap  = null;
-
-    if (isVariantCard) {
-      tempWrap = document.createElement('div');
-      tempWrap.style.cssText =
-        'position:fixed;left:-9999px;top:0;background:#fff;display:inline-block;min-width:200px;';
-      const cloneNode = el.cloneNode(true);
-      cloneNode.querySelectorAll('.prod-variant-share,.prod-variant-actions').forEach(b => b.remove());
-      // Resolve any lazy-loaded images in the clone
-      cloneNode.querySelectorAll('img[data-src]').forEach(img => {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-        img.classList.remove('prod-lazy');
-      });
-      tempWrap.appendChild(cloneNode);
-      document.body.appendChild(tempWrap);
-      captureEl = cloneNode;
-    }
-
-    const canvas = await html2canvas(captureEl, {
+    const canvas = await html2canvas(el, {
       useCORS:         true,
       allowTaint:      true,
       backgroundColor: '#ffffff',
       scale:           2,
       logging:         false,
       imageTimeout:    12000,
-      onclone: isVariantCard ? undefined : async (doc, clone) => {
-        // 1. Hide share buttons so they don't appear in the image
+      onclone: async (doc, clone) => {
+        // Fix html2canvas CSS-Grid bug: it renders from grid position (0,0) regardless
+        // of which element is passed. De-grid the parent in the clone so the correct
+        // variant card is captured at its own position.
+        if (clone.parentElement?.classList.contains('prod-variants-grid')) {
+          clone.parentElement.style.display = 'block';
+        }
         clone.querySelectorAll(
           '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
         ).forEach(b => { b.style.display = 'none'; });
-        // 2. Convert all images to base64 to bypass CORS
         await _replaceImgsWithBase64(clone);
       }
     });
-
-    if (tempWrap) document.body.removeChild(tempWrap);
 
     const blob     = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
     const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.png`;
