@@ -14,7 +14,9 @@ const SPECIAL_ACCESS = [
   { name: 'MD View (Sales)',    dept: 'SalesDashMD'  },
   { name: 'Products Catalogue', dept: 'Products'     },
   { name: 'Bank Details',       dept: 'Bank Details' },
-  { name: 'Documents',          dept: 'Documents'    }
+  { name: 'Documents',          dept: 'Documents'    },
+  { name: 'Cash Salary',        dept: 'CashSalary'   },
+  { name: 'Bank Salary & Payments', dept: 'BankSalary' }
 ];
 
 export function buildProcList(existingLinkAccess = {}, deptAccess = []){

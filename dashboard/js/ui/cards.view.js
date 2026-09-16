@@ -228,7 +228,23 @@ export async function renderCards(data){
     return;
   }
 
-  const html    = accessible.map((it, i) => _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  // Within a single category: plain items first, then any subcat groups with their own section header
+  // (skip re-grouping when the page itself IS a subcat view, e.g. the dedicated Double A tab)
+  const onSubcatPage = state.curCat === 'DoubleA';
+  const plain    = onSubcatPage ? accessible : accessible.filter(it => !it.subcat);
+  const subcats  = onSubcatPage ? [] : [...new Set(accessible.filter(it => it.subcat).map(it => it.subcat))];
+
+  let idx = 0;
+  let html = plain.map(it => _buildCardHTML(it, idx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  subcats.forEach(sc => {
+    const items = accessible.filter(it => it.subcat === sc);
+    html += `<div class="cat-section-header">
+      <span class="cat-section-label">${sc}</span>
+      <span class="cat-section-count">${items.length}</span>
+    </div>`;
+    html += items.map(it => _buildCardHTML(it, idx++, CAT_TAG, PROC_ICON, isAdmin)).join('');
+  });
+
   box.innerHTML = html || '<div class="empty-state"><i class="fas fa-box-open"></i><p>No processes found.</p></div>';
 }
 
@@ -283,7 +299,8 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     let btns = '';
     btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    _G.SHEETS,                 'FMS');
-    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  'Form');
+    const DISPLAY_FORM_NAMES = ['Double A Corporate Customer', 'Double A Display Links'];
+    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  DISPLAY_FORM_NAMES.includes(it.name) ? 'Display Form' : 'Form');
 
     if (it.name === 'Help Ticket'){
       btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', _G.SHEETS, 'All Tickets');
@@ -321,6 +338,16 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
+    btns += buildButton(it, !!it.links.orderFormPdf,      'orderFormPdf',      'btn-form', 'fas fa-file-pdf',  'PDF');
+    btns += buildButton(it, !!it.links.orderFormDoc,      'orderFormDoc',      'btn-form', 'fas fa-file-word', 'Word File');
+    btns += buildButton(it, !!it.links.truckOrderFormPdf, 'truckOrderFormPdf', 'btn-form', 'fas fa-file-pdf',  'PDF');
+    btns += buildButton(it, !!it.links.truckOrderFormDoc, 'truckOrderFormDoc', 'btn-form', 'fas fa-file-word', 'Word File');
+    btns += buildButton(it, !!it.links.daDisplayFms,  'daDisplayFms',  'btn-fms',  'fas fa-table-cells', 'FMS');
+    btns += buildButton(it, !!it.links.daDisplayDash, 'daDisplayDash', 'btn-dash', 'fas fa-chart-line',  'Dashboard');
+    btns += buildButton(it, !!it.links.o2dManager,    'o2dManager',    'btn-dash', 'fas fa-truck-fast',  'Manager');
+    btns += buildButton(it, !!it.links.o2dPawan,      'o2dPawan',      'btn-dash', 'fas fa-truck-fast',  'Pawan');
+    btns += buildButton(it, !!it.links.o2dSonu,       'o2dSonu',       'btn-dash', 'fas fa-truck-fast',  'Sonu');
+    btns += buildButton(it, !!it.links.o2dRishabh,    'o2dRishabh',    'btn-dash', 'fas fa-truck-fast',  'Rishabh');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
@@ -364,7 +391,8 @@ export function renderFiltered(){
   const filtered = DB.filter(it => {
     if (it.cat === 'Products' || it.cat === 'Bank Details') return false;
     if (!canAccessProc(state.curUser, it)) return false;
-    const matchesCat = state.curCat === 'All' || it.cat === state.curCat;
+    const matchesCat = state.curCat === 'All' || it.cat === state.curCat
+      || (state.curCat === 'DoubleA' && it.subcat === 'Double A');
     const haystack   = `${it.name} ${it.pc} ${it.solver} ${it.exec} ${it.cat}`.toLowerCase();
     return matchesCat && terms.every(t => haystack.includes(t));
   });

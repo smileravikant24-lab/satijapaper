@@ -14,6 +14,10 @@ export function hasDeptAccess(u, cat){
 export function canAccessProc(u, item){
   if (!u)                                       return false;
   if (u.role === 'Admin')                       return true;
+  if (item.navTo === 'CashSalary')
+    return u.deptAccess?.includes('All') || u.deptAccess?.includes('CashSalary');
+  if (item.navTo === 'BankSalary')
+    return u.deptAccess?.includes('All') || u.deptAccess?.includes('BankSalary');
   if (u.processAccess && u.processAccess.length > 0)
     return u.processAccess.includes(item.name);
   return hasDeptAccess(u, item.cat);
