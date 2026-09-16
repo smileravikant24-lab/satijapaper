@@ -408,20 +408,15 @@ export const PRODUCTS = [
         color: '#F9E79F', colorName: 'Lemon Yellow',
         img: _IMG['TARANG_LEMON'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
       },
-      {
-        name: 'Tarang — Green', gsm: 75, sizes: ['A4'],
-        brightness: '85–90% ISO', sheets: 500,
-        bestFor: 'Eco filing, colour separation',
-        color: '#82C784', colorName: 'Green',
-        img: _IMG['TARANG_GREEN'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
-      },
-      {
-        name: 'Tarang — Sky', gsm: 75, sizes: ['A4'],
-        brightness: '85–90% ISO', sheets: 500,
-        bestFor: 'Colour-coded filing, presentations',
-        color: '#87CEEB', colorName: 'Sky Blue',
-        img: _IMG['TARANG_SKY'], fallbackImg: 'https://satijapaper.com/ruchira.jpg'
-      },
+      // TODO: re-enable after share test passes
+      // { name: 'Tarang — Green', gsm: 75, sizes: ['A4'],
+      //   brightness: '85–90% ISO', sheets: 500, bestFor: 'Eco filing, colour separation',
+      //   color: '#82C784', colorName: 'Green',
+      //   img: _IMG['TARANG_GREEN'], fallbackImg: 'https://satijapaper.com/ruchira.jpg' },
+      // { name: 'Tarang — Sky', gsm: 75, sizes: ['A4'],
+      //   brightness: '85–90% ISO', sheets: 500, bestFor: 'Colour-coded filing, presentations',
+      //   color: '#87CEEB', colorName: 'Sky Blue',
+      //   img: _IMG['TARANG_SKY'], fallbackImg: 'https://satijapaper.com/ruchira.jpg' },
       {
         name: 'Rozana 70 GSM', gsm: 70, sizes: ['A4'],
         brightness: '88–90% ISO', sheets: 500,

@@ -469,33 +469,37 @@ async function shareProductImage(btnOrId, label) {
   try {
     await _loadHtml2Canvas();
 
-    const canvas = await html2canvas(el, {
-      useCORS:         true,
-      allowTaint:      true,
-      backgroundColor: '#ffffff',
-      scale:           2,
-      logging:         false,
-      imageTimeout:    12000,
-      onclone: async (doc, clone) => {
-        // Fix html2canvas CSS-Grid bug: it renders from grid position (0,0) regardless
-        // of which element is passed. De-grid the parent in the clone so the correct
-        // variant card is captured at its own position.
-        if (clone.parentElement) {
-          if (clone.parentElement.classList.contains('prod-variants-grid')) {
-            clone.parentElement.style.display = 'block';
+    // html2canvas CSS-Grid bug: it always captures from grid position (0,0).
+    // Fix: switch the live grid to block before html2canvas clones the DOM,
+    // so the correct card is at its natural block position when rendered.
+    const liveGrid = el.closest('.prod-variants-grid');
+    if (liveGrid) liveGrid.style.display = 'block';
+
+    let canvas;
+    try {
+      canvas = await html2canvas(el, {
+        useCORS:         true,
+        allowTaint:      true,
+        backgroundColor: '#ffffff',
+        scale:           2,
+        logging:         false,
+        imageTimeout:    12000,
+        onclone: async (doc) => {
+          doc.querySelectorAll(
+            '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
+          ).forEach(b => { b.style.display = 'none'; });
+          const clonedEl = doc.getElementById(el.id);
+          if (clonedEl) {
+            Array.from(clonedEl.parentElement?.children || []).forEach(child => {
+              if (child !== clonedEl) child.style.display = 'none';
+            });
+            await _replaceImgsWithBase64(clonedEl);
           }
-          Array.from(clone.parentElement.children).forEach(child => {
-            if (child !== clone) {
-              child.style.display = 'none';
-            }
-          });
         }
-        clone.querySelectorAll(
-          '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
-        ).forEach(b => { b.style.display = 'none'; });
-        await _replaceImgsWithBase64(clone);
-      }
-    });
+      });
+    } finally {
+      if (liveGrid) liveGrid.style.removeProperty('display');
+    }
 
     const blob     = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
     const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.png`;
