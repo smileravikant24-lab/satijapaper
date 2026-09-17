@@ -462,6 +462,11 @@ async function shareProductImage(btnOrId, label) {
   }
   if (!el) { showToast('Element not found.', 'err'); return; }
 
+  // For variant cards: capture only the image tile, not the full card
+  const captureEl = el.classList.contains('prod-variant-card')
+    ? (el.querySelector('.prod-variant-img-wrap') || el)
+    : el;
+
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) {
     btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
@@ -479,7 +484,7 @@ async function shareProductImage(btnOrId, label) {
 
     let canvas;
     try {
-      canvas = await html2canvas(el, {
+      canvas = await html2canvas(captureEl, {
         useCORS:         true,
         allowTaint:      true,
         backgroundColor: '#ffffff',
