@@ -20,8 +20,8 @@
   position: relative;
 }
 .rpl-card:hover { border-color: var(--emerald); box-shadow: var(--shadow-card); transform: translateY(-5px); }
-.rpl-card-img { width:100%; overflow:hidden; background:var(--cream); }
-.rpl-card-img img { width:100%; height:auto; display:block; transition:transform 0.5s; }
+.rpl-card-img { width:100%; height:220px; overflow:hidden; background:var(--cream); display:flex; align-items:center; justify-content:center; }
+.rpl-card-img img { width:100%; height:100%; object-fit:contain; display:block; transition:transform 0.5s; }
 .rpl-card:hover .rpl-card-img img { transform:scale(1.05); }
 .rpl-card-body { padding: 22px; }
 .rpl-card-body h3 { font-family:'Times New Roman',Times,serif; font-size:1.5rem; color:var(--text); margin-bottom:4px; }
