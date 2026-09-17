@@ -165,6 +165,50 @@ function closeVideoPopup(e) {
   }
 }
 
+// === PRODUCT CARD SHARE (WhatsApp / download) ===
+function _loadH2C() {
+  if (window.html2canvas) return Promise.resolve();
+  return new Promise(function(resolve, reject) {
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = resolve;
+    s.onerror = function() { reject(new Error('html2canvas failed to load')); };
+    document.head.appendChild(s);
+  });
+}
+async function shareProductCard(cardId, label) {
+  var el = document.getElementById(cardId);
+  var btn = el ? el.querySelector('.rpl-share-btn') : null;
+  if (!el) return;
+  var origText = btn ? btn.innerHTML : '';
+  if (btn) { btn.innerHTML = '&#8987; Preparing...'; btn.disabled = true; }
+  try {
+    await _loadH2C();
+    var shareButtons = el.querySelectorAll('.rpl-share-btn');
+    shareButtons.forEach(function(b) { b.style.display = 'none'; });
+    var canvas = await html2canvas(el, {
+      useCORS: true, allowTaint: true, backgroundColor: '#ffffff',
+      scale: 2, logging: false, imageTimeout: 12000
+    });
+    shareButtons.forEach(function(b) { b.style.display = ''; });
+    var blob = await new Promise(function(resolve) { canvas.toBlob(resolve, 'image/png', 0.95); });
+    var fileName = label.replace(/[^a-z0-9]/gi, '_') + '_SatijaPaper.png';
+    var file = new File([blob], fileName, { type: 'image/png' });
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], title: label + ' — Satija Paper', text: label + ' | Satija Paper — www.satijapaper.com' });
+    } else {
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = fileName; a.click();
+      URL.revokeObjectURL(url);
+    }
+  } catch(err) {
+    console.error('Share error:', err);
+  } finally {
+    if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+  }
+}
+
 // === SECURITY ===
 document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
 document.onkeydown = function (e) {

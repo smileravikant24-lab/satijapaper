@@ -73,9 +73,10 @@
   flex-shrink: 0;
 }
 .prod-brand-img {
-  width: 100%;
   height: 100%;
-  object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
   display: block;
 }
 
@@ -152,17 +153,21 @@
 
 .prod-variant-img-wrap {
   width: 100%;
-  height: 110px;
+  height: 160px;
   border-radius: .5rem;
   overflow: hidden;
   background: #f3f4f6;
   margin-bottom: .7rem;
   border: 1px solid var(--border, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .prod-variant-img {
-  width: 100%;
   height: 100%;
-  object-fit: cover;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
   display: block;
 }
 

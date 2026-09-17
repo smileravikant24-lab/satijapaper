@@ -30,6 +30,9 @@
 .rpl-card-tags span { background:var(--cream); color:var(--text-muted); padding:4px 10px; border-radius:20px; font-size:0.72rem; font-weight:600; transition:background 0.4s; }
 .rpl-card-gsm { font-size:1.1rem; font-weight:700; color:var(--text); font-family:'Times New Roman',Times,serif; margin-bottom:10px; }
 .rpl-card-link { font-size:12px; color:var(--emerald); font-weight:600; letter-spacing:0.5px; }
+.rpl-share-btn { margin-top:14px; width:100%; padding:10px; background:#003BFF; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; transition:background 0.2s; }
+.rpl-share-btn:hover { background:#0025c4; }
+.rpl-share-btn:disabled { opacity:0.6; cursor:wait; }
 .rpl-gallery-thumb { width:60px; height:60px; border-radius:6px; border:2px solid var(--border); cursor:pointer; object-fit:cover; transition:border-color 0.2s; }
 .rpl-gallery-thumb:hover,.rpl-gallery-thumb.active { border-color: var(--emerald); }
 
