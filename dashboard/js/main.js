@@ -463,35 +463,9 @@ async function shareProductImage(btnOrId, label) {
   if (!el) { showToast('Element not found.', 'err'); return; }
 
   const origHTML = btn ? btn.innerHTML : '';
-  if (btn) {
-    btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
-    btn.disabled   = true;
-  }
+  if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...'; btn.disabled = true; }
 
   try {
-    // For variant cards: share the raw image file directly (no html2canvas, no gray bars)
-    if (el.classList.contains('prod-variant-card')) {
-      const img = el.querySelector('.prod-variant-img');
-      const src = img?.src || img?.dataset?.src;
-      if (src && !src.includes('R0lGODlh') && !src.startsWith('data:image/gif')) {
-        const resp = await fetch(src, { mode: 'cors' });
-        const blob = await resp.blob();
-        const ext  = blob.type.includes('jpeg') || src.match(/\.jpe?g/i) ? 'jpg' : 'png';
-        const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.${ext}`;
-        const file = new File([blob], fileName, { type: blob.type });
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], title: `${label} — Satija Paper`, text: `${label} | Satija Paper — www.satijapaper.com` });
-          showToast('Shared!', 'info');
-        } else {
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a'); a.href = url; a.download = fileName; a.click();
-          URL.revokeObjectURL(url);
-          showToast('Image saved — share it from your downloads.', 'info');
-        }
-        return;
-      }
-    }
-
     await _loadHtml2Canvas();
 
     // html2canvas CSS-Grid bug: it always captures from grid position (0,0).
@@ -502,7 +476,7 @@ async function shareProductImage(btnOrId, label) {
 
     let canvas;
     try {
-      canvas = await html2canvas(captureEl, {
+      canvas = await html2canvas(el, {
         useCORS:         true,
         allowTaint:      true,
         backgroundColor: '#ffffff',
@@ -515,6 +489,28 @@ async function shareProductImage(btnOrId, label) {
           ).forEach(b => { b.style.display = 'none'; });
           const clonedEl = doc.getElementById(el.id);
           if (clonedEl) {
+            // Fix lazy images: load real src before capture
+            clonedEl.querySelectorAll('img[data-src]').forEach(img => {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+              img.classList.remove('prod-lazy');
+            });
+            // Fix image container so it renders at screen size (not portrait-stretched)
+            const wrap = clonedEl.querySelector('.prod-variant-img-wrap');
+            if (wrap) {
+              wrap.style.width  = el.querySelector('.prod-variant-img-wrap')?.offsetWidth + 'px';
+              wrap.style.height = '200px';
+              wrap.style.display = 'flex';
+              wrap.style.alignItems = 'center';
+              wrap.style.justifyContent = 'center';
+              wrap.style.overflow = 'hidden';
+            }
+            const img = clonedEl.querySelector('.prod-variant-img');
+            if (img) {
+              img.style.height   = '200px';
+              img.style.width    = 'auto';
+              img.style.maxWidth = '100%';
+            }
             Array.from(clonedEl.parentElement?.children || []).forEach(child => {
               if (child !== clonedEl) child.style.display = 'none';
             });
