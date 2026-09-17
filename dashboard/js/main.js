@@ -495,6 +495,25 @@ async function shareProductImage(btnOrId, label) {
               img.removeAttribute('data-src');
               img.classList.remove('prod-lazy');
             });
+
+            // html2canvas ignores object-fit — set exact px dimensions manually
+            // so the image renders at the same proportions as on screen
+            const liveWrap = el.querySelector('.prod-variant-img-wrap');
+            const liveImg  = el.querySelector('.prod-variant-img');
+            const clWrap   = clonedEl.querySelector('.prod-variant-img-wrap');
+            const clImg    = clonedEl.querySelector('.prod-variant-img');
+            if (liveWrap && liveImg && clWrap && clImg) {
+              const cW  = liveWrap.offsetWidth;
+              const cH  = liveWrap.offsetHeight || 200;
+              const nW  = liveImg.naturalWidth;
+              const nH  = liveImg.naturalHeight;
+              clWrap.style.cssText += `;width:${cW}px;height:${cH}px;display:flex;align-items:center;justify-content:center;overflow:hidden;`;
+              if (nW && nH) {
+                const scale = Math.min(cH / nH, cW / nW);
+                clImg.style.cssText = `width:${Math.round(nW*scale)}px;height:${Math.round(nH*scale)}px;max-width:none;object-fit:fill;`;
+              }
+            }
+
             Array.from(clonedEl.parentElement?.children || []).forEach(child => {
               if (child !== clonedEl) child.style.display = 'none';
             });
