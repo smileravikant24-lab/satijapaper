@@ -489,28 +489,12 @@ async function shareProductImage(btnOrId, label) {
           ).forEach(b => { b.style.display = 'none'; });
           const clonedEl = doc.getElementById(el.id);
           if (clonedEl) {
-            // Fix lazy images: load real src before capture
+            // Load lazy images before capture
             clonedEl.querySelectorAll('img[data-src]').forEach(img => {
               img.src = img.dataset.src;
               img.removeAttribute('data-src');
               img.classList.remove('prod-lazy');
             });
-            // Fix image container so it renders at screen size (not portrait-stretched)
-            const wrap = clonedEl.querySelector('.prod-variant-img-wrap');
-            if (wrap) {
-              wrap.style.width  = el.querySelector('.prod-variant-img-wrap')?.offsetWidth + 'px';
-              wrap.style.height = '200px';
-              wrap.style.display = 'flex';
-              wrap.style.alignItems = 'center';
-              wrap.style.justifyContent = 'center';
-              wrap.style.overflow = 'hidden';
-            }
-            const img = clonedEl.querySelector('.prod-variant-img');
-            if (img) {
-              img.style.height   = '200px';
-              img.style.width    = 'auto';
-              img.style.maxWidth = '100%';
-            }
             Array.from(clonedEl.parentElement?.children || []).forEach(child => {
               if (child !== clonedEl) child.style.display = 'none';
             });
