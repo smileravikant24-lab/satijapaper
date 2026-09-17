@@ -496,23 +496,31 @@ async function shareProductImage(btnOrId, label) {
               img.classList.remove('prod-lazy');
             });
 
-            // html2canvas ignores object-fit — set exact px dimensions manually
-            // so the image renders at the same proportions as on screen
-            const liveWrap = el.querySelector('.prod-variant-img-wrap');
-            const liveImg  = el.querySelector('.prod-variant-img');
-            const clWrap   = clonedEl.querySelector('.prod-variant-img-wrap');
-            const clImg    = clonedEl.querySelector('.prod-variant-img');
-            if (liveWrap && liveImg && clWrap && clImg) {
-              const cW  = liveWrap.offsetWidth;
-              const cH  = liveWrap.offsetHeight || 200;
-              const nW  = liveImg.naturalWidth;
-              const nH  = liveImg.naturalHeight;
-              clWrap.style.cssText += `;width:${cW}px;height:${cH}px;display:flex;align-items:center;justify-content:center;overflow:hidden;`;
-              if (nW && nH) {
+            // html2canvas ignores object-fit and stretches images to fill their
+            // box, so size every image to exact contain-scaled pixels instead.
+            // Pairs live <-> cloned by index; a brand card holds several.
+            const pairs = [
+              ['.prod-variant-img-wrap', '.prod-variant-img'],
+              ['.prod-brand-img-wrap',   '.prod-brand-img']
+            ];
+            pairs.forEach(([wrapSel, imgSel]) => {
+              const liveWraps = el.querySelectorAll(wrapSel);
+              const clWraps   = clonedEl.querySelectorAll(wrapSel);
+              liveWraps.forEach((liveWrap, i) => {
+                const clWrap = clWraps[i];
+                if (!clWrap) return;
+                const cW = liveWrap.offsetWidth;
+                const cH = liveWrap.offsetHeight;
+                if (!cW || !cH) return;
+                clWrap.style.cssText += `;width:${cW}px;height:${cH}px;display:flex;align-items:center;justify-content:center;overflow:hidden;`;
+                const liveImg = liveWrap.querySelector(imgSel);
+                const clImg   = clWrap.querySelector(imgSel);
+                const nW = liveImg?.naturalWidth, nH = liveImg?.naturalHeight;
+                if (!clImg || !nW || !nH) return;
                 const scale = Math.min(cH / nH, cW / nW);
                 clImg.style.cssText = `width:${Math.round(nW*scale)}px;height:${Math.round(nH*scale)}px;max-width:none;object-fit:fill;`;
-              }
-            }
+              });
+            });
 
             Array.from(clonedEl.parentElement?.children || []).forEach(child => {
               if (child !== clonedEl) child.style.display = 'none';
@@ -527,26 +535,7 @@ async function shareProductImage(btnOrId, label) {
 
     const blob     = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
     const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.png`;
-
-    // Web Share API — works on mobile (Chrome Android, Safari iOS)
-    if (navigator.share && navigator.canShare &&
-        navigator.canShare({ files: [new File([blob], fileName, { type: 'image/png' })] })) {
-      await navigator.share({
-        files: [new File([blob], fileName, { type: 'image/png' })],
-        title: `${label} — Satija Paper`,
-        text:  `${label} | Satija Paper — www.satijapaper.com`
-      });
-      showToast('Shared!', 'info');
-    } else {
-      // Desktop fallback: download
-      const url = URL.createObjectURL(blob);
-      const a   = document.createElement('a');
-      a.href     = url;
-      a.download = fileName;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('Image saved — share it from your downloads.', 'info');
-    }
+    _openShareSheet(blob, fileName, label);
 
   } catch (err) {
     console.error('Share error:', err);
@@ -554,6 +543,98 @@ async function shareProductImage(btnOrId, label) {
   } finally {
     if (btn) { btn.innerHTML = origHTML; btn.disabled = false; }
   }
+}
+
+/**
+ * navigator.share() only runs inside a fresh user gesture, and the canvas
+ * render above outlives the original click's activation window — so offer the
+ * buttons here instead; pressing one re-arms the gesture and the OS share
+ * sheet (WhatsApp, etc.) opens.
+ */
+function _openShareSheet(blob, fileName, label) {
+  const file        = new File([blob], fileName, { type: 'image/png' });
+  const canWebShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+  const previewUrl  = URL.createObjectURL(blob);
+  const waText      = encodeURIComponent(`${label} | Satija Paper — www.satijapaper.com`);
+
+  const btnCSS = 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;'
+               + 'padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;'
+               + 'font-family:inherit;border:none;transition:opacity .15s;';
+
+  const bg = document.createElement('div');
+  bg.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:10001;display:flex;'
+                   + 'align-items:center;justify-content:center;padding:16px;';
+  bg.innerHTML = `
+    <div style="background:#fff;border-radius:16px;max-width:330px;width:100%;padding:18px;
+                box-shadow:0 12px 48px rgba(0,0,0,.45);max-height:92vh;overflow:auto;">
+      <div style="font-size:15px;font-weight:800;color:#111827;margin-bottom:12px;">${label}</div>
+      <img src="${previewUrl}" alt="" style="width:100%;border-radius:10px;border:1px solid #e5e7eb;
+           margin-bottom:14px;display:block;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${canWebShare ? `<button data-act="share" style="${btnCSS}background:#25D366;color:#fff;">
+          <i class="fas fa-share-nodes"></i> Share</button>` : ''}
+        <button data-act="wa" style="${btnCSS}background:#4f46e5;color:#fff;">
+          <i class="fab fa-whatsapp"></i> Copy &amp; open WhatsApp</button>
+        <button data-act="copy" style="${btnCSS}background:#f3f4f6;color:#374151;">
+          <i class="fas fa-copy"></i> Copy image</button>
+        <button data-act="dl" style="${btnCSS}background:#f3f4f6;color:#374151;">
+          <i class="fas fa-download"></i> Download</button>
+        <button data-act="close" style="${btnCSS}background:transparent;color:#6b7280;">Cancel</button>
+      </div>
+    </div>`;
+
+  const close = () => { URL.revokeObjectURL(previewUrl); bg.remove(); };
+
+  const copyImage = async () => {
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+  };
+
+  const download = () => {
+    const url = URL.createObjectURL(blob);
+    const a   = document.createElement('a');
+    a.href = url; a.download = fileName; a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  bg.addEventListener('click', async (e) => {
+    if (e.target === bg) { close(); return; }
+    const act = e.target.closest('button')?.dataset.act;
+    if (!act) return;
+
+    if (act === 'close') { close(); return; }
+
+    if (act === 'share') {
+      try {
+        await navigator.share({
+          files: [file],
+          title: `${label} — Satija Paper`,
+          text:  `${label} | Satija Paper — www.satijapaper.com`
+        });
+        close();
+      } catch (err) {
+        if (err.name !== 'AbortError') showToast('Share failed — try Copy image.', 'err');
+      }
+      return;
+    }
+
+    if (act === 'wa') {
+      try { await copyImage(); showToast('Image copied — paste it in WhatsApp (Ctrl+V).', 'info'); }
+      catch { download(); showToast('Image saved — attach it in WhatsApp.', 'info'); }
+      window.open(`https://wa.me/?text=${waText}`, '_blank', 'noopener');
+      close();
+      return;
+    }
+
+    if (act === 'copy') {
+      try { await copyImage(); showToast('Image copied to clipboard.', 'info'); close(); }
+      catch { showToast('Copy not supported — use Download.', 'err'); }
+      return;
+    }
+
+    if (act === 'dl') { download(); showToast('Image saved.', 'info'); close(); }
+  });
+
+  document.body.appendChild(bg);
 }
 
 /** Dynamically load html2canvas from CDN once, then cache on window. */
