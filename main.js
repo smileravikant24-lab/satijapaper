@@ -1,3 +1,21 @@
+// === PRODUCT CARD IMAGE FIX ===
+function fixCardImages() {
+  document.querySelectorAll('.rpl-card-img').forEach(function(c) {
+    c.style.height = '300px';
+    c.style.display = 'flex';
+    c.style.alignItems = 'center';
+    c.style.justifyContent = 'center';
+    c.style.overflow = 'hidden';
+    var img = c.querySelector('img');
+    if (img) {
+      img.style.height = '100%';
+      img.style.width = 'auto';
+      img.style.maxWidth = '100%';
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', fixCardImages);
+
 // === LOADER ===
 window.addEventListener('load', function () {
   setTimeout(function () { document.getElementById('pageLoader').classList.add('hide'); }, 700);
@@ -68,6 +86,7 @@ function showPage(id) {
   closeMenu();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   setTimeout(revealOnScroll, 200);
+  setTimeout(fixCardImages, 100);
 }
 
 // === GALLERY ===

@@ -189,7 +189,9 @@ function _injectBrandImages(id) {
       var imgEl = card.querySelector('.rpl-card-img img');
       if (imgEl && khMap[cls]) {
         imgEl.src = khMap[cls];
-        imgEl.removeAttribute('style');
+        imgEl.style.height = '100%';
+        imgEl.style.width = 'auto';
+        imgEl.style.maxWidth = '100%';
       }
     });
   }
@@ -201,7 +203,7 @@ function _injectBrandImages(id) {
       var m  = fn.match(/rplShowProd\('([^']+)'/);
       if(!m) return;
       var el = card.querySelector('.rpl-card-img img');
-      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.removeAttribute('style'); }
+      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.style.height='100%'; el.style.width='auto'; el.style.maxWidth='100%'; }
     });
   }
 }
