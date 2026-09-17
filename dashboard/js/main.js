@@ -462,11 +462,6 @@ async function shareProductImage(btnOrId, label) {
   }
   if (!el) { showToast('Element not found.', 'err'); return; }
 
-  // For variant cards: capture only the image tile, not the full card
-  const captureEl = el.classList.contains('prod-variant-card')
-    ? (el.querySelector('.prod-variant-img-wrap') || el)
-    : el;
-
   const origHTML = btn ? btn.innerHTML : '';
   if (btn) {
     btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
@@ -474,6 +469,29 @@ async function shareProductImage(btnOrId, label) {
   }
 
   try {
+    // For variant cards: share the raw image file directly (no html2canvas, no gray bars)
+    if (el.classList.contains('prod-variant-card')) {
+      const img = el.querySelector('.prod-variant-img');
+      const src = img?.src || img?.dataset?.src;
+      if (src && !src.includes('R0lGODlh') && !src.startsWith('data:image/gif')) {
+        const resp = await fetch(src, { mode: 'cors' });
+        const blob = await resp.blob();
+        const ext  = blob.type.includes('jpeg') || src.match(/\.jpe?g/i) ? 'jpg' : 'png';
+        const fileName = `${label.replace(/[^a-z0-9]/gi, '_')}_SatijaPaper.${ext}`;
+        const file = new File([blob], fileName, { type: blob.type });
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], title: `${label} — Satija Paper`, text: `${label} | Satija Paper — www.satijapaper.com` });
+          showToast('Shared!', 'info');
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a'); a.href = url; a.download = fileName; a.click();
+          URL.revokeObjectURL(url);
+          showToast('Image saved — share it from your downloads.', 'info');
+        }
+        return;
+      }
+    }
+
     await _loadHtml2Canvas();
 
     // html2canvas CSS-Grid bug: it always captures from grid position (0,0).
