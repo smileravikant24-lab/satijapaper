@@ -449,6 +449,49 @@ async function _replaceImgsWithBase64(clone) {
     img.src = b64;
   }));
 }
+/**
+ * Give every image in the capture an explicit contain-scaled pixel size.
+ * html2canvas ignores object-fit, so an image left at 100%x100% is drawn
+ * stretched to its box; the stylesheet sets those dimensions with
+ * !important, so the override has to carry it too.
+ */
+async function _sizeCapturedImages(liveRoot, cloneRoot) {
+  const pairs = [
+    ['.prod-variant-img-wrap', '.prod-variant-img'],
+    ['.prod-brand-img-wrap',   '.prod-brand-img']
+  ];
+  for (const [wrapSel, imgSel] of pairs) {
+    const liveWraps = liveRoot.querySelectorAll(wrapSel);
+    const clWraps   = cloneRoot.querySelectorAll(wrapSel);
+    for (let i = 0; i < liveWraps.length; i++) {
+      const clWrap = clWraps[i];
+      if (!clWrap) continue;
+      const cW = liveWraps[i].offsetWidth;
+      const cH = liveWraps[i].offsetHeight;
+      if (!cW || !cH) continue;
+      clWrap.style.setProperty('width',  `${cW}px`, 'important');
+      clWrap.style.setProperty('height', `${cH}px`, 'important');
+
+      const clImg = clWrap.querySelector(imgSel);
+      if (!clImg) continue;
+      if (!clImg.naturalWidth) {
+        await new Promise(res => {
+          clImg.onload = clImg.onerror = res;
+          setTimeout(res, 8000);
+        });
+      }
+      const nW = clImg.naturalWidth, nH = clImg.naturalHeight;
+      if (!nW || !nH) continue;
+      const scale = Math.min(cH / nH, cW / nW);
+      clImg.style.setProperty('width',      `${Math.round(nW * scale)}px`, 'important');
+      clImg.style.setProperty('height',     `${Math.round(nH * scale)}px`, 'important');
+      clImg.style.setProperty('max-width',  'none', 'important');
+      clImg.style.setProperty('max-height', 'none', 'important');
+      clImg.style.setProperty('object-fit', 'fill', 'important');
+    }
+  }
+}
+
 async function shareProductImage(btnOrId, label) {
   let el, btn;
   if (typeof btnOrId === 'string') {
@@ -468,69 +511,46 @@ async function shareProductImage(btnOrId, label) {
   try {
     await _loadHtml2Canvas();
 
-    // html2canvas CSS-Grid bug: it always captures from grid position (0,0).
-    // Fix: switch the live grid to block before html2canvas clones the DOM,
-    // so the correct card is at its natural block position when rendered.
-    const liveGrid = el.closest('.prod-variants-grid');
-    if (liveGrid) liveGrid.style.display = 'block';
+    // Capture a detached copy pinned to the card's on-screen width. Rendering
+    // the live node needed a grid -> block switch to dodge html2canvas placing
+    // every grid child at (0,0), but that also let the card stretch to the
+    // full content width, so the shared image grew with the window.
+    const width = el.getBoundingClientRect().width;
+    const host  = document.createElement('div');
+    host.style.cssText = `position:fixed;top:0;left:-20000px;width:${width}px;background:#fff;`;
+    const clone = el.cloneNode(true);
+    clone.style.setProperty('width', `${width}px`, 'important');
+    clone.style.setProperty('border-right', 'none', 'important');
+    host.appendChild(clone);
+    document.body.appendChild(host);
 
     let canvas;
     try {
-      canvas = await html2canvas(el, {
+      clone.querySelectorAll(
+        '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
+      ).forEach(b => b.style.setProperty('display', 'none', 'important'));
+
+      clone.querySelectorAll('img[data-src]').forEach(img => {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        img.classList.remove('prod-lazy');
+      });
+
+      await _replaceImgsWithBase64(clone);
+      await _sizeCapturedImages(el, clone);
+
+      canvas = await html2canvas(clone, {
         useCORS:         true,
         allowTaint:      true,
         backgroundColor: '#ffffff',
         scale:           2,
         logging:         false,
         imageTimeout:    12000,
-        onclone: async (doc) => {
-          doc.querySelectorAll(
-            '.prod-share-btn, .prod-variant-share, .prod-variant-actions, .bank-action-row'
-          ).forEach(b => { b.style.display = 'none'; });
-          const clonedEl = doc.getElementById(el.id);
-          if (clonedEl) {
-            // Load lazy images before capture
-            clonedEl.querySelectorAll('img[data-src]').forEach(img => {
-              img.src = img.dataset.src;
-              img.removeAttribute('data-src');
-              img.classList.remove('prod-lazy');
-            });
-
-            // html2canvas ignores object-fit and stretches images to fill their
-            // box, so size every image to exact contain-scaled pixels instead.
-            // Pairs live <-> cloned by index; a brand card holds several.
-            const pairs = [
-              ['.prod-variant-img-wrap', '.prod-variant-img'],
-              ['.prod-brand-img-wrap',   '.prod-brand-img']
-            ];
-            pairs.forEach(([wrapSel, imgSel]) => {
-              const liveWraps = el.querySelectorAll(wrapSel);
-              const clWraps   = clonedEl.querySelectorAll(wrapSel);
-              liveWraps.forEach((liveWrap, i) => {
-                const clWrap = clWraps[i];
-                if (!clWrap) return;
-                const cW = liveWrap.offsetWidth;
-                const cH = liveWrap.offsetHeight;
-                if (!cW || !cH) return;
-                clWrap.style.cssText += `;width:${cW}px;height:${cH}px;display:flex;align-items:center;justify-content:center;overflow:hidden;`;
-                const liveImg = liveWrap.querySelector(imgSel);
-                const clImg   = clWrap.querySelector(imgSel);
-                const nW = liveImg?.naturalWidth, nH = liveImg?.naturalHeight;
-                if (!clImg || !nW || !nH) return;
-                const scale = Math.min(cH / nH, cW / nW);
-                clImg.style.cssText = `width:${Math.round(nW*scale)}px;height:${Math.round(nH*scale)}px;max-width:none;object-fit:fill;`;
-              });
-            });
-
-            Array.from(clonedEl.parentElement?.children || []).forEach(child => {
-              if (child !== clonedEl) child.style.display = 'none';
-            });
-            await _replaceImgsWithBase64(clonedEl);
-          }
-        }
+        width:           Math.ceil(width),
+        windowWidth:     Math.ceil(width)
       });
     } finally {
-      if (liveGrid) liveGrid.style.removeProperty('display');
+      host.remove();
     }
 
     const blob     = await new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));

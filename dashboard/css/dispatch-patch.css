@@ -20,10 +20,15 @@
   align-items: center;
   justify-content: center;
 }
+/* Size by the element's own box rather than object-fit: the box then carries
+   the image's aspect ratio, which html2canvas honours (it ignores object-fit
+   and would otherwise stretch the image to fill a 100%x100% box). */
 .prod-variant-img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
   object-position: center !important;
   display: block;
 }
@@ -39,13 +44,17 @@
   justify-content: center;
 }
 .prod-brand-img {
-  width: 100% !important;
-  height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   object-fit: contain !important;
   object-position: center !important;
   display: block;
 }
-img.prod-lazy {
+/* Only the unloaded placeholder fills the box, so the shimmer covers it;
+   once the real src lands the rule stops applying and the image keeps ratio. */
+img.prod-lazy[data-src] {
   width: 100% !important;
   height: 100% !important;
 }
