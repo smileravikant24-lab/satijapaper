@@ -165,14 +165,14 @@ function _injectBrandImages(id) {
     // Cards order in index.html: Brilliance 70, 75, 80
     var cards = document.querySelectorAll('#brand-nragarwal .rpl-card-img img');
     var srcs  = [_I.nr_70, _I.nr_75, _I.nr_80];
-    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='contain';} });
+    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.width='100%';el.style.height='auto';} });
   }
 
   if (id === 'brand-satia') {
     // Cards order: Satia 65, 70, 75, 80
     var cards = document.querySelectorAll('#brand-satia .rpl-card-img img');
     var srcs  = [_I.satia_65, _I.satia_70, _I.satia_75, _I.satia_80];
-    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='contain';} });
+    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.width='100%';el.style.height='auto';} });
   }
 
   if (id === 'brand-khanna') {
@@ -189,9 +189,8 @@ function _injectBrandImages(id) {
       var imgEl = card.querySelector('.rpl-card-img img');
       if (imgEl && khMap[cls]) {
         imgEl.src = khMap[cls];
-        imgEl.style.objectFit = 'contain';
         imgEl.style.width = '100%';
-        imgEl.style.height = '100%';
+        imgEl.style.height = 'auto';
       }
     });
   }
@@ -203,7 +202,7 @@ function _injectBrandImages(id) {
       var m  = fn.match(/rplShowProd\('([^']+)'/);
       if(!m) return;
       var el = card.querySelector('.rpl-card-img img');
-      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.style.objectFit='contain'; }
+      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.style.width='100%'; el.style.height='auto'; }
     });
   }
 }
