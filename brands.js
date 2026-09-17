@@ -43,7 +43,7 @@ function aplBuildGrids() {
     var el = document.getElementById('apl-grid-'+g); if(!el) continue;
     el.innerHTML = aplGridMap[g].map(function(k){
       var p=APL[k];
-      return '<div class="apl-product-thumb" onclick="aplShowProd(\'' +k+ '\')"><div class="apl-thumb-img"><img src="'+p.img+'" alt="'+p.t+'" style="width:100%;height:100%;object-fit:cover;"></div><h5>'+p.t+'</h5></div>';
+      return '<div class="apl-product-thumb" onclick="aplShowProd(\'' +k+ '\')"><div class="apl-thumb-img"><img src="'+p.img+'" alt="'+p.t+'" style="width:100%;height:100%;object-fit:contain;"></div><h5>'+p.t+'</h5></div>';
     }).join('');
   }
 }
@@ -165,14 +165,14 @@ function _injectBrandImages(id) {
     // Cards order in index.html: Brilliance 70, 75, 80
     var cards = document.querySelectorAll('#brand-nragarwal .rpl-card-img img');
     var srcs  = [_I.nr_70, _I.nr_75, _I.nr_80];
-    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='cover';} });
+    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='contain';} });
   }
 
   if (id === 'brand-satia') {
     // Cards order: Satia 65, 70, 75, 80
     var cards = document.querySelectorAll('#brand-satia .rpl-card-img img');
     var srcs  = [_I.satia_65, _I.satia_70, _I.satia_75, _I.satia_80];
-    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='cover';} });
+    cards.forEach(function(el,i){ if(srcs[i]){el.src=srcs[i];el.style.objectFit='contain';} });
   }
 
   if (id === 'brand-khanna') {
@@ -189,7 +189,7 @@ function _injectBrandImages(id) {
       var imgEl = card.querySelector('.rpl-card-img img');
       if (imgEl && khMap[cls]) {
         imgEl.src = khMap[cls];
-        imgEl.style.objectFit = 'cover';
+        imgEl.style.objectFit = 'contain';
         imgEl.style.width = '100%';
         imgEl.style.height = '100%';
       }
@@ -203,7 +203,7 @@ function _injectBrandImages(id) {
       var m  = fn.match(/rplShowProd\('([^']+)'/);
       if(!m) return;
       var el = card.querySelector('.rpl-card-img img');
-      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.style.objectFit='cover'; }
+      if(el && rucMap[m[1]]){ el.src=rucMap[m[1]]; el.style.objectFit='contain'; }
     });
   }
 }
