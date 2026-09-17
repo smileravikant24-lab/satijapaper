@@ -305,6 +305,16 @@
   </div>
 </div>
 
+<!-- Image Lightbox -->
+<div id="imgLightbox" onclick="closeImgLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;">
+  <img id="imgLightboxImg" src="" alt="" style="max-width:92vw;max-height:92vh;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);object-fit:contain;">
+</div>
+<script>
+function openImgLightbox(src){var lb=document.getElementById('imgLightbox');document.getElementById('imgLightboxImg').src=src;lb.style.display='flex';document.body.style.overflow='hidden';}
+function closeImgLightbox(){document.getElementById('imgLightbox').style.display='none';document.getElementById('imgLightboxImg').src='';document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeImgLightbox();});
+</script>
+
 <script type="module" src="js/main.js?v=20260916b"></script>
 </body>
 </html>

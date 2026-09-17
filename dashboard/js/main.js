@@ -310,15 +310,17 @@ function _buildVariant(v, brand) {
                  <span class="prod-colour-name-big">${v.colorName || v.name}</span>
                </div>`;
   } else if (isBase64) {
-    imgHTML = `<img src="${imgSrc}" alt="${v.name}" class="prod-variant-img">`;
+    imgHTML = `<img src="${imgSrc}" alt="${v.name}" class="prod-variant-img" onclick="event.stopPropagation();openImgLightbox('${imgSrc}')">`;
   } else {
     imgHTML = `<img data-src="${imgSrc}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                    alt="${v.name}" class="prod-variant-img prod-lazy">`;
+                    alt="${v.name}" class="prod-variant-img prod-lazy"
+                    onclick="event.stopPropagation();openImgLightbox(this.src)">`;
   }
 
   return `
   <div class="prod-variant-card" id="${varId}">
-    <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}">
+    <div class="prod-variant-img-wrap" style="${v.colorOnly ? 'background:'+v.color+';position:relative' : ''}"
+         onclick="event.stopPropagation();var img=this.querySelector('img');if(img&&img.src&&!img.src.includes('R0lGODlh'))openImgLightbox(img.src);">
       ${imgHTML}
       <span class="prod-variant-gsm-badge">${v.gsm} GSM</span>
     </div>
