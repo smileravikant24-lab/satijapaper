@@ -645,10 +645,30 @@ function _openShareSheet(blob, fileName, label) {
     if (!act) return;
 
     if (act === 'close') { close(); return; }
-    if (act === 'wa')    { window.open('https://wa.me/?text=' + waText, '_blank', 'noopener'); return; }
-    if (act === 'tg')    { window.open('https://t.me/share/url?url=' + encodeURIComponent(shareLink) + '&text=' + tgText, '_blank', 'noopener'); return; }
-    if (act === 'sms')   { window.open('sms:?body=' + waText, '_blank'); return; }
-    if (act === 'email') { window.open('mailto:?subject=' + encodeURIComponent('Satija Paper – ' + label) + '&body=' + waText, '_blank'); return; }
+
+    if (act === 'wa' || act === 'tg' || act === 'sms' || act === 'email') {
+      const appUrls = {
+        wa:    'https://wa.me/?text=' + waText,
+        tg:    'https://t.me/share/url?url=' + encodeURIComponent(shareLink) + '&text=' + tgText,
+        sms:   'sms:?body=' + waText,
+        email: 'mailto:?subject=' + encodeURIComponent('Satija Paper – ' + label) + '&body=' + waText
+      };
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: label + ' — Satija Paper', text: shareMsg })
+          .catch(() => {
+            navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+              .then(() => showMsg('✓ Image copied — paste in app'))
+              .catch(() => {});
+            window.open(appUrls[act], '_blank', 'noopener');
+          });
+      } else {
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+          .then(() => showMsg('✓ Image copied — paste in app'))
+          .catch(() => {});
+        window.open(appUrls[act], '_blank', 'noopener');
+      }
+      return;
+    }
     if (act === 'dl')    { download(); showMsg('✓ Image downloaded!'); return; }
 
     if (act === 'copy') {
