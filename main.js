@@ -165,7 +165,61 @@ function closeVideoPopup(e) {
   }
 }
 
-// === PRODUCT CARD SHARE (WhatsApp / download) ===
+// === SHARE POPUP STYLES ===
+(function _injectShareCSS() {
+  var css = '' +
+    '.sp-share-overlay{position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:99999;' +
+    'display:flex;align-items:center;justify-content:center;padding:16px;' +
+    'opacity:0;transition:opacity .22s;pointer-events:none;}' +
+    '.sp-share-overlay.active{opacity:1;pointer-events:all;}' +
+    '.sp-share-box{background:#fff;border-radius:22px;' +
+    'box-shadow:0 24px 64px rgba(0,0,0,.22);width:100%;max-width:400px;' +
+    'padding:28px 28px 24px;position:relative;' +
+    'transform:translateY(24px) scale(.97);transition:transform .25s cubic-bezier(.34,1.56,.64,1);}' +
+    '.sp-share-overlay.active .sp-share-box{transform:translateY(0) scale(1);}' +
+    '.sp-share-close{position:absolute;top:14px;right:16px;background:none;border:none;' +
+    'cursor:pointer;color:#718096;font-size:22px;padding:4px 8px;' +
+    'border-radius:8px;transition:background .15s;line-height:1;}' +
+    '.sp-share-close:hover{background:rgba(0,0,0,.06);}' +
+    '.sp-share-title{font-size:15px;font-weight:800;color:#1a202c;' +
+    'margin-bottom:4px;padding-right:32px;line-height:1.3;}' +
+    '.sp-share-sub{font-size:12px;color:#718096;margin-bottom:20px;font-weight:500;}' +
+    '.sp-share-apps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;}' +
+    '.sp-share-app{display:flex;flex-direction:column;align-items:center;gap:7px;' +
+    'cursor:pointer;border:none;background:none;padding:0;}' +
+    '.sp-share-app-icon{width:52px;height:52px;border-radius:14px;display:flex;' +
+    'align-items:center;justify-content:center;color:#fff;' +
+    'transition:transform .15s,box-shadow .15s;}' +
+    '.sp-share-app:hover .sp-share-app-icon{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.18);}' +
+    '.sp-share-app-label{font-size:10.5px;font-weight:700;color:#718096;letter-spacing:.2px;}' +
+    '.sp-share-app-icon.wa{background:linear-gradient(135deg,#25d366,#128c7e);}' +
+    '.sp-share-app-icon.tg{background:linear-gradient(135deg,#2AABEE,#229ED9);}' +
+    '.sp-share-app-icon.sms{background:linear-gradient(135deg,#3b82f6,#1d4ed8);}' +
+    '.sp-share-app-icon.mail{background:linear-gradient(135deg,#f59e0b,#d97706);}' +
+    '.sp-share-app-icon.copy{background:linear-gradient(135deg,#6366f1,#4338ca);}' +
+    '.sp-share-app-icon.dl{background:linear-gradient(135deg,#10b981,#059669);}' +
+    '.sp-share-link-row{display:flex;gap:8px;align-items:center;}' +
+    '.sp-share-link-input{flex:1;border:1.5px solid #e2e8f0;border-radius:10px;' +
+    'padding:9px 12px;font-size:11.5px;color:#1a202c;background:#f7fafc;' +
+    'font-family:inherit;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}' +
+    '.sp-share-copy-btn{padding:9px 16px;background:#4f46e5;color:#fff;' +
+    'border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;' +
+    'white-space:nowrap;transition:background .15s;}' +
+    '.sp-share-copy-btn:hover{background:#4338ca;}' +
+    '.sp-share-copy-btn.copied{background:#16a34a;}' +
+    '.sp-share-toast{font-size:11px;color:#16a34a;font-weight:700;text-align:center;margin-top:10px;height:16px;}' +
+    '@media(max-width:420px){.sp-share-apps{grid-template-columns:repeat(3,1fr);gap:10px;}.sp-share-box{padding:22px 18px 18px;}}';
+  var style = document.createElement('style');
+  style.textContent = css;
+  document.head.appendChild(style);
+})();
+
+// === PRODUCT CARD SHARE POPUP ===
+var _spShareLabel = '';
+var _spShareCardId = '';
+var _spShareMsg = '';
+var _spShareLink = 'https://www.satijapaper.com';
+
 function _loadH2C() {
   if (window.html2canvas) return Promise.resolve();
   return new Promise(function(resolve, reject) {
@@ -176,12 +230,63 @@ function _loadH2C() {
     document.head.appendChild(s);
   });
 }
-async function shareProductCard(cardId, label) {
-  var el = document.getElementById(cardId);
-  var btn = el ? el.querySelector('.rpl-share-btn') : null;
+
+function shareProductCard(cardId, label) {
+  _spShareCardId = cardId;
+  _spShareLabel = label;
+  _spShareMsg = label + ' | Satija Paper — www.satijapaper.com';
+  _spShareLink = 'https://www.satijapaper.com';
+  document.getElementById('spShareTitle').textContent = 'Share — ' + label;
+  document.getElementById('spShareLinkInput').value = _spShareLink;
+  document.getElementById('spShareToast').textContent = '';
+  var btn = document.getElementById('spShareCopyBtn');
+  btn.textContent = 'Copy'; btn.classList.remove('copied');
+  var ov = document.getElementById('spShareOverlay');
+  ov.style.display = 'flex';
+  requestAnimationFrame(function() { ov.classList.add('active'); });
+}
+
+function spShareHide() {
+  var ov = document.getElementById('spShareOverlay');
+  ov.classList.remove('active');
+  setTimeout(function() { ov.style.display = 'none'; }, 240);
+}
+
+function spShareVia(app) {
+  var text = encodeURIComponent(_spShareMsg);
+  var url = encodeURIComponent(_spShareLink);
+  if (app === 'whatsapp') {
+    window.open('https://wa.me/?text=' + text, '_blank');
+  } else if (app === 'telegram') {
+    window.open('https://t.me/share/url?url=' + url + '&text=' + text, '_blank');
+  } else if (app === 'sms') {
+    window.open('sms:?body=' + text, '_blank');
+  } else if (app === 'email') {
+    window.open('mailto:?subject=' + encodeURIComponent('Satija Paper – ' + _spShareLabel) + '&body=' + text, '_blank');
+  } else if (app === 'copy') {
+    spShareCopyLink();
+    return;
+  } else if (app === 'download') {
+    spShareDownloadCard();
+    return;
+  }
+}
+
+function spShareCopyLink() {
+  navigator.clipboard.writeText(_spShareMsg + '\n' + _spShareLink).then(function() {
+    var btn = document.getElementById('spShareCopyBtn');
+    var toast = document.getElementById('spShareToast');
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    toast.textContent = '✓ Copied to clipboard';
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); toast.textContent = ''; }, 2500);
+  });
+}
+
+async function spShareDownloadCard() {
+  var el = document.getElementById(_spShareCardId);
   if (!el) return;
-  var origText = btn ? btn.innerHTML : '';
-  if (btn) { btn.innerHTML = '&#8987; Preparing...'; btn.disabled = true; }
+  var toast = document.getElementById('spShareToast');
+  toast.textContent = '⏳ Preparing image...';
   try {
     await _loadH2C();
     var shareButtons = el.querySelectorAll('.rpl-share-btn');
@@ -192,22 +297,26 @@ async function shareProductCard(cardId, label) {
     });
     shareButtons.forEach(function(b) { b.style.display = ''; });
     var blob = await new Promise(function(resolve) { canvas.toBlob(resolve, 'image/png', 0.95); });
-    var fileName = label.replace(/[^a-z0-9]/gi, '_') + '_SatijaPaper.png';
-    var file = new File([blob], fileName, { type: 'image/png' });
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({ files: [file], title: label + ' — Satija Paper', text: label + ' | Satija Paper — www.satijapaper.com' });
-    } else {
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url; a.download = fileName; a.click();
-      URL.revokeObjectURL(url);
-    }
+    var fileName = _spShareLabel.replace(/[^a-z0-9]/gi, '_') + '_SatijaPaper.png';
+    var urlObj = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = urlObj; a.download = fileName; a.click();
+    URL.revokeObjectURL(urlObj);
+    toast.textContent = '✓ Image downloaded!';
+    setTimeout(function() { toast.textContent = ''; }, 2500);
   } catch(err) {
-    console.error('Share error:', err);
-  } finally {
-    if (btn) { btn.innerHTML = origText; btn.disabled = false; }
+    console.error('Download error:', err);
+    toast.textContent = 'Download failed';
+    setTimeout(function() { toast.textContent = ''; }, 2500);
   }
 }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    var ov = document.getElementById('spShareOverlay');
+    if (ov && ov.classList.contains('active')) spShareHide();
+  }
+});
 
 // === SECURITY ===
 document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
