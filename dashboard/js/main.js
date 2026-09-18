@@ -572,42 +572,11 @@ async function shareProductImage(btnOrId, label) {
  * sheet (WhatsApp, etc.) opens.
  */
 function _openShareSheet(blob, fileName, label) {
-  const file        = new File([blob], fileName, { type: 'image/png' });
-  const canWebShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
-  const previewUrl  = URL.createObjectURL(blob);
-  const waText      = encodeURIComponent(`${label} | Satija Paper — www.satijapaper.com`);
-
-  const btnCSS = 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;'
-               + 'padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;'
-               + 'font-family:inherit;border:none;transition:opacity .15s;';
-
-  const bg = document.createElement('div');
-  bg.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:10001;display:flex;'
-                   + 'align-items:center;justify-content:center;padding:16px;';
-  bg.innerHTML = `
-    <div style="background:#fff;border-radius:16px;max-width:330px;width:100%;padding:18px;
-                box-shadow:0 12px 48px rgba(0,0,0,.45);max-height:92vh;overflow:auto;">
-      <div style="font-size:15px;font-weight:800;color:#111827;margin-bottom:12px;">${label}</div>
-      <img src="${previewUrl}" alt="" style="width:100%;border-radius:10px;border:1px solid #e5e7eb;
-           margin-bottom:14px;display:block;">
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        ${canWebShare ? `<button data-act="share" style="${btnCSS}background:#25D366;color:#fff;">
-          <i class="fas fa-share-nodes"></i> Share</button>` : ''}
-        <button data-act="wa" style="${btnCSS}background:#4f46e5;color:#fff;">
-          <i class="fab fa-whatsapp"></i> Copy &amp; open WhatsApp</button>
-        <button data-act="copy" style="${btnCSS}background:#f3f4f6;color:#374151;">
-          <i class="fas fa-copy"></i> Copy image</button>
-        <button data-act="dl" style="${btnCSS}background:#f3f4f6;color:#374151;">
-          <i class="fas fa-download"></i> Download</button>
-        <button data-act="close" style="${btnCSS}background:transparent;color:#6b7280;">Cancel</button>
-      </div>
-    </div>`;
-
-  const close = () => { URL.revokeObjectURL(previewUrl); bg.remove(); };
-
-  const copyImage = async () => {
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-  };
+  const file    = new File([blob], fileName, { type: 'image/png' });
+  const shareLink = 'https://www.satijapaper.com';
+  const shareMsg  = `${label} | Satija Paper — ${shareLink}`;
+  const waText    = encodeURIComponent(shareMsg);
+  const tgText    = encodeURIComponent(shareMsg);
 
   const download = () => {
     const url = URL.createObjectURL(blob);
@@ -616,45 +585,101 @@ function _openShareSheet(blob, fileName, label) {
     URL.revokeObjectURL(url);
   };
 
+  const bg = document.createElement('div');
+  bg.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:10001;display:flex;'
+                   + 'align-items:center;justify-content:center;padding:16px;'
+                   + 'opacity:0;transition:opacity .22s;';
+  bg.innerHTML = `
+    <div style="background:#fff;border-radius:22px;box-shadow:0 24px 64px rgba(0,0,0,.22);
+                width:100%;max-width:400px;padding:28px 28px 24px;position:relative;
+                transform:translateY(24px) scale(.97);transition:transform .25s cubic-bezier(.34,1.56,.64,1);">
+      <button data-act="close" style="position:absolute;top:14px;right:16px;background:none;border:none;
+              cursor:pointer;color:#718096;font-size:22px;padding:4px 8px;border-radius:8px;line-height:1;">&times;</button>
+      <div style="font-size:15px;font-weight:800;color:#1a202c;margin-bottom:4px;padding-right:32px;">Share — ${label}</div>
+      <div style="font-size:12px;color:#718096;margin-bottom:20px;font-weight:500;">Share via your favourite app</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px;">
+        <button data-act="wa" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;transition:transform .15s;"><i class="fab fa-whatsapp" style="font-size:22px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">WhatsApp</span>
+        </button>
+        <button data-act="tg" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#2AABEE,#229ED9);display:flex;align-items:center;justify-content:center;"><i class="fab fa-telegram" style="font-size:22px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">Telegram</span>
+        </button>
+        <button data-act="sms" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;"><i class="fas fa-comment-sms" style="font-size:20px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">SMS</span>
+        </button>
+        <button data-act="email" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;"><i class="fas fa-envelope" style="font-size:20px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">Email</span>
+        </button>
+        <button data-act="copy" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#6366f1,#4338ca);display:flex;align-items:center;justify-content:center;"><i class="fas fa-link" style="font-size:20px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">Copy</span>
+        </button>
+        <button data-act="dl" style="display:flex;flex-direction:column;align-items:center;gap:7px;border:none;background:none;cursor:pointer;padding:0;">
+          <div style="width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;"><i class="fas fa-download" style="font-size:20px;color:#fff;"></i></div>
+          <span style="font-size:10.5px;font-weight:700;color:#718096;">Download</span>
+        </button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="_ss_link" readonly value="${shareLink}"
+               style="flex:1;border:1.5px solid #e2e8f0;border-radius:10px;padding:9px 12px;font-size:11.5px;color:#1a202c;background:#f7fafc;font-family:inherit;font-weight:600;">
+        <button data-act="copylink" style="padding:9px 16px;background:#4f46e5;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Copy</button>
+      </div>
+      <div id="_ss_toast" style="font-size:11px;color:#16a34a;font-weight:700;text-align:center;margin-top:10px;height:16px;"></div>
+    </div>`;
+
+  const close = () => bg.remove();
+
+  const showMsg = (msg) => {
+    const t = bg.querySelector('#_ss_toast');
+    if (t) { t.textContent = msg; setTimeout(() => { if(t) t.textContent=''; }, 2500); }
+  };
+
   bg.addEventListener('click', async (e) => {
-    if (e.target === bg) { close(); return; }
-    const act = e.target.closest('button')?.dataset.act;
+    const btn = e.target.closest('button');
+    if (!btn) { if (e.target === bg) close(); return; }
+    const act = btn.dataset.act;
     if (!act) return;
 
     if (act === 'close') { close(); return; }
+    if (act === 'wa')    { window.open('https://wa.me/?text=' + waText, '_blank', 'noopener'); return; }
+    if (act === 'tg')    { window.open('https://t.me/share/url?url=' + encodeURIComponent(shareLink) + '&text=' + tgText, '_blank', 'noopener'); return; }
+    if (act === 'sms')   { window.open('sms:?body=' + waText, '_blank'); return; }
+    if (act === 'email') { window.open('mailto:?subject=' + encodeURIComponent('Satija Paper – ' + label) + '&body=' + waText, '_blank'); return; }
+    if (act === 'dl')    { download(); showMsg('✓ Image downloaded!'); return; }
 
-    if (act === 'share') {
+    if (act === 'copy') {
       try {
-        await navigator.share({
-          files: [file],
-          title: `${label} — Satija Paper`,
-          text:  `${label} | Satija Paper — www.satijapaper.com`
-        });
-        close();
-      } catch (err) {
-        if (err.name !== 'AbortError') showToast('Share failed — try Copy image.', 'err');
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        showMsg('✓ Image copied to clipboard!');
+      } catch {
+        download();
+        showMsg('✓ Image saved!');
       }
       return;
     }
 
-    if (act === 'wa') {
-      try { await copyImage(); showToast('Image copied — paste it in WhatsApp (Ctrl+V).', 'info'); }
-      catch { download(); showToast('Image saved — attach it in WhatsApp.', 'info'); }
-      window.open(`https://wa.me/?text=${waText}`, '_blank', 'noopener');
-      close();
-      return;
+    if (act === 'copylink') {
+      navigator.clipboard.writeText(shareMsg + '\n' + shareLink).then(() => {
+        const copyBtn = bg.querySelector('[data-act="copylink"]');
+        if (copyBtn) { copyBtn.textContent = 'Copied!'; copyBtn.style.background = '#16a34a'; }
+        showMsg('✓ Copied to clipboard');
+        setTimeout(() => {
+          if (copyBtn) { copyBtn.textContent = 'Copy'; copyBtn.style.background = '#4f46e5'; }
+        }, 2500);
+      });
     }
-
-    if (act === 'copy') {
-      try { await copyImage(); showToast('Image copied to clipboard.', 'info'); close(); }
-      catch { showToast('Copy not supported — use Download.', 'err'); }
-      return;
-    }
-
-    if (act === 'dl') { download(); showToast('Image saved.', 'info'); close(); }
   });
 
   document.body.appendChild(bg);
+  requestAnimationFrame(() => {
+    bg.style.opacity = '1';
+    const box = bg.querySelector('div');
+    if (box) box.style.transform = 'translateY(0) scale(1)';
+  });
 }
 
 /** Dynamically load html2canvas from CDN once, then cache on window. */
