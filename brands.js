@@ -43,7 +43,7 @@ function aplBuildGrids() {
     var el = document.getElementById('apl-grid-'+g); if(!el) continue;
     el.innerHTML = aplGridMap[g].map(function(k){
       var p=APL[k];
-      return '<div class="apl-product-thumb" onclick="aplShowProd(\'' +k+ '\')"><div class="apl-thumb-img"><img src="'+p.img+'" alt="'+p.t+'"></div><h5>'+p.t+'</h5></div>';
+      return '<div class="apl-product-thumb" id="apl-thumb-'+k+'" onclick="aplShowProd(\''+k+'\')"><div class="apl-thumb-img"><img src="'+p.img+'" alt="'+p.t+'"></div><h5>'+p.t+'</h5><button class="rpl-share-btn" style="background:#1B6B4F;margin-top:8px;font-size:11px;padding:7px;" onclick="event.stopPropagation();shareProductCard(\'apl-thumb-'+k+'\',\'Andhra '+p.t+'\')">&#128279; Share</button></div>';
     }).join('');
   }
 }
@@ -66,6 +66,8 @@ function aplShowProd(k){
   document.getElementById('apl-ae').innerHTML='<ul>'+p.e.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';
   document.querySelectorAll('.apl-accordion-body').forEach(function(b){b.classList.remove('apl-open');});
   document.querySelectorAll('.apl-acc-icon').forEach(function(i){i.textContent='+';});
+  var sb=document.getElementById('apl-share-btn');
+  if(sb) sb.onclick=function(){shareProductCard('apl-detail','Andhra '+p.t);};
   window.scrollTo({top:document.getElementById('brand-andhra').offsetTop-120,behavior:'smooth'});
 }
 function aplToggleAcc(el){
@@ -116,6 +118,8 @@ function rplShowProd(k, varIdx){
   document.getElementById('rpl-au').innerHTML='<ul>'+p.u.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';
   document.querySelectorAll('#rpl-detail .apl-accordion-body').forEach(function(b){b.classList.remove('apl-open');});
   document.querySelectorAll('#rpl-detail .apl-acc-icon').forEach(function(i){i.textContent='+';});
+  var sb=document.getElementById('rpl-share-btn');
+  if(sb) sb.onclick=function(){shareProductCard('rpl-detail','Ruchira '+p.t);};
   window.scrollTo({top:document.getElementById('brand-ruchira').offsetTop-120,behavior:'smooth'});
 }
 function rplSwapImg(thumb,src,idx){
