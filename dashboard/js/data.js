@@ -92,6 +92,8 @@ export const DB = [
    pc:"Ms. Richa",solver:"Mukesh",exec:"Khushi",links:{fms:1,gasForm:1,videoBCI:1,videoAI:1,aiqa:1}},
   {cat:"Warehouse",name:"O2D Direct Dispatch FMS",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1,aiqa:1}},
+  {cat:"Warehouse",name:"O2D Direct Dispatch 2.0",
+   pc:"-",solver:"-",exec:"-",links:{dash:1,sheet:1}},
   {cat:"Warehouse",name:"Warehouse Stock Report Form",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{gasForm:1,sheet:1}},
   {cat:"Warehouse",name:"Shop Stock Report Form",
@@ -115,8 +117,6 @@ export const DB = [
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{gasForm:1,sheet:1}},
   {cat:"Purchase",name:"Godown Inward Report",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{sheet:1}},
-  {cat:"Purchase",name:"O2D Direct Dispatch 2.0",
-   pc:"-",solver:"-",exec:"-",links:{dash:1,sheet:1}},
 
   // ── E) ACCOUNTS, GST & TAXATION ──────────────────────────────
   {cat:"Accounts",name:"Account Checklist",
