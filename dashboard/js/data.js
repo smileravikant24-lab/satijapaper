@@ -35,7 +35,7 @@ export const DB = [
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
   {cat:"Sales",name:"Order to Delivery (Courier & Sample Courier)",
-   pc:"-",solver:"-",exec:"-",links:{o2dManager:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
+   pc:"-",solver:"-",exec:"-",links:{o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
@@ -199,6 +199,7 @@ export const LINK_META = {
   stockDash: {label:'Stock Dashboard',icon:'fas fa-boxes-stacking',   cls:'btn-stock'},
   dash:      {label:'Dashboard',      icon:'fas fa-chart-line',       cls:'btn-dash'},
   o2dManager:{label:'Manager',        icon:'fas fa-truck-fast',       cls:'btn-dash'},
+  o2dPooja:  {label:'Pooja',          icon:'fas fa-truck-fast',       cls:'btn-dash'},
   o2dPawan:  {label:'Pawan',          icon:'fas fa-truck-fast',       cls:'btn-dash'},
   o2dSonu:   {label:'Sonu',           icon:'fas fa-truck-fast',       cls:'btn-dash'},
   o2dRishabh:{label:'Rishabh',        icon:'fas fa-truck-fast',       cls:'btn-dash'},
