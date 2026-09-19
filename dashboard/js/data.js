@@ -35,7 +35,7 @@ export const DB = [
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
   {cat:"Sales",name:"Order to Delivery (Courier & Sample Courier)",
-   pc:"-",solver:"-",exec:"-",links:{o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
