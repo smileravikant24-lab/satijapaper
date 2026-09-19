@@ -89,9 +89,9 @@ export const DB = [
 
   // ── C) WAREHOUSE & LOGISTICS ──────────────────────────────────
   {cat:"Warehouse",name:"Order to Delivery FMS",
-   pc:"Ms. Richa",solver:"Mukesh",exec:"Ms. Pooja / Ms. Khushi",links:{fms:1,gasForm:1,videoBCI:1,videoAI:1,aiqa:1}},
+   pc:"Ms. Richa",solver:"Mukesh",exec:"Khushi",links:{fms:1,gasForm:1,videoBCI:1,videoAI:1,aiqa:1}},
   {cat:"Warehouse",name:"O2D Direct Dispatch FMS",
-   pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Ms. Pooja / Ms. Khushi",links:{fms:1,aiqa:1}},
+   pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Khushi",links:{fms:1,aiqa:1}},
   {cat:"Warehouse",name:"Warehouse Stock Report Form",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{gasForm:1,sheet:1}},
   {cat:"Warehouse",name:"Shop Stock Report Form",
@@ -130,7 +130,7 @@ export const DB = [
   {cat:"Accounts",name:"Sales Marketing Daily Expense",
    pc:"Ms. Richa",solver:"Ms. Neha",exec:"Sale's Team",links:{gasForm:1,sheet:1}},
   {cat:"Accounts",name:"Courier FMS",
-   pc:"Neha",solver:"Neha / Pranav",exec:"Ms. Pooja / Indresh",links:{fms:1,form:1,videoAI:1}},
+   pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{fms:1,form:1,videoAI:1}},
   {cat:"Accounts",name:"Home Loan/ OD FMS",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,gasForm:1}},
   {cat:"Accounts",name:"Bank Details",navTo:"BankDetails",
