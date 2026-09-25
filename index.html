@@ -160,6 +160,60 @@
   .float-wa-btn { padding: 12px; border-radius: 50%; bottom: 24px; left: 24px; }
 }
 
+
+.hero-btn-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  margin-bottom: 24px;
+}
+.hero-btn-group .btn, .hero-btn-group .btn-outline {
+  height: 50px !important;
+  padding: 0 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
+  transition: all 0.3s ease !important;
+}
+.hero-btn-group .btn {
+  background: var(--emerald) !important;
+  color: #ffffff !important;
+  border: 1.5px solid var(--emerald) !important;
+  box-shadow: 0 6px 20px rgba(13, 74, 43, 0.25) !important;
+}
+.hero-btn-group .btn:hover {
+  background: var(--emerald-light) !important;
+  border-color: var(--emerald-light) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 28px rgba(13, 74, 43, 0.35) !important;
+}
+.hero-btn-group .btn-outline {
+  background: transparent !important;
+  color: var(--emerald) !important;
+  border: 1.5px solid var(--emerald) !important;
+}
+.hero-btn-group .btn-outline:hover {
+  background: var(--emerald) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(13, 74, 43, 0.2) !important;
+}
+[data-theme="dark"] .hero-btn-group .btn-outline {
+  color: var(--emerald-glow) !important;
+  border-color: var(--emerald-glow) !important;
+}
+[data-theme="dark"] .hero-btn-group .btn-outline:hover {
+  background: var(--emerald-glow) !important;
+  color: #000000 !important;
+}
+
 </style>
 </head>
 <body>
@@ -221,14 +275,16 @@
       <span class="subtitle" style="font-size:1.2rem;letter-spacing:3.5px;padding:7px 18px 7px 20px;">Importer &amp; Distributor</span>
       <h1>The Right Paper.<br>The Right Price.<br><span class="hero-gradient-text">Always.</span></h1>
       <p>As authorized Distributor/Channel Partner, we bridge the gap between world-class paper mills and your professional printing needs. Precision-cut, jam-free, and high-whiteness solutions.</p>
+      
+      <div class="hero-btn-group">
+        <button onclick="showPage('brand-doublea')" class="btn">Explore Inventory <span style="font-size:16px;">&#8594;</span></button>
+        <button onclick="showPage('contact')" class="btn btn-outline">Contact Us</button>
+      </div>
+
       <div class="hero-features-list">
         <div class="h-feat-item">&#10003; 100% Authentic Mill Direct</div>
         <div class="h-feat-item">&#10003; 100+ Tons Ready Stock</div>
         <div class="h-feat-item">&#10003; Same-Day Dispatch</div>
-      </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <button onclick="showPage('brand-doublea')" class="btn">Explore Inventory <span style="font-size:16px;">&#8594;</span></button>
-        <button onclick="showPage('contact')" class="btn btn-outline">Contact Us</button>
       </div>
     </div>
     <div class="hero-visual sr-right">
