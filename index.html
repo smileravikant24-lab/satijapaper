@@ -39,6 +39,127 @@
 <style>
 .rpl-card-img{height:300px!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;}
 .rpl-card-img img{height:100%!important;width:auto!important;max-width:100%!important;object-fit:contain!important;}
+
+/* ===== LUXURY VISUAL UPGRADES ===== */
+.hero-status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(13, 74, 43, 0.06); border: 1px solid rgba(13, 74, 43, 0.16);
+  padding: 6px 18px; border-radius: 999px; font-size: 11.5px;
+  font-weight: 700; color: var(--emerald); letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 18px;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+[data-theme="dark"] .hero-status-pill {
+  background: rgba(26, 163, 94, 0.1); border-color: rgba(26, 163, 94, 0.25);
+  color: var(--emerald-glow);
+}
+.status-dot-pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--emerald-glow);
+  box-shadow: 0 0 0 0 rgba(26, 163, 94, 0.7);
+  animation: dotPulse 1.8s infinite;
+}
+@keyframes dotPulse {
+  0% { box-shadow: 0 0 0 0 rgba(26, 163, 94, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(26, 163, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 163, 94, 0); }
+}
+.hero-gradient-text {
+  background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-glow) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+[data-theme="dark"] .hero-gradient-text {
+  background: linear-gradient(135deg, #1AA35E 0%, #68D99B 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-features-list {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.h-feat-item {
+  font-size: 12px; font-weight: 600; color: var(--emerald);
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(13, 74, 43, 0.04); padding: 6px 14px;
+  border-radius: 6px; border: 1px solid rgba(13, 74, 43, 0.08);
+}
+[data-theme="dark"] .h-feat-item {
+  color: var(--emerald-glow); background: rgba(26, 163, 94, 0.08);
+  border-color: rgba(26, 163, 94, 0.15);
+}
+.nav-call-btn {
+  background: var(--emerald) !important; color: #fff !important;
+  border-radius: 20px !important; padding: 8px 18px !important;
+  font-weight: 700 !important; font-size: 11.5px !important;
+  box-shadow: 0 4px 14px rgba(13, 74, 43, 0.2) !important;
+  transition: all 0.3s ease !important; margin-left: 8px;
+}
+.nav-call-btn:hover {
+  background: var(--emerald-light) !important; color: #fff !important;
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13, 74, 43, 0.3) !important;
+}
+.nav-call-btn::after { display: none !important; }
+
+.trust-bar {
+  background: linear-gradient(135deg, var(--bg-card), var(--cream));
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 36px 5vw; margin: 40px 0 0;
+}
+[data-theme="dark"] .trust-bar { background: var(--bg-card); }
+.trust-bar-container {
+  max-width: 1300px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; border-radius: var(--radius);
+  background: var(--bg-card); border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft); transition: all 0.35s ease;
+}
+.trust-item:hover {
+  transform: translateY(-4px); border-color: var(--emerald);
+  box-shadow: var(--shadow-card);
+}
+.trust-icon {
+  font-size: 26px; width: 50px; height: 50px;
+  border-radius: 12px; background: rgba(13, 74, 43, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+[data-theme="dark"] .trust-icon { background: rgba(26, 163, 94, 0.12); }
+.trust-num {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1.35rem; font-weight: 800; color: var(--emerald);
+  line-height: 1.1;
+}
+[data-theme="dark"] .trust-num { color: var(--emerald-glow); }
+.trust-label {
+  font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px;
+}
+@media(max-width: 992px) { .trust-bar-container { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 520px) { .trust-bar-container { grid-template-columns: 1fr; } }
+
+.float-wa-btn {
+  position: fixed; bottom: 32px; left: 32px;
+  background: #25D366; color: #fff;
+  padding: 11px 20px 11px 16px; border-radius: 999px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.4);
+  z-index: 9998; transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.float-wa-btn:hover {
+  background: #20bd5a; transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 12px 36px rgba(37, 211, 102, 0.5); color: #fff;
+}
+.float-wa-btn svg { flex-shrink: 0; }
+@media(max-width: 600px) {
+  .float-wa-btn span { display: none; }
+  .float-wa-btn { padding: 12px; border-radius: 50%; bottom: 24px; left: 24px; }
+}
+
 </style>
 </head>
 <body>
@@ -81,6 +202,7 @@
     </li>
     <li><a id="link-enquiry" onclick="showPage('enquiry')">Enquiry</a></li>
     <li><a id="link-contact" onclick="showPage('contact')">Contact</a></li>
+    <li><a class="nav-call-btn" href="tel:+919899708098">&#128222; Call Now</a></li>
   </ul>
 </nav>
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeMenu()"></div>
@@ -92,9 +214,18 @@
   <div class="hero-orb" style="width:320px;height:320px;background:radial-gradient(circle,rgba(196,154,60,0.12),transparent);bottom:80px;left:-60px;opacity:0.5;animation-delay:4s;"></div>
   <div class="hero-section">
     <div class="sr-left">
+      <div class="hero-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>Authorized Channel Partner &bull; Pan-India Wholesale Supply</span>
+      </div>
       <span class="subtitle" style="font-size:1.2rem;letter-spacing:3.5px;padding:7px 18px 7px 20px;">Importer &amp; Distributor</span>
-      <h1>The Right Paper.<br>The Right Price.<br><span class="accent">Always.</span></h1>
+      <h1>The Right Paper.<br>The Right Price.<br><span class="hero-gradient-text">Always.</span></h1>
       <p>As authorized Distributor/Channel Partner, we bridge the gap between world-class paper mills and your professional printing needs. Precision-cut, jam-free, and high-whiteness solutions.</p>
+      <div class="hero-features-list">
+        <div class="h-feat-item">&#10003; 100% Authentic Mill Direct</div>
+        <div class="h-feat-item">&#10003; 100+ Tons Ready Stock</div>
+        <div class="h-feat-item">&#10003; Same-Day Dispatch</div>
+      </div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;">
         <button onclick="showPage('brand-doublea')" class="btn">Explore Inventory <span style="font-size:16px;">&#8594;</span></button>
         <button onclick="showPage('contact')" class="btn btn-outline">Contact Us</button>
@@ -113,6 +244,39 @@
             <img class="mySlides fade" src="nra.jpg"><img class="mySlides fade" src="andhra.jpg">
             <div id="slide-caption">Double A</div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-bar sr full-width-section">
+    <div class="trust-bar-container">
+      <div class="trust-item">
+        <div class="trust-icon">&#127942;</div>
+        <div class="trust-info">
+          <div class="trust-num">15+ Years</div>
+          <div class="trust-label">Industry Leadership</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">&#128230;</div>
+        <div class="trust-info">
+          <div class="trust-num">100+ Tons</div>
+          <div class="trust-label">Ready Stock Warehouse</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">&#127970;</div>
+        <div class="trust-info">
+          <div class="trust-num">1800+</div>
+          <div class="trust-label">Corporate Clients</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">&#9889;</div>
+        <div class="trust-info">
+          <div class="trust-num">24-48 HR</div>
+          <div class="trust-label">Pan-India Dispatch</div>
         </div>
       </div>
     </div>
@@ -522,5 +686,9 @@
 <script src="main.js?v=3"></script>
 <script src="brands.js?v=2"></script>
 <script src="forms.js"></script>
+<a href="https://wa.me/919899708098?text=Hi%20Satija%20Paper,%20I%20want%20to%20enquire%20about%20paper%20rates" target="_blank" class="float-wa-btn" title="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span>Quick Inquiry</span>
+</a>
 </body>
 </html>
