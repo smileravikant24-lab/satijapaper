@@ -131,12 +131,12 @@ export const DB = [
    pc:"Neha",solver:"Neha / Pranav",exec:"Indresh",links:{fms:1,form:1,videoAI:1}},
   {cat:"Accounts",name:"Home Loan/ OD FMS",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Neha/Ms. Richa",links:{fms:1,gasForm:1}},
-  {cat:"Accounts",name:"Bank Details",navTo:"BankDetails",
-   pc:"-",solver:"-",exec:"-",links:{}},
   {cat:"Accounts",name:"Petrol & Rider Form",
    pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
    {cat:"Accounts",name:"Order to Delivery (Courier & Sample Courier)",
    pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
+   {cat:"Accounts",name:"Bank Details",navTo:"BankDetails",
+   pc:"-",solver:"-",exec:"-",links:{}},
 
   // ── F) ADMIN & MIS ────────────────────────────────────────────
   {cat:"AdminMIS",name:"Attendance Sheet",
