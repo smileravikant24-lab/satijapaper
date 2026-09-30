@@ -34,8 +34,6 @@ export const DB = [
    pc:"-",solver:"-",exec:"-",links:{truckOrderFormDoc:1,truckOrderFormPdf:1}},
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
-  {cat:"Sales",name:"Order to Delivery (Courier & Sample Courier)",
-   pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
@@ -137,6 +135,8 @@ export const DB = [
    pc:"-",solver:"-",exec:"-",links:{}},
   {cat:"Accounts",name:"Petrol & Rider Form",
    pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
+   {cat:"Accounts",name:"Order to Delivery (Courier & Sample Courier)",
+   pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
 
   // ── F) ADMIN & MIS ────────────────────────────────────────────
   {cat:"AdminMIS",name:"Attendance Sheet",
