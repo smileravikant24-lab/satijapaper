@@ -167,6 +167,8 @@ export const DB = [
    pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{form:1,fms:1}},
   {cat:"AdminMIS",name:"Repair & Maintenance System",
    pc:"Ms. Richa",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1,gasForm:1}},
+  {cat:"AdminMIS",name:"Salary System",
+   pc:"-",solver:"-",exec:"-",links:{salary:1}},
 
   // ── G) TEAM / SUPPORT SYSTEM ──────────────────────────────────
   {cat:"Support",name:"Help Ticket",
@@ -226,7 +228,9 @@ export const LINK_META = {
   daDisplayFms:  {label:'FMS',       icon:'fas fa-table-cells', cls:'btn-fms',
                url:'https://docs.google.com/spreadsheets/d/1A31HTKfYnduwiniqHnIx1Jui7Iam4d7BAqHOtAlmXsw/edit?gid=663292535#gid=663292535'},
   daDisplayDash: {label:'Dashboard', icon:'fas fa-chart-line',  cls:'btn-dash',
-               url:'https://datastudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9/page/p_98lty5ox6d'}
+               url:'https://datastudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9/page/p_98lty5ox6d'},
+  salary:        {label:'Salary System', icon:'fas fa-money-check-dollar', cls:'btn-dash',
+               url:'https://smileravikant24-lab.github.io/Salary_System/'}
 };
 
 export const NAV_TABS = [

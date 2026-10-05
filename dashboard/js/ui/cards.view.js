@@ -181,6 +181,7 @@ export async function renderCards(data){
     'Email & Password Sheet':            'fas fa-envelope',
     'SCT FMS':                           'fas fa-truck-moving',
     'Repair & Maintenance System':       'fas fa-wrench',
+    'Salary System':                     'fas fa-money-check-dollar',
     // ── Support ──────────────────────────────────────────────
     'Help Ticket':                       'fas fa-ticket',
     'Google Site':                       'fas fa-globe',
@@ -349,6 +350,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.o2dPawan,      'o2dPawan',      'btn-dash', 'fas fa-truck-fast',  'Pawan');
     btns += buildButton(it, !!it.links.o2dSonu,       'o2dSonu',       'btn-dash', 'fas fa-truck-fast',  'Sonu');
     btns += buildButton(it, !!it.links.o2dRishabh,    'o2dRishabh',    'btn-dash', 'fas fa-truck-fast',  'Rishabh');
+    btns += buildButton(it, !!it.links.salary,       'salary',        'btn-dash', 'fas fa-money-check-dollar', 'Salary System');
     // ── AI Q&A button ─────────────────────────────────────────
     btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
     // ────────────────────────────────────────────────────────
