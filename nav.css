@@ -9,16 +9,19 @@ nav {
   transition: all 0.4s var(--transition);
 }
 nav.scrolled { padding: 8px 5vw; box-shadow: var(--shadow-soft); }
-nav.scrolled .logo-img { height: 55px; }
+nav.scrolled .logo-img { height: 52px; width: 52px; }
 nav.scrolled .brand-name-nav { font-size: 1.6rem; }
 
 .logo-container {
   display: flex; align-items: center; gap: 14px; cursor: pointer;
 }
 .logo-img {
-  height: 75px; width: auto;
+  height: 68px; width: 68px;
+  border-radius: 50%;
+  object-fit: cover;
   transition: all 0.4s var(--transition);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+  border: 2px solid rgba(13,74,43,0.12);
 }
 .brand-name-nav {
   font-family: 'Times New Roman', Times, serif;

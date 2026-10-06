@@ -38,7 +38,15 @@
 
 /* ===== ABOUT / PROFILE ===== */
 .profile-container { max-width:1100px; margin:auto; text-align:center; display:flex; flex-direction:column; align-items:center; }
-.profile-logo { height:110px; display:block; margin-bottom:8px; }
+.profile-logo {
+  height: 110px; width: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border: 3px solid rgba(13,74,43,0.1);
+}
 .profile-text { display:grid; grid-template-columns:1fr 1fr; gap:60px; text-align:left; color:var(--text-muted); margin-bottom:60px; line-height:1.8; }
 .stats-row { width:100%; display:grid; grid-template-columns:repeat(4,1fr); gap:30px; margin-top:50px; border-top:1px solid var(--border); padding-top:50px; }
 .stat-val { display:block; font-size:2.5rem; font-weight:700; color:var(--emerald); font-family:'Times New Roman',Times,serif; }
