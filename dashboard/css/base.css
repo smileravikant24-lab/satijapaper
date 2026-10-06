@@ -1,19 +1,36 @@
 *{ margin:0; padding:0; box-sizing:border-box }
 
 body{
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
   height: 100vh;
   font-size: 14px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .bank-acc, .bank-ifsc, .count-badge, .role-pill,
 .card-tag, code, .proc-badge {
-  font-family: 'Inter', 'DM Sans', system-ui, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+/* Modern clean scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 @keyframes spin { to { transform: rotate(360deg) } }

@@ -52,7 +52,18 @@ export async function handleLogin(e){
     await login(email, pass);
   } catch(err){
     setLoading(false);
-    showError(err.message || 'Login failed.');
+    let msg = 'Login failed. Please check your credentials.';
+    const code = err.code || '';
+    if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found'){
+      msg = 'Invalid email or password.';
+    } else if (code === 'auth/too-many-requests'){
+      msg = 'Too many attempts. Please wait a moment and try again.';
+    } else if (code === 'auth/network-request-failed'){
+      msg = 'Network connection error. Please check your internet.';
+    } else if (err.message && !err.message.includes('Firebase:')){
+      msg = err.message;
+    }
+    showError(msg);
   }
 }
 
@@ -65,7 +76,9 @@ export async function forgotPass(e){
     await resetPassword(email);
     showSuccess('Reset email sent! Check your inbox.');
   } catch(err){
-    showError(err.message);
+    let msg = 'Could not send reset email.';
+    if (err.code === 'auth/user-not-found') msg = 'No account found with this email.';
+    showError(msg);
   }
 }
 
