@@ -178,11 +178,11 @@ export const DB = [
 
   // ── H) SP FAMILY ──────────────────────────────────────────────
   {cat:"Family",name:"Personal Documents",
-   pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1,sheet:1}},
+   pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1,sheet:1}},
   {cat:"Family",name:"Teams Member Document",
-   pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+   pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
   {cat:"Family",name:"Satija Paper Document",
-   pc:"Ms. Preksha",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
+   pc:"Ms. Richa",solver:"Ms. Khushi",exec:"All Team",links:{folder:1}},
 ];
 
 
