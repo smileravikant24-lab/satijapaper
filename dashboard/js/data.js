@@ -104,9 +104,9 @@ export const DB = [
 
   // ── D) PURCHASE & INVENTORY ───────────────────────────────────
   {cat:"Purchase",name:"Purchase FMS",
-   pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{fms:1,gasForm:1,video:1,videoBCI:1}},
+   pc:"Ms. Richa",solver:"Neha / Pranav",exec:"Khushi",links:{fms:1}},
   {cat:"Purchase",name:"New Purchase FMS",
-   pc:"-",solver:"-",exec:"-",links:{fms:1,sheet:1}},
+   pc:"-",solver:"-",exec:"-",links:{fms:1,sheet:1,gasForm:1,video:1,videoBCI:1}},
   {cat:"Purchase",name:"Stock Transfer FMS",
    pc:"Ms. Richa",solver:"Mr. Mukesh",exec:"Mr. Indresh/Sandeep/Ms. Pooja",links:{fms:1,gasForm:1}},
   {cat:"Purchase",name:"IMS (Inventory System)",
