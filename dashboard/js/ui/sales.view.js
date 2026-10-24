@@ -82,6 +82,23 @@ function _buildOverviewCard() {
     </div>`;
 }
 
+function _buildPerformanceCard() {
+  return `
+    <div class="card sdash-card-performance">
+      <div class="card-inner">
+        <i class="card-cat-icon fas fa-chart-pie"></i>
+        <span class="card-tag sdash-tag-performance">Performance</span>
+        <div class="card-title">Sales Performance</div>
+        <div class="card-divider"></div>
+        <div class="actions">
+          <button class="btn sdash-btn-performance" onclick="secureOpen('Sales Performance','dash')">
+            <i class="fas fa-chart-pie"></i> Dashboard
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
 function _buildReportCard() {
   return `
     <div class="card sdash-card-report">
@@ -109,6 +126,7 @@ export async function renderSalesDashboard(container) {
     if (_canMDView()) html += _buildCard('md');
     html += _buildDARetailCard();
     html += _buildOverviewCard();
+    html += _buildPerformanceCard();
     html += _buildReportCard();
     container.innerHTML = `<div class="sdash-grid">${html}</div>`;
   } catch (err) {

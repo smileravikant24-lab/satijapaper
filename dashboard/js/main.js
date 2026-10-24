@@ -8,18 +8,18 @@ import {
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
 }                                          from './ui/sidebar.view.js';
-import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20260914a';
+import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20261024a';
 import { showAdmin as _origShowAdmin }     from './admin/admin.view.js';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20260916a';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261024a';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
-import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js';
+import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261024a';
 import { getConfigUrl } from './services/config.service.js';
 
 const _origFilterCat = filterCat;

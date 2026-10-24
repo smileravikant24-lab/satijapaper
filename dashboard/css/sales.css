@@ -88,10 +88,60 @@
   color: #fff;
 }
 
+/* ── Overview card — Violet ──────────────────────────────── */
+.card.sdash-card-overview::before {
+  background: linear-gradient(90deg, #7c3aed, #a78bfa);
+}
+.card.sdash-card-overview::after {
+  background: linear-gradient(90deg, rgba(124,58,237,.4), transparent);
+}
+.sdash-card-overview .card-cat-icon {
+  background: rgba(124,58,237,.12);
+  color: #7c3aed;
+}
+.sdash-tag-overview {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.sdash-btn-overview {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.sdash-btn-overview:hover {
+  background: #6d28d9;
+  color: #fff;
+}
+
+/* ── Performance card — Emerald ──────────────────────────── */
+.card.sdash-card-performance::before {
+  background: linear-gradient(90deg, #059669, #34d399);
+}
+.card.sdash-card-performance::after {
+  background: linear-gradient(90deg, rgba(5,150,105,.4), transparent);
+}
+.sdash-card-performance .card-cat-icon {
+  background: rgba(5,150,105,.12);
+  color: #059669;
+}
+.sdash-tag-performance {
+  background: #d1fae5;
+  color: #047857;
+}
+.sdash-btn-performance {
+  background: #d1fae5;
+  color: #047857;
+}
+.sdash-btn-performance:hover {
+  background: #059669;
+  color: #fff;
+}
+
 /* ── Card title color overrides ───────────────────────────── */
-.sdash-card-manager .card-title { color: #0f766e; }
-.sdash-card-md      .card-title { color: #b45309; }
-.sdash-card-report  .card-title { color: #4338ca; }
+.sdash-card-manager     .card-title { color: #0f766e; }
+.sdash-card-md          .card-title { color: #b45309; }
+.sdash-card-report      .card-title { color: #4338ca; }
+.sdash-card-overview    .card-title { color: #6d28d9; }
+.sdash-card-performance .card-title { color: #047857; }
 
 /* ── Period buttons ───────────────────────────────────────── */
 .sdash-btn-manager {
