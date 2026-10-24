@@ -20,6 +20,10 @@ export async function secureOpen(procName, linkType){
     showToast('No access to this link.', 'err'); return;
   }
 
+  // Direct URL on process item
+  if (item.url) { window.open(item.url, '_blank', 'noopener'); return; }
+  if (item.urls?.[linkType]) { window.open(item.urls[linkType], '_blank', 'noopener'); return; }
+
   // Use hardcoded URL from LINK_META for public links (followup, incentive, aiqa, etc.)
   const directUrl = LINK_META[linkType]?.url;
   if (directUrl) { window.open(directUrl, '_blank', 'noopener'); return; }

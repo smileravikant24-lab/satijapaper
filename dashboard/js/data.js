@@ -35,7 +35,7 @@ export const DB = [
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
   {cat:"Sales",name:"Sales Performance",
-   pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
+   pc:"-",solver:"-",exec:"-",links:{dash:1}},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
