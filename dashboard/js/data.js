@@ -34,6 +34,8 @@ export const DB = [
    pc:"-",solver:"-",exec:"-",links:{truckOrderFormDoc:1,truckOrderFormPdf:1}},
   {cat:"Sales",name:"Sales Overview Dashboard",
    pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
+  {cat:"Sales",name:"Sales Performance",
+   pc:"-",solver:"-",exec:"-",links:{dash:1},salesdash:true},
 
   // Double A ─────────────────────────────────────────────────────
   {cat:"Sales",name:"Double A Advance Container Booking Form",subcat:"Double A",
