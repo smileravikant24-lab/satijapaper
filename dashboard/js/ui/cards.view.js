@@ -20,11 +20,11 @@ export async function secureOpen(procName, linkType){
     showToast('No access to this link.', 'err'); return;
   }
 
-  // Direct URL on process item
+
   if (item.url) { window.open(item.url, '_blank', 'noopener'); return; }
   if (item.urls?.[linkType]) { window.open(item.urls[linkType], '_blank', 'noopener'); return; }
 
-  // Use hardcoded URL from LINK_META for public links (followup, incentive, aiqa, etc.)
+
   const directUrl = LINK_META[linkType]?.url;
   if (directUrl) { window.open(directUrl, '_blank', 'noopener'); return; }
 
@@ -48,7 +48,6 @@ function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false
           </button>`;
 }
 
-/** Build a role cell (PC / Solver / Executive). */
 function buildRoleCell(cls, icon, label, val){
   if (!val || val === '-'){
     return `<div class="role-cell">
@@ -210,7 +209,6 @@ export async function renderCards(data){
 
   const isAdmin = state.curUser?.role === 'Admin';
 
-  // In All view: group by category with section headers
   const showingAll = state.curCat === 'All';
   const CAT_ORDER  = ['Import','Sales','Warehouse','Purchase','Accounts','AdminMIS','Support'];
 
@@ -235,8 +233,6 @@ export async function renderCards(data){
     return;
   }
 
-  // Within a single category: plain items first, then any subcat groups with their own section header
-  // (skip re-grouping when the page itself IS a subcat view, e.g. the dedicated Double A tab)
   const onSubcatPage = state.curCat === 'DoubleA';
   const plain    = onSubcatPage ? accessible : accessible.filter(it => !it.subcat);
   const subcats  = onSubcatPage ? [] : [...new Set(accessible.filter(it => it.subcat).map(it => it.subcat))];
@@ -345,8 +341,9 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
-    btns += buildButton(it, !!it.links.disAppointment, 'disAppointment', 'btn-form',  'fas fa-calendar-check', 'Dis Appointment');
+    btns += buildButton(it, !!it.links.DAppointment, 'DAppointment', 'btn-form',  'fas fa-calendar-check', 'Dist Appointment');
     btns += buildButton(it, !!it.links.disPurchase,    'disPurchase',    'btn-form',  'fas fa-cart-shopping',  'Dis Purchase');
+    btns += buildButton(it, !!it.links.DealerAppointment, 'DealerAppointment', 'btn-form',  'fas fa-calendar-check', 'Dealer Appointment');
     btns += buildButton(it, !!it.links.dealerDisplay,  'dealerDisplay',  'btn-dash',  'fas fa-store',          'Dealer (Ind) Display');
     btns += buildButton(it, !!it.links.sellout,        'sellout',        'btn-dash',  'fas fa-chart-line',     'Sellout');
     btns += buildButton(it, !!it.links.dsr,            'dsr',            'btn-sheet', 'fas fa-clipboard-list', 'DSR');
