@@ -57,7 +57,7 @@ export const DB = [
   {cat:"Sales",name:"Double A Container Tracker",subcat:"Double A",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
   {cat:"Sales",name:"Double A Display Links",subcat:"Double A",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1,form:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1,form:1,disAppointment:1,disPurchase:1,dealerDisplay:1,sellout:1,dsr:1}},
   {cat:"Sales",name:"Double A Display FMS",subcat:"Double A",
    pc:"-",solver:"-",exec:"-",links:{daDisplayFms:1,daDisplayDash:1}},
   // ──────────────────────────────────────────────────────────────
@@ -232,7 +232,12 @@ export const LINK_META = {
   daDisplayDash: {label:'Dashboard', icon:'fas fa-chart-line',  cls:'btn-dash',
                url:'https://datastudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9/page/p_98lty5ox6d'},
   salary:        {label:'Salary System', icon:'fas fa-money-check-dollar', cls:'btn-dash',
-               url:'https://smileravikant24-lab.github.io/Salary_System/'}
+               url:'https://smileravikant24-lab.github.io/Salary_System/'},
+  disAppointment:{label:'Dis Appointment',     icon:'fas fa-calendar-check', cls:'btn-form'},
+  disPurchase:   {label:'Dis Purchase',        icon:'fas fa-cart-shopping',  cls:'btn-form'},
+  dealerDisplay: {label:'Dealer (Ind) Display',icon:'fas fa-store',          cls:'btn-dash'},
+  sellout:       {label:'Sellout',             icon:'fas fa-chart-line',     cls:'btn-dash'},
+  dsr:           {label:'DSR',                 icon:'fas fa-clipboard-list', cls:'btn-sheet'}
 };
 
 export const NAV_TABS = [

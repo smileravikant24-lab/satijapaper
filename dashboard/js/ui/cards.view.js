@@ -345,6 +345,11 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
+    btns += buildButton(it, !!it.links.disAppointment, 'disAppointment', 'btn-form',  'fas fa-calendar-check', 'Dis Appointment');
+    btns += buildButton(it, !!it.links.disPurchase,    'disPurchase',    'btn-form',  'fas fa-cart-shopping',  'Dis Purchase');
+    btns += buildButton(it, !!it.links.dealerDisplay,  'dealerDisplay',  'btn-dash',  'fas fa-store',          'Dealer (Ind) Display');
+    btns += buildButton(it, !!it.links.sellout,        'sellout',        'btn-dash',  'fas fa-chart-line',     'Sellout');
+    btns += buildButton(it, !!it.links.dsr,            'dsr',            'btn-sheet', 'fas fa-clipboard-list', 'DSR');
     btns += buildButton(it, !!it.links.orderFormPdf,      'orderFormPdf',      'btn-form', 'fas fa-file-pdf',  'PDF');
     btns += buildButton(it, !!it.links.orderFormDoc,      'orderFormDoc',      'btn-form', 'fas fa-file-word', 'Word File');
     btns += buildButton(it, !!it.links.truckOrderFormPdf, 'truckOrderFormPdf', 'btn-form', 'fas fa-file-pdf',  'PDF');
