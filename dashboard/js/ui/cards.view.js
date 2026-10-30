@@ -342,7 +342,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
     btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
     btns += buildButton(it, !!it.links.DAppointment, 'DAppointment', 'btn-form',  'fas fa-calendar-check', 'Dist Appointment');
-    btns += buildButton(it, !!it.links.disPurchase,    'disPurchase',    'btn-form',  'fas fa-cart-shopping',  'Dis Purchase');
+    btns += buildButton(it, !!it.links.disPurchase,    'disPurchase',    'btn-form',  'fas fa-cart-shopping',  'Dist Purchase');
     btns += buildButton(it, !!it.links.DealerAppointment, 'DealerAppointment', 'btn-form',  'fas fa-calendar-check', 'Dealer Appointment');
     btns += buildButton(it, !!it.links.dealerDisplay,  'dealerDisplay',  'btn-dash',  'fas fa-store',          'Dealer (Ind) Display');
     btns += buildButton(it, !!it.links.sellout,        'sellout',        'btn-dash',  'fas fa-chart-line',     'Sellout');
