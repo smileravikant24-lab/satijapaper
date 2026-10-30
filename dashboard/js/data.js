@@ -233,11 +233,13 @@ export const LINK_META = {
                url:'https://datastudio.google.com/reporting/4daa3083-8427-456b-a445-75984280c0e9/page/p_98lty5ox6d'},
   salary:        {label:'Salary System', icon:'fas fa-money-check-dollar', cls:'btn-dash',
                url:'https://smileravikant24-lab.github.io/Salary_System/'},
-  disAppointment:{label:'Dis Appointment',     icon:'fas fa-calendar-check', cls:'btn-form'},
-  disPurchase:   {label:'Dis Purchase',        icon:'fas fa-cart-shopping',  cls:'btn-form'},
-  dealerDisplay: {label:'Dealer (Ind) Display',icon:'fas fa-store',          cls:'btn-dash'},
-  sellout:       {label:'Sellout',             icon:'fas fa-chart-line',     cls:'btn-dash'},
-  dsr:           {label:'DSR',                 icon:'fas fa-clipboard-list', cls:'btn-sheet'}
+  disAppointment:   {label:'Dis Appointment',     icon:'fas fa-calendar-check', cls:'btn-form'},
+  DAppointment:     {label:'Dist Appointment',    icon:'fas fa-calendar-check', cls:'btn-form'},
+  disPurchase:      {label:'Dist Purchase',       icon:'fas fa-cart-shopping',  cls:'btn-form'},
+  DealerAppointment:{label:'Dealer Appointment',  icon:'fas fa-calendar-check', cls:'btn-form'},
+  dealerDisplay:    {label:'Dealer (Ind) Display',icon:'fas fa-store',          cls:'btn-dash'},
+  sellout:          {label:'Sellout',             icon:'fas fa-chart-line',     cls:'btn-dash'},
+  dsr:              {label:'DSR',                 icon:'fas fa-clipboard-list', cls:'btn-sheet'}
 };
 
 export const NAV_TABS = [
