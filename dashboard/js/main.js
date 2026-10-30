@@ -21,6 +21,7 @@ import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261024b';
 import { getConfigUrl } from './services/config.service.js';
+import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261031';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -108,6 +109,7 @@ function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
   state.daMode   = 'hidden';
+  mountDashboardLayout();
   $('loginOverlay').classList.add('hidden');
   $('appContainer').classList.add('visible');
   paintSidebarUser(user);
@@ -805,6 +807,8 @@ Object.assign(window, {
   showSalesDashboard,
   sdashSetView,
   showGallery,
+  openImgLightbox,
+  closeImgLightbox,
   cpCopyLink: () => {
     if (!_cpUrl) return;
     const absUrl = _cpUrl.startsWith('http') ? _cpUrl : `${location.origin}/${_cpUrl.replace(/^\//,'')}`;
