@@ -1,7 +1,6 @@
 import { $ }                              from './dom.js';
 import { login, resetPassword, logout }   from '../services/auth.service.js';
 import { showToast }                      from './dom.js';
-import { unmountDashboardLayout }         from './layout.template.js';
 
 // ---- Status messages -----------------------------------------------------
 
@@ -103,8 +102,10 @@ export function togglePwd(){
 
 /** Reset the login overlay to its initial empty state. */
 export function showLoginScreen(){
-  unmountDashboardLayout();
-  $('appContainer')?.classList.remove('visible');
+  const app = $('appContainer');
+  if (app) { app.innerHTML = ''; app.classList.remove('visible'); }
+  const modals = $('modalContainer');
+  if (modals) modals.innerHTML = '';
   $('loginOverlay')?.classList.remove('hidden');
   if ($('loginForm')) $('loginForm').style.display = '';
   if ($('loadingState')) $('loadingState').style.display = 'none';
