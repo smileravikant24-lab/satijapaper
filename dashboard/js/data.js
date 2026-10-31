@@ -57,7 +57,7 @@ export const DB = [
   {cat:"Sales",name:"Double A Container Tracker",subcat:"Double A",
    pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Mr. Mukesh",links:{dash:1}},
   {cat:"Sales",name:"Double A Display Links",subcat:"Double A",
-   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1,form:1,DAppointment:1,disPurchase:1,DealerAppointment:1,dealerDisplay:1,sellout:1,dsr:1,stockDash:1}},
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"Sales Team",links:{folder:1,followup:1,incentive:1,form:1,DAppointment:1,disPurchase:1,DealerAppointment:1,dealerDisplay:1,sellout:1,dsr:1,stockdash:1}},
   {cat:"Sales",name:"Double A Display FMS",subcat:"Double A",
    pc:"-",solver:"-",exec:"-",links:{daDisplayFms:1,daDisplayDash:1}},
   // ──────────────────────────────────────────────────────────────
