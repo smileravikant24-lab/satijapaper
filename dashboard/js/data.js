@@ -136,7 +136,7 @@ export const DB = [
   {cat:"Accounts",name:"Petrol & Rider Form",
    pc:"Neha / Mukesh",solver:"Neha / Pranav",exec:"Sonu, Pawan...",links:{form:1,sheet:1}},
    {cat:"Accounts",name:"Order to Delivery (Courier & Sample Courier)",
-   pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1,o2dRishabh:1}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1,o2dManager:1,o2dPooja:1,o2dPawan:1,o2dSonu:1}},
    {cat:"Accounts",name:"Bank Details",navTo:"BankDetails",
    pc:"-",solver:"-",exec:"-",links:{}},
 
@@ -206,7 +206,6 @@ export const LINK_META = {
   o2dPooja:  {label:'Pooja',          icon:'fas fa-truck-fast',       cls:'btn-dash'},
   o2dPawan:  {label:'Pawan',          icon:'fas fa-truck-fast',       cls:'btn-dash'},
   o2dSonu:   {label:'Sonu',           icon:'fas fa-truck-fast',       cls:'btn-dash'},
-  o2dRishabh:{label:'Rishabh',        icon:'fas fa-truck-fast',       cls:'btn-dash'},
   calc:      {label:'Profit Calculator',icon:'fas fa-calculator',    cls:'btn-dash'},
   folder:    {label:'View Folder',    icon:'fas fa-folder-open',      cls:'btn-folder'},
   terms:       {label:'T&C',             icon:'fas fa-file-contract',    cls:'btn-form'},
