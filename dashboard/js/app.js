@@ -101,6 +101,196 @@ function _lockContextMenu(isAdmin) {
 }
 // ─────────────────────────────────────────────────────────────────────────
 
+// ── World-Class Theme & Command Palette Engine ───────────────────────────
+let _clockInterval = null;
+
+function initDashboardTheme() {
+  const saved = localStorage.getItem('sp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  _applyDashboardTheme(saved);
+}
+
+function _applyDashboardTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = document.getElementById('themeIcon');
+  if (icon) {
+    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+}
+
+function toggleDashboardTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  const next = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('sp_theme', next);
+  _applyDashboardTheme(next);
+  showToast(`Switched to ${next === 'dark' ? 'Dark' : 'Light'} Mode`, 'info');
+}
+
+function _initLiveClock() {
+  if (_clockInterval) clearInterval(_clockInterval);
+  const el = document.getElementById('heroLiveClock');
+  if (!el) return;
+  const update = () => {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    const dayStr = now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+    el.textContent = `${timeStr} IST • ${dayStr}`;
+  };
+  update();
+  _clockInterval = setInterval(update, 1000);
+}
+
+// ── Raycast / Linear Style Command Palette ────────────────────────────────
+let _cmdCategory = 'All';
+let _cmdResults = [];
+let _cmdSelectedIdx = 0;
+
+function openCmdPalette() {
+  const bd = document.getElementById('cmdBackdrop');
+  const input = document.getElementById('cmdInput');
+  if (!bd || !input) return;
+  bd.classList.add('open');
+  input.value = '';
+  _cmdCategory = 'All';
+  document.querySelectorAll('#cmdFilters .cmd-filter-pill').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === 'All');
+  });
+  _filterCmdResults('');
+  setTimeout(() => input.focus(), 60);
+}
+
+function closeCmdPalette() {
+  const bd = document.getElementById('cmdBackdrop');
+  if (bd) bd.classList.remove('open');
+}
+
+function closeCmdPaletteOnBackdrop(e) {
+  if (e.target && e.target.id === 'cmdBackdrop') closeCmdPalette();
+}
+
+function handleSearchClick(e) {
+  if (window.innerWidth > 768) {
+    e.preventDefault();
+    openCmdPalette();
+  }
+}
+
+function setCmdCategory(cat, btn) {
+  _cmdCategory = cat;
+  document.querySelectorAll('#cmdFilters .cmd-filter-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const input = document.getElementById('cmdInput');
+  _filterCmdResults(input ? input.value : '');
+}
+
+function onCmdInput(val) {
+  _filterCmdResults(val);
+}
+
+function _filterCmdResults(query) {
+  const q = (query || '').toLowerCase().trim();
+  const accessible = DB.filter(it => canAccessProc(state.curUser, it) && !it.navTo && it.cat !== 'Bank Details');
+  
+  _cmdResults = accessible.filter(it => {
+    const matchesCat = _cmdCategory === 'All' || it.cat === _cmdCategory || (_cmdCategory === 'Double A' && (it.subcat === 'Double A' || it.name.includes('Double A')));
+    if (!matchesCat) return false;
+    if (!q) return true;
+    const haystack = `${it.name} ${it.cat} ${it.pc || ''} ${it.solver || ''} ${it.exec || ''}`.toLowerCase();
+    return q.split(/\s+/).every(word => haystack.includes(word));
+  });
+
+  _cmdSelectedIdx = 0;
+  _renderCmdList();
+}
+
+function _renderCmdList() {
+  const listEl = document.getElementById('cmdList');
+  if (!listEl) return;
+  if (!_cmdResults.length) {
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--text-3);font-size:13px"><i class="fas fa-search" style="font-size:26px;margin-bottom:10px;opacity:.25;display:block"></i><p>No matching processes found</p></div>`;
+    return;
+  }
+
+  const PROC_ICON_MAP = {
+    Import: 'fas fa-ship', Sales: 'fas fa-chart-line', Warehouse: 'fas fa-warehouse',
+    Purchase: 'fas fa-cart-shopping', Accounts: 'fas fa-calculator',
+    AdminMIS: 'fas fa-clipboard-check', Support: 'fas fa-headset', Family: 'fas fa-folder-heart'
+  };
+
+  listEl.innerHTML = _cmdResults.slice(0, 35).map((it, idx) => {
+    const isSel = idx === _cmdSelectedIdx;
+    const icon = PROC_ICON_MAP[it.cat] || 'fas fa-file-lines';
+    const pn = it.name.replace(/'/g, "\\'");
+    const primaryLink = it.links.fms ? 'fms' : (it.links.form ? 'form' : (it.links.sheet ? 'sheet' : Object.keys(it.links)[0]));
+    
+    let actionChips = '';
+    if (it.links.fms) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','fms');closeCmdPalette()">FMS</button>`;
+    if (it.links.form) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','form');closeCmdPalette()">Form</button>`;
+    if (it.links.sheet) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','sheet');closeCmdPalette()">Sheet</button>`;
+
+    return `<div class="cmd-item ${isSel ? 'selected' : ''}" onclick="secureOpen('${pn}','${primaryLink}');closeCmdPalette()">
+      <div class="cmd-item-left">
+        <div class="cmd-item-icon"><i class="${icon}"></i></div>
+        <div class="cmd-item-info">
+          <div class="cmd-item-name">${escapeHtml(it.name)}</div>
+          <div class="cmd-item-meta">${it.cat} • ${it.pc ? `PC: ${escapeHtml(it.pc)}` : 'Satija Paper'}</div>
+        </div>
+      </div>
+      <div class="cmd-item-actions">
+        ${actionChips}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let _cmdKeyBound = false;
+function _initCommandPaletteShortcuts() {
+  if (_cmdKeyBound) return;
+  _cmdKeyBound = true;
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      const bd = document.getElementById('cmdBackdrop');
+      if (bd && bd.classList.contains('open')) closeCmdPalette();
+      else openCmdPalette();
+      return;
+    }
+    const bd = document.getElementById('cmdBackdrop');
+    if (bd && bd.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeCmdPalette();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (_cmdResults.length) {
+          _cmdSelectedIdx = (_cmdSelectedIdx + 1) % _cmdResults.length;
+          _renderCmdList();
+          _scrollSelectedCmdItem();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (_cmdResults.length) {
+          _cmdSelectedIdx = (_cmdSelectedIdx - 1 + _cmdResults.length) % _cmdResults.length;
+          _renderCmdList();
+          _scrollSelectedCmdItem();
+        }
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (_cmdResults[_cmdSelectedIdx]) {
+          const it = _cmdResults[_cmdSelectedIdx];
+          const primaryLink = it.links.fms ? 'fms' : (it.links.form ? 'form' : (it.links.sheet ? 'sheet' : Object.keys(it.links)[0]));
+          secureOpen(it.name, primaryLink);
+          closeCmdPalette();
+        }
+      }
+    }
+  });
+}
+
+function _scrollSelectedCmdItem() {
+  const sel = document.querySelector('.cmd-item.selected');
+  if (sel) sel.scrollIntoView({ block: 'nearest' });
+}
+
 function enterApp(user) {
   state.curUser  = user;
   state.curGroup = null;
@@ -108,6 +298,10 @@ function enterApp(user) {
   mountDashboardLayout();
   $('loginOverlay').classList.add('hidden');
   $('appContainer').classList.add('visible');
+  initDashboardTheme();
+  _initLiveClock();
+  const heroName = document.getElementById('heroUserName');
+  if (heroName) heroName.textContent = user.name || 'Team';
   paintSidebarUser(user);
   updateCounts();
   fetchGodownList();
@@ -115,6 +309,7 @@ function enterApp(user) {
   _forceLocalCounts();
   _setProductsCount();
   _initMobileSidebar();
+  _initCommandPaletteShortcuts();
   _stopIdleWatcher();
   if (user.email === 'pranavsatija@satijapaper.com') _startIdleWatcher();
   _lockContextMenu(user.role === 'Admin');
@@ -138,8 +333,8 @@ function _forceLocalCounts() {
 
 function _loadDashboardCSS() {
   const styles = [
-    'css/sidebar.css',
-    'css/cards.css',
+    'css/sidebar.css?v=20261105',
+    'css/cards.css?v=20261105',
     'css/admin.css',
     'css/modal.css',
     'css/products.css?v=20260917',
@@ -829,6 +1024,13 @@ Object.assign(window, {
       .then(() => showToast('Link copied!', 'ok'))
       .catch(() => showToast('Copy failed.', 'err'));
   },
+  toggleDashboardTheme,
+  openCmdPalette,
+  closeCmdPalette,
+  closeCmdPaletteOnBackdrop,
+  handleSearchClick,
+  onCmdInput,
+  setCmdCategory,
 });
 
 

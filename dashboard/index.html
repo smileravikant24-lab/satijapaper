@@ -7,10 +7,18 @@
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/variables.css">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/login.css">
-<link rel="stylesheet" href="css/utility.css">
+<link rel="stylesheet" href="css/variables.css?v=20261105">
+<link rel="stylesheet" href="css/base.css?v=20261105">
+<link rel="stylesheet" href="css/login.css?v=20261105">
+<link rel="stylesheet" href="css/utility.css?v=20261105">
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem('sp_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', saved);
+    } catch(e) {}
+  })();
+</script>
 </head>
 <body>
 
@@ -73,6 +81,6 @@
 <!-- Modals container is mounted dynamically after login -->
 <div id="modalContainer"></div>
 
-<script type="module" src="js/main.js?v=20261031b"></script>
+<script type="module" src="js/main.js?v=20261105"></script>
 </body>
 </html>

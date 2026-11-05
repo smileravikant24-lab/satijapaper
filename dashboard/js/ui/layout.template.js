@@ -13,21 +13,38 @@ export function getDashboardHTML() {
       <div class="top-brand-name">SATIJA PAPER</div>
     </a>
 
-    <div class="top-search" id="searchWrap">
-      <i class="fas fa-magnifying-glass top-search-icon"></i>
-      <input type="text" class="top-search-input" placeholder="Search processes…"
-             id="searchInput" oninput="runFilter()">
+    <div class="top-status-pill" title="Real-time systems synchronization active">
+      <div class="status-radar-dot"></div>
+      <span>Live Systems Active</span>
     </div>
 
-    <div class="top-user">
-      <div class="top-avatar" id="sAvatar">A</div>
-      <div class="top-uinfo">
-        <div class="top-uname" id="sName">Admin</div>
-        <div class="top-urole" id="sRole">Admin</div>
-      </div>
-      <button class="top-logout" onclick="handleLogout()" title="Logout">
-        <i class="fas fa-right-from-bracket"></i>
+    <div class="top-search" id="searchWrap">
+      <i class="fas fa-magnifying-glass top-search-icon"></i>
+      <input type="text" class="top-search-input" placeholder="Search processes, sheets, forms… (Ctrl+K)"
+             id="searchInput" oninput="runFilter()" onclick="handleSearchClick(event)">
+      <span class="search-k-badge" title="Press Ctrl+K to launch Command Palette">⌘K / Ctrl+K</span>
+    </div>
+
+    <div class="top-actions">
+      <!-- Dark/Light Theme Switcher -->
+      <button class="top-theme-btn" id="themeToggleBtn" onclick="toggleDashboardTheme()" title="Toggle Dark / Light Theme">
+        <i class="fas fa-moon" id="themeIcon"></i>
       </button>
+
+      <!-- User Profile Strip -->
+      <div class="top-user">
+        <div class="top-avatar" id="sAvatar">
+          A
+          <div class="top-avatar-online" title="Online"></div>
+        </div>
+        <div class="top-uinfo">
+          <div class="top-uname" id="sName">Admin</div>
+          <div class="top-urole" id="sRole">Admin</div>
+        </div>
+        <button class="top-logout" onclick="handleLogout()" title="Logout">
+          <i class="fas fa-right-from-bracket"></i>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -41,7 +58,7 @@ export function getDashboardHTML() {
       <span class="tab-count" id="cntAll">0</span>
     </button>
 
-    <div class="tab-sep"></div>
+    <div class="nav-group-title">Core Operations</div>
 
     <button class="tab-btn" id="navImport" title="Import & Procurement" onclick="filterCat('Import',this)">
       <i class="fas fa-ship"></i>
@@ -68,6 +85,9 @@ export function getDashboardHTML() {
       <span class="tab-label">Purchase & Inventory</span>
       <span class="tab-count" id="cntPurchase">0</span>
     </button>
+
+    <div class="nav-group-title">Finance & Management</div>
+
     <button class="tab-btn" id="navAccounts" title="Accounts, GST & Tax" onclick="filterCat('Accounts',this)">
       <i class="fas fa-calculator"></i>
       <span class="tab-label">Accounts, GST & Tax</span>
@@ -84,7 +104,7 @@ export function getDashboardHTML() {
       <span class="tab-count" id="cntSupport">0</span>
     </button>
 
-    <div class="tab-sep"></div>
+    <div class="nav-group-title">Enterprise Assets</div>
 
     <button class="tab-btn" id="navFamily" title="SP Family" onclick="filterCat('Family',this)">
       <i class="fas fa-folder-heart"></i>
@@ -118,13 +138,53 @@ export function getDashboardHTML() {
     <button class="tab-btn tab-btn-admin" id="adminNavBtn" title="Admin" style="display:none"
             onclick="showAdmin(this)">
       <i class="fas fa-user-gear"></i>
-      <span class="tab-label">Admin</span>
+      <span class="tab-label">Admin Control</span>
     </button>
   </nav>
 
   <!-- ── MAIN CONTENT ───────────────────────────────────── -->
   <div class="main-content">
     <div class="content">
+
+      <!-- Executive Mission Control Hero Ribbon -->
+      <div class="exec-hero" id="execHero">
+        <div class="exec-hero-top">
+          <div class="exec-greeting">
+            <h2>
+              <span>Welcome back,</span>
+              <span id="heroUserName" style="color:var(--accent)">Team</span>
+              <span style="font-size:14px">👋</span>
+            </h2>
+            <p>
+              <span>Satija Paper HQ Mission Control</span>
+              <span>•</span>
+              <span class="exec-time-chip" id="heroTimeChip">
+                <i class="far fa-clock"></i> <span id="heroLiveClock">--:-- IST</span>
+              </span>
+            </p>
+          </div>
+          <div class="exec-quick-links">
+            <a href="https://order.satijapaper.com" target="_blank" rel="noopener" class="exec-chip-btn" title="Open Order Form">
+              <i class="fas fa-file-invoice"></i> Order Form
+            </a>
+            <button onclick="filterCat('Sales')" class="exec-chip-btn" title="View Sales Processes">
+              <i class="fas fa-chart-line"></i> Sales
+            </button>
+            <button onclick="filterCat('Purchase')" class="exec-chip-btn" title="View Purchase Processes">
+              <i class="fas fa-warehouse"></i> Inventory
+            </button>
+            <button onclick="openAIQA()" class="exec-chip-btn" style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(5,150,105,0.25));color:var(--ok);border-color:rgba(16,185,129,0.3)" title="Open AI Command Center">
+              <i class="fas fa-robot"></i> AI Assistant
+            </button>
+          </div>
+        </div>
+
+        <!-- Pinned Processes Tray -->
+        <div class="pinned-tray" id="pinnedTray" style="display:none">
+          <div class="pinned-label"><i class="fas fa-star" style="color:#f59e0b"></i> Pinned Shortcuts:</div>
+          <div id="pinnedList" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+        </div>
+      </div>
 
       <h2 class="page-title" id="pageHeader">All Processes</h2>
 
@@ -180,6 +240,33 @@ export function getDashboardHTML() {
 
 export function getModalsHTML() {
   return `
+<!-- ── RAYCAST / LINEAR STYLE COMMAND PALETTE ─────────────── -->
+<div class="cmd-backdrop" id="cmdBackdrop" onclick="closeCmdPaletteOnBackdrop(event)">
+  <div class="cmd-box" onclick="event.stopPropagation()">
+    <div class="cmd-input-wrap">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" class="cmd-input" id="cmdInput" placeholder="Type to search any process, sheet, form or person…" oninput="onCmdInput(this.value)">
+      <span class="cmd-esc-badge">ESC</span>
+    </div>
+    <div class="cmd-filters" id="cmdFilters">
+      <button class="cmd-filter-pill active" onclick="setCmdCategory('All', this)">All</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Sales', this)">Sales</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Purchase', this)">Purchase</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Warehouse', this)">Warehouse</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Accounts', this)">Accounts</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Double A', this)">Double A</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Products', this)">Products</button>
+    </div>
+    <div class="cmd-list" id="cmdList">
+      <!-- Populated dynamically -->
+    </div>
+    <div class="cmd-footer">
+      <span>Use <kbd>↑</kbd> <kbd>↓</kbd> to navigate, <kbd>Enter</kbd> to open</span>
+      <span>Press <kbd>ESC</kbd> to exit</span>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="userModal">
   <div class="modal-box">
     <div class="modal-head">

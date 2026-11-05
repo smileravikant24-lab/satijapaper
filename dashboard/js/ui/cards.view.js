@@ -64,8 +64,81 @@ function buildRoleCell(cls, icon, label, val){
           </div>`;
 }
 
+// ── World-Class Spotlight & Pinning Engine ────────────────────────
+export function getPinnedProcs() {
+  try {
+    return JSON.parse(localStorage.getItem('sp_pinned_procs') || '[]');
+  } catch(_) { return []; }
+}
+
+export function isProcPinned(name) {
+  return getPinnedProcs().includes(name);
+}
+
+export function togglePinProcess(name, ev) {
+  if (ev) ev.stopPropagation();
+  let list = getPinnedProcs();
+  if (list.includes(name)) {
+    list = list.filter(n => n !== name);
+    showToast(`Removed from shortcuts.`, 'info');
+  } else {
+    list.push(name);
+    showToast(`Pinned to top shortcuts!`, 'ok');
+  }
+  localStorage.setItem('sp_pinned_procs', JSON.stringify(list));
+  renderPinnedTray();
+  document.querySelectorAll(`.card[data-name="${name.replace(/"/g, '\\"')}"] .card-star-btn`).forEach(btn => {
+    const pinned = list.includes(name);
+    btn.classList.toggle('pinned', pinned);
+    btn.title = pinned ? 'Unpin from shortcuts' : 'Pin to top shortcuts';
+    btn.innerHTML = `<i class="${pinned ? 'fas fa-star' : 'far fa-star'}"></i>`;
+  });
+}
+
+export function renderPinnedTray() {
+  const tray = document.getElementById('pinnedTray');
+  const box = document.getElementById('pinnedList');
+  if (!tray || !box) return;
+  const list = getPinnedProcs();
+  if (!list.length) {
+    tray.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  tray.style.display = 'flex';
+  box.innerHTML = list.map(name => {
+    const item = DB.find(d => d.name === name);
+    if (!item) return '';
+    const safe = escapeHtml(name);
+    const pn = name.replace(/'/g, "\\'");
+    const primaryLink = item.links.fms ? 'fms' : (item.links.form ? 'form' : (item.links.sheet ? 'sheet' : Object.keys(item.links)[0]));
+    return `<div class="pinned-item-chip" onclick="secureOpen('${pn}', '${primaryLink}')" title="Open ${safe}">
+      <i class="fas fa-arrow-up-right-from-square" style="font-size:10px"></i>
+      <span>${safe}</span>
+      <span class="pinned-remove-btn" onclick="togglePinProcess('${pn}', event)" title="Remove shortcut">&times;</span>
+    </div>`;
+  }).join('');
+}
+
+export function trackCardGlow(e, card) {
+  const rect = card.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  card.style.setProperty('--mouse-x', `${x}px`);
+  card.style.setProperty('--mouse-y', `${y}px`);
+}
+
+// Expose handlers to window for inline onclicks
+Object.assign(window, {
+  togglePinProcess,
+  trackCardGlow,
+  renderPinnedTray,
+  secureOpen
+});
+
 /** Render a list of processes into #cardBox. */
 export async function renderCards(data){
+  renderPinnedTray();
   if (data.some(it => it.navTo === 'GodownAddress')) {
     try { await fetchGodownList(); } catch(e) { console.error('[Godown] Firestore read failed:', e); }
   }
@@ -374,11 +447,20 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
     };
     const catIcon = PROC_ICON[it.name] || CAT_ICON[it.cat] || 'fas fa-circle';
     const catIconHtml = `<i class="card-cat-icon ${catIcon}"></i>`;
+    const pn = it.name.replace(/'/g, "\\'");
+    const isPinned = isProcPinned(it.name);
 
-    return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" style="animation-delay:${i*.028}s">
+    return `<div class="card cat-${cc}" data-name="${escapeHtml(it.name)}" onmousemove="trackCardGlow(event, this)" style="animation-delay:${i*.028}s">
       <div class="card-inner">
-        ${catIconHtml}
-        <span class="card-tag tag-${cc}">${CAT_TAG[cc] || cc}</span>
+        <div class="card-top-row">
+          <span class="card-tag tag-${cc}">${CAT_TAG[cc] || cc}</span>
+          <div class="card-top-right">
+            <button class="card-star-btn ${isPinned ? 'pinned' : ''}" onclick="togglePinProcess('${pn}', event)" title="${isPinned ? 'Unpin from shortcuts' : 'Pin to top shortcuts'}">
+              <i class="${isPinned ? 'fas fa-star' : 'far fa-star'}"></i>
+            </button>
+            ${catIconHtml}
+          </div>
+        </div>
         <div class="card-title"><i class="${catIcon} card-title-icon"></i>${escapeHtml(it.name)}</div>
         <div class="roles-grid">
           ${buildRoleCell('rv-pc','fas fa-shield-halved','PC / EA',   it.pc)}
