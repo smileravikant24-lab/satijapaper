@@ -17,7 +17,7 @@ showCheckingSession();
 
 // Check for local preview demo mode
 if (new URLSearchParams(window.location.search).get('demo') === '1') {
-  import('./app.js?v=20261105').then(({ startDashboard }) => {
+  import('./app.js?v=20261105c').then(({ startDashboard }) => {
     startDashboard({
       id: 'admin_demo',
       email: 'ravi@satijapaper.com',
@@ -38,7 +38,7 @@ if (new URLSearchParams(window.location.search).get('demo') === '1') {
     try {
       const profile = await fetchOrCreateProfile(fbUser);
       // Dynamically load the dashboard application ONLY after login is verified!
-      const { startDashboard } = await import('./app.js?v=20261105');
+      const { startDashboard } = await import('./app.js?v=20261105c');
       startDashboard(profile);
     } catch (err) {
       console.error('Profile load failed:', err);

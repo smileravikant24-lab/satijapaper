@@ -4,7 +4,7 @@ import { handleLogout }                     from './ui/login.view.js';
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
 }                                          from './ui/sidebar.view.js';
-import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20261030';
+import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20261105c';
 import { showAdmin as _origShowAdmin }     from './admin/admin.view.js';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
@@ -17,7 +17,7 @@ import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
 import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261024b';
 import { getConfigUrl } from './services/config.service.js';
-import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261031';
+import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261105c';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -333,8 +333,8 @@ function _forceLocalCounts() {
 
 function _loadDashboardCSS() {
   const styles = [
-    'css/sidebar.css?v=20261105',
-    'css/cards.css?v=20261105',
+    'css/sidebar.css?v=20261105c',
+    'css/cards.css?v=20261105c',
     'css/admin.css',
     'css/modal.css',
     'css/products.css?v=20260917',
