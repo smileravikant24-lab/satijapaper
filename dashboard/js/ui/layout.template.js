@@ -156,8 +156,6 @@ export function getDashboardHTML() {
               <span style="font-size:14px">👋</span>
             </h2>
             <p>
-              <span>Satija Paper HQ Mission Control</span>
-              <span>•</span>
               <span class="exec-time-chip" id="heroTimeChip">
                 <i class="far fa-clock"></i> <span id="heroLiveClock">--:-- IST</span>
               </span>
