@@ -1,4 +1,4 @@
-import { $, showToast }                   from './ui/dom.js';
+import { $, showToast, escapeHtml } from './ui/dom.js';
 import { state }                           from './state.js';
 import { handleLogout }                     from './ui/login.view.js';
 import {
@@ -216,23 +216,24 @@ function _renderCmdList() {
     AdminMIS: 'fas fa-clipboard-check', Support: 'fas fa-headset', Family: 'fas fa-folder-heart'
   };
 
-  listEl.innerHTML = _cmdResults.slice(0, 35).map((it, idx) => {
+  listEl.innerHTML = _cmdResults.slice(0, 40).map((it, idx) => {
     const isSel = idx === _cmdSelectedIdx;
     const icon = PROC_ICON_MAP[it.cat] || 'fas fa-file-lines';
-    const pn = it.name.replace(/'/g, "\\'");
-    const primaryLink = it.links.fms ? 'fms' : (it.links.form ? 'form' : (it.links.sheet ? 'sheet' : Object.keys(it.links)[0]));
+    const pn = (it.name || '').replace(/'/g, "\\'");
+    const links = it.links || {};
+    const primaryLink = links.fms ? 'fms' : (links.form ? 'form' : (links.sheet ? 'sheet' : Object.keys(links)[0] || ''));
     
     let actionChips = '';
-    if (it.links.fms) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','fms');closeCmdPalette()">FMS</button>`;
-    if (it.links.form) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','form');closeCmdPalette()">Form</button>`;
-    if (it.links.sheet) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','sheet');closeCmdPalette()">Sheet</button>`;
+    if (links.fms) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','fms');closeCmdPalette()">FMS</button>`;
+    if (links.form) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','form');closeCmdPalette()">Form</button>`;
+    if (links.sheet) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','sheet');closeCmdPalette()">Sheet</button>`;
 
     return `<div class="cmd-item ${isSel ? 'selected' : ''}" onclick="secureOpen('${pn}','${primaryLink}');closeCmdPalette()">
       <div class="cmd-item-left">
         <div class="cmd-item-icon"><i class="${icon}"></i></div>
         <div class="cmd-item-info">
-          <div class="cmd-item-name">${escapeHtml(it.name)}</div>
-          <div class="cmd-item-meta">${it.cat} • ${it.pc ? `PC: ${escapeHtml(it.pc)}` : 'Satija Paper'}</div>
+          <div class="cmd-item-name">${escapeHtml(it.name || '')}</div>
+          <div class="cmd-item-meta">${it.cat || ''} • ${it.pc ? `PC: ${escapeHtml(it.pc)}` : 'Satija Paper'}</div>
         </div>
       </div>
       <div class="cmd-item-actions">
