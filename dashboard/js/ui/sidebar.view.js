@@ -1,8 +1,8 @@
 import { $ }              from './dom.js';
 import { state }          from '../state.js';
-import { DB, NAV_TABS, PRODUCTS }   from '../data.js';
+import { DB, NAV_TABS, PRODUCTS }   from '../data.js?v=20261112';
 import { canAccessProc }  from './access.js';
-import { renderFiltered } from './cards.view.js';
+import { renderFiltered } from './cards.view.js?v=20261112';
 
 export function updateCounts(){
   const isAdmin = state.curUser?.role === 'Admin';

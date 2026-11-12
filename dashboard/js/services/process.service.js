@@ -1,6 +1,6 @@
 import { FUNCTION_URL } from '../config.js';
 import { getIdToken }   from './auth.service.js';
-import { LINK_META }    from '../data.js';
+import { LINK_META }    from '../data.js?v=20261112';
 
 export async function resolveProcessUrl(procName, linkType){
   const idToken = await getIdToken();

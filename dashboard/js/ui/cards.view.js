@@ -1,6 +1,6 @@
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
-import { DB, LINK_META }             from '../data.js';
+import { DB, LINK_META }             from '../data.js?v=20261112';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 import { fetchGodownList, getGodownList } from '../services/godown.service.js';
@@ -12,6 +12,121 @@ const _G = {
   DRIVE:  'https://www.gstatic.com/images/branding/product/1x/drive_48dp.png',
   LOOKER: 'https://www.gstatic.com/images/branding/product/1x/looker_studio_48dp.png',
 };
+
+const DISPLAY_FORM_NAMES = ['Double A Corporate Customer', 'Double A Display Links'];
+
+const BUTTON_DEFS = [
+  { key: 'fms',               cls: 'btn-fms',    icon: _G.SHEETS,              label: 'FMS' },
+  { key: 'form',              cls: 'btn-form',   icon: _G.FORMS,               label: it => DISPLAY_FORM_NAMES.includes(it.name) ? 'Display Form' : 'Form' },
+  { key: 'sheet',             cls: 'btn-sheet',  icon: _G.SHEETS,              label: it => it.name === 'Help Ticket' ? 'All Tickets' : it.name === 'Personal Documents' ? 'Policy Details' : it.name === 'Dashboard of All FMS' ? 'PC Sheet' : 'Sheet', adminOnly: it => it.name === 'Help Ticket' },
+  { key: 'check',             cls: 'btn-check',  icon: _G.SHEETS,              label: 'Checklist' },
+  { key: 'video',             cls: 'btn-video',  icon: 'fab fa-youtube',       label: 'Training' },
+  { key: 'videoBCI',          cls: 'btn-video',  icon: 'fab fa-youtube',       label: 'Training (BCI)' },
+  { key: 'videoAI',           cls: 'btn-video',  icon: _G.DRIVE,               label: 'Training Video AI' },
+  { key: 'dashEmp',           cls: 'btn-dash',   icon: 'fas fa-gauge-high',    label: 'Emp Dashboard' },
+  { key: 'dashPC',            cls: 'btn-dash',   icon: 'fas fa-gauge-high',    label: 'PC Dashboard' },
+  { key: 'gasForm',           cls: 'btn-gas',    icon: _G.GAS,                 label: 'Form' },
+  { key: 'admin',             cls: 'btn-admin',  icon: _G.GAS,                 label: 'Admin Panel' },
+  { key: 'gpDash',            cls: 'btn-gp',     icon: _G.GAS,                 label: 'GP Dashboard' },
+  { key: 'stockDash',         cls: 'btn-stock',  icon: 'fas fa-gauge',         label: 'Dashboard' },
+  { key: 'dash',              cls: 'btn-dash',   icon: 'fas fa-chart-line',    label: 'Dashboard' },
+  { key: 'folder',            cls: 'btn-folder', icon: _G.DRIVE,               label: 'View Folder' },
+  { key: 'calc',              cls: 'btn-dash',   icon: 'fas fa-calculator',    label: 'Profit Calculator' },
+  { key: 'terms',             cls: 'btn-form',   icon: _G.DRIVE,               label: 'T&amp;C' },
+  { key: 'drive',             cls: 'btn-form',   icon: _G.DRIVE,               label: 'Drive' },
+  { key: 'guidelineForm',     cls: 'btn-form',   icon: _G.DRIVE,               label: it => it.name === 'Double A Retail Customer (Mr. Rishabh)' ? 'Marketing Guideline' : 'Guideline' },
+  { key: 'followup',          cls: 'btn-form',   icon: 'fas fa-paper-plane',   label: 'D- Follow up' },
+  { key: 'incentive',         cls: 'btn-dash',   icon: 'fas fa-trophy',        label: 'Incentive Portal' },
+  { key: 'DAppointment',      cls: 'btn-form',   icon: 'fas fa-calendar-check',label: 'Dist Appointment' },
+  { key: 'disPurchase',       cls: 'btn-form',   icon: 'fas fa-cart-shopping', label: 'Dist Purchase' },
+  { key: 'DealerAppointment', cls: 'btn-form',   icon: 'fas fa-calendar-check',label: 'Dealer Appointment' },
+  { key: 'dealerDisplay',     cls: 'btn-dash',   icon: 'fas fa-store',         label: 'Dealer (Ind) Display' },
+  { key: 'sellout',           cls: 'btn-dash',   icon: 'fas fa-chart-line',    label: 'Sellout' },
+  { key: 'dsr',               cls: 'btn-sheet',  icon: 'fas fa-clipboard-list',label: 'DSR' },
+  { key: 'stockdash',         cls: 'btn-sheet',  icon: 'fas fa-gauge',         label: 'Our Dist Stock' },
+  { key: 'orderFormPdf',      cls: 'btn-form',   icon: 'fas fa-file-pdf',      label: 'PDF' },
+  { key: 'orderFormDoc',      cls: 'btn-form',   icon: 'fas fa-file-word',     label: 'Word File' },
+  { key: 'truckOrderFormPdf', cls: 'btn-form',   icon: 'fas fa-file-pdf',      label: 'PDF' },
+  { key: 'truckOrderFormDoc', cls: 'btn-form',   icon: 'fas fa-file-word',     label: 'Word File' },
+  { key: 'daDisplayFms',      cls: 'btn-fms',    icon: 'fas fa-table-cells',   label: 'FMS' },
+  { key: 'daDisplayDash',     cls: 'btn-dash',   icon: 'fas fa-chart-line',    label: 'Dashboard' },
+  { key: 'o2dManager',        cls: 'btn-dash',   icon: 'fas fa-truck-fast',    label: 'Manager' },
+  { key: 'o2dPooja',          cls: 'btn-dash',   icon: 'fas fa-truck-fast',    label: 'Pooja' },
+  { key: 'o2dPawan',          cls: 'btn-dash',   icon: 'fas fa-truck-fast',    label: 'Pawan' },
+  { key: 'o2dSonu',           cls: 'btn-dash',   icon: 'fas fa-truck-fast',    label: 'Sonu' },
+  { key: 'salary',            cls: 'btn-dash',   icon: 'fas fa-money-check-dollar', label: 'Salary System' },
+  { key: 'aiqa',              cls: 'btn-aiqa',   icon: 'fas fa-robot',         label: 'AI Q&amp;A' },
+];
+
+/**
+ * Return the ordered list of accessible action buttons for a DB process item.
+ * Shared by both dashboard cards and the search command palette.
+ */
+export function getCardActions(item) {
+  const isAdmin = state.curUser?.role === 'Admin';
+  const links = item?.links || {};
+  const actions = [];
+  const seen = new Set();
+
+  const pushLinkAction = (def) => {
+    const key = def.key;
+    seen.add(key);
+    if (!links[key]) return;
+    const isAdminOnly = typeof def.adminOnly === 'function' ? def.adminOnly(item) : !!def.adminOnly;
+    if (isAdminOnly && !isAdmin) return;
+    if (!canAccessLink(state.curUser, item.name, key)) return;
+    const label = typeof def.label === 'function' ? def.label(item) : def.label;
+    actions.push({ type: 'link', linkType: key, cls: def.cls, icon: def.icon, label });
+  };
+
+  for (const def of BUTTON_DEFS) {
+    if (def.key === 'sheet' && item.name === 'Dashboard of All FMS') continue;
+    pushLinkAction(def);
+    if (def.key === 'sheet' && item.name === 'Personal Documents') {
+      const hasBankAccess = isAdmin
+        || state.curUser?.deptAccess?.includes('All')
+        || state.curUser?.deptAccess?.includes('Bank Details');
+      if (hasBankAccess) {
+        actions.push({
+          type: 'custom',
+          cls: 'btn-dash',
+          icon: 'fas fa-university',
+          label: 'Personal Accounts',
+          actionId: 'personalAccounts'
+        });
+      }
+    }
+    if (def.key === 'dashPC' && item.name === 'Dashboard of All FMS') {
+      const sheetDef = BUTTON_DEFS.find(d => d.key === 'sheet');
+      if (sheetDef) pushLinkAction(sheetDef);
+    }
+  }
+
+  for (const key of Object.keys(links)) {
+    if (seen.has(key) || !links[key]) continue;
+    if (!canAccessLink(state.curUser, item.name, key)) continue;
+    const meta = LINK_META[key];
+    actions.push({
+      type: 'link',
+      linkType: key,
+      cls: meta?.cls || 'btn-dash',
+      icon: meta?.icon || 'fas fa-arrow-up-right-from-square',
+      label: escapeHtml(meta?.label || key)
+    });
+  }
+
+  return actions;
+}
+
+export function getPrimaryAction(item) {
+  const actions = getCardActions(item);
+  if (!actions.length) return null;
+  for (const preferred of ['fms', 'form', 'sheet', 'dash', 'daDisplayDash', 'stockDash', 'check']) {
+    const match = actions.find(a => a.linkType === preferred);
+    if (match) return match;
+  }
+  return actions[0];
+}
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -34,17 +149,16 @@ export async function secureOpen(procName, linkType){
   else           showToast(result.error, 'err');
 }
 
-function buildButton(item, hasUrl, linkType, cls, icon, label, adminOnly = false){
-  const isAdmin = state.curUser?.role === 'Admin';
-  if (!hasUrl)                                             return '';
-  if (adminOnly && !isAdmin)                               return '';
-  if (!canAccessLink(state.curUser, item.name, linkType))  return '';
+function renderActionButton(item, act) {
+  const iconHtml = act.icon.startsWith('http')
+    ? `<img src="${act.icon}" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;flex-shrink:0">`
+    : `<i class="${act.icon}"></i>`;
   const pn = item.name.replace(/'/g, "\\'");
-  const iconHtml = icon.startsWith('http')
-    ? `<img src="${icon}" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;flex-shrink:0">`
-    : `<i class="${icon}"></i>`;
-  return `<button onclick="secureOpen('${pn}','${linkType}')" class="btn ${cls}">
-            ${iconHtml}${label}
+  const onclk = act.type === 'custom' && act.actionId === 'personalAccounts'
+    ? 'showPersonalAccounts()'
+    : `secureOpen('${pn}','${act.linkType}')`;
+  return `<button onclick="${onclk}" class="btn ${act.cls}">
+            ${iconHtml}${act.label}
           </button>`;
 }
 
@@ -111,8 +225,11 @@ export function renderPinnedTray() {
     if (!item) return '';
     const safe = escapeHtml(name);
     const pn = name.replace(/'/g, "\\'");
-    const primaryLink = item.links.fms ? 'fms' : (item.links.form ? 'form' : (item.links.sheet ? 'sheet' : Object.keys(item.links)[0]));
-    return `<div class="pinned-item-chip" onclick="secureOpen('${pn}', '${primaryLink}')" title="Open ${safe}">
+    const primary = getPrimaryAction(item);
+    const clickAct = primary?.type === 'custom' && primary.actionId === 'personalAccounts'
+      ? 'showPersonalAccounts()'
+      : `secureOpen('${pn}', '${primary?.linkType || Object.keys(item.links || {})[0] || ''}')`;
+    return `<div class="pinned-item-chip" onclick="${clickAct}" title="Open ${safe}">
       <i class="fas fa-arrow-up-right-from-square" style="font-size:10px"></i>
       <span>${safe}</span>
       <span class="pinned-remove-btn" onclick="togglePinProcess('${pn}', event)" title="Remove shortcut">&times;</span>
@@ -373,68 +490,7 @@ function _buildCardHTML(it, i, CAT_TAG, PROC_ICON, isAdmin) {
 
     const cc = it.cat === 'Documents' ? 'Family' : it.cat;
 
-    let btns = '';
-    btns += buildButton(it, !!it.links.fms,        'fms',        'btn-fms',    _G.SHEETS,                 'FMS');
-    const DISPLAY_FORM_NAMES = ['Double A Corporate Customer', 'Double A Display Links'];
-    btns += buildButton(it, !!it.links.form,       'form',       'btn-form',   _G.FORMS,                  DISPLAY_FORM_NAMES.includes(it.name) ? 'Display Form' : 'Form');
-
-    if (it.name === 'Help Ticket'){
-      btns += buildButton(it, !!it.links.sheet && isAdmin, 'sheet', 'btn-sheet', _G.SHEETS, 'All Tickets');
-    } else if (it.name === 'Personal Documents') {
-      btns += buildButton(it, !!it.links.sheet, 'sheet', 'btn-sheet', _G.SHEETS, 'Policy Details');
-      const hasBankAccess = state.curUser?.role === 'Admin'
-        || state.curUser?.deptAccess?.includes('All')
-        || state.curUser?.deptAccess?.includes('Bank Details');
-      if (hasBankAccess) {
-        btns += `<button onclick="showPersonalAccounts()" class="btn btn-dash"><i class="fas fa-university"></i> Personal Accounts</button>`;
-      }
-    } else if (it.name !== 'Dashboard of All FMS') {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'Sheet');
-    }
-
-    btns += buildButton(it, !!it.links.check,      'check',      'btn-check',  _G.SHEETS,                 'Checklist');
-    btns += buildButton(it, !!it.links.video,      'video',      'btn-video',  'fab fa-youtube',          'Training');
-    btns += buildButton(it, !!it.links.videoBCI,   'videoBCI',  'btn-video',  'fab fa-youtube',          'Training (BCI)');
-    btns += buildButton(it, !!it.links.videoAI,    'videoAI',   'btn-video',  _G.DRIVE,                  'Training Video AI');
-    btns += buildButton(it, !!it.links.dashEmp,    'dashEmp',   'btn-dash',   'fas fa-gauge-high',       'Emp Dashboard');
-    btns += buildButton(it, !!it.links.dashPC,     'dashPC',    'btn-dash',   'fas fa-gauge-high',       'PC Dashboard');
-    if (it.name === 'Dashboard of All FMS') {
-      btns += buildButton(it, !!it.links.sheet,    'sheet',      'btn-sheet',  _G.SHEETS,                 'PC Sheet');
-    }
-    btns += buildButton(it, !!it.links.gasForm,    'gasForm',   'btn-gas',    _G.GAS,                    'Form');
-    btns += buildButton(it, !!it.links.admin,      'admin',     'btn-admin',  _G.GAS,                    'Admin Panel');
-    btns += buildButton(it, !!it.links.gpDash,     'gpDash',    'btn-gp',     _G.GAS,                    'GP Dashboard');
-    btns += buildButton(it, !!it.links.stockDash,  'stockDash', 'btn-stock',  'fas fa-gauge',            'Dashboard');
-    btns += buildButton(it, !!it.links.dash,       'dash',      'btn-dash',   'fas fa-chart-line',       'Dashboard');
-    btns += buildButton(it, !!it.links.folder,     'folder',    'btn-folder', _G.DRIVE,                  'View Folder');
-    btns += buildButton(it, !!it.links.calc,       'calc',      'btn-dash',   'fas fa-calculator',       'Profit Calculator');
-    btns += buildButton(it, !!it.links.terms,      'terms',     'btn-form',   _G.DRIVE,                  'T&amp;C');
-    btns += buildButton(it, !!it.links.drive,      'drive',     'btn-form',   _G.DRIVE,                  'Drive');
-    btns += buildButton(it, !!it.links.guidelineForm,'guidelineForm','btn-form',_G.DRIVE, it.name === 'Double A Retail Customer (Mr. Rishabh)' ? 'Marketing Guideline' : 'Guideline');
-
-    btns += buildButton(it, !!it.links.followup,   'followup',  'btn-form',   'fas fa-paper-plane',      'D- Follow up');
-    btns += buildButton(it, !!it.links.incentive,  'incentive', 'btn-dash',   'fas fa-trophy',           'Incentive Portal');
-    btns += buildButton(it, !!it.links.DAppointment, 'DAppointment', 'btn-form',  'fas fa-calendar-check', 'Dist Appointment');
-    btns += buildButton(it, !!it.links.disPurchase,    'disPurchase',    'btn-form',  'fas fa-cart-shopping',  'Dist Purchase');
-    btns += buildButton(it, !!it.links.DealerAppointment, 'DealerAppointment', 'btn-form',  'fas fa-calendar-check', 'Dealer Appointment');
-    btns += buildButton(it, !!it.links.dealerDisplay,  'dealerDisplay',  'btn-dash',  'fas fa-store',          'Dealer (Ind) Display');
-    btns += buildButton(it, !!it.links.sellout,        'sellout',        'btn-dash',  'fas fa-chart-line',     'Sellout');
-    btns += buildButton(it, !!it.links.dsr,            'dsr',            'btn-sheet', 'fas fa-clipboard-list', 'DSR');
-    btns += buildButton(it, !!it.links.stockdash,            'stockdash',            'btn-sheet', 'fas fa-gauge', 'Our Dist Stock');
-    btns += buildButton(it, !!it.links.orderFormPdf,      'orderFormPdf',      'btn-form', 'fas fa-file-pdf',  'PDF');
-    btns += buildButton(it, !!it.links.orderFormDoc,      'orderFormDoc',      'btn-form', 'fas fa-file-word', 'Word File');
-    btns += buildButton(it, !!it.links.truckOrderFormPdf, 'truckOrderFormPdf', 'btn-form', 'fas fa-file-pdf',  'PDF');
-    btns += buildButton(it, !!it.links.truckOrderFormDoc, 'truckOrderFormDoc', 'btn-form', 'fas fa-file-word', 'Word File');
-    btns += buildButton(it, !!it.links.daDisplayFms,  'daDisplayFms',  'btn-fms',  'fas fa-table-cells', 'FMS');
-    btns += buildButton(it, !!it.links.daDisplayDash, 'daDisplayDash', 'btn-dash', 'fas fa-chart-line',  'Dashboard');
-    btns += buildButton(it, !!it.links.o2dManager,    'o2dManager',    'btn-dash', 'fas fa-truck-fast',  'Manager');
-    btns += buildButton(it, !!it.links.o2dPooja,      'o2dPooja',      'btn-dash', 'fas fa-truck-fast',  'Pooja');
-    btns += buildButton(it, !!it.links.o2dPawan,      'o2dPawan',      'btn-dash', 'fas fa-truck-fast',  'Pawan');
-    btns += buildButton(it, !!it.links.o2dSonu,       'o2dSonu',       'btn-dash', 'fas fa-truck-fast',  'Sonu');
-    btns += buildButton(it, !!it.links.salary,       'salary',        'btn-dash', 'fas fa-money-check-dollar', 'Salary System');
-    // ── AI Q&A button ─────────────────────────────────────────
-    btns += buildButton(it, !!it.links.aiqa,       'aiqa',      'btn-aiqa',   'fas fa-robot',            'AI Q&amp;A');
-    // ────────────────────────────────────────────────────────
+    let btns = getCardActions(it).map(act => renderActionButton(it, act)).join('');
 
     if (!btns){
       btns = '<div style="grid-column:span 2;text-align:center;color:#ccc;font-size:11px;padding:6px">No links configured</div>';

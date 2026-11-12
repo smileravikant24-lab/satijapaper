@@ -243,23 +243,29 @@ export function getModalsHTML() {
   <div class="cmd-box" onclick="event.stopPropagation()">
     <div class="cmd-input-wrap">
       <i class="fas fa-magnifying-glass"></i>
-      <input type="text" class="cmd-input" id="cmdInput" placeholder="Type to search any process, sheet, form or person…" oninput="onCmdInput(this.value)">
+      <input type="text" class="cmd-input" id="cmdInput" placeholder="Search any process, sheet, form, dashboard, product or person…" oninput="onCmdInput(this.value)">
       <span class="cmd-esc-badge">ESC</span>
     </div>
     <div class="cmd-filters" id="cmdFilters">
       <button class="cmd-filter-pill active" onclick="setCmdCategory('All', this)">All</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Import', this)">Import</button>
       <button class="cmd-filter-pill" onclick="setCmdCategory('Sales', this)">Sales</button>
-      <button class="cmd-filter-pill" onclick="setCmdCategory('Purchase', this)">Purchase</button>
-      <button class="cmd-filter-pill" onclick="setCmdCategory('Warehouse', this)">Warehouse</button>
-      <button class="cmd-filter-pill" onclick="setCmdCategory('Accounts', this)">Accounts</button>
       <button class="cmd-filter-pill" onclick="setCmdCategory('Double A', this)">Double A</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Warehouse', this)">Warehouse</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Purchase', this)">Purchase</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Accounts', this)">Accounts</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('AdminMIS', this)">Admin &amp; MIS</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Support', this)">Support</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Family', this)">SP Family</button>
       <button class="cmd-filter-pill" onclick="setCmdCategory('Products', this)">Products</button>
+      <button class="cmd-filter-pill" onclick="setCmdCategory('Bank Details', this)">Bank Details</button>
     </div>
     <div class="cmd-list" id="cmdList">
       <!-- Populated dynamically -->
     </div>
     <div class="cmd-footer">
       <span>Use <kbd>↑</kbd> <kbd>↓</kbd> to navigate, <kbd>Enter</kbd> to open</span>
+      <span id="cmdCount"></span>
       <span>Press <kbd>ESC</kbd> to exit</span>
     </div>
   </div>

@@ -3,21 +3,21 @@ import { state }                           from './state.js';
 import { handleLogout }                     from './ui/login.view.js';
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
-}                                          from './ui/sidebar.view.js';
-import { renderFiltered, secureOpen }      from './ui/cards.view.js?v=20261105c';
-import { showAdmin as _origShowAdmin }     from './admin/admin.view.js';
+}                                          from './ui/sidebar.view.js?v=20261112';
+import { renderFiltered, secureOpen, getCardActions, getPrimaryAction } from './ui/cards.view.js?v=20261112';
+import { showAdmin as _origShowAdmin }     from './admin/admin.view.js?v=20261112';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261030';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261112';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
-import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261024b';
+import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261112';
 import { getConfigUrl } from './services/config.service.js';
-import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261105c';
+import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261112';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -141,8 +141,228 @@ function _initLiveClock() {
 
 // ── Raycast / Linear Style Command Palette ────────────────────────────────
 let _cmdCategory = 'All';
+let _cmdAllEntries = [];
 let _cmdResults = [];
 let _cmdSelectedIdx = 0;
+
+const _CMD_CATS = [
+  { id: 'All',          label: 'All' },
+  { id: 'Import',       label: 'Import' },
+  { id: 'Sales',        label: 'Sales' },
+  { id: 'Double A',     label: 'Double A' },
+  { id: 'Warehouse',    label: 'Warehouse' },
+  { id: 'Purchase',     label: 'Purchase' },
+  { id: 'Accounts',     label: 'Accounts' },
+  { id: 'AdminMIS',     label: 'Admin & MIS' },
+  { id: 'Support',      label: 'Support' },
+  { id: 'Family',       label: 'SP Family' },
+  { id: 'Products',     label: 'Products' },
+  { id: 'Bank Details', label: 'Bank Details' },
+];
+
+const _CMD_CAT_DISPLAY = {
+  Import:         'Import & Procurement',
+  Sales:          'Sales & Marketing',
+  Warehouse:      'Warehouse & Logistics',
+  Purchase:       'Purchase & Inventory',
+  Accounts:       'Accounts, GST & Tax',
+  AdminMIS:       'Admin & MIS',
+  Support:        'Team / Support',
+  Family:         'SP Family',
+  Products:       'Products',
+  'Bank Details': 'Bank Details',
+};
+
+const _CMD_ICON_MAP = {
+  Import:         'fas fa-ship',
+  Sales:          'fas fa-chart-line',
+  Warehouse:      'fas fa-warehouse',
+  Purchase:       'fas fa-cart-shopping',
+  Accounts:       'fas fa-calculator',
+  AdminMIS:       'fas fa-clipboard-check',
+  Support:        'fas fa-headset',
+  Family:         'fas fa-folder-heart',
+  Products:       'fas fa-cubes',
+  'Bank Details': 'fas fa-landmark',
+};
+
+function _buildCmdEntries() {
+  const user = state.curUser;
+  const isAdmin = user?.role === 'Admin';
+  const da = user?.deptAccess || [];
+  const hasAllAccess = da.includes('All');
+  const entries = [];
+  let addedBankNav = false;
+
+  DB.forEach(it => {
+    if (!canAccessProc(user, it)) return;
+
+    if (it.navTo === 'BankDetails') {
+      const canSeeBank = isAdmin || hasAllAccess || da.includes('Bank Details');
+      if (!canSeeBank || addedBankNav) return;
+      addedBankNav = true;
+      entries.push({
+        name: 'Bank Details',
+        cat: 'Bank Details',
+        alsoCats: ['Sales', 'Accounts'],
+        meta: 'Bank Details • Company & Personal Accounts',
+        icon: 'fas fa-landmark',
+        searchExtra: 'bank accounts upi qr ifsc hsbc pnb yes kotak personal',
+        actions: [
+          { label: 'View Bank Details', icon: 'fas fa-landmark', cls: 'btn-dash', run: () => showBankDetails(document.getElementById('navBankDetails')) }
+        ],
+        primaryIdx: 0
+      });
+      return;
+    }
+
+    if (it.navTo === 'GodownAddress') {
+      entries.push({
+        name: 'Godown Address',
+        cat: 'Warehouse',
+        meta: 'Warehouse & Logistics • Location & Keeper Info',
+        icon: 'fas fa-warehouse',
+        searchExtra: 'godown address location warehouse keeper copy share',
+        actions: [
+          { label: 'View Card', icon: 'fas fa-eye', cls: 'btn-dash', run: () => {
+            filterCatPatched('Warehouse', document.getElementById('navWarehouse'));
+            setTimeout(() => document.querySelector('.godown-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+          }},
+          { label: 'Copy Details', icon: 'fas fa-copy', cls: 'btn-sheet', run: () => {
+            fetchGodownList().then(() => copyGodownAddr());
+          }},
+          { label: 'Share', icon: 'fas fa-share-nodes', cls: 'btn-form', run: () => {
+            fetchGodownList().then(() => shareGodownAddr());
+          }}
+        ],
+        primaryIdx: 0
+      });
+      return;
+    }
+
+    if (it.navTo) return;
+
+    const normCat = it.cat === 'Documents' ? 'Family' : it.cat;
+    const cardActs = getCardActions(it);
+    const actions = cardActs.map(act => ({
+      label: act.label,
+      icon: act.icon,
+      cls: act.cls,
+      linkType: act.linkType,
+      run: act.type === 'custom' && act.actionId === 'personalAccounts'
+        ? () => {
+            filterCatPatched('Family', document.getElementById('navFamily'));
+            _showPersonalBanks().then(() => {
+              document.getElementById('personalBankPanel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+          }
+        : () => secureOpen(it.name, act.linkType)
+    }));
+    const primary = getPrimaryAction(it);
+    const primaryIdx = primary ? Math.max(0, cardActs.indexOf(primary)) : 0;
+    const roleMeta = it.pc && it.pc !== '-' ? `PC: ${it.pc}` : (it.exec && it.exec !== '-' ? `Exec: ${it.exec}` : 'Satija Paper');
+    const actionLabels = cardActs.map(a => a.label.replace(/&amp;/g, '&')).join(' ');
+
+    entries.push({
+      name: it.name,
+      cat: normCat,
+      subcat: it.subcat || '',
+      meta: `${_CMD_CAT_DISPLAY[normCat] || normCat} • ${roleMeta}`,
+      icon: _CMD_ICON_MAP[normCat] || 'fas fa-file-lines',
+      searchExtra: `${it.pc || ''} ${it.solver || ''} ${it.exec || ''} ${it.subcat || ''} ${actionLabels}`,
+      actions,
+      primaryIdx
+    });
+  });
+
+  if ((isAdmin || hasAllAccess || da.includes('Products')) && Array.isArray(PRODUCTS)) {
+    PRODUCTS.forEach(brand => {
+      const variantSummary = (brand.variants || [])
+        .map(v => `${v.name || ''} ${v.gsm ? v.gsm + ' GSM' : ''} ${v.colorName || ''} ${v.bestFor || ''}`)
+        .join(' ');
+      entries.push({
+        name: brand.fullName && brand.fullName !== brand.name ? `${brand.name} (${brand.fullName})` : brand.name,
+        cat: 'Products',
+        meta: `Products • ${brand.origin || 'Paper'} • ${(brand.variants || []).length} variants`,
+        icon: 'fas fa-cubes',
+        searchExtra: `${brand.name} ${brand.fullName || ''} ${brand.origin || ''} ${brand.tagline || ''} ${(brand.cert || []).join(' ')} ${variantSummary}`,
+        actions: [
+          {
+            label: 'View Catalog',
+            icon: 'fas fa-cubes',
+            cls: 'btn-dash',
+            run: () => {
+              showProducts(document.getElementById('navProducts'));
+              setTimeout(() => document.getElementById(`prod-${brand.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            }
+          }
+        ],
+        primaryIdx: 0
+      });
+    });
+  }
+
+  if (isAdmin || hasAllAccess || da.includes('Sales') || da.includes('SalesDash')) {
+    entries.push({
+      name: 'Sales Dashboard (Live Analytics)',
+      cat: 'Sales',
+      meta: 'Sales & Marketing • Analytics View',
+      icon: 'fas fa-chart-bar',
+      searchExtra: 'sales dashboard gstr-3b analytics chart performance',
+      actions: [
+        { label: 'Open Dashboard', icon: 'fas fa-chart-bar', cls: 'btn-dash', run: () => showSalesDashboard(document.getElementById('navSalesDash')) }
+      ],
+      primaryIdx: 0
+    });
+  }
+
+  entries.push({
+    name: 'Gallery',
+    cat: 'Assets',
+    meta: 'Enterprise Assets • Media & Photos',
+    icon: 'fas fa-images',
+    searchExtra: 'gallery photos images media assets',
+    actions: [
+      { label: 'Open Gallery', icon: 'fas fa-images', cls: 'btn-dash', run: () => showGallery(document.getElementById('navGallery')) }
+    ],
+    primaryIdx: 0
+  });
+
+  if (isAdmin) {
+    entries.push({
+      name: 'Admin Control (User Management)',
+      cat: 'AdminMIS',
+      meta: 'Admin & MIS • Manage Users & Access',
+      icon: 'fas fa-user-gear',
+      searchExtra: 'admin control user management permissions roles access',
+      actions: [
+        { label: 'Open Admin', icon: 'fas fa-user-gear', cls: 'btn-admin', run: () => showAdmin(document.getElementById('adminNavBtn')) }
+      ],
+      primaryIdx: 0
+    });
+  }
+
+  return entries;
+}
+
+function _matchesCmdCategory(entry, cat) {
+  if (cat === 'All') return true;
+  if (cat === 'Double A') {
+    return entry.subcat === 'Double A' || (entry.name || '').includes('Double A');
+  }
+  return entry.cat === cat || (Array.isArray(entry.alsoCats) && entry.alsoCats.includes(cat));
+}
+
+function _renderCmdFilters(allEntries) {
+  const wrap = document.getElementById('cmdFilters');
+  if (!wrap) return;
+  wrap.innerHTML = _CMD_CATS.map(c => {
+    const count = allEntries.filter(e => _matchesCmdCategory(e, c.id)).length;
+    if (c.id !== 'All' && count === 0) return '';
+    const active = _cmdCategory === c.id ? 'active' : '';
+    return `<button class="cmd-filter-pill ${active}" onclick="setCmdCategory('${c.id}', this)">${escapeHtml(c.label)} <span class="cmd-pill-cnt">${count}</span></button>`;
+  }).join('');
+}
 
 function openCmdPalette() {
   const bd = document.getElementById('cmdBackdrop');
@@ -151,9 +371,8 @@ function openCmdPalette() {
   bd.classList.add('open');
   input.value = '';
   _cmdCategory = 'All';
-  document.querySelectorAll('#cmdFilters .cmd-filter-pill').forEach(b => {
-    b.classList.toggle('active', b.textContent.trim() === 'All');
-  });
+  _cmdAllEntries = _buildCmdEntries();
+  _renderCmdFilters(_cmdAllEntries);
   _filterCmdResults('');
   setTimeout(() => input.focus(), 60);
 }
@@ -188,13 +407,13 @@ function onCmdInput(val) {
 
 function _filterCmdResults(query) {
   const q = (query || '').toLowerCase().trim();
-  const accessible = DB.filter(it => canAccessProc(state.curUser, it) && !it.navTo && it.cat !== 'Bank Details');
-  
-  _cmdResults = accessible.filter(it => {
-    const matchesCat = _cmdCategory === 'All' || it.cat === _cmdCategory || (_cmdCategory === 'Double A' && (it.subcat === 'Double A' || it.name.includes('Double A')));
-    if (!matchesCat) return false;
+  const pool = _cmdAllEntries.length ? _cmdAllEntries : _buildCmdEntries();
+
+  _cmdResults = pool.filter(entry => {
+    if (!_matchesCmdCategory(entry, _cmdCategory)) return false;
     if (!q) return true;
-    const haystack = `${it.name} ${it.cat} ${it.pc || ''} ${it.solver || ''} ${it.exec || ''}`.toLowerCase();
+    const catLabel = _CMD_CAT_DISPLAY[entry.cat] || entry.cat || '';
+    const haystack = `${entry.name} ${entry.cat} ${catLabel} ${entry.searchExtra || ''}`.toLowerCase();
     return q.split(/\s+/).every(word => haystack.includes(word));
   });
 
@@ -202,42 +421,56 @@ function _filterCmdResults(query) {
   _renderCmdList();
 }
 
+function executeCmdEntry(idx) {
+  const entry = _cmdResults[idx];
+  if (!entry) return;
+  const actIdx = typeof entry.primaryIdx === 'number' && entry.actions?.[entry.primaryIdx]
+    ? entry.primaryIdx
+    : 0;
+  const act = entry.actions?.[actIdx];
+  closeCmdPalette();
+  if (act && typeof act.run === 'function') act.run();
+}
+
+function executeCmdAction(idx, actIdx, ev) {
+  if (ev) ev.stopPropagation();
+  const entry = _cmdResults[idx];
+  const act = entry?.actions?.[actIdx];
+  closeCmdPalette();
+  if (act && typeof act.run === 'function') act.run();
+}
+
 function _renderCmdList() {
   const listEl = document.getElementById('cmdList');
+  const cntEl = document.getElementById('cmdCount');
+  if (cntEl) {
+    cntEl.textContent = `${_cmdResults.length} ${_cmdResults.length === 1 ? 'item' : 'items'}`;
+  }
   if (!listEl) return;
   if (!_cmdResults.length) {
-    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--text-3);font-size:13px"><i class="fas fa-search" style="font-size:26px;margin-bottom:10px;opacity:.25;display:block"></i><p>No matching processes found</p></div>`;
+    listEl.innerHTML = `<div style="padding:36px 16px;text-align:center;color:var(--text-3);font-size:13px"><i class="fas fa-search" style="font-size:26px;margin-bottom:10px;opacity:.25;display:block"></i><p>No matching items found</p></div>`;
     return;
   }
 
-  const PROC_ICON_MAP = {
-    Import: 'fas fa-ship', Sales: 'fas fa-chart-line', Warehouse: 'fas fa-warehouse',
-    Purchase: 'fas fa-cart-shopping', Accounts: 'fas fa-calculator',
-    AdminMIS: 'fas fa-clipboard-check', Support: 'fas fa-headset', Family: 'fas fa-folder-heart'
-  };
-
-  listEl.innerHTML = _cmdResults.slice(0, 40).map((it, idx) => {
+  listEl.innerHTML = _cmdResults.map((entry, idx) => {
     const isSel = idx === _cmdSelectedIdx;
-    const icon = PROC_ICON_MAP[it.cat] || 'fas fa-file-lines';
-    const pn = (it.name || '').replace(/'/g, "\\'");
-    const links = it.links || {};
-    const primaryLink = links.fms ? 'fms' : (links.form ? 'form' : (links.sheet ? 'sheet' : Object.keys(links)[0] || ''));
-    
-    let actionChips = '';
-    if (links.fms) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','fms');closeCmdPalette()">FMS</button>`;
-    if (links.form) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','form');closeCmdPalette()">Form</button>`;
-    if (links.sheet) actionChips += `<button class="cmd-quick-btn" onclick="event.stopPropagation();secureOpen('${pn}','sheet');closeCmdPalette()">Sheet</button>`;
+    const actionChips = (entry.actions || []).map((act, aIdx) => {
+      const iconHtml = act.icon && act.icon.startsWith('http')
+        ? `<img src="${act.icon}" alt="">`
+        : `<i class="${act.icon || 'fas fa-arrow-up-right-from-square'}"></i>`;
+      return `<button class="cmd-quick-btn ${act.cls || ''}" onclick="executeCmdAction(${idx},${aIdx},event)">${iconHtml}<span>${act.label}</span></button>`;
+    }).join('');
 
-    return `<div class="cmd-item ${isSel ? 'selected' : ''}" onclick="secureOpen('${pn}','${primaryLink}');closeCmdPalette()">
+    return `<div class="cmd-item ${isSel ? 'selected' : ''}" onclick="executeCmdEntry(${idx})">
       <div class="cmd-item-left">
-        <div class="cmd-item-icon"><i class="${icon}"></i></div>
+        <div class="cmd-item-icon"><i class="${entry.icon}"></i></div>
         <div class="cmd-item-info">
-          <div class="cmd-item-name">${escapeHtml(it.name || '')}</div>
-          <div class="cmd-item-meta">${it.cat || ''} • ${it.pc ? `PC: ${escapeHtml(it.pc)}` : 'Satija Paper'}</div>
+          <div class="cmd-item-name">${escapeHtml(entry.name || '')}</div>
+          <div class="cmd-item-meta">${escapeHtml(entry.meta || '')}</div>
         </div>
       </div>
       <div class="cmd-item-actions">
-        ${actionChips}
+        ${actionChips || '<span style="font-size:10.5px;color:var(--text-4)">No links</span>'}
       </div>
     </div>`;
   }).join('');
@@ -277,10 +510,7 @@ function _initCommandPaletteShortcuts() {
       } else if (e.key === 'Enter') {
         e.preventDefault();
         if (_cmdResults[_cmdSelectedIdx]) {
-          const it = _cmdResults[_cmdSelectedIdx];
-          const primaryLink = it.links.fms ? 'fms' : (it.links.form ? 'form' : (it.links.sheet ? 'sheet' : Object.keys(it.links)[0]));
-          secureOpen(it.name, primaryLink);
-          closeCmdPalette();
+          executeCmdEntry(_cmdSelectedIdx);
         }
       }
     }
@@ -334,14 +564,15 @@ function _forceLocalCounts() {
 
 function _loadDashboardCSS() {
   const styles = [
-    'css/sidebar.css?v=20261105c',
-    'css/cards.css?v=20261105c',
-    'css/admin.css',
-    'css/modal.css',
-    'css/products.css?v=20260917',
-    'css/responsive-patch.css',
-    'css/dispatch-patch.css?v=20260917',
-    'css/sales.css?v=20261024a'
+    'css/sidebar.css?v=20261112',
+    'css/cards.css?v=20261112',
+    'css/admin.css?v=20261112',
+    'css/modal.css?v=20261112',
+    'css/products.css?v=20261112',
+    'css/salary.css?v=20261112',
+    'css/responsive-patch.css?v=20261112',
+    'css/dispatch-patch.css?v=20261112',
+    'css/sales.css?v=20261112'
   ];
   styles.forEach(href => {
     if (!document.querySelector(`link[href="${href}"]`)) {
@@ -423,7 +654,7 @@ async function showSalesDashboard(btn) {
   state.curGroup = null;
   state.daMode   = 'all';
   document.getElementById('pageHeader').textContent   = 'Sales Dashboard';
-  document.getElementById('searchWrap').style.display = 'none';
+  document.getElementById('searchWrap').style.display = window.innerWidth > 768 ? '' : 'none';
   document.getElementById('cardBox').style.display    = 'none';
   document.getElementById('adminPanel').style.display = 'none';
   document.getElementById('productsPanel').style.display = 'none';
@@ -446,7 +677,7 @@ function showProducts(btn) {
   state.curGroup = null;
   state.daMode   = 'all';
   document.getElementById('pageHeader').textContent   = 'Products';
-  document.getElementById('searchWrap').style.display = 'none';
+  document.getElementById('searchWrap').style.display = window.innerWidth > 768 ? '' : 'none';
   document.getElementById('cardBox').style.display    = 'none';
   document.getElementById('adminPanel').style.display = 'none';
   const panel = document.getElementById('productsPanel');
@@ -574,6 +805,8 @@ function showAdmin(btn) {
   state.curGroup = null;
   state.daMode   = 'all';
   _origShowAdmin(btn);
+  const sw = document.getElementById('searchWrap');
+  if (sw) sw.style.display = window.innerWidth > 768 ? '' : 'none';
 }
 
 async function _showPersonalBanks() {
@@ -977,7 +1210,7 @@ async function showBankDetails(btn) {
   state.curGroup = null;
   state.daMode   = 'all';
   document.getElementById('pageHeader').textContent   = 'Bank Details';
-  document.getElementById('searchWrap').style.display = 'none';
+  document.getElementById('searchWrap').style.display = window.innerWidth > 768 ? '' : 'none';
   document.getElementById('cardBox').style.display    = 'none';
   document.getElementById('adminPanel').style.display = 'none';
   const panel = document.getElementById('productsPanel');
@@ -1032,6 +1265,8 @@ Object.assign(window, {
   handleSearchClick,
   onCmdInput,
   setCmdCategory,
+  executeCmdEntry,
+  executeCmdAction,
 });
 
 
