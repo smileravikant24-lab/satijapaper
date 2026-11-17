@@ -4,14 +4,14 @@ import { handleLogout }                     from './ui/login.view.js';
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
 }                                          from './ui/sidebar.view.js?v=20261112';
-import { renderFiltered, secureOpen, getCardActions, getPrimaryAction } from './ui/cards.view.js?v=20261112';
+import { renderFiltered, secureOpen, getCardActions, getPrimaryAction } from './ui/cards.view.js?v=20261117';
 import { showAdmin as _origShowAdmin }     from './admin/admin.view.js?v=20261112';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261112';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261117';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';

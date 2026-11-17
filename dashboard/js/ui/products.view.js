@@ -1,4 +1,4 @@
-import { PRODUCTS } from '../data.js?v=20261112';
+import { PRODUCTS } from '../data.js?v=20261117';
 export function renderProducts(container) {
   container.innerHTML = '';
   container.style.display = 'block';   // override grid layout

@@ -1,6 +1,6 @@
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
-import { DB, LINK_META }             from '../data.js?v=20261112';
+import { DB, LINK_META }             from '../data.js?v=20261117';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 import { fetchGodownList, getGodownList } from '../services/godown.service.js';
@@ -136,8 +136,14 @@ export async function secureOpen(procName, linkType){
   }
 
 
-  if (item.url) { window.open(item.url, '_blank', 'noopener'); return; }
-  if (item.urls?.[linkType]) { window.open(item.urls[linkType], '_blank', 'noopener'); return; }
+  if (item.urls?.[linkType]) {
+    const u = typeof item.urls[linkType] === 'string' ? item.urls[linkType].trim() : '';
+    if (u) { window.open(u, '_blank', 'noopener'); return; }
+  }
+  if (item.url) {
+    const u = typeof item.url === 'string' ? item.url.trim() : '';
+    if (u) { window.open(u, '_blank', 'noopener'); return; }
+  }
 
 
   const directUrl = LINK_META[linkType]?.url;
@@ -376,6 +382,7 @@ export async function renderCards(data){
     'Email & Password Sheet':            'fas fa-envelope',
     'SCT FMS':                           'fas fa-truck-moving',
     'Repair & Maintenance System':       'fas fa-wrench',
+    'Office Door Key':                   'fas fa-key',
     'Salary System':                     'fas fa-money-check-dollar',
     // ── Support ──────────────────────────────────────────────
     'Help Ticket':                       'fas fa-ticket',
