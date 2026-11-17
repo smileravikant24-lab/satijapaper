@@ -170,7 +170,7 @@ export const DB = [
   {cat:"AdminMIS",name:"Repair & Maintenance System",
    pc:"Ms. Richa",solver:"Ms. Khushi",exec:"Ms. Khushi",links:{sheet:1,gasForm:1}},
   {cat:"AdminMIS",name:"Office Door Key",
-   pc:"-",solver:"-",exec:"-",links:{form:1,sheet:1}},
+   pc:"-",solver:"-",exec:"-",links:{sheet:1}},
   {cat:"AdminMIS",name:"Salary System",
    pc:"-",solver:"-",exec:"-",links:{salary:1}},
 
