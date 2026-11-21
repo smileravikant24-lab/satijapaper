@@ -1,6 +1,6 @@
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
-import { DB, LINK_META }             from '../data.js?v=20261117_fix1';
+import { DB, LINK_META }             from '../data.js?v=20261121_fix1';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 import { fetchGodownList, getGodownList } from '../services/godown.service.js';

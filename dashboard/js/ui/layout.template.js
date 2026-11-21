@@ -161,20 +161,6 @@ export function getDashboardHTML() {
               </span>
             </p>
           </div>
-          <div class="exec-quick-links">
-            <a href="https://order.satijapaper.com" target="_blank" rel="noopener" class="exec-chip-btn" title="Open Order Form">
-              <i class="fas fa-file-invoice"></i> Order Form
-            </a>
-            <button onclick="filterCat('Sales')" class="exec-chip-btn" title="View Sales Processes">
-              <i class="fas fa-chart-line"></i> Sales
-            </button>
-            <button onclick="filterCat('Purchase')" class="exec-chip-btn" title="View Purchase Processes">
-              <i class="fas fa-warehouse"></i> Inventory
-            </button>
-            <button onclick="openAIQA()" class="exec-chip-btn" style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(5,150,105,0.25));color:var(--ok);border-color:rgba(16,185,129,0.3)" title="Open AI Command Center">
-              <i class="fas fa-robot"></i> AI Assistant
-            </button>
-          </div>
         </div>
 
         <!-- Pinned Processes Tray -->

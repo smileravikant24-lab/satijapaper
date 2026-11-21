@@ -1,6 +1,6 @@
 import { $, escapeHtml }  from '../ui/dom.js';
 import { state }          from '../state.js';
-import { setActive }      from '../ui/sidebar.view.js?v=20261117_fix1';
+import { setActive }      from '../ui/sidebar.view.js?v=20261121_fix1';
 import { listUsers }      from '../services/users.service.js';
 export async function showAdmin(el){
   if (state.curUser?.role !== 'Admin') return;

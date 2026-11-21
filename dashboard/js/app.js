@@ -3,21 +3,21 @@ import { state }                           from './state.js';
 import { handleLogout }                     from './ui/login.view.js';
 import {
   updateCounts, filterCat, runFilter, paintSidebarUser
-}                                          from './ui/sidebar.view.js?v=20261117_fix1';
-import { renderFiltered, secureOpen, getCardActions, getPrimaryAction } from './ui/cards.view.js?v=20261117_fix1';
-import { showAdmin as _origShowAdmin }     from './admin/admin.view.js?v=20261117_fix1';
+}                                          from './ui/sidebar.view.js?v=20261121_fix1';
+import { renderFiltered, secureOpen, getCardActions, getPrimaryAction } from './ui/cards.view.js?v=20261121_fix1';
+import { showAdmin as _origShowAdmin }     from './admin/admin.view.js?v=20261121_fix1';
 import {
   openModal, closeModal, editUser, saveUser, deleteUserAct,
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261117_fix1';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261121_fix1';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';
-import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261117_fix1';
+import { renderSalesDashboard, sdashSetView } from './ui/sales.view.js?v=20261121_fix1';
 import { getConfigUrl } from './services/config.service.js';
-import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261117_fix1';
+import { mountDashboardLayout, openImgLightbox, closeImgLightbox } from './ui/layout.template.js?v=20261121_fix1';
 
 const _origFilterCat = filterCat;
 const _origRunFilter = runFilter;
@@ -564,15 +564,15 @@ function _forceLocalCounts() {
 
 function _loadDashboardCSS() {
   const styles = [
-    'css/sidebar.css?v=20261117_fix1',
-    'css/cards.css?v=20261117_fix1',
-    'css/admin.css?v=20261117_fix1',
-    'css/modal.css?v=20261117_fix1',
-    'css/products.css?v=20261117_fix1',
-    'css/salary.css?v=20261117_fix1',
-    'css/responsive-patch.css?v=20261117_fix1',
-    'css/dispatch-patch.css?v=20261117_fix1',
-    'css/sales.css?v=20261117_fix1'
+    'css/sidebar.css?v=20261121_fix1',
+    'css/cards.css?v=20261121_fix1',
+    'css/admin.css?v=20261121_fix1',
+    'css/modal.css?v=20261121_fix1',
+    'css/products.css?v=20261121_fix1',
+    'css/salary.css?v=20261121_fix1',
+    'css/responsive-patch.css?v=20261121_fix1',
+    'css/dispatch-patch.css?v=20261121_fix1',
+    'css/sales.css?v=20261121_fix1'
   ];
   styles.forEach(href => {
     if (!document.querySelector(`link[href="${href}"]`)) {
