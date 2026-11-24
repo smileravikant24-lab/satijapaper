@@ -112,6 +112,10 @@ export const DB = [
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{stockDash:1}},
   {cat:"Purchase",name:"Godown Inward Report",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{sheet:1}},
+  {cat:"Sales",name:"Stock Dashboard Khera",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"All Team",links:{stockDash:1,aiqa:1}},
+  {cat:"Sales",name:"Stock Dashboard Mukherjee Nagar",
+   pc:"Ms. Richa",solver:"Mr. Pranav",exec:"All Team",links:{stockDash:1,aiqa:1}},
 
   // ── E) ACCOUNTS, GST & TAXATION ──────────────────────────────
   {cat:"Accounts",name:"Account Checklist",
