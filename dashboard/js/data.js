@@ -109,7 +109,7 @@ export const DB = [
   {cat:"Purchase",name:"IMS (Inventory System)",
    pc:"Ms. Neha",solver:"Mukesh / Pranav",exec:"Khushi",links:{form:1,sheet:1,video:1}},
   {cat:"Purchase",name:"WMS",
-   pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{gasForm:1,sheet:1}},
+   pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{stockDash:1}},
   {cat:"Purchase",name:"Godown Inward Report",
    pc:"Ms. Neha",solver:"Mr. Mukesh",exec:"Ms. Richa/Ms. Khushi",links:{sheet:1}},
 
