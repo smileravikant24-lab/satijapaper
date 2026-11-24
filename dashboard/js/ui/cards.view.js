@@ -127,6 +127,19 @@ export function getPrimaryAction(item) {
   }
   return actions[0];
 }
+function openWithAuth(rawUrl) {
+  let targetUrl = rawUrl;
+  try {
+    const now = Date.now();
+    const userEmail = (state.curUser && state.curUser.email) ? state.curUser.email : '';
+    localStorage.setItem('sp_wms_access_ticket', JSON.stringify({ t: now, u: userEmail }));
+    const ticketParam = btoa(now + ':' + userEmail);
+    const sep = targetUrl.includes('?') ? '&' : '?';
+    targetUrl = targetUrl + sep + 'auth_ticket=' + encodeURIComponent(ticketParam);
+  } catch(e) {}
+  window.open(targetUrl, '_blank', 'noopener');
+}
+
 export async function secureOpen(procName, linkType){
   const item = DB.find(d => d.name === procName);
   if (!item){                               showToast('Process not found.',  'err'); return; }
@@ -138,20 +151,20 @@ export async function secureOpen(procName, linkType){
 
   if (item.urls?.[linkType]) {
     const u = typeof item.urls[linkType] === 'string' ? item.urls[linkType].trim() : '';
-    if (u) { window.open(u, '_blank', 'noopener'); return; }
+    if (u) { openWithAuth(u); return; }
   }
   if (item.url) {
     const u = typeof item.url === 'string' ? item.url.trim() : '';
-    if (u) { window.open(u, '_blank', 'noopener'); return; }
+    if (u) { openWithAuth(u); return; }
   }
 
 
   const directUrl = LINK_META[linkType]?.url;
-  if (directUrl) { window.open(directUrl, '_blank', 'noopener'); return; }
+  if (directUrl) { openWithAuth(directUrl); return; }
 
   showToast('Opening...', 'info');
   const result = await resolveProcessUrl(procName, linkType);
-  if (result.ok) window.open(result.url, '_blank', 'noopener');
+  if (result.ok) openWithAuth(result.url);
   else           showToast(result.error, 'err');
 }
 
