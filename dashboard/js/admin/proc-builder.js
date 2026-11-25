@@ -1,5 +1,5 @@
 import { $ }                  from '../ui/dom.js';
-import { DB, LINK_META }      from '../data.js?v=20261121_fix1';
+import { DB, LINK_META }      from '../data.js?v=20261125_pawan';
 
 const getAvailableLinks = item =>
 Object.keys(LINK_META).filter(k => !!item.links[k]);

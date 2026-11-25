@@ -11,7 +11,7 @@ import {
   onRoleChange, selectAllProcs
 }                                          from './admin/modal.view.js';
 import { canAccessProc }                   from './ui/access.js';
-import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261121_fix1';
+import { PRODUCTS, DB, NAV_TABS }          from './data.js?v=20261125_pawan';
 import { fetchBankDetails, getBankById } from './services/bank.service.js';
 import { fetchGodownList, getGodownList } from './services/godown.service.js';
 import { BANK_QR }                        from './bank-qr.js';

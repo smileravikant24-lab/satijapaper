@@ -1,6 +1,6 @@
 import { $ }              from './dom.js';
 import { state }          from '../state.js';
-import { DB, NAV_TABS, PRODUCTS }   from '../data.js?v=20261121_fix1';
+import { DB, NAV_TABS, PRODUCTS }   from '../data.js?v=20261125_pawan';
 import { canAccessProc }  from './access.js';
 import { renderFiltered } from './cards.view.js?v=20261121_fix1';
 

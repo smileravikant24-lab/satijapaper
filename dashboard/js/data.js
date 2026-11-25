@@ -153,7 +153,7 @@ export const DB = [
   {cat:"AdminMIS",name:"New Checklist",
    pc:"-",solver:"-",exec:"-",links:{check:1,sheet:1}},
   {cat:"AdminMIS",name:"Pawan Bhaiya Checklist",
-   pc:"-",solver:"-",exec:"-",links:{check:1,sheet:1}},
+   pc:"-",solver:"-",exec:"Mr. Pawan",links:{check:1,sheet:1}},
   {cat:"AdminMIS",name:"Office Desk",
    pc:"-",solver:"-",exec:"-",links:{dash:1,sheet:1}},
   {cat:"AdminMIS",name:"Delegation Sheet",

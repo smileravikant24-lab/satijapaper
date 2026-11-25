@@ -1,6 +1,6 @@
 import { $, escapeHtml, showToast } from './dom.js';
 import { state }                    from '../state.js';
-import { DB, LINK_META }             from '../data.js?v=20261121_fix1';
+import { DB, LINK_META }             from '../data.js?v=20261125_pawan';
 import { canAccessProc, canAccessLink } from './access.js';
 import { resolveProcessUrl }        from '../services/process.service.js';
 import { fetchGodownList, getGodownList } from '../services/godown.service.js';
@@ -386,6 +386,8 @@ export async function renderCards(data){
     'Attendance Sheet':                  'fas fa-fingerprint',
     'Office Chores Form':                'fas fa-broom',
     'Ultimate Checklist':                'fas fa-list-check',
+    'New Checklist':                     'fas fa-list-check',
+    'Pawan Bhaiya Checklist':            'fas fa-list-check',
     'Delegation Sheet':                  'fas fa-user-check',
     'To Do (MIS)':                       'fas fa-circle-check',
     'To Do (EA)':                        'fas fa-clipboard-check',
